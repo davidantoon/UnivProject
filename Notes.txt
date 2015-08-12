@@ -1,0 +1,8 @@
+/* Search Object */
+
+{
+	"searchText": "String",
+	"resultsCount": "Int",
+	"results": "Array of objects",
+	"selectedResult": "Index of object (Int)"
+}
