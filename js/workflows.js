@@ -1,4 +1,4 @@
-angular.module('IntelLearner', ['onsen', 'firebase']).factory('Workflow', ['Tab', function(tab){
+angular.module('IntelLearner', ['onsen', 'firebase']).factory('Workflow', ['Tab', function(Tab){
 
     function Workflow(tempJson, id, fx, fy, tx, ty){
 
@@ -71,6 +71,61 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Workflow', ['Tab'
                 this.tabs.push(tempTab);
 
             }
+        },
+        equals: function(obj){
+            return (this.ID == obj.ID);        
+        },
+        addTab: function(){
+            var newTabId = this.tabsIds;
+            var newTab = new Tab(newTabId, this);
+            this.tabs.push(newTab);
+            this.tabsIds++;
+            return newTab;
+        },
+        scrollTo: function(){
+            var wWidth = $(window).width();
+            var blockPosL = Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).position().left;
+            var blockWidth = Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).outerWidth(true);
+            var sLeft = blockPosL - ((wWidth - blockWidth) / 2);
+
+            var wHeight = $(window).height();
+            var blockPosT = Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).position().top;
+            var blockHeight = Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).outerHeight(true);
+            var sTop = blockPosT - ((wHeight - blockHeight) / 2);
+            $('#BodyRow').animate({ scrollTop: sTop, scrollLeft: sLeft }, 200);
+        },
+        getPosition: function(){
+            return {
+                "left": Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).position().left,
+                "top": Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).position().top,
+                "width": Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).outerWidth(true),
+                "height": Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).outerHeight(true)
+            }
+        },
+        toString: function(){
+            var tempJson = {
+                "ID": this.ID,
+                "fx": this.fx,
+                "fy": this.fy,
+                "tx": this.tx,
+                "ty": this.ty,
+                "name": this.name,
+                "tabsIds": this.tabsIds,
+                "tabs": []
+            }
+            tempJson.selectedTab = {
+                "ID": this.selectedTab.ID
+            };
+            for (var i = 0; i < this.tabs.length; i++) {
+                tempJson.tabs.push({
+                    "ID": this.tabs[i].ID,
+                    "title": this.tabs[i].title,
+                    "Type": this.tabs[i].Type,
+                    "content": this.tabs[i].content,
+                    "orderTab": this.tabs[i].orderTab
+                });
+            }
+            return JSON.stringify(tempJson);
         }
     };
 
@@ -78,76 +133,6 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Workflow', ['Tab'
 }]);
 
 
-
-Workflow.prototype.equals = function(obj) {
-	return (this.ID == obj.ID);
-};
-
-
-Workflow.prototype.addTab = function() {
-    var newTabId = this.tabsIds;
-    var newTab = new Tab(newTabId, this);
-    this.tabs.push(newTab);
-    this.tabsIds++;
-    return newTab;
-};
-
-Workflow.prototype.scrollTo = function() {
-    var wWidth = $(window).width();
-    var blockPosL = Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).position().left;
-    var blockWidth = Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).outerWidth(true);
-    var sLeft = blockPosL - ((wWidth - blockWidth) / 2);
-
-    var wHeight = $(window).height();
-    var blockPosT = Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).position().top;
-    var blockHeight = Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).outerHeight(true);
-    var sTop = blockPosT - ((wHeight - blockHeight) / 2);
-    $('#BodyRow').animate({ scrollTop: sTop, scrollLeft: sLeft }, 200);
-
-    // $("#BodyRow").animate({
-    //     scrollTop: sTop,
-    //     scrollLeft: sLeft
-    // }, {
-    //     duration: 0,
-    //     queue: false
-    // });
-};
-
-Workflow.prototype.getPosition = function() {
-    return {
-        "left": Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).position().left,
-        "top": Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).position().top,
-        "width": Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).outerWidth(true),
-        "height": Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).outerHeight(true)
-    };
-};
-
-
-Workflow.prototype.toString = function() {
-    var tempJson = {
-        "ID": this.ID,
-        "fx": this.fx,
-        "fy": this.fy,
-        "tx": this.tx,
-        "ty": this.ty,
-        "name": this.name,
-        "tabsIds": this.tabsIds,
-        "tabs": []
-    }
-    tempJson.selectedTab = {
-        "ID": this.selectedTab.ID
-    };
-    for (var i = 0; i < this.tabs.length; i++) {
-        tempJson.tabs.push({
-            "ID": this.tabs[i].ID,
-            "title": this.tabs[i].title,
-            "Type": this.tabs[i].Type,
-            "content": this.tabs[i].content,
-            "orderTab": this.tabs[i].orderTab
-        });
-    }
-    return JSON.stringify(tempJson);
-};
 Workflow.prototype.toJson = function() {
     var tempJson = {
         "ID": this.ID,

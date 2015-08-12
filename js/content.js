@@ -1,4 +1,4 @@
-angular.module('IntelLearner', ['onsen', 'firebase']).factory('Content', ['globals', 'server', function(globals, server){
+angular.module('IntelLearner', ['onsen', 'firebase']).factory('Content', ['Globals', 'Server', function(Globals, Server){
 	
 	function Content(conData){
 		this.id = ((conData && conData.id) || ""); 
@@ -91,6 +91,27 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Content', ['globa
 		 */
 		dublicate: function(contentObj){
 			return new Content(contentObj);
+		},
+		/**
+		 * Override toString default 
+		 * @return {String} return json stringify
+		 */
+		toString: function(){
+			var strToReturn = {
+				"id": this.id,
+				"name": this.name,
+				"kBitsNeeded": this.kBitsNeeded,
+				"kBitProvided": this.kBitProvided,
+				"terms": this.terms,
+				"category": this.category,
+				"url": this.url,
+				"locked": this.locked,
+				"lastModified": this.lastModified,
+				"inProgress": this.inProgress,
+				"type": this.type
+				// "connectToDataBase": this.connectToDataBase 
+			}
+			return JSON.stringify(strToReturn);
 		}
 
 	}
@@ -98,3 +119,9 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Content', ['globa
 
 	return Content;
 }]);
+
+
+
+
+
+

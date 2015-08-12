@@ -1,4 +1,4 @@
-angular.module('IntelLearner', ['onsen', 'firebase']).factory('Tab', ['content', function(content){
+angular.module('IntelLearner', ['onsen', 'firebase']).factory('Tab', ['Content', function(Content){
 	
 	// constant static members 
 	Tab.NORMAL_TAB = 0;// Search | Create | Edit'
@@ -6,7 +6,7 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Tab', ['content',
 	Tab.CREATE_TAB = 2;
 	Tab.EDIT_TAB = 3;
 
-	function Tab(id, workflow){
+	function Tab(id, workflow, tempJson){
 
 		if(id && workflow){
 			this.parentWF = (workflow || null);
@@ -17,12 +17,21 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Tab', ['content',
 			this.orderTab = id;
 			this.dataHolding = {};
 			return this;
+		}else if(tempJson){
+			var tempJson = JSON.parse(tempJson);
+			this.parentWF = workflow;
+			this.ID = tempJson.id;
+			this.title = tempJson.title;
+			this.Type = tempJson.Type;
+			this.content = new Content(tempJson.content);
+			this.orderTab = tempJson.orderTab;
+			this.dataHolding = tempJson.dataHolding;
 		}else{
 			throw "Id or parentWorkflow not specified!";
 			return null;
 		}
 	}
-	
+
 	Tab.prototype = {
 		/**
 		 * ChangTitle will change tab title that displayed at top of workflow.
@@ -91,6 +100,22 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Tab', ['content',
 			};
 			return tabPos;
 		},
+
+		/**
+		 * Override toString default function to return json stringify
+		 * @return {String} Json stringify string
+		 */
+		toString: function(){
+			var strToReturn = {
+                "ID": this.ID,
+                "title": this.title,
+                "Type": this.Type,
+                "content": this.content.toString(),
+                "orderTab": this.orderTab,
+                "dataHolding": this.dataHolding
+            }
+            return JSON.stringify(strToReturn);
+		}
 	}
 
 
