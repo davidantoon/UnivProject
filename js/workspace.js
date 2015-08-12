@@ -24,7 +24,6 @@ angular.module('IntelLearner', ['onsen', 'firebase'])
 		updateNewWorkflowButtons: function(){
 			this.newWorkflowButtons = this.getNewWorkflowButtons(1);
 		},
-
 		/**
 		 * Gets the places where to show workflow buttons (add new workflow buttons)
 		 * @param  {[int workflow index]}
