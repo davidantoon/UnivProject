@@ -98,6 +98,9 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Workflow', ['Tab'
             return newTab;
         },
 
+        /**
+         * Scrolls to a specific location on the screen.
+         */
         scrollTo: function(){
             var wWidth = $(window).width();
             var blockPosL = Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).position().left;
@@ -110,6 +113,11 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Workflow', ['Tab'
             var sTop = blockPosT - ((wHeight - blockHeight) / 2);
             $('#BodyRow').animate({ scrollTop: sTop, scrollLeft: sLeft }, 200);
         },
+
+        /**
+         * Gets the position of the Workflow
+         * @return {Object} The position if the Workflow
+         */
         getPosition: function(){
             return {
                 "left": Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).position().left,
@@ -118,9 +126,19 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Workflow', ['Tab'
                 "height": Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).outerHeight(true)
             }
         },
+
+        /**
+         * Override toString default function to return json stringify
+         * @return {String} Json stringify string
+         */
         toString: function(){
             return JSON.stringify(this.toJson());
         },
+
+        /**
+         * Creates Json 
+         * @return {Object} Json object
+         */
         toJson = function(){
             var tempJson = {
                 "ID": this.ID,
