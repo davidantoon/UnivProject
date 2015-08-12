@@ -33,6 +33,7 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Tab', ['Content',
 	}
 
 	Tab.prototype = {
+
 		/**
 		 * ChangTitle will change tab title that displayed at top of workflow.
 		 * @param  {String} newTitle String Object
@@ -40,6 +41,7 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Tab', ['Content',
 		changeTitle: function(newTitle){
 			this.title = newTitle;
 		},
+
 		/**
 		 * ChangeType will change the type of tab and his status. Optional tab types:<br> 
 		 * 0) NORMAL_TAB
@@ -76,7 +78,8 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Tab', ['Content',
 		 */
 		addData: function(dataHolding){
 			this.dataHolding = dataHolding;
-		}
+		},
+
 		/**
 		 * Get instance or create new Content object and link it to this tab
 		 * @param {Content || String} contentObj if the type of passed parameter is Content then will link to this tab.
@@ -88,6 +91,7 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Tab', ['Content',
 
 			// this.content = contentObj;
 		},
+
 		/**
 		 * Get tab XY posistion in the workflow tab bar to manage responsive UI.
 		 * @return {Object} Tab Position {'left': LeftPosition, 'top': TopPosition}

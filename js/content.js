@@ -15,6 +15,7 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Content', ['Globa
 		this.connectToDataBase = ((this.type && new server(this.type)) || null);
 	}
 	Content.prototype = {
+		
 		/**
 		 * Lock Object in the server to prevent others to edit (Readonly)
 		 * @param  {Function} callback Function called after execute object method. Return success/error result
@@ -22,6 +23,7 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Content', ['Globa
 		lock: function(callback){
 
 		},
+		
 		/**
 		 * Unlock Object in the server to enable others to edit
 		 * @param  {Function} callback Function called after execute object method. Return success/error result
@@ -29,6 +31,7 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Content', ['Globa
 		unlock: function(callback){
 			
 		},
+		
 		/**
 		 * Save Object to server as (DEBUG MODE)
 		 * @param  {String}   versionNotes Note about updated object
@@ -45,6 +48,7 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Content', ['Globa
 					callback(false);
 			});
 		},
+		
 		/**
 		 * Save Object to server as (PRODUCT MODE) and Unlock it
 		 * @param  {String}   versionNotes Note about updated object
@@ -53,6 +57,7 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Content', ['Globa
 		release: function(versionNotes, callback){
 
 		},
+		
 		/**
 		 * Remove object from server database
 		 * @param  {Boolran}  includePreviousVersions TRUE to remove object and it's history versions (NOT RECOMMENDED)
@@ -61,6 +66,7 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Content', ['Globa
 		remove: function(includePreviousVersions, callback){
 
 		},
+		
 		/**
 		 * Restore object data from previous versions by versionId
 		 * @param  {string}   versionId The version id of previous version to restore
@@ -69,6 +75,7 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Content', ['Globa
 		reversion: function(versionId, callback){
 
 		},
+		
 		/**
 		 * Get list of previous version (id, dateAdded, notes)
 		 * @param  {Function} callback Function called after execute object method. Return success/error result
@@ -76,6 +83,7 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Content', ['Globa
 		getVersions: function(callback){
 
 		},
+		
 		/**
 		 * Override to operator "=="
 		 * @param  {Content} contentObj Content object to compare with
@@ -84,6 +92,7 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Content', ['Globa
 		equals: function(contentObj){
 			return (this.id == contentObj.id);
 		},
+		
 		/**
 		 * Override to operator "=" without pointer
 		 * @param  {Content} contentObj Content
@@ -92,6 +101,7 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Content', ['Globa
 		dublicate: function(contentObj){
 			return new Content(contentObj);
 		},
+		
 		/**
 		 * Override toString default 
 		 * @return {String} return json stringify
