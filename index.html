@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="IntelLearner">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <link rel="icon" href="img/favicon.ico" type="image/x-icon"/> -->
+  <!-- <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon"/> -->
+  <title></title>
+  
+  <link rel="stylesheet" href="css/app.css"> 
+  <link rel="stylesheet" href="css/bootstrap-datepicker3.css"> 
+  <link rel="stylesheet" href="css/onsenui.css">
+  <link rel="stylesheet" href="css/onsen-css-components-IntelProject.css">
+  <link rel="stylesheet" href="css/app.css">
+  
+
+</head>
+<body ng-controller="MainCtrl">
+
+    <div id="MainDiv" ng-switch="AppStatus" style="display:none">
+      <div class="AppPage" ng-switch-when="2" style="">  
+      <ons-page>
+          <ons-tabbar position="top" class="" style="height: 50px;">
+            <ons-row>
+              <ons-col width="220px" class="Logo rtl">
+                <img src="img/IntelIcon.png" style="height: 100%;margin: auto;">
+              </ons-col>
+              <ons-col id="NotificationsButton" ng-click="testFun();" width="100px" style="width:100px; position:relative;" class="">
+                <div class="TopTabbarButton clickable hoverOp">Settings</div>
+              </ons-col>
+              <ons-col id="NotificationsButton" ng-click="testFun2();" width="150px" style="width:150px; position:relative;" class="">
+                <div class="TopTabbarButton clickable hoverOp">New Workflow</div>
+              </ons-col>
+              <ons-col>
+              </ons-col>
+              <ons-col id="NotificationsButton" ng-click="UndoWorkflow();" width="80px" style="width:50px; position:relative;" class="{{'col ons-col-inner '+((canUndo() == true)?'clickable hoverOp':'opacityLow')}}">
+                <div class="TopTabbarButton" style="border-right:0;font-size: 13px;">
+                  <ons-icon icon="ion-ios-undo" size="25px"></ons-icon>
+                  Undo
+                </div>
+              </ons-col>
+              <ons-col id="NotificationsButton" ng-click="RedoWorkflow();" width="80px" style="width:50px; position:relative;" class="{{'col ons-col-inner '+((canRedo() == true)?'clickable hoverOp':'opacityLow')}}">
+                <div class="TopTabbarButton" style="border-right:0;font-size: 13px;">
+                  Redo
+                  <ons-icon icon="ion-ios-redo" size="25px"></ons-icon>
+                </div>
+              </ons-col>
+              <ons-col width="230px" style="border-left: 1px solid rgba(0,0,0,.1);">
+                <ons-row>
+                  <ons-col width="40px" class="col ons-col-inner" style="-webkit-box-flex: 0; flex: 0 0 40px; max-width: 40px;text-align: center;line-height: 47px;color: rgba(8,96,168,.6);">
+                    <ons-icon size="20px" icon="ion-arrow-shrink"></ons-icon>
+                  </ons-col>
+                  <ons-col class="range-wrapper">
+                    <input type="range" id="ZoomRange" value="80" min="25" max="100" class="range">
+                  </ons-col>
+                  <ons-col width="40px" class="col ons-col-inner" style="-webkit-box-flex: 0; flex: 0 0 40px; max-width: 40px;text-align: center;line-height: 47px;color: rgb(8,96,168);">
+                    <ons-icon size="20px" icon="ion-arrow-expand"></ons-icon>
+                  </ons-col>
+                </ons-row>
+              </ons-col>
+              <!-- <ons-col  width="230px" >
+                <div id="TabbarProfileButtonId" ng-click="openProfilePage();" class="TabbarProfileButton hoverOp clickable">
+                  <ons-col width="37px">
+                    <img class="TabbarProfileImg" ng-src="{{currentUser.profilePicture}}" src="" />
+                  </ons-col>
+                  <ons-col>
+                    <div class="TabbarProfileText">{{currentUser.firstName + " " + currentUser.lastName}}</div>
+                  </ons-col>
+                </div>
+              </ons-col>
+              <ons-col  class="LogoutDivTabbar hoverOp clickable" ng-click="logout();" width="49px">
+                <ons-icon  size="25px" icon="ion-android-exit"></ons-icon>
+              </ons-col> -->
+            </ons-row>
+          </ons-tabbar>
+          <div id="FullScreenDiv">
+            <div class="resizeDiv resizeWidthLeftDiv hoverOp clickable">
+              <ons-icon icon="ion-arrow-left-b" size="20px"></ons-icon>
+            </div>
+            <div class="resizeDiv resizeWidthRightDiv hoverOp clickable">
+              <ons-icon icon="ion-arrow-right-b" size="20px"></ons-icon>
+            </div>
+            <div class="resizeDiv resizeHeightTopDiv hoverOp clickable">
+              <ons-icon icon="ion-arrow-up-b" size="20px"></ons-icon>
+            </div>
+            <div class="resizeDiv resizeHeightBottomDiv hoverOp clickable">
+              <ons-icon icon="ion-arrow-down-b" size="20px"></ons-icon>
+            </div>
+
+            <ons-row>
+              <ons-col ng-click="closeFullScreen();" class="ExitFullScreenButton" width="200px">
+                Exit Fullscreen
+              </ons-col>
+              <ons-col></ons-col>
+            </ons-row>
+            <ons-row class="row ons-row-inner WorkFlowTabs">
+              <ons-col ng-repeat="tab in Workflow[selectedWorkflow].tabs" ng-click="selectTab(Workflow[selectedWorkflow], tab);" class="{{'col ons-col-inner WorkFlowTab '+((getSelectedTab(Workflow[selectedWorkflow], tab.ID))?'ActiveTab':'')}}">
+                <input id="{{'FWorkflowI'+Workflow[selectedWorkflow].ID+'Tab'+tab.ID}}" readonly="readonly" placeholder="Tab name" ng-enter="updateTabName(Workflow[selectedWorkflow].ID, tab.ID, 'FWorkflowI'+Workflow[selectedWorkflow].ID+'Tab'+tab.ID);" ng-dblclick="ConvertTextBos('FWorkflowI'+Workflow[selectedWorkflow].ID+'Tab'+tab.ID);"
+                value="{{tab.title}}" />
+              </ons-col>
+
+            </ons-row>
+          </div>
+          <ons-row id="BodyRow" style="margin-top: 50px;  overflow: scroll;">
+
+            <!-- <ons-col width="32%" class="col ons-col-inner leftCol WorkFlowDiv">
+              <ons-row class="row ons-row-inner WorkFlowTabs">
+                <ons-col ng-click="selectTab(1,0);" class="{{'col ons-col-inner WorkFlowTab '+((getSelectedTab(1,0))?'ActiveTab':'')}}">
+                  <input id="WorkflowId1Tab1" ng-blur="updateTabName(1,1,'WorkflowId1Tab1');" readonly="readonly" ng-enter="blurThis('WorkflowId1Tab1');" ng-dblclick="ConvertTextBos('WorkflowId1Tab1');" value="Tab 1" placeholder="Tab name" />
+                </ons-col>
+                <ons-col ng-click="selectTab(1,1);" class="{{'col ons-col-inner WorkFlowTab '+((getSelectedTab(1,1))?'ActiveTab':'')}}">
+                  <input id="WorkflowId1Tab2" ng-blur="updateTabName(1,2,'WorkflowId1Tab2');" readonly="readonly" ng-enter="blurThis('WorkflowId1Tab2');" ng-dblclick="ConvertTextBos('WorkflowId1Tab2');" value="Tab 2" placeholder="Tab name" />
+                </ons-col>
+                <ons-col ng-click="selectTab(1,2);" class="{{'col ons-col-inner WorkFlowTab '+((getSelectedTab(1,2))?'ActiveTab':'')}}">
+                  <input id="WorkflowId1Tab3" ng-blur="updateTabName(1,3,'WorkflowId1Tab3');" readonly="readonly" ng-enter="blurThis('WorkflowId1Tab3');" ng-dblclick="ConvertTextBos('WorkflowId1Tab3');" value="Tab 3" placeholder="Tab name" />
+                </ons-col>
+                
+              </ons-row>
+            </ons-col> -->
+            <div id="WorkFlowMatrix">
+              <div id="pointToZoom"></div>
+              
+
+              <div ng-mouseenter="EnableScroll(2);" ng-mouseleave="EnableScroll(1);" ng-repeat="wFlow in Workflow" id="{{'Workflow'+wFlow.ID}}" class="WorkFlowBlock Available" fx="{{wFlow.fx}}" fy="{{wFlow.fy}}" tx="{{wFlow.tx}}" ty="{{wFlow.ty}}">
+                <div class="resizeDiv resizeWidthLeftDiv hoverOp clickable">
+                  <ons-icon icon="ion-arrow-left-b" size="20px"></ons-icon>
+                </div>
+                <div class="resizeDiv resizeWidthRightDiv hoverOp clickable">
+                  <ons-icon icon="ion-arrow-right-b" size="20px"></ons-icon>
+                </div>
+                <div class="resizeDiv resizeHeightTopDiv hoverOp clickable">
+                  <ons-icon icon="ion-arrow-up-b" size="20px"></ons-icon>
+                </div>
+                <div class="resizeDiv resizeHeightBottomDiv hoverOp clickable">
+                  <ons-icon icon="ion-arrow-down-b" size="20px"></ons-icon>
+                </div>
+                <ons-row class="row ons-row-inner WorkFlowTabs">
+                  <ons-col ng-repeat="tab in wFlow.tabs" ng-click="selectTab(wFlow, tab);" class="{{'col ons-col-inner WorkFlowTab '+((getSelectedTab(wFlow, tab.ID))?'ActiveTab':'')}}">
+                    <input id="{{'WorkflowI'+wFlow.ID+'Tab'+tab.ID}}" readonly="readonly" placeholder="Tab name" ng-enter="updateTabName(wFlow.ID, tab.ID, 'WorkflowI'+wFlow.ID+'Tab'+tab.ID);" ng-dblclick="ConvertTextBos('WorkflowI'+wFlow.ID+'Tab'+tab.ID);"
+                    value="{{tab.title}}" />
+                  </ons-col>
+                  <ons-col ng-click="addNewTabToWorkflow(wFlow);" class="{{'col ons-col-inner newWorkflowTab ' + ((displayNewWorkflowTabButtons == true)?'':'hidden')}}">
+                    +
+                  </ons-col>
+                </ons-row>
+                <div class="SelectedTabContent">
+                    <div class="{{((getSelectedTabType(wFlow) == 0)?'':'hidden')}}">
+                      <div ng-click="MainButtonsPressed(wFlow,1);" class="SearchButton MainButtonsTab">
+                        Search
+                      </div>
+                      <div ng-click="MainButtonsPressed(wFlow,2);" class="CreateButton MainButtonsTab">
+                        Create New Element
+                      </div>
+                      <div ng-click="MainButtonsPressed(wFlow,3);" class="EditButton MainButtonsTab">
+                        Edit Element
+                      </div>
+                    </div>
+                    <div class="{{((getSelectedTabType(wFlow) == 1)?'':'hidden')}}">
+                      <div class="searchTextboxDiv">
+                        <input class="searchTextbox" placeholder="Search Text" id="1" ng-model="wFlow.selectedTab.content.searchText">
+                      </div>
+                      <div class="searchOptions">
+                        <ons-row class="LabelOfOptionsButtons">
+                          Search By:
+                        </ons-row>
+                        <ons-row>
+                          <ons-col class="searchOptionButton checked">Kbits</ons-col>
+                          <ons-col class="searchOptionButton">Delivery</ons-col>
+                          <ons-col class="searchOptionButton">Terms</ons-col>
+                        </ons-row>
+                        <ons-row class="LabelOfOptionsButtons">
+                          Order By:
+                        </ons-row>
+                        <ons-row>
+                          <ons-col class="searchOptionButton">Newest</ons-col>
+                          <ons-col class="searchOptionButton checked">Popular</ons-col>
+                        </ons-row>
+                        <ons-row>
+                          <ons-col></ons-col>
+                          <ons-col>
+                            <div class="SearchButtonForQuery">Search</div>
+                          </ons-col>
+                          <ons-col></ons-col>
+                        </ons-row>                        
+                      </div>
+                      <div style="display:none" class="searchResults">
+                        {{wFlow.selectedTab.content.searchText}}
+                        <br>
+                        {{wFlow.name}}
+                      </div>
+                    </div>
+                    <div class="{{((getSelectedTabType(wFlow) == 2)?'':'hidden')}}">
+                      create
+                    </div>
+                    <div class="{{((getSelectedTabType(wFlow) == 3)?'':'hidden')}}">
+                      edit
+                    </div>
+                </div>
+                <div class="openFullScreenButton" ng-click="openFullScreen($index);">
+                  <ons-icon size="35px" icon="ion-arrow-expand" class="ons-icon ons-icon--ion ion-arrow-expand" style="line-height: 45px;width: 40px;text-align: center;height: 40px;"></ons-icon>
+                </div>
+                <div class="editTabSettingsButton" ng-click="editTabSettings($index);">
+                  <ons-icon size="35px" icon="ion-gear-a" class="ons-icon ons-icon--ion ion-gear-a" style="line-height: 45px;width: 40px;text-align: center;height: 40px;"></ons-icon>
+                </div>
+                <div class="closeTabButton" ng-click="closeTab(wFlow);">
+                  <ons-icon size="35px" icon="ion-close" class="ons-icon ons-icon--ion ion-close" style="line-height: 45px;width: 40px;text-align: center;height: 40px;"></ons-icon>
+                </div>
+                <!-- <div class="{{'holdNoClicks ' + ((displayNewWorkflowButtons == true || displayNewWorkflowTabButtons == true)?'':'hidden')}}"></div> -->
+              </div>
+
+              <div ng-repeat="newButtons in workSpaces.newWorkflowButtons" id="{{'newWorkflowButton'+newButtons.ID}}" class="{{'newWorkflowButtonDiv WorkFlowBlock ' + ((displayNewWorkflowButtons == true)?'':'hidden')}}" fx="{{newButtons.fx}}" fy="{{newButtons.fy}}" tx="{{newButtons.tx}}" ty="{{newButtons.ty}}" >
+                <div ng-click="convertToWorkflow(newButtons);" class="newWorkFlow">
+                  <ons-icon icon="ion-plus-round" size="150px" class="ons-icon ons-icon--ion ion-plus-round" style="line-height: 200px; display: block; color: rgb(210, 210, 210); font-size: 150px;"></ons-icon>
+                </div>
+              </div>
+
+              <!-- <canvas id="myCanvas" width="400" height="400"></canvas> -->
+            </div>
+            
+          </ons-row>
+        </ons-page>
+
+      </div>
+      <div id="LoginPage" ng-switch-when="1" >
+        <div class="backGroundPos">
+          <img class="blurBackground" src="img/loginbg1.jpg" />
+          <div class="holdLoginDiv">
+            <div class="LoginHeader">
+              <img src="img/IntelIcon.png" />
+            </div>
+            <div class="LoginBody">
+              <form autocomplete="off">
+                <input ng-enter="LoginWithUsernameAndPassrod();" id="username" type="text" placeholder="מספר נהג">
+                <input ng-enter="LoginWithUsernameAndPassrod();" id="password" type="password" placeholder="סיסמה">
+              </form>
+            </div>
+            <div class="LoginFooter" ng-click="LoginWithUsernameAndPassrod();">
+              <div class="LoginLoader">
+                <ons-icon spin="true" icon="ion-load-d" size="30px"></ons-icon>
+              </div>
+              <div class="LoginButton">
+                התחבר
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="LoadingScreen" style="z-index: 100000;display:block;position: fixed;width: 100%;height: 100%;background: rgb(8,96,168);">
+      <img src="img/IntelIcon.png" style="width: 200px;position: absolute;top: 0;bottom: 0;left: 0;right: 0;margin: auto;opacity: .85;z-index: 3;">
+      <img src="img/IntelIcon.png" class="animatedLogo" style="width: 200px;position: absolute;top: 0;bottom: 0;left: 0;right: 0;margin: auto;">
+      <div class="statusBarLoading">
+        <div class="StatusBarPerc"></div>
+      </div>
+    </div>
+    
+
+    <script type="text/javascript" src="js/angular/angular.js"></script>
+    <script type="text/javascript" src="js/onsenui.js"></script> 
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery.maskedinput.js"></script>
+    <script type="text/javascript" src="js/xmlToJson.js"></script>
+    <script type="text/javascript" src="js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="js/bootstrap-datepicker.he.js"></script>
+    <script type="text/javascript" src="js/globals.js"></script>
+    <script type="text/javascript" src="js/svrData.js"></script>
+    <script type="text/javascript" src="js/tab.js"></script>
+    <script type="text/javascript" src="js/workspace.js"></script>
+    <script type="text/javascript" src="js/workflows.js"></script>
+    <script type="text/javascript" src="js/visible.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/firebase.js"></script>
+    <script type="text/javascript" src="js/angularfire.min.js"></script>
+
+  </body>
+</html>

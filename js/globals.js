@@ -1,0 +1,2 @@
+var CashedObjects = {};
+var CashedKbits = {};
