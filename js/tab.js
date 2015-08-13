@@ -39,6 +39,7 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Tab', ['Content',
 		 * @param  {String} newTitle String Object
 		 */
 		changeTitle: function(newTitle){
+			// how are you?
 			this.title = newTitle;
 		},
 
