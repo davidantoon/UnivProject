@@ -51,6 +51,12 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Tab', ['Content',
 		 * @param  {String} newType (Tab.NORMAL_TAB || Tab.SEARCH_TAB || Tab.CREATE_TAB || Tab.EDIT_TAB)
 		 */
 		changeType: function(newType){
+			//aaaaa
+			////aaaa
+			///
+			///aaa
+			///a
+			///a
 			switch (newType){
 				case Tab.SEARCH_TAB:
 					this.addData({
