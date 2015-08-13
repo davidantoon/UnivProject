@@ -952,6 +952,7 @@ function checkCanvas() {
     // ctx.strokeStyle = grad;
     // ctx.lineJoin = 'round';
     // ctx.lineCap = 'round';
+    // 
     // ctx.stroke();
 
 
