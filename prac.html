@@ -20,6 +20,18 @@
 <body ng-controller="MainCtrl">
 
 
+  <table class="friend">
+    <tr>
+      <th>Name</th>
+      <th>Phone Number</th>
+      <th>Age</th>
+    </tr>
+    <tr ng-repeat="friend in friends | orderBy:'-age'">
+      <td>{{friend.name}}</td>
+      <td>{{friend.phone}}</td>
+      <td>{{friend.age}}</td>
+    </tr>
+  </table>
 
   <script type="text/javascript" src="js/angular/angular.js"></script>
   <script type="text/javascript" src="js/onsenui.js"></script> 

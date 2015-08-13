@@ -33,8 +33,6 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
         $scope.workSpaces = {};
         $scope.displayNewWorkflowTabButtons = true;
 		$scope.displayNewWorkflowButtons = true;
-        // $scope.workSpaces = null;
-
 
 
 
