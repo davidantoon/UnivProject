@@ -1,6 +1,7 @@
 var app = angular.module('IntelLearner', ['onsen', 'firebase']);
 
-app.controller('MainCtrl', ["$scope","Globals",function($scope, Globals) {
+app.controller('MainCtrl', ["$scope", "Workspace", "Globals",function($scope, Workspace) {
 
-	console.log(Globals);
+	var workspaces = new Workspace();
+	console.log(workspaces);
 }]);

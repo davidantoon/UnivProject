@@ -1,7 +1,8 @@
-angular.module('IntelLearner', ['onsen', 'firebase']).factory('Content', ['Globals', 'Server', function(Globals, Server){
+// app.factory('Content', ['Globals', 'Server', function(Globals, Server){
+app.factory('Content', ['Globals', function(Globals){
 	
 	function Content(conData){
-		this.id = ((conData && conData.id) || ""); 
+		this.id = ((conData && conData.id != null) || ""); 
 		this.name = ((conData && conData.name) || ""); 
 		this.kBitsNeeded = ((conData && conData.kBitsNeeded) || []);
 		this.kBitProvided = ((conData && conData.kBitProvided) || []);

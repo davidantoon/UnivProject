@@ -1,2 +1,2 @@
-angular.module('IntelLearner').value('Globals', {"CashedObjects":[], "CashedKbits":[]});
+app.value('Globals', '{"CashedObjects":[], "CashedKbits":[]}');
 

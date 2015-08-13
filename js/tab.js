@@ -1,4 +1,4 @@
-angular.module('IntelLearner', ['onsen', 'firebase']).factory('Tab', ['Content', function(Content){
+app.factory('Tab', ['Content', function(Content){
 	
 	// constant static members 
 	Tab.NORMAL_TAB = 0;// Search | Create | Edit'
@@ -8,9 +8,9 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Tab', ['Content',
 
 	function Tab(id, workflow, tempJson){
 
-		if(id && workflow){
-			this.parentWF = (workflow || null);
-			this.ID = (id || null);
+		if(id != null && workflow != null){
+			this.parentWF = workflow;
+			this.ID = id;
 			this.title = 'Tab '+id;
 			this.Type = Tab.NORMAL_TAB; /*  0 => 'Search/Create/Edit'  ||  1 => 'Search'  ||  2 => 'Create'  ||  3 => 'Edit'  */
 			this.content = null;
@@ -114,7 +114,7 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Tab', ['Content',
                 "ID": this.ID,
                 "title": this.title,
                 "Type": this.Type,
-                "content": this.content.toString(),
+                "content": ((this.content == null)?null:this.content.toString()),
                 "orderTab": this.orderTab,
                 "dataHolding": this.dataHolding
             }

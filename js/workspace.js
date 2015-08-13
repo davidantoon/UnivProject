@@ -1,5 +1,5 @@
-angular.module('IntelLearner', ['onsen', 'firebase']).factory('workSpace', ['Workflow', function(Workflow){
-	function workSpace() {
+app.factory('Workspace', ['Workflow', function(Workflow){
+	function Workspace() {
 		var firstWorkflow = new Workflow(null, 0, 12, 12, 13, 13);
 		this.workflows = [firstWorkflow];
 		this.lastWorkflowId = 0;
@@ -7,7 +7,7 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('workSpace', ['Wor
 		this.selectedWorkflow = firstWorkflow;
 	}
 
-	workSpace.prototype = {
+	Workspace.prototype = {
 
 		/**
 		 * Creates new work flow
@@ -78,6 +78,8 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('workSpace', ['Wor
 			return flag;
 		}
 	}
+
+	return Workspace;
 }]);
 
 
