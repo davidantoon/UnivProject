@@ -1,7 +1,7 @@
 var app = angular.module('IntelLearner', ['onsen', 'firebase']);
 
-app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter", "$window",
-    function($scope, $http, $timeout, $interval, $filter, $window) {
+app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter", "$window","Workspace",
+    function($scope, $http, $timeout, $interval, $filter, $window, Workspace) {
 
 
         // PRIM COLOR = rgb(8,96,168)
@@ -146,13 +146,14 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             };
             $scope.settings = {
                 'defaultOpenTabs': 'splite', // over, Splite
-                'autoScroll': true
+                'autoScroll': false
 
             }
             $scope.last10Steps = [];
             $scope.currentUndoOrder = 1;
             $scope.progressLines = [{
                 "LineId": "1233",
+                "Color": "red",
                 "tabs": [{
                     "WorkflowId": "343243",
                     "tabId": "213321"
@@ -168,11 +169,8 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                 }]
             }];
 
-            $scope.workSpaces = new workSpace();
+            $scope.workSpaces = new Workspace();
             $scope.Workflow  = $scope.workSpaces.workflows;
-            console.log($scope.Workflow);
-            console.log($scope.workSpaces);
-
 
             $timeout(function() {
                 $scope.$apply(function() {
@@ -952,6 +950,7 @@ function checkCanvas() {
     // ctx.strokeStyle = grad;
     // ctx.lineJoin = 'round';
     // ctx.lineCap = 'round';
+    // 
     // ctx.stroke();
 
 

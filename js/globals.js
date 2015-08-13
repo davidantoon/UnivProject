@@ -1,2 +1,2 @@
-var CashedObjects = {};
-var CashedKbits = {};
+app.value('Globals', '{"CashedObjects":[], "CashedKbits":[]}');
+

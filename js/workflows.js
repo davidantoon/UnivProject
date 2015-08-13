@@ -1,8 +1,8 @@
-angular.module('IntelLearner', ['onsen', 'firebase']).factory('Workflow', ['Tab', function(Tab){
+app.factory('Workflow', ['Tab', function(Tab){
 
     function Workflow(tempJson, id, fx, fy, tx, ty){
 
-        if(tempJson && id && fx && fy && tx && ty){
+        if(tempJson != null || (id != null && fx != null && fy != null && tx != null && ty != null)){
             if (tempJson == null) {
                 this.ID = id;
                 this.fx = fx;
@@ -65,16 +65,10 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Workflow', ['Tab'
             this.name = tempJson.name;
             this.tabs = [];
             for (var i = 0; i < tempJson.tabs.length; i++) {
-                var tempTab = new Tab(tempJson.tabs[i].ID, this);
-                tempTab.title = tempJson.tabs[i].title;
-                tempTab.Type = tempJson.tabs[i].Type;
-                tempTab.content = tempJson.tabs[i].content;
-                tempTab.orderTab = tempJson.tabs[i].orderTab;
+                this.tabs.push(new Tab(null, this, tempJson.tabs[i]));
                 if(tempJson.selectedTab.ID == tempJson.tabs[i].ID){
                     this.selectedTab = tempTab;
                 }
-                this.tabs.push(tempTab);
-
             }
         },
 
@@ -132,6 +126,7 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Workflow', ['Tab'
          * @return {String} Json stringify string
          */
         toString: function(){
+            debugger;
             return JSON.stringify(this.toJson());
         },
 
@@ -139,7 +134,7 @@ angular.module('IntelLearner', ['onsen', 'firebase']).factory('Workflow', ['Tab'
          * Creates Json 
          * @return {Object} Json object
          */
-        toJson = function(){
+        toJson:function(){
             var tempJson = {
                 "ID": this.ID,
                 "fx": this.fx,
