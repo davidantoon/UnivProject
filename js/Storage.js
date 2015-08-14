@@ -14,82 +14,72 @@ app.factory('Storage', function(){
 	// Static method to add new data to localStorage
 	function save(key, value){
 
-		// objectType
-		// value+"||"+valueType
-		if(typeof value == Content.prototype.objectType){
-			value += "Content";
-			value = Content.prototype.toString();
-		}
-		else if(typeof value == Tab.prototype.objectType){
-			value += "Tab";
-			value = Tab.prototype.toString();
-		}
-		else if(typeof value == Workflow.prototype.objectType){
-			value += "Workflow";
-			value = Workflow.prototype.toString();
-		}
-		else if(typeof value == Workspace.prototype.objectType){
-			value += "Workspace";
-			value = Workspace.prototype.toString();
-		}
-		else if(typeof value == 'object')
-			value += "Object";
-
 		if(typeof key == 'String'){
-			// - function
-			// + object
-			// - null
-			// + other
-			localStorage.setItem(key, value);
+			
+			switch(typeof value){
+			case "function":
+				Done(false,"value is function");
+			break;
+			case undefined:
+				Done(false,"value is undefined");
+			break;
+			case null:
+				Done(false,"value is null");
+			break;
+			case 'number':
+				value = value.toString() + "||Number";
+				Done(true, value);
+			break;
+			case 'array':
+				value = value.toString() + "||Array";
+				Done(true,value);
+			break;
+			case 'string':
+				value += "||String";
+				Done(true, value);
+			break;
+			case 'object':
+				if(TypeOf.get(value) == null || TypeOf.get(value) == undefined){
+						// Regular object 
+						value = JSON.stringify(value) + "||Object";
+						Done(true,value);
+				}else{ // one of our objects (workspace or tab or content etc.)
+						switch(TypeOf.get(value)){
+							case Content.prototype.objectType:
+								value = Content.prototype.toString() + "||Content";
+								Done(true,value);
+							break;
+							case Tab.prototype.objectType:
+								value = Tab.prototype.toString() + "||Tab";
+								Done(true,value);
+							break;
+							case Workflow.prototype.objectType:
+								value = Workflow.prototype.toString() + "||Workflow";
+								Done(true,value);
+							break;
+							default:
+							Done(false,"Error");
+							break;
+						}
+					}
+			break;
+			default:
+			Done(false,"Error");
+			break;
+			} // end outter switch
+
+			function done(sucsess, data){
+				if(sucsess){
+					localStorage.setItem(key, data);
+				}else{
+					console.log(new Error(data));
+				}
+			}
 		}
 	}
 
 	// Static method to get data from localStorage
 	function get(key){
-		switch(typeof value){
-			case "function":
-				// Error
-				Done(false);
-			break;
-			case undefined:
-				// Error
-				Done(false);
-			break;
-			case null:
-				// Error
-			break;
-			case 'number':
-				// Regular to string
-			break;
-			case 'array':
-				// Regular to string
-			break;
-			case 'string':
-				// Regular to string
-			break;
-			case 'object':
-				if(TypeOf.get(value) == null || TypeOf.get(value) == undefined){
-					// Regular to string
-				}else{
-					switch(TypeOf.get(value)){
-						case Content.prototype.objectType:
-
-						break;
-					}
-				}
-			break;
-			default:
-				// Error
-			break;
-		}
-		function Done(success, data){
-			if(success){
-
-			}else{
-				console.error(new Error(""));
-			}
-		}
-
 	}
 
 	// Static method to clear localStorage's data
