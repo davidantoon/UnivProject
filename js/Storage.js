@@ -85,7 +85,7 @@ app.factory('Storage', function(){
 	// Static method to get data from localStorage
 	function get(key){
 		var obj = localStorage.getItem(key);
-		
+		//
 
 	}
 
