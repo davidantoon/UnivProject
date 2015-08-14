@@ -16,7 +16,24 @@ app.factory('Storage', function(){
 
 		// objectType
 		// value+"||"+valueType
-
+		if(typeof value == Content.prototype.objectType){
+			value += "Content";
+			value = Content.prototype.toString();
+		}
+		else if(typeof value == Tab.prototype.objectType){
+			value += "Tab";
+			value = Tab.prototype.toString();
+		}
+		else if(typeof value == Workflow.prototype.objectType){
+			value += "Workflow";
+			value = Workflow.prototype.toString();
+		}
+		else if(typeof value == Workspace.prototype.objectType){
+			value += "Workspace";
+			value = Workspace.prototype.toString();
+		}
+		else if(typeof value == 'object')
+			value += "Object";
 
 		if(typeof key == 'String'){
 			// - function

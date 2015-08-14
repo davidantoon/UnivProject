@@ -34,6 +34,7 @@ app.factory('Tab', ['Content', function(Content){
 
 	Tab.prototype = {
 
+		objectType: "Tab",
 		/**
 		 * ChangTitle will change tab title that displayed at top of workflow.
 		 * @param  {String} newTitle String Object
