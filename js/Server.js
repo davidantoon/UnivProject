@@ -1,4 +1,4 @@
-app.factory('Server', ['', function(){
+app.factory('Server', function(){
 	
 	function Server(connectionType){
 		this.baseUrl = "dummy";
@@ -97,7 +97,7 @@ app.factory('Server', ['', function(){
 					// 	"KbitProvided": [],
 					// 	"Locked": false,
 
-					}];
+					// }];
 					/* dummy response for search request  <= END */
 
 
@@ -135,12 +135,17 @@ app.factory('Server', ['', function(){
 		saveElement: function(obj, callback){
 
 			if(saveObjectQuery == "dummy"){
-				localStorage.setItem("dummy",'{"ID": "7",
-								 				"Name": "Element 7",
-											 	"Url": "Url 7",
-											 	"Category": "Category 7",
-											 	"Terms":["C","C#","Java"],
-												"KbitsNeeded": [], 	"KbitProvided": [],	"Locked": false,}');
+				var dummyPlus = {
+					"ID": "7",
+	 				"Name": "Element 7",
+				 	"Url": "Url 7",
+				 	"Category": "Category 7",
+				 	"Terms":["C","C#","Java"],
+					"KbitsNeeded": [],
+					"KbitProvided": [],
+					"Locked": false
+				};
+				localStorage.setItem("dummy",JSON.stringify(dummyPlus));
 				console.log("dummy saved");
 				callback(obj);
 			}
@@ -221,16 +226,15 @@ app.factory('Server', ['', function(){
 
 			switch (this.TypeOfData){
 				case "delivery":
-					// $.getJSON("ServerDummyContent/deliveryDB.json", function(deliveryDB) {
-						deliveryDB =JSON.parse(localStorage.getItem("objID"));
-						for(var i = 0, deliveryDB.length; i++){
-							if(deleviry[i].Id == obj.Id)
-								return (deleviry[i]);
-							break;
+					deliveryDB =JSON.parse(localStorage.getItem("objID"));
+					for(var i = 0; deliveryDB.length; i++){
+						if(deleviry[i].id == obj.id){
+							callback(deleviry[i], null);
+							return;
 						}
-
-						return null;
-					//})
+					}
+					callback(null, {"message":"Object not found","code":"404"});
+					return;
 				break;
 				case "kbits":
 					var kbitsDB = JSON.parse(localStorage.getItem("com.intel.server.kbits"));
@@ -288,12 +292,13 @@ app.factory('Server', ['', function(){
 		 * @return {list}              the object versions.
 		 */
 		getVersionList: function(objID, callback){
-
+			callback(null, null);
 		}
 
 
 	}
-}]);
+	return new Server();
+});
 
 /*
 function svrData(connectionType) {

@@ -6,3 +6,16 @@
 	"results": "Array of objects",
 	"selectedResult": "Index of object (Int)"
 }
+
+
+
+
+
+// how to call Server functions
+Server.getElementByID(objectId, function(result, error){
+		if(error || !result){
+			// Handle Error
+		}else{
+			// Object stored in result parameter
+		}
+});

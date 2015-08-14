@@ -20,5 +20,6 @@ app.value('Globals', {
 	get: function(obj){
 		return obj.objectType;
 	}
-});
+})
+.value('ServerReq', "Not initialized");
 

@@ -1,7 +1,7 @@
 var app = angular.module('IntelLearner', ['onsen', 'firebase']);
 
-app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps",
-    function($scope, $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps) {
+app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage",
+    function($scope, $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server,Storage) {
 
 
         // PRIM COLOR = rgb(8,96,168)
@@ -34,6 +34,9 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
 
         // new implementaion for steps
         $scope.Steps;
+
+        
+
 
         
 
@@ -161,7 +164,6 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             $scope.updateAllTabName();
             $scope.updateMatrixLayout();
             
-
 
             $('#WorkFlowMatrix').css('min-width', "10000px").css('min-height', "10000px").css('width', "10000px").css('height', "10000px");
             // $scope.settings = {}

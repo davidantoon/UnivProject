@@ -1,28 +1,51 @@
-// app.factory('Steps', ["Server", "Storage", function(Server, Storage){
-app.factory('Steps', ["Workflow", "Workspace", function(Workflow, Workspace){
+app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Workspace, Server){
 
 	function Steps(workspace){
 
 		this.last20Steps = [];
 		this.currentUndoOrder = 1;
-		var dataFromLocalStorage = JSON.parse(localStorage.getItem("com.intel.steps.last20Steps"));
-		if(dataFromLocalStorage != null){
-			this.last20Steps = dataFromLocalStorage.last20Steps;
-			this.currentUndoOrder = dataFromLocalStorage.currentUndoOrder;
-			workspace.workflows = [];
-			workspace.lastWorkflowId = 0;
-			workspace.newWorkflowButtons = [];
-			workspace.selectedWorkflow = null;
-			this.restoreStep(workspace, function(){
-				workspace.updateNewWorkflowButtons();
-				workspace.updateLastId();
-				console.log(workspace);
-			});
-			return;
-		}else{
-			workspace = new Workspace();
-			this.InsertStepToLastSteps(workspace);
+
+		var passThis1 = this;
+		Server.getVersionList(23,function(result, error){
+			if(error || !result){
+				ServerResquestComplete(null, passThis1);
+			}else{
+				ServerResquestComplete(result);
+			}
+		});
+		
+		ServerResquestComplete(null, this); // remove after server available
+
+		function ServerResquestComplete(serverSteps, passThis){
+			var dataFromLocalStorage = JSON.parse(localStorage.getItem("com.intel.steps.last20Steps"));
+			if(serverSteps){
+				if(dataFromLocalStorage != null){
+					// compare 
+				}else{
+					// only server steps
+				}
+			}else{
+				// only local steps
+				if(dataFromLocalStorage != null){
+					passThis.last20Steps = dataFromLocalStorage.last20Steps;
+					passThis.currentUndoOrder = dataFromLocalStorage.currentUndoOrder;
+					workspace.workflows = [];
+					workspace.lastWorkflowId = 0;
+					workspace.newWorkflowButtons = [];
+					workspace.selectedWorkflow = null;
+					passThis.restoreStep(workspace, function(){
+						workspace.updateNewWorkflowButtons();
+						workspace.updateLastId();
+						console.log(workspace);
+					});
+					return;
+				}else{
+					workspace = new Workspace();
+					passThis.InsertStepToLastSteps(workspace);
+				}
+			}
 		}
+		
 		// check if there is saved steps in server side
 			// compare with saved steps in localStorage
 			// restore the newest saved steps
