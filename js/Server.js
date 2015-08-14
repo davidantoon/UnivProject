@@ -151,18 +151,27 @@ app.factory('Server', ['', function(){
 						var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
 						deliveryDB.push(obj);
 						localStorage.setItem("com.intel.Server.delivery", JSON.stringify(deliveryDB));
-
 					//})
-
-
 				break;
 				case "kbits":
+					var kbitsDB = JSON.parse(localStorage.getItem("com.intel.server.kbits"));
+					kbitsDB.push(obj);
+					localStorage.setItem("com.intel.server.kbits", JSON.stringify(kbitsDB));
 				break;
 				case "settings":
+					var settingsDB = JSON.parse(localStorage.getItem("com.intel.server.settings"));
+					settingsDB.push(obj);
+					localStorage.setItem("com.intel.server.settings", JSON.stringify(settingsDB));
 				break;
 				case "steps":
+					var stepsDB = JSON.parse(localStorage.getItem("com.intel.server.steps"));
+					stepsDB.push(obj);
+					localStorage.setItem("com.intel.server.steps", JSON.stringify(stepsDB));
 				break;
 				case "term":
+					var termsDB = JSON.parse(localStorage.getItem("com.intel.server.terms"));
+					termsDB.push(obj);
+					localStorage.setItem("com.intel.server.terms", JSON.stringify(termsDB));
 				break;
 				default:
 				break;
