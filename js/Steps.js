@@ -66,7 +66,7 @@ app.factory('Steps', function(){
 				// sort to insure that last 10 steps sorted from newer to older
 				this.last10Steps.sort(function(a,b){return (a.orderSteps - b.orderSteps)});
 				
-				// locate index of previous step (indexOfPrevStep = IOPS
+				// locate index of previous step (indexOfPrevStep = IOPS)
 				var IOPS = -1;
 				for(var i = 0; i <  this.last10Steps.length; i++){
 					if(this.currentUndoOrder < this.last10Steps[i].orderSteps){
@@ -117,6 +117,54 @@ app.factory('Steps', function(){
 		 */
 		redoWorkflow: function(workspace){
 
+			// check if can undo
+			if(this.canRedo()){
+				// sort to insure that last 10 steps sorted from newer to older
+				this.last10Steps.sort(function(a,b){return (a.orderSteps - b.orderSteps)});
+				
+				// locate index of next step (indexOfNextStep = IONS)
+				var IONS = -1;
+				for(var i = this.last10Steps.length - 1; i >= 0; i--){
+					if(this.currentUndoOrder > this.last10Steps[i].orderSteps){
+						IONS = i;
+						break;
+					}
+				}
+				if(IONS < 0){
+					console.log(new Error("Steps: redoWorkflow() cannot redo, IONS = -1"));
+					callback(false);
+					return;
+				}
+
+				// get json object of previous step
+				var tempJsonWorkflows =  JSON.parse(this.last10Steps[IOPS]);
+				var DiffObjects = getDiffArrays(workspace.workflows,tempJsonWorkflows);
+
+				// check deleted workflows
+				for(var j1=0; j1<DiffObjects.deleted.length; j1++){
+            		for(var j2=0; j2<workspace.workflows.length; j2++){
+                		if(workspace.workflows[j2].equals(DiffObjects.deleted[j1])){
+                			workspace.workflows.splice(j2,1);
+                		}
+                	}
+            	}
+
+            	// check inserted workflows
+            	for(var j1=0; j1<DiffObjects.inserted.length; j1++){
+                	workspace.workflows.push(new Workflow(DiffObjects.inserted[j1]));
+                }
+
+                // update workflow tabs contents
+                for (var i1 = 0; i1 < tempJsonWorkflows.length; i1++) {
+                	for(var i2=0; i2< workspace.workflows.length; i2++){
+                		if(tempJsonWorkflows[i1].ID == workspace.workflows[i2].ID){
+                			workspace.workflows[i2].updateAllParams(tempJsonWorkflows[i1]);
+                		}
+                	}
+                }
+                this.currentUndoOrder--;
+                callback();
+			}
 		},
 
 		/**

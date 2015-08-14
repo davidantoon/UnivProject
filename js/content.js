@@ -58,7 +58,7 @@ app.factory('Content', ['Globals', function(Globals){
 		 * @param  {Function} callback     Function called after execute object method. Return success/error result
 		 */
 		release: function(versionNotes, callback){
-
+			
 		},
 
 		/**
