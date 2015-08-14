@@ -19,6 +19,18 @@ app.factory('Server', ['', function(){
 			if(this.baseUrl == "dummy"){
 				setTimeout(function(){
 
+
+					localStorage.setItem("delivery", "[{}]");
+
+					var deliveryDB = JSON.parse(getI);
+
+					dataFromServersd
+					svrDatasd
+					svrDatasdsad
+
+
+					localStorage.setItem("delivery", JSON.stringify(deliveryDB));
+
 					/* START =>  dummy response for search request */
 					var dataFromServer = [{
 						"ID": "1",
@@ -94,13 +106,13 @@ app.factory('Server', ['', function(){
 					/* dummy response for search request  <= END */
 
 
-					var dataToReturn = [];
-					for(var i=0; i<dataFromServer.length; i++){
-						if(CashedObjects[dataFromServer[i].ID] == undefined){
-							CashedObjects[dataFromServer[i].ID] = new content(dataFromServer[i]);
-						}
-						dataToReturn.push(CashedObjects[dataFromServer[i].ID]);
-					}
+					// var dataToReturn = [];
+					// for(var i=0; i<dataFromServer.length; i++){
+					// 	if(CashedObjects[dataFromServer[i].ID] == undefined){
+					// 		CashedObjects[dataFromServer[i].ID] = new content(dataFromServer[i]);
+					// 	}
+					// 	dataToReturn.push(CashedObjects[dataFromServer[i].ID]);
+					// }
 				},300);
 			}else{
 				$.ajax({
@@ -126,6 +138,11 @@ app.factory('Server', ['', function(){
 		
 		// deleviry , settings, kbits,steps, 
 		saveElement: function(obj, callback){
+
+			if(saveObjectQuery == "dummy"){
+
+			}
+
 			var tempType = this.TypeOfData;
 			if(tempType == "delivery"){
 			}
@@ -135,8 +152,6 @@ app.factory('Server', ['', function(){
 
 			}else if(tempType == "steps"){
 
-			}else if(tempType == "dummy"){
-				
 			}
 
 			/*	if(saveObjectQuery == "dummy"){
