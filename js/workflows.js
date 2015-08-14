@@ -48,6 +48,7 @@ app.factory('Workflow', ['Tab', function(Tab){
             throw "Id or parentWorkflow not specified!";
             return null;
         }
+        this.objectType = "Workflow";
     }
 
     Workflow.prototype = {
@@ -126,7 +127,6 @@ app.factory('Workflow', ['Tab', function(Tab){
          * @return {String} Json stringify string
          */
         toString: function(){
-            debugger;
             return JSON.stringify(this.toJson());
         },
 

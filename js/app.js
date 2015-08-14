@@ -170,6 +170,11 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             $scope.workSpaces = new Workspace();
             $scope.Workflow  = $scope.workSpaces.workflows;
 
+            function toType = function(obj) {
+              return ({}).toString.call(obj).match(/\s([a-z|A-Z]+)/)[1].toLowerCase();
+            }
+            console.log(toType($scope.workSpaces));
+
             $timeout(function() {
                 $scope.$apply(function() {
                     $scope.InsertStepToLast10Steps();

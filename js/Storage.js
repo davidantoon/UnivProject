@@ -14,6 +14,17 @@ app.factory('Storage', function(){
 	// Static method to add new data to localStorage
 	function save(key, value){
 
+		// objectType
+		// value+"||"+valueType
+
+
+		if(typeof key == 'String'){
+			// - function
+			// + object
+			// - null
+			// + other
+			localStorage.setItem(key, value);
+		}
 	}
 
 	// Static method to get data from localStorage

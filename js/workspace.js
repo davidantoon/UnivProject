@@ -5,6 +5,8 @@ app.factory('Workspace', ['Workflow', function(Workflow){
 		this.lastWorkflowId = 0;
 		this.newWorkflowButtons = this.getNewWorkflowButtons(null);
 		this.selectedWorkflow = firstWorkflow;
+		this.objectType = "Workspace";
+		
 	}
 
 	Workspace.prototype = {
