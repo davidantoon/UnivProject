@@ -1,5 +1,5 @@
 app.value('Globals', {
-	"CashedObjects":[], 
+	"CashedObjects":[],
 	"CashedKbits":[]
 })
 .value('TypeOf', {

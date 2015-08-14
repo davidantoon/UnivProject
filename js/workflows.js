@@ -67,7 +67,8 @@ app.factory('Workflow', ['Tab', 'TypeOf', function(Tab, TypeOf){
             this.name = tempJson.name;
             this.tabs = [];
             for (var i = 0; i < tempJson.tabs.length; i++) {
-                this.tabs.push(new Tab(null, this, tempJson.tabs[i]));
+                var tempTab = new Tab(null, this, tempJson.tabs[i]);
+                this.tabs.push(tempTab);
                 if(tempJson.selectedTab.ID == tempJson.tabs[i].ID){
                     this.selectedTab = tempTab;
                 }
@@ -161,6 +162,7 @@ app.factory('Workflow', ['Tab', 'TypeOf', function(Tab, TypeOf){
 
 
 function getDiffArrays (before,after) {
+    
 	return {
 		"deleted":(before.filter(function(a) {
 	    	var found = false;

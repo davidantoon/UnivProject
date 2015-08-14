@@ -18,7 +18,7 @@ app.factory('Tab', ['Content', function(Content){
 			this.dataHolding = {};
 			return this;
 		}else if(tempJson){
-			var tempJson = JSON.parse(tempJson);
+			
 			this.parentWF = workflow;
 			this.ID = tempJson.id;
 			this.title = tempJson.title;
