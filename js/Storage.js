@@ -98,25 +98,17 @@ app.factory('Storage', ["Globals", function(Globals){
 					obj.data = JSON.parse(obj.data);
 				break;
 				case "Content":
-					var tempData = Globals.get(JSON.parse(obj.data).id), obj.valueType);
+					var tempData = Globals.get(JSON.parse(obj.data).id);
 					if(tempData == null)
 						obj.data = new Content(JSON.parse(obj.data));
 					else
 						obj.data = tempData;
 				break;
 				case "Tab":
-					var tempData = Globals.get(JSON.parse(obj.data).ID), obj.valueType);
-					if(tempData == null)
-						obj.data = new Tab(JSON.parse(obj.data));
-					else
-						obj.data = tempData;
+					obj.data = new Tab(JSON.parse(obj.data));
 				break;
 				case "Workflow":
-					var tempData = Globals.get(JSON.parse(obj.data).ID), obj.valueType);
-					if(tempData == null)
-						obj.data = new Workflow(JSON.parse(obj.data));
-					else
-						obj.data = tempData;
+					obj.data = new Workflow(JSON.parse(obj.data));
 				break;
 				default: break;
 			}
@@ -129,7 +121,7 @@ app.factory('Storage', ["Globals", function(Globals){
 
 	// Static method to clear localStorage's data
 	function clear(key, value){
-		
+		localStorage.clear();
 	}
 
 

@@ -92,10 +92,12 @@ app.factory('Steps', function(){
                 		}
                 	}
             	}
+            	
             	// check inserted workflows
             	for(var j1=0; j1<DiffObjects.inserted.length; j1++){
-                	$scope.Workflow.push(new Workflow(DiffObjects.inserted[j1]));
+                	workspace.workflows.push(new Workflow(DiffObjects.inserted[j1]));
                 }
+
 
 				
 			}

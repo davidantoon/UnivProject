@@ -1,6 +1,14 @@
 app.value('Globals', {
-	"CashedObjects":[],
-	"CashedKbits":[]
+	CashedObjects:{},
+	get: function(id){
+		return this.CashedObjects[id];
+	},
+	set: function(obj){
+		this.CashedObjects[obj.id] = obj;
+	},
+	clear: function(){
+		this.CashedObjects = {};
+	}
 })
 .value('TypeOf', {
 	init: function(){

@@ -6108,6 +6108,7 @@ div.vertical {
 }
 .WorkFlowTab{
   cursor: pointer;
+  min-width: 5px;
   padding: 3px 3px;
   border-right: 1px solid white;
   border-left: 1px solid white;
@@ -6124,15 +6125,13 @@ div.vertical {
   -o-transition-timing-function: ease-out;
   transition-timing-function: ease-out;
 }
-.WorkFlowTab:hover{
-  background: rgba(255,255,255,.4);
-}
 .WorkFlowTab.ActiveTab{
   background: rgb(8,96,168);
   min-width: 100px;
 }
 .WorkFlowTab:hover{
   min-width: 100px;
+  background: rgba(255,255,255,.4);
 }
 .WorkFlowTab input{
   cursor: pointer;

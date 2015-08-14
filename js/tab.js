@@ -1,4 +1,4 @@
-app.factory('Tab', ['Content', function(Content){
+app.factory('Tab', ['Content','Globals', function(Content, Globals){
 	
 	// constant static members 
 	Tab.NORMAL_TAB = 0;// Search | Create | Edit'
@@ -23,7 +23,14 @@ app.factory('Tab', ['Content', function(Content){
 			this.ID = tempJson.id;
 			this.title = tempJson.title;
 			this.Type = tempJson.Type;
-			this.content = new Content(tempJson.content);
+			if(tempJson.content != null && tempJson.content != null){
+				var tempData = Globals.get(JSON.parse(tempJson.content).id);
+				if(tempData == null)
+					this.content = new Content(tempJson.content);
+				else
+					this.content = tempData;
+			}
+			this.content = null;
 			this.orderTab = tempJson.orderTab;
 			this.dataHolding = tempJson.dataHolding;
 		}else{

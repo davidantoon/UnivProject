@@ -31,16 +31,11 @@ app.factory('Workflow', ['Tab', 'TypeOf', function(Tab, TypeOf){
                 this.tabsIds = tempJson.tabsIds;
                 this.tabs = [];
                 for (var i = 0; i < tempJson.tabs.length; i++) {
-                    var tempTab = new Tab(tempJson.tabs[i].ID, this);
-                    tempTab.title = tempJson.tabs[i].title;
-                    tempTab.Type = tempJson.tabs[i].Type;
-
-                    tempTab.content = tempJson.tabs[i].content;
-                    tempTab.orderTab = tempJson.tabs[i].orderTab;
+                    var tempTab = new Tab(null, this, tempJson.tabs[i]);
+                    this.tabs.push(tempTab);
                     if(tempJson.selectedTab.ID == tempJson.tabs[i].ID){
                         this.selectedTab = tempTab;
                     }
-                    this.tabs.push(tempTab);
                 }
 
             }
