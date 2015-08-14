@@ -75,14 +75,27 @@ app.factory('Steps', function(){
 					}
 				}
 				if(IOPS < 0){
-					console.log(new Error("undoWorkflow(): cannot undo, IOPS = -1"));
+					console.log(new Error("Steps: undoWorkflow() cannot undo, IOPS = -1"));
 					callback(false);
 					return;
 				}
 
 				// get json object of previous step
 				var tempJsonWorkflows =  JSON.parse(this.last10Steps[IOPS]);
+				var DiffObjects = getDiffArrays(workspace.workflows,tempJsonWorkflows);
 
+				// check deleted workflows
+				for(var j1=0; j1<DiffObjects.deleted.length; j1++){
+            		for(var j2=0; j2<workspace.workflows.length; j2++){
+                		if(workspace.workflows[j2].equals(DiffObjects.deleted[j1])){
+                			workspace.workflows.splice(j2,1);
+                		}
+                	}
+            	}
+            	
+            	for(var j1=0; j1<DiffObjects.inserted.length; j1++){
+                	$scope.Workflow.push(new Workflow(DiffObjects.inserted[j1]));
+                }
 
 				
 			}
@@ -96,7 +109,7 @@ app.factory('Steps', function(){
                         $timeout(function() {
                             $scope.$apply(function() {
                                 tempJsonWorkflows = JSON.parse(RetData.allWorkFlowContents);
-                                tempWorkflowArray = [];
+
                                 var DiffObjects = getDiffArrays($scope.Workflow,tempJsonWorkflows);
                             	for(var j1=0; j1<DiffObjects.deleted.length; j1++){
                             		for(var j2=0; j2<$scope.Workflow.length; j2++){
