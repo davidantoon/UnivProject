@@ -23,10 +23,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
         $scope.AppStatus = 0;
         $scope.currentUser = {};
         $scope.settings = {}
-        $scope.last10Steps = [];
         $scope.Workflow = [];
-        $scope.currentUndoOrder = 1;
-        $scope.progressLines = [];
         $scope.lastZoomIn = $('#ZoomRange').val();
         $scope.holdDoubleClickOnTab = false;
         $scope.selectedWorkflow = 0;
@@ -36,7 +33,8 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
 
 
         // new implementaion for steps
-        $scope.Steps = new Steps();
+        $scope.Steps;
+
         
 
 
@@ -64,7 +62,6 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             $('#MainDiv').show();
             $timeout(function() {
                 TypeOf.init();
-
                 $scope.loadUserData();
             }, 500);
             $(function() {
@@ -155,36 +152,15 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                 'autoScroll': false
 
             }
-            $scope.last10Steps = [];
-            $scope.currentUndoOrder = 1;
-            $scope.progressLines = [{
-                "LineId": "1233",
-                "Color": "red",
-                "tabs": [{
-                    "WorkflowId": "343243",
-                    "tabId": "213321"
-                }, {
-                    "WorkflowId": "343243",
-                    "tabId": "2221"
-                }]
-            }, {
-                "LineId": "2",
-                "tabs": [{
-                    "WorkflowId": "213",
-                    "tabId": "112"
-                }]
-            }];
 
+
+            // init worksace
             $scope.workSpaces = new Workspace();
+            $scope.Steps = new Steps($scope.workSpaces);
             $scope.Workflow = $scope.workSpaces.workflows;
+            $scope.updateAllTabName();
+            $scope.updateMatrixLayout();
             
-            console.log($scope.Workflow);
-
-            $timeout(function() {
-                $scope.$apply(function() {
-                    $scope.InsertStepToLast10Steps();
-                });
-            }, 10);
 
 
             $('#WorkFlowMatrix').css('min-width', "10000px").css('min-height', "10000px").css('width', "10000px").css('height', "10000px");
@@ -209,14 +185,8 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
          *                                                                                                                   *
          ********************************************************************************************************************/
 
-        $scope.canUndo = function() {
-            return $scope.Steps.canUndo();
-        }
-        $scope.canRedo = function() {
-            return $scope.Steps.canRedo();
-        }
         $scope.UndoWorkflow = function() {
-            
+
             $scope.Steps.undoWorkflow($scope.workSpaces, function(){
                 $scope.updateAllTabName();
                 $scope.updateMatrixLayout();
@@ -224,60 +194,14 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             });
         }
         $scope.RedoWorkflow = function() {
-
             $scope.Steps.redoWorkflow($scope.workSpaces, function(){
                 $scope.updateAllTabName();
                 $scope.updateMatrixLayout();
                 $scope.workSpaces.updateNewWorkflowButtons();
             });
-
-        }
-        $scope.UpdateLast10Steps = function() {
-            $scope.last10Steps.sort(function(a, b) {
-                return (a.orderSteps - b.orderSteps)
-            });
-            if ($scope.last10Steps.length > 0) {
-                var templast10Steps = [];
-                for (var i = 0; i < $scope.last10Steps.length; i++) {
-                    $scope.last10Steps[i].orderSteps -= ($scope.currentUndoOrder - 1);
-                    if ($scope.last10Steps[i].orderSteps > 0) {
-                        templast10Steps.push($scope.last10Steps[i]);
-                    }
-                }
-                $scope.last10Steps = templast10Steps;
-            }
-            $scope.currentUndoOrder = 1;
         }
         $scope.InsertStepToLast10Steps = function() {
-            $timeout(function() {
-                $scope.$apply(function() {
-                    $scope.UpdateLast10Steps();
-                    $scope.last10Steps.sort(function(a, b) {
-                        return (a.orderSteps - b.orderSteps)
-                    });
-                    var tempWorkflowArray = "[";
-                    for (var i = 0; i < $scope.Workflow.length; i++) {
-                    	if($scope.Workflow.length>1 && i != $scope.Workflow.length-1){
-                    		tempWorkflowArray += $scope.Workflow[i].toString()+",";
-                    	}else{
-	                        tempWorkflowArray += $scope.Workflow[i].toString();
-                    	}
-                    }
-                    tempWorkflowArray += "]";
-                    var InsData = {
-                        'orderSteps': 0,
-                        'allWorkFlowContents': tempWorkflowArray,
-                        'allProgressLines': JSON.stringify($scope.progressLines)
-                    }
-                    $scope.last10Steps.unshift(InsData);
-                    $scope.last10Steps = $scope.last10Steps.slice(0, 10);
-                    for (var i = 0; i < $scope.last10Steps.length; i++) {
-                        $scope.last10Steps[i].orderSteps = (i + 1);
-                    }
-                });
-
-
-            }, 1);
+            $scope.Steps.InsertStepToLastSteps($scope.workSpaces);
         }
 
 
@@ -302,11 +226,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                     for (var j = 0; j < $scope.Workflow[i].tabs.length; j++) {
                         if ($scope.Workflow[i].tabs[j].ID == tabId) {
                             $scope.Workflow[i].tabs[j].title = $('#' + inputId).val();
-                            $timeout(function() {
-                                $scope.$apply(function() {
-                                    $scope.InsertStepToLast10Steps();
-                                });
-                            }, 10);
+                            $scope.InsertStepToLast10Steps();
                             break;
                         }
                     }
@@ -331,11 +251,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                 if ($scope.holdDoubleClickOnTab == true) {
                     if(workflow.selectedTab.ID != tab.ID){
                         workflow.selectedTab = tab;
-                        $timeout(function() {
-                            $scope.$apply(function() {
-                                $scope.InsertStepToLast10Steps();
-                            });
-                        }, 10);
+                        $scope.InsertStepToLast10Steps();
                     }
                 }
             }, 200);
@@ -394,11 +310,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             }
             $scope.updateMatrixLayout();
             $scope.workSpaces.updateNewWorkflowButtons();
-            $timeout(function() {
-                $scope.$apply(function() {
-                    $scope.InsertStepToLast10Steps();
-                });
-            }, 10);
+            $scope.InsertStepToLast10Steps();
         }
         
 
@@ -465,20 +377,12 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             }else if(action == 3){
 
             }
-            $timeout(function() {
-                $scope.$apply(function() {
-                    $scope.InsertStepToLast10Steps();
-                });
-            }, 10);
+            $scope.InsertStepToLast10Steps();
         }
         
         $scope.addNewTabToWorkflow = function(workflow){
             workflow.selectedTab = workflow.addTab();
-            $timeout(function() {
-                $scope.$apply(function() {
-                    $scope.InsertStepToLast10Steps();
-                });
-            }, 10);
+            $scope.InsertStepToLast10Steps();
         }
 
         $scope.resizeBlock = function(direction, workflowId) {
@@ -510,11 +414,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
         $scope.convertToWorkflow = function(newWorkflow){
             $scope.workSpaces.addNewWorkflow(newWorkflow);
             $scope.workSpaces.updateNewWorkflowButtons();
-            $timeout(function() {
-                $scope.$apply(function() {
-                    $scope.InsertStepToLast10Steps();
-                });
-            }, 10);
+            $scope.InsertStepToLast10Steps();
         }
 
 
@@ -645,31 +545,19 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
 
             // $scope.workSpaces.updateNewWorkflowButtons();
             // $scope.Workflow[0].addTab();
-            // $timeout(function() {
-            //     $scope.$apply(function() {
-            //         $scope.InsertStepToLast10Steps();
-            //     });
-            // }, 10);
+            // $scope.InsertStepToLast10Steps();
         }
 
         $scope.testFun2 = function() {
             $scope.Workflow.push(new Workflow(null, 9, 13, 12, 14, 13, 0, 2));
             $scope.updateMatrixLayout();
-            $timeout(function() {
-                $scope.$apply(function() {
-                    $scope.InsertStepToLast10Steps();
-                });
-            }, 10);
+            $scope.InsertStepToLast10Steps();
         }
 
         $scope.testFun3 = function(){
         	$scope.Workflow.splice(2,1);
         	$scope.updateMatrixLayout();
-            $timeout(function() {
-                $scope.$apply(function() {
-                    $scope.InsertStepToLast10Steps();
-                });
-            }, 10);
+            $scope.InsertStepToLast10Steps();
         }
 
 

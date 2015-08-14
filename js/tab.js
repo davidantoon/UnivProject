@@ -23,6 +23,8 @@ app.factory('Tab', ['Content','Globals', function(Content, Globals){
 			this.ID = tempJson.ID;
 			this.title = tempJson.title;
 			this.Type = tempJson.Type;
+
+			console.error("Check if new content passed from Undo, Redo, Server and Create");
 			if(tempJson.content != null && tempJson.content != null){
 				var tempData = Globals.get(JSON.parse(tempJson.content).id);
 				if(tempData == null)
