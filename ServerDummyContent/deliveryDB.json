@@ -1,5 +1,5 @@
 [{
-	"id" : 1,
+	"Id" : 1,
 	"name" : "dummy name 1",
 	"kBitsNeeded" : ["dummy kBitsNeeded 1"],
 	"kBitProvided" : ["dummy kBitProvided 1"],
@@ -10,7 +10,7 @@
 	"lastModified" : 1439567697991,
 	"inProgress" : false
 },{
-	"id" : 2,
+	"Id" : 2,
 	"name" : "dummy name 2",
 	"kBitsNeeded" : ["dummy kBitsNeeded 2"],
 	"kBitProvided" : ["dummy kBitProvided 2"],
@@ -21,7 +21,7 @@
 	"lastModified" : 1439567697991,
 	"inProgress" : false
 },{
-	"id" : 3,
+	"Id" : 3,
 	"name" : "dummy name 3",
 	"kBitsNeeded" : ["dummy kBitsNeeded 3"],
 	"kBitProvided" : ["dummy kBitProvided 3"],
@@ -32,7 +32,7 @@
 	"lastModified" : 1439567697991,
 	"inProgress" : false
 },{
-	"id" : 4,
+	"Id" : 4,
 	"name" : "dummy name 4",
 	"kBitsNeeded" : ["dummy kBitsNeeded 4"],
 	"kBitProvided" : ["dummy kBitProvided 4"],
@@ -43,7 +43,7 @@
 	"lastModified" : 1439567697991,
 	"inProgress" : false
 },{
-	"id" : 5,
+	"Id" : 5,
 	"name" : "dummy name 5",
 	"kBitsNeeded" : ["dummy kBitsNeeded 5"],
 	"kBitProvided" : ["dummy kBitProvided 5"],

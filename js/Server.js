@@ -151,27 +151,32 @@ app.factory('Server', ['', function(){
 						var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
 						deliveryDB.push(obj);
 						localStorage.setItem("com.intel.Server.delivery", JSON.stringify(deliveryDB));
+						callback(obj);
 					//})
 				break;
 				case "kbits":
 					var kbitsDB = JSON.parse(localStorage.getItem("com.intel.server.kbits"));
 					kbitsDB.push(obj);
 					localStorage.setItem("com.intel.server.kbits", JSON.stringify(kbitsDB));
+					callback(obj);
 				break;
 				case "settings":
 					var settingsDB = JSON.parse(localStorage.getItem("com.intel.server.settings"));
 					settingsDB.push(obj);
 					localStorage.setItem("com.intel.server.settings", JSON.stringify(settingsDB));
+					callback(obj);
 				break;
 				case "steps":
 					var stepsDB = JSON.parse(localStorage.getItem("com.intel.server.steps"));
 					stepsDB.push(obj);
 					localStorage.setItem("com.intel.server.steps", JSON.stringify(stepsDB));
+					callback(obj);
 				break;
 				case "term":
 					var termsDB = JSON.parse(localStorage.getItem("com.intel.server.terms"));
 					termsDB.push(obj);
 					localStorage.setItem("com.intel.server.terms", JSON.stringify(termsDB));
+					callback(obj);
 				break;
 				default:
 				break;
@@ -210,6 +215,50 @@ app.factory('Server', ['', function(){
 		 * @return {object}            returns the objects we asked for
 		 */
 		getElementByID: function(objID, callback){
+			if(saveObjectQuery == "dummy"){
+				return localStorage.getItem("dummy");
+			}
+
+			switch (this.TypeOfData){
+				case "delivery":
+					// $.getJSON("ServerDummyContent/deliveryDB.json", function(deliveryDB) {
+						deliveryDB =JSON.parse(localStorage.getItem("objID"));
+						for(var i = 0, deliveryDB.length; i++){
+							if(deleviry[i].Id == obj.Id)
+								return (deleviry[i]);
+							break;
+						}
+
+						return null;
+					//})
+				break;
+				case "kbits":
+					var kbitsDB = JSON.parse(localStorage.getItem("com.intel.server.kbits"));
+					kbitsDB.push(obj);
+					localStorage.setItem("com.intel.server.kbits", JSON.stringify(kbitsDB));
+					callback(obj);
+				break;
+				case "settings":
+					var settingsDB = JSON.parse(localStorage.getItem("com.intel.server.settings"));
+					settingsDB.push(obj);
+					localStorage.setItem("com.intel.server.settings", JSON.stringify(settingsDB));
+					callback(obj);
+				break;
+				case "steps":
+					var stepsDB = JSON.parse(localStorage.getItem("com.intel.server.steps"));
+					stepsDB.push(obj);
+					localStorage.setItem("com.intel.server.steps", JSON.stringify(stepsDB));
+					callback(obj);
+				break;
+				case "term":
+					var termsDB = JSON.parse(localStorage.getItem("com.intel.server.terms"));
+					termsDB.push(obj);
+					localStorage.setItem("com.intel.server.terms", JSON.stringify(termsDB));
+					callback(obj);
+				break;
+				default:
+				break;
+			}
 
 		},
 
