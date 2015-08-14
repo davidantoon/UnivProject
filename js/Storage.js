@@ -67,13 +67,13 @@ app.factory('Storage', function(){
 			break;
 			} // end outter switch
 
-			function done(sucsess, data, type){
+			function Done(sucsess, data, type){
 				if(sucsess){
 					objectSave = {
 						"data": data,
 						"type": type,
-						"lastModified": +(new Date);
-					}
+						"lastModified": +(new Date)
+					};
 					localStorage.setItem(key, JSON.stringify(objectSave));
 				}else{
 					console.log(new Error("Storage save() " + data));
@@ -84,6 +84,9 @@ app.factory('Storage', function(){
 
 	// Static method to get data from localStorage
 	function get(key){
+		var obj = localStorage.getItem(key);
+		
+
 	}
 
 	// Static method to clear localStorage's data
