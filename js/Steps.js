@@ -26,7 +26,7 @@ app.factory('Steps', function(){
 		 * check if there is newer step to undo it
 		 * @return {Boolean} True if newer step exist, else False
 		 */
-		canUndo: function(){
+		canRedo: function(){
 
 		},
 

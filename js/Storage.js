@@ -11,17 +11,17 @@ app.factory('Storage', function(){
 	 */
 	function Storage(){}
 
-	// Statis method to add new data to localStorage
+	// Static method to add new data to localStorage
 	function save(key, value){
 
 	}
 
-	// Statis method to get data from localStorage
+	// Static method to get data from localStorage
 	function get(key){
 		
 	}
 
-	// Statis method to clear localStorage's data
+	// Static method to clear localStorage's data
 	function clear(key, value){
 		
 	}
