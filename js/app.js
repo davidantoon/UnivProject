@@ -1,7 +1,7 @@
 var app = angular.module('IntelLearner', ['onsen', 'firebase']);
 
-app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf",
-    function($scope, $http, $timeout, $interval, $filter, $window, Workspace, TypeOf) {
+app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps",
+    function($scope, $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps) {
 
 
         // PRIM COLOR = rgb(8,96,168)
@@ -35,6 +35,11 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
 		$scope.displayNewWorkflowButtons = true;
 
 
+        // new implementaion for steps
+        $scope.Steps = new Steps();
+        
+
+
 
 
         /*******************************************************
@@ -59,6 +64,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             $('#MainDiv').show();
             $timeout(function() {
                 TypeOf.init();
+
                 $scope.loadUserData();
             }, 500);
             $(function() {
@@ -230,49 +236,12 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             return redoFound;
         }
         $scope.UndoWorkflow = function() {
-            var RetData;
-            if ($scope.canUndo()) {
-                $scope.last10Steps.sort(function(a, b) {
-                    return (a.orderSteps - b.orderSteps)
-                });
-                for (var i = 0; i < $scope.last10Steps.length; i++) {
-                    if ($scope.currentUndoOrder < $scope.last10Steps[i].orderSteps) {
-                        RetData = $scope.last10Steps[i];
-                        $timeout(function() {
-                            $scope.$apply(function() {
-                                
-                                tempJsonWorkflows = JSON.parse(RetData.allWorkFlowContents);
-                                tempWorkflowArray = [];
-                                var DiffObjects = getDiffArrays($scope.Workflow,tempJsonWorkflows);
-                            	for(var j1=0; j1<DiffObjects.deleted.length; j1++){
-                            		for(var j2=0; j2<$scope.Workflow.length; j2++){
-	                            		if($scope.Workflow[j2].equals(DiffObjects.deleted[j1])){
-	                            			$scope.Workflow.splice(j2,1);
-	                            		}
-	                            	}
-                            	}
-                            	for(var j1=0; j1<DiffObjects.inserted.length; j1++){
-	                            	$scope.Workflow.push(new Workflow(DiffObjects.inserted[j1]));
-	                            }
-                            	$scope.Workflow.sort(function(a,b){ return a-b});
-                                for (var i1 = 0; i1 < tempJsonWorkflows.length; i1++) {
-                                	for(var i2=0; i2< $scope.Workflow.length; i2++){
-                                		if(tempJsonWorkflows[i1].ID == $scope.Workflow[i2].ID){
-                                			$scope.Workflow[i2].updateAllParams(tempJsonWorkflows[i1]);
-                                		}
-                                	}
-                                }
-                                $scope.progressLines = JSON.parse(RetData.allProgressLines);
-                                $scope.updateAllTabName();
-                                $scope.updateMatrixLayout();
-                                $scope.currentUndoOrder++;
-                                $scope.workSpaces.updateNewWorkflowButtons();
-                            });
-                        }, 1);
-                        break;
-                    }
-                }
-            }
+                
+            $scope.Steps.undoWorkflow($scope.workSpaces, function(){
+                $scope.updateAllTabName();
+                $scope.updateMatrixLayout();
+                $scope.workSpaces.updateNewWorkflowButtons();
+            });
         }
         $scope.RedoWorkflow = function() {
             var RetData;
