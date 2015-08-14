@@ -1,0 +1,31 @@
+[{
+	"id" : 1,
+	"name" : "first kbit " ,
+	"description" : "this is the first kbit in the DB",
+	"lastModified": "",
+	"locked": false
+},{
+	"id" : 2,
+	"name" : "second kbit " ,
+	"description" : "this is the second kbit in the DB",
+	"lastModified": "",
+	"locked": false
+},{
+	"id" : 3,
+	"name" : "third kbit " ,
+	"description" : "this is the third kbit in the DB",
+	"lastModified": "",
+	"locked": false
+},{
+	"id" : 4,
+	"name" : "fourth kbit " ,
+	"description" : "this is the fourth kbit in the DB",
+	"lastModified": "",
+	"locked": false
+},{
+	"id" : 5,
+	"name" : "fifth kbit " ,
+	"description" : "this is the fifth kbit in the DB",
+	"lastModified": "",
+	"locked": false
+}]

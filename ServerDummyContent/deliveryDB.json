@@ -1,0 +1,56 @@
+[{
+	"Id" : 1,
+	"name" : "dummy name 1",
+	"kBitsNeeded" : ["dummy kBitsNeeded 1"],
+	"kBitProvided" : ["dummy kBitProvided 1"],
+	"terms" : ["dummy terms 1"],
+	"category" : "dummy category 1",
+	"url" : "dummy url 1",
+	"locked" : false,
+	"lastModified" : 1439567697991,
+	"inProgress" : false
+},{
+	"Id" : 2,
+	"name" : "dummy name 2",
+	"kBitsNeeded" : ["dummy kBitsNeeded 2"],
+	"kBitProvided" : ["dummy kBitProvided 2"],
+	"terms" : ["dummy terms 2"],
+	"category" : "dummy category 2",
+	"url" : "dummy url 2",
+	"locked" : false,
+	"lastModified" : 1439567697991,
+	"inProgress" : false
+},{
+	"Id" : 3,
+	"name" : "dummy name 3",
+	"kBitsNeeded" : ["dummy kBitsNeeded 3"],
+	"kBitProvided" : ["dummy kBitProvided 3"],
+	"terms" : ["dummy terms 3"],
+	"category" : "dummy category 3",
+	"url" : "dummy url 3",
+	"locked" : false,
+	"lastModified" : 1439567697991,
+	"inProgress" : false
+},{
+	"Id" : 4,
+	"name" : "dummy name 4",
+	"kBitsNeeded" : ["dummy kBitsNeeded 4"],
+	"kBitProvided" : ["dummy kBitProvided 4"],
+	"terms" : ["dummy terms 4"],
+	"category" : "dummy category 4",
+	"url" : "dummy url 4",
+	"locked" : false,
+	"lastModified" : 1439567697991,
+	"inProgress" : false
+},{
+	"Id" : 5,
+	"name" : "dummy name 5",
+	"kBitsNeeded" : ["dummy kBitsNeeded 5"],
+	"kBitProvided" : ["dummy kBitProvided 5"],
+	"terms" : ["dummy terms 5"],
+	"category" : "dummy category 5",
+	"url" : "dummy url 5",
+	"locked" : false,
+	"lastModified" : 1439567697991,
+	"inProgress" : false
+}]

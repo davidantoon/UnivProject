@@ -27,7 +27,7 @@
               <ons-col width="220px" class="Logo rtl">
                 <img src="img/IntelIcon.png" style="height: 100%;margin: auto;">
               </ons-col>
-              <ons-col id="NotificationsButton" ng-click="testFun();" width="100px" style="width:100px; position:relative;" class="">
+              <ons-col id="NotificationsButton" ng-click="updateAllTabName();" width="100px" style="width:100px; position:relative;" class="">
                 <div class="TopTabbarButton clickable hoverOp">Settings</div>
               </ons-col>
               <ons-col id="NotificationsButton" ng-click="testFun2();" width="150px" style="width:150px; position:relative;" class="">
@@ -35,13 +35,13 @@
               </ons-col>
               <ons-col>
               </ons-col>
-              <ons-col id="NotificationsButton" ng-click="UndoWorkflow();" width="80px" style="width:50px; position:relative;" class="{{'col ons-col-inner '+((canUndo() == true)?'clickable hoverOp':'opacityLow')}}">
+              <ons-col id="NotificationsButton" ng-click="UndoWorkflow();" width="80px" style="width:50px; position:relative;" class="{{'col ons-col-inner '+((Steps.canUndo() == true)?'clickable hoverOp':'opacityLow')}}">
                 <div class="TopTabbarButton" style="border-right:0;font-size: 13px;">
                   <ons-icon icon="ion-ios-undo" size="25px"></ons-icon>
                   Undo
                 </div>
               </ons-col>
-              <ons-col id="NotificationsButton" ng-click="RedoWorkflow();" width="80px" style="width:50px; position:relative;" class="{{'col ons-col-inner '+((canRedo() == true)?'clickable hoverOp':'opacityLow')}}">
+              <ons-col id="NotificationsButton" ng-click="RedoWorkflow();" width="80px" style="width:50px; position:relative;" class="{{'col ons-col-inner '+((Steps.canRedo() == true)?'clickable hoverOp':'opacityLow')}}">
                 <div class="TopTabbarButton" style="border-right:0;font-size: 13px;">
                   Redo
                   <ons-icon icon="ion-ios-redo" size="25px"></ons-icon>
@@ -271,8 +271,8 @@
   <script type="text/javascript" src="js/app.js"></script>
   <script type="text/javascript" src="js/globals.js"></script>
   <script type="text/javascript" src="js/Storage.js"></script>
+  <script type="text/javascript" src="js/Server.js"></script>
   <script type="text/javascript" src="js/Steps.js"></script>
-  <script type="text/javascript" src="js/svrData.js"></script>
   <script type="text/javascript" src="js/content.js"></script>
   <script type="text/javascript" src="js/tab.js"></script>
   <script type="text/javascript" src="js/workflows.js"></script>

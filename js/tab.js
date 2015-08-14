@@ -1,4 +1,4 @@
-app.factory('Tab', ['Content', function(Content){
+app.factory('Tab', ['Content','Globals', function(Content, Globals){
 	
 	// constant static members 
 	Tab.NORMAL_TAB = 0;// Search | Create | Edit'
@@ -18,12 +18,21 @@ app.factory('Tab', ['Content', function(Content){
 			this.dataHolding = {};
 			return this;
 		}else if(tempJson){
-			var tempJson = JSON.parse(tempJson);
+			
 			this.parentWF = workflow;
-			this.ID = tempJson.id;
+			this.ID = tempJson.ID;
 			this.title = tempJson.title;
 			this.Type = tempJson.Type;
-			this.content = new Content(tempJson.content);
+
+			console.error("Check if new content passed from Undo, Redo, Server and Create");
+			if(tempJson.content != null && tempJson.content != null){
+				var tempData = Globals.get(JSON.parse(tempJson.content).id);
+				if(tempData == null)
+					this.content = new Content(tempJson.content);
+				else
+					this.content = tempData;
+			}
+			this.content = null;
 			this.orderTab = tempJson.orderTab;
 			this.dataHolding = tempJson.dataHolding;
 		}else{
@@ -34,6 +43,7 @@ app.factory('Tab', ['Content', function(Content){
 
 	Tab.prototype = {
 
+		objectType: "Tab",
 		/**
 		 * ChangTitle will change tab title that displayed at top of workflow.
 		 * @param  {String} newTitle String Object

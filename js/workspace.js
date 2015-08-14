@@ -5,6 +5,8 @@ app.factory('Workspace', ['Workflow', function(Workflow){
 		this.lastWorkflowId = 0;
 		this.newWorkflowButtons = this.getNewWorkflowButtons(null);
 		this.selectedWorkflow = firstWorkflow;
+		this.objectType = "Workspace";
+		this.progressLines = [];
 	}
 
 	Workspace.prototype = {
@@ -76,6 +78,18 @@ app.factory('Workspace', ['Workflow', function(Workflow){
 				}
 			}
 			return flag;
+		},
+
+		updateLastId: function(){
+			var maxId = 0;
+			for(var i=0; i<this.workflows.length; i++){
+				maxId = ((Number(this.workflows[i].ID) > maxId)?Number(this.workflows[i].ID):maxId);
+			}
+			for(var i=0; i<this.newWorkflowButtons.length; i++){
+				maxId = ((Number(this.newWorkflowButtons[i].ID) > maxId)?Number(this.newWorkflowButtons[i].ID):maxId);
+			}
+			maxId++;
+			this.lastWorkflowId = maxId;
 		}
 	}
 

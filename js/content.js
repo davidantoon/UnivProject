@@ -15,8 +15,10 @@ app.factory('Content', ['Globals', function(Globals){
 		this.type = ((conData && conData.type) || "");
 		this.connectToDataBase = ((this.type && new Server(this.type)) || null);
 	}
+
 	Content.prototype = {
 
+		objectType: "Content",
 		/**
 		 * Lock Object in the server to prevent others to edit (Readonly)
 		 * @param  {Function} callback Function called after execute object method. Return success/error result
@@ -56,7 +58,7 @@ app.factory('Content', ['Globals', function(Globals){
 		 * @param  {Function} callback     Function called after execute object method. Return success/error result
 		 */
 		release: function(versionNotes, callback){
-
+			
 		},
 
 		/**
@@ -108,7 +110,10 @@ app.factory('Content', ['Globals', function(Globals){
 		 * @return {String} return json stringify
 		 */
 		toString: function(){
-			var strToReturn = {
+			return JSON.stringify(this.toJson());
+		},
+		toJson: function(){
+			return {
 				"id": this.id,
 				"name": this.name,
 				"kBitsNeeded": this.kBitsNeeded,
@@ -119,10 +124,10 @@ app.factory('Content', ['Globals', function(Globals){
 				"locked": this.locked,
 				"lastModified": this.lastModified,
 				"inProgress": this.inProgress,
-				"type": this.type
+				"type": this.type,
+				"objectType": this.objectType
 				// "connectToDataBase": this.connectToDataBase 
 			}
-			return JSON.stringify(strToReturn);
 		}
 
 	}
