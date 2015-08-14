@@ -2,6 +2,12 @@
 app.factory('Steps', function(){
 
 	function Steps(){
+
+
+		
+		this.last10Steps = [];
+		this.currentUndoOrder = 1;
+
 		// check if there is saved steps in server side
 			// compare with saved steps in localStorage
 			// restore the newest saved steps
@@ -19,7 +25,17 @@ app.factory('Steps', function(){
 		 * @return {Boolean} True if older step exist, else False
 		 */
 		canUndo: function(){
-
+			var undoFound = false;
+            this.last10Steps.sort(function(a, b) {
+                return (a.orderSteps - b.orderSteps)
+            });
+            for (var i = 0; i < this.last10Steps.length; i++) {
+                if (this.currentUndoOrder < this.last10Steps[i].orderSteps) {
+                    undoFound = true;
+                    break;
+                }
+            }
+            return undoFound;
 		},
 
 		/**
@@ -27,7 +43,17 @@ app.factory('Steps', function(){
 		 * @return {Boolean} True if newer step exist, else False
 		 */
 		canRedo: function(){
-
+			var redoFound = false;
+            this.last10Steps.sort(function(a, b) {
+                return (a.orderSteps - b.orderSteps)
+            });
+            for (var i = 0; i < this.last10Steps.length; i++) {
+                if (this.currentUndoOrder > this.last10Steps[i].orderSteps) {
+                    redoFound = true;
+                    break;
+                }
+            }
+            return redoFound;
 		},
 
 		/**

@@ -1,7 +1,7 @@
 var app = angular.module('IntelLearner', ['onsen', 'firebase']);
 
-app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter", "$window","Workspace",
-    function($scope, $http, $timeout, $interval, $filter, $window, Workspace) {
+app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf",
+    function($scope, $http, $timeout, $interval, $filter, $window, Workspace, TypeOf) {
 
 
         // PRIM COLOR = rgb(8,96,168)
@@ -36,6 +36,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
 
 
 
+
         /*******************************************************
          *                                                      *
          *  00000000000  000      00  00000000000  00000000000  *
@@ -57,6 +58,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
         ons.ready(function() {
             $('#MainDiv').show();
             $timeout(function() {
+                TypeOf.init();
                 $scope.loadUserData();
             }, 500);
             $(function() {
@@ -169,11 +171,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
 
             $scope.workSpaces = new Workspace();
             $scope.Workflow  = $scope.workSpaces.workflows;
-
-            function toType = function(obj) {
-              return ({}).toString.call(obj).match(/\s([a-z|A-Z]+)/)[1].toLowerCase();
-            }
-            console.log(toType($scope.workSpaces));
+            
 
             $timeout(function() {
                 $scope.$apply(function() {
