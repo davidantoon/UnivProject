@@ -15,7 +15,7 @@ app.factory('Server', ['', function(){
 		 * @param  {string}   searchText The text we are going to search
 		 * @param  {Function} callback   callback function
 		 */
-		searchElem: function(searchText, callback){
+		searchElement: function(searchText, callback){
 			if(this.baseUrl == "dummy"){
 				setTimeout(function(){
 
@@ -123,9 +123,23 @@ app.factory('Server', ['', function(){
 		 * @param {object}   obj      object we are going to save
 		 * @param {Function} callback callback function
 		 */
-		save: function(obj, callback){
-			if('TypeOfData' == "Object"){
-				if(saveObjectQuery == "dummy"){
+		
+		// deleviry , settings, kbits,steps, 
+		saveElement: function(obj, callback){
+			var tempType = this.TypeOfData;
+			if(tempType == "delivery"){
+			}
+			else if(tempType == "kbits"){
+
+			}else if(tempType == "settings"){
+
+			}else if(tempType == "steps"){
+
+			}else if(tempType == "dummy"){
+				
+			}
+
+			/*	if(saveObjectQuery == "dummy"){
 					setTimeout(function(){
 						callback(obj);
 					},500);
@@ -147,7 +161,7 @@ app.factory('Server', ['', function(){
 			
 			}else{
 
-			}
+			}*/
 		},
 
 		/**
@@ -156,9 +170,40 @@ app.factory('Server', ['', function(){
 		 * @param  {Function} callback callback funtion
 		 * @return {object}            returns the objects we asked for
 		 */
-		getItemByID: function(objID, callback){
+		getElementByID: function(objID, callback){
+
+		},
+
+		/**
+		 * Delete the element of the of the provided ID.
+		 * @param  {Number}   objID    the object ID
+		 * @param  {Function} callback callback funtion
+		 */
+		deleteElementByID: function(objID, callback){
+
+		},
+
+		/**
+		 * Gets the version of the provided ID
+		 * @param  {Number}   objID    the object ID
+		 * @param  {Function} callback callback funtion
+		 * @return {object}            the object version we need
+		 */
+		getVersionsByID: function(objID, callback){
+
+		},
+
+		/**
+		 * Gets the versions list of the provided ID
+		 * @param  {Number}   objID    the object ID
+		 * @param  {Function} callback callback funtion
+		 * @return {list}              the object versions.
+		 */
+		getVersionList: function(objID, callback){
 
 		}
+
+
 	}
 }]);
 
