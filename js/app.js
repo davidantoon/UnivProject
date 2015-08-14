@@ -170,8 +170,9 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             }];
 
             $scope.workSpaces = new Workspace();
-            $scope.Workflow  = $scope.workSpaces.workflows;
+            $scope.Workflow = $scope.workSpaces.workflows;
             
+            console.log($scope.Workflow);
 
             $timeout(function() {
                 $scope.$apply(function() {
@@ -239,6 +240,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                         RetData = $scope.last10Steps[i];
                         $timeout(function() {
                             $scope.$apply(function() {
+                                
                                 tempJsonWorkflows = JSON.parse(RetData.allWorkFlowContents);
                                 tempWorkflowArray = [];
                                 var DiffObjects = getDiffArrays($scope.Workflow,tempJsonWorkflows);

@@ -20,7 +20,7 @@ app.factory('Tab', ['Content','Globals', function(Content, Globals){
 		}else if(tempJson){
 			
 			this.parentWF = workflow;
-			this.ID = tempJson.id;
+			this.ID = tempJson.ID;
 			this.title = tempJson.title;
 			this.Type = tempJson.Type;
 			if(tempJson.content != null && tempJson.content != null){
