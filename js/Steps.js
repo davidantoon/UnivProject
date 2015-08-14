@@ -66,12 +66,25 @@ app.factory('Steps', function(){
 				// sort to insure that last 10 steps sorted from newer to older
 				this.last10Steps.sort(function(a,b){return (a.orderSteps - b.orderSteps)});
 				
-				var indexOfPrevStep = -1;
+				// locate index of previous step (indexOfPrevStep = IOPS
+				var IOPS = -1;
 				for(var i = 0; i <  this.last10Steps.length; i++){
-					if(this.currentUndoOrder < this.last10Steps)
+					if(this.currentUndoOrder < this.last10Steps[i].orderSteps){
+						IOPS = i;
+						break;
+					}
+				}
+				if(IOPS < 0){
+					console.log(new Error("undoWorkflow(): cannot undo, IOPS = -1"));
+					callback(false);
+					return;
 				}
 
+				// get json object of previous step
+				var tempJsonWorkflows =  JSON.parse(this.last10Steps[IOPS]);
 
+
+				
 			}
 
 			var RetData;
