@@ -46,7 +46,50 @@ app.factory('Storage', function(){
 
 	// Static method to get data from localStorage
 	function get(key){
-		
+		switch(typeof value){
+			case "function":
+				// Error
+				Done(false);
+			break;
+			case undefined:
+				// Error
+				Done(false);
+			break;
+			case null:
+				// Error
+			break;
+			case 'number':
+				// Regular to string
+			break;
+			case 'array':
+				// Regular to string
+			break;
+			case 'string':
+				// Regular to string
+			break;
+			case 'object':
+				if(TypeOf.get(value) == null || TypeOf.get(value) == undefined){
+					// Regular to string
+				}else{
+					switch(TypeOf.get(value)){
+						case Content.prototype.objectType:
+
+						break;
+					}
+				}
+			break;
+			default:
+				// Error
+			break;
+		}
+		function Done(success, data){
+			if(success){
+
+			}else{
+				console.error(new Error(""));
+			}
+		}
+
 	}
 
 	// Static method to clear localStorage's data
