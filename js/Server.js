@@ -20,87 +20,82 @@ app.factory('Server', ['', function(){
 				setTimeout(function(){
 
 
-					localStorage.setItem("delivery", "[{}]");
+					// localStorage.setItem("delivery", "[{}]");
+					// $.getJSON("ServerDummyContent/deliveryDB.json", function(deliveryDB) {
+					// 	localStorage.setItem("delivery", JSON.stringify(deliveryDB));
 
-					var deliveryDB = JSON.parse(getI);
+					// })
+					
+					// /* START =>  dummy response for search request */
+					// var dataFromServer = [{
+					// 	"ID": "1",
+					// 	"Name": "Element 1",
+					// 	"Url": "Url 1",
+					// 	"Category": "Category 1",
+					// 	"Terms":["C","C#","Java"],
+					// 	"KbitsNeeded": [],
+					// 	"KbitProvided": [],
+					// 	"Locked": false,
 
-					dataFromServersd
-					svrDatasd
-					svrDatasdsad
+					// },{
+					// 	"ID": "2",
+					// 	"Name": "Element 2",
+					// 	"Url": "Url 2",
+					// 	"Category": "Category 2",
+					// 	"Terms":["C","C#","Java"],
+					// 	"KbitsNeeded": [],
+					// 	"KbitProvided": [],
+					// 	"Locked": false,
 
+					// },{
+					// 	"ID": "3",
+					// 	"Name": "Element 3",
+					// 	"Url": "Url 3",
+					// 	"Category": "Category 3",
+					// 	"Terms":["C","C#","Java"],
+					// 	"KbitsNeeded": [],
+					// 	"KbitProvided": [],
+					// 	"Locked": false,
 
-					localStorage.setItem("delivery", JSON.stringify(deliveryDB));
+					// },{
+					// 	"ID": "4",
+					// 	"Name": "Element 4",
+					// 	"Url": "Url 4",
+					// 	"Category": "Category 4",
+					// 	"Terms":["C","C#","Java"],
+					// 	"KbitsNeeded": [],
+					// 	"KbitProvided": [],
+					// 	"Locked": false,
 
-					/* START =>  dummy response for search request */
-					var dataFromServer = [{
-						"ID": "1",
-						"Name": "Element 1",
-						"Url": "Url 1",
-						"Category": "Category 1",
-						"Terms":["C","C#","Java"],
-						"KbitsNeeded": [],
-						"KbitProvided": [],
-						"Locked": false,
+					// },{
+					// 	"ID": "5",
+					// 	"Name": "Element 5",
+					// 	"Url": "Url 5",
+					// 	"Category": "Category 5",
+					// 	"Terms":["C","C#","Java"],
+					// 	"KbitsNeeded": [],
+					// 	"KbitProvided": [],
+					// 	"Locked": false,
 
-					},{
-						"ID": "2",
-						"Name": "Element 2",
-						"Url": "Url 2",
-						"Category": "Category 2",
-						"Terms":["C","C#","Java"],
-						"KbitsNeeded": [],
-						"KbitProvided": [],
-						"Locked": false,
+					// },{
+					// 	"ID": "6",
+					// 	"Name": "Element 6",
+					// 	"Url": "Url 6",
+					// 	"Category": "Category 6",
+					// 	"Terms":["C","C#","Java"],
+					// 	"KbitsNeeded": [],
+					// 	"KbitProvided": [],
+					// 	"Locked": false,
 
-					},{
-						"ID": "3",
-						"Name": "Element 3",
-						"Url": "Url 3",
-						"Category": "Category 3",
-						"Terms":["C","C#","Java"],
-						"KbitsNeeded": [],
-						"KbitProvided": [],
-						"Locked": false,
-
-					},{
-						"ID": "4",
-						"Name": "Element 4",
-						"Url": "Url 4",
-						"Category": "Category 4",
-						"Terms":["C","C#","Java"],
-						"KbitsNeeded": [],
-						"KbitProvided": [],
-						"Locked": false,
-
-					},{
-						"ID": "5",
-						"Name": "Element 5",
-						"Url": "Url 5",
-						"Category": "Category 5",
-						"Terms":["C","C#","Java"],
-						"KbitsNeeded": [],
-						"KbitProvided": [],
-						"Locked": false,
-
-					},{
-						"ID": "6",
-						"Name": "Element 6",
-						"Url": "Url 6",
-						"Category": "Category 6",
-						"Terms":["C","C#","Java"],
-						"KbitsNeeded": [],
-						"KbitProvided": [],
-						"Locked": false,
-
-					},{
-						"ID": "7",
-						"Name": "Element 7",
-						"Url": "Url 7",
-						"Category": "Category 7",
-						"Terms":["C","C#","Java"],
-						"KbitsNeeded": [],
-						"KbitProvided": [],
-						"Locked": false,
+					// },{
+					// 	"ID": "7",
+					// 	"Name": "Element 7",
+					// 	"Url": "Url 7",
+					// 	"Category": "Category 7",
+					// 	"Terms":["C","C#","Java"],
+					// 	"KbitsNeeded": [],
+					// 	"KbitProvided": [],
+					// 	"Locked": false,
 
 					}];
 					/* dummy response for search request  <= END */
@@ -140,19 +135,39 @@ app.factory('Server', ['', function(){
 		saveElement: function(obj, callback){
 
 			if(saveObjectQuery == "dummy"){
-
+				localStorage.setItem("dummy",'{"ID": "7",
+								 				"Name": "Element 7",
+											 	"Url": "Url 7",
+											 	"Category": "Category 7",
+											 	"Terms":["C","C#","Java"],
+												"KbitsNeeded": [], 	"KbitProvided": [],	"Locked": false,}');
+				console.log("dummy saved");
+				callback(obj);
 			}
 
-			var tempType = this.TypeOfData;
-			if(tempType == "delivery"){
+			switch (this.TypeOfData){
+				case "delivery":
+					// $.getJSON("ServerDummyContent/deliveryDB.json", function(deliveryDB) {
+						var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
+						deliveryDB.push(obj);
+						localStorage.setItem("com.intel.Server.delivery", JSON.stringify(deliveryDB));
+
+					//})
+
+
+				break;
+				case "kbits":
+				break;
+				case "settings":
+				break;
+				case "steps":
+				break;
+				case "term":
+				break;
+				default:
+				break;
 			}
-			else if(tempType == "kbits"){
-
-			}else if(tempType == "settings"){
-
-			}else if(tempType == "steps"){
-
-			}
+			
 
 			/*	if(saveObjectQuery == "dummy"){
 					setTimeout(function(){
