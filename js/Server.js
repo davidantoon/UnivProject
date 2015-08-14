@@ -1,11 +1,11 @@
 app.factory('Server', ['', function(){
 	
 	function Server(connectionType){
-		var baseUrl = "dummy";
-		var searchQuery = "dummy";
-		var getElemQuery = "dummy";
-		var saveObjectQuery = "dummy";
-		var TypeOfData = connectionType;
+		this.baseUrl = "dummy";
+		this.searchQuery = "dummy";
+		this.getElemQuery = "dummy";
+		this.saveObjectQuery = "dummy";
+		this.TypeOfData = connectionType;
 	}
 
 	Server.prototype = {
@@ -124,7 +124,7 @@ app.factory('Server', ['', function(){
 		 * @param {Function} callback callback function
 		 */
 		save: function(obj, callback){
-			if(TypeOfData == "Object"){
+			if('TypeOfData' == "Object"){
 				if(saveObjectQuery == "dummy"){
 					setTimeout(function(){
 						callback(obj);
