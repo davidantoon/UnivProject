@@ -37,55 +37,6 @@ class scope {
 	}
 
 
-	// add new language to term
-	// add new term meaning to scope+term
-	// add new term meaning language to scope+term
-
-	// add term to scope
-	public static function add_new_term($scopeUID, $term, $meaning, $lang, $user) {
-
-		// add term to database
-		$term = term::add_new_term($term, $lang, $user);
-		if($term == null)
-			return null;
-
-		// extract termUID
-		$termUID = $term[0]["UID"];
-		// add term meaning to term and scope
-		$term_meaning = scope::add_new_meaning_to_term($meaning, $termUID, $scopeUID, $lang, $user);
-		
-		// validate that the connection was successfully added
-		if($term_meaning == null)
-			return null;
-
-
-	}
-
-	// add new term with meaning to term in scope
-	public static function add_new_meaning_to_term($meaning, $termUID, $scopeUID, $lang, $user) {
-		
-		// add new meaning
-		$temp = term::add_meaning($meaning, $lang, $user);
-		
-		// validate the the term meaning was created successfully
-		if($temp == null)
-			return null;
-		// extract term meaning UID
-		$term_meaning_UID = $temp[0]["UID"];
-		// connection term + meaning + scope
-		$dbObj = new dbAPI();
-		// get new UID
-		$UID = $dbObj->get_latest_UID($dbObj->db_get_contentDB(), 'TERMS');
-		$UID++;
-		// add record to database
-		$query = "INSERT INTO TERMS (UID, ID_TERM_MEAN, ID_SCOPE, ID_TERM_STRING, ENABLED, USER_ID, CREATION_DATE) VALUES (".
-			$UID . ", '". $term_meaning_UID . "', '" . $scopeUID ."', '" . $termUID ."', 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
-		$dbObj->run_query($dbObj->db_get_contentDB(), $query);
-
-		// returns an entity of recently added connection
-		return term::get_connection_by_UID($UID);
-	}
-
 }
 
 

@@ -89,7 +89,40 @@ echo "string";
  //    $dbObj->print_json($results);
 	echo 'aa2';
 
-	
+
+	/*==============================================================
+	================================================================
+	====================== Testing terms ===========================
+	================================================================
+	==============================================================*/
+	//add_new_term_with_scope_and_meaning($term_text, $lang, $user, $scope_UID = '', $meaning_text = '') 
+	// -- $ter = term::add_new_term_with_scope_and_meaning("C++", "en", 2); 
+	// -- $ter = term::add_new_term_with_scope_and_meaning("C#", "en", 2, "0");
+	// -- $ter = term::add_new_term_with_scope_and_meaning("C#", "en", 2, "0", "C kteer sharp");
+
+	//add_new_meaning_under_new_scope($termUID, $lang, $user, $scope_text = '', $scope_desc, $meaning_text = '')
+	// $ter = term::add_new_meaning_under_new_scope('1', 'en', '2', 'OOP', 'Object Oriented Programming', 'جريس واكل الجو');
+
+	// public static function add_new_scope_under_specific_meaning($termUID, $meaningUID, $user, $scope_text = '', $scope_desc)
+	// $ter = term::add_new_scope_under_specific_meaning('2', '3', '2', 'Java', 'Java like language');
+
+	// public static function edit_meaning($relationUID, $new_meaning, $lang)
+	// $ter = term::edit_meaning('4', 'arabic shit shit' . date("d-m-y h:i:s") , 'en');
+
+	// public static function add_sysnonym($scope_UID, $term_UID, $new_meaning, $lang, $user)
+	// $ter = term::add_sysnonym('4', 2, 'arabic shit shit' . date("d-m-y h:i:s"), 'en', 2);
+	// $ter = term::add_sysnonym('4', 3, 'arabic shit shit' . date("d-m-y h:i:s"), 'ar', 3); ==> should fail
+
+	// public static function add_translation_to_term($term_UID, $text, $lang, $user)
+	// $ter = term::add_translation_to_term(2, 'arabicccc', 'ar', 2);
+
+	// public static function add_translation_to_term_meaning($meaning_UID, $text, $lang, $user)
+	// $ter = term::add_translation_to_term_meaning(5, "meaning in arabic", 'ch', 1);
+	// $dbObj->print_json($ter);
+	/*==============================================================
+	================================================================*/
+
+
 ?>
 
  </body>

@@ -1,5 +1,5 @@
 <?php
-
+echo 'Term included successfuly <hr>';
 class term {
 	
 	
@@ -25,14 +25,15 @@ class term {
 		else
 			$selected_scope = scope::get_scope_by_UID($scope_UID);
 
+		if($selected_scope == null){
+			debugLog::debug_log("could not locate scope \"". $scope_UID ."\"");
+			return null;
+		}
+
 		// check if a meaning is attached and add it to database
 		if($meaning_text == '') {
-			$new_meaning = term::get_term_meaning_by_UID(0, $lang);
-			// check if there is general meaning in database
-			if($new_meaning == null) {
-				// create new general meaning
-				$new_meaning = term::add_meaning("General", $lang, $user);
-			}
+			// create new general meaning
+			$new_meaning = term::add_meaning("General", $lang, $user);
 		}
 		else // add specific meaning to database
 			$new_meaning = term::add_meaning($meaning_text, $lang, $user);
@@ -44,11 +45,11 @@ class term {
 		$UID++;
 		// add record to database
 		$query = "INSERT INTO TERMS (UID, ID_TERM_MEAN, ID_SCOPE, ID_TERM_STRING, ENABLED, USER_ID, CREATION_DATE) VALUES (".
-			$UID . ", '". $new_meaning[0]["UID"] . "', '" . $scope_UID ."', '" . $new_term[0]["UID"] ."', 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
+			$UID . ", '". $new_meaning["UID"] . "', '" . $selected_scope["UID"] ."', '" . $new_term["UID"] ."', 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
 		$dbObj->run_query($dbObj->db_get_contentDB(), $query);
 
 		// returns an entity of recently added connection
-		return scope::get_connection_by_UID($UID);
+		return term::get_connection_by_UID($UID);
 	}
 
 
@@ -79,7 +80,7 @@ class term {
 		$UID++;
 		// add record to database
 		$query = "INSERT INTO TERMS (UID, ID_TERM_MEAN, ID_SCOPE, ID_TERM_STRING, ENABLED, USER_ID, CREATION_DATE) VALUES (".
-			$UID . ", '". $new_meaning[0]["UID"] . "', '" . $selected_scope[0]["UID"] ."', '" . $termUID ."', 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
+			$UID . ", '". $new_meaning["UID"] . "', '" . $selected_scope["UID"] ."', '" . $termUID ."', 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
 		$dbObj->run_query($dbObj->db_get_contentDB(), $query);
 
 		// returns an entity of recently added connection
@@ -103,7 +104,7 @@ class term {
 		$UID++;
 		// add record to database
 		$query = "INSERT INTO TERMS (UID, ID_TERM_MEAN, ID_SCOPE, ID_TERM_STRING, ENABLED, USER_ID, CREATION_DATE) VALUES (".
-			$UID . ", '". $meaningUID . "', '" . $new_scope[0]["UID"] ."', '" . $termUID ."', 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
+			$UID . ", '". $meaningUID . "', '" . $new_scope["UID"] ."', '" . $termUID ."', 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
 		$dbObj->run_query($dbObj->db_get_contentDB(), $query);
 
 		// returns an entity of recently added connection
@@ -119,15 +120,14 @@ class term {
 			debugLog::debug_log("[edit_meaning]: could not locate relation \"". $relationUID ."\"");
 			return null;
 		}
-		
 		// update meaning in database
 		$dbObj = new dbAPI();
-		$query = "UPDATE TERM_MEAN SET TEXT = '". $new_meaning ."' where UID = '" . $rel[0]["ID_TERM_MEAN"] .
-		 "' AND  lang = '" . $lang . "' ";
-		$results = $dbObj->run_query($dbObj->db_get_usersDB(), $query);
+		$query = "UPDATE TERM_MEAN SET TEXT = '". $new_meaning ."' where UID = " . $rel["ID_TERM_MEAN"] .
+		 " AND  lang = '" . $lang . "' ";
+		$results = $dbObj->run_query($dbObj->db_get_contentDB(), $query);
 		if($results) {
 			// if success return new meaning
-			return term::get_term_meaning_by_UID($rel[0]["ID_TERM_MEAN"], $lang);
+			return term::get_term_meaning_by_UID($rel["ID_TERM_MEAN"], $lang);
 		}
 		// on error, log and return null
 		debugLog::debug_log("[edit_meaning]: could not update term meaning ". $relationUID);
@@ -138,6 +138,12 @@ class term {
 	// 5) add synonyms to scope and term (hence, adding new meaning under specific scope)
 	public static function add_sysnonym($scope_UID, $term_UID, $new_meaning, $lang, $user) {
 
+		// check if a term exists
+		if(term::get_term_by_UID($term_UID, $lang) == null) {
+
+			debugLog::debug_log("could not locate the term '". $term_UID . "' with lang '". $lang . "'");
+			return null;
+		}
 		// add new meaning/synonym
 		$meaning = term::add_meaning($new_meaning, $lang, $user);
 
@@ -148,11 +154,11 @@ class term {
 		$UID++;
 		// add record to database
 		$query = "INSERT INTO TERMS (UID, ID_TERM_MEAN, ID_SCOPE, ID_TERM_STRING, ENABLED, USER_ID, CREATION_DATE) VALUES (".
-			$UID . ", '". $meaning[0]["UID"] . "', '" . $scope_UID ."', '" . $term_UID ."', 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
+			$UID . ", '". $meaning["UID"] . "', '" . $scope_UID ."', '" . $term_UID ."', 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
 		$dbObj->run_query($dbObj->db_get_contentDB(), $query);
 
 		// returns an entity of recently added connection
-		return scope::get_connection_by_UID($UID);
+		return term::get_connection_by_UID($UID);
 
 		return null;
 	}
@@ -160,8 +166,20 @@ class term {
 	// 6) add new language to term
 	public static function add_translation_to_term($term_UID, $text, $lang, $user) {
 
-		$dbObj = new dbAPI();
+		// check if a term exists
+		if(term::get_term_by_UID($term_UID) == null) {
 
+			debugLog::debug_log("could not locate the term '". $term_UID . "'");
+			return null;
+		}
+
+		if(term::get_term_by_UID($term_UID, $lang) != null) {
+
+			debugLog::debug_log("adding translation to term ('". $term_UID . "') with already existing language ('". $lang . "') is prohibited");
+			return null;
+		}
+
+		$dbObj = new dbAPI();
 		// add record to database
 		$query = "INSERT INTO TERM_STRING (UID, TEXT, LANG, ENABLED, USER_ID, CREATION_DATE) VALUES (".
 			$term_UID . ", '". $text . "', '" . $lang ."', 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
@@ -174,6 +192,19 @@ class term {
 
 	// 7) add new language to term meaning
 	public static function add_translation_to_term_meaning($meaning_UID, $text, $lang, $user) {
+
+		// check if a term meaning exists
+		if(term::get_term_meaning_by_UID($meaning_UID) == null) {
+
+			debugLog::debug_log("could not locate the term meaning '". $meaning_UID . "'");
+			return null;
+		}
+		// check if the same translation exists
+		if(term::get_term_meaning_by_UID($meaning_UID, $lang) != null) {
+
+			debugLog::debug_log("adding translation to term meaning ('". $meaning_UID . "') with already existing language ('". $lang . "') is prohibited");
+			return null;
+		}
 
 		$dbObj = new dbAPI();
 
@@ -206,11 +237,13 @@ class term {
 	}
 
 	// return term by UID and language
-	public static function get_term_by_UID($UID, $lang) {
+	public static function get_term_by_UID($UID, $lang = '') {
 		
 		$dbObj = new dbAPI();
 		// validate user in database
 		$query = "SELECT * FROM TERM_STRING where UID = '" . $UID . "' AND LANG = '" . $lang . "' AND ENABLED = '1'";
+		if($lang == '')
+			$query = "SELECT * FROM TERM_STRING where UID = '" . $UID . "' AND ENABLED = '1'";
 		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
 		if(count($results) == 0)
 			return null;
@@ -236,11 +269,13 @@ class term {
 	}
 
 	// return term meaning by UID and language
-	public static function get_term_meaning_by_UID($UID, $lang) {
+	public static function get_term_meaning_by_UID($UID, $lang = '') {
 		
 		$dbObj = new dbAPI();
 		// validate user in database
 		$query = "SELECT * FROM TERM_MEAN where UID = '" . $UID . "' AND LANG = '" . $lang . "' AND ENABLED = '1'";
+		if($lang == '')
+			$query = "SELECT * FROM TERM_MEAN where UID = '" . $UID . "' AND ENABLED = '1'";
 		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
 		if(count($results) == 0)
 			return null;

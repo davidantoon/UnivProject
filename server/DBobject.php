@@ -69,6 +69,7 @@ class dbAPI {
 	    return $results[0]["max_UID"];
     }
 
+
     public function print_table($results) {
     	echo "<hr>";
     	$jsonIterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($results), RecursiveIteratorIterator::SELF_FIRST);
@@ -98,6 +99,10 @@ class dbAPI {
 		echo "<br/>";
     }
 
+    public static function print_json_s($arr) {
+    	$dbo = new dbAPI();
+    	$dbo->print_json($arr);
+    }
     public function print_json($arr) {
     	echo "<br/>";
     	echo "<hr>";

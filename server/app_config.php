@@ -6,4 +6,5 @@
 	include 'DBobject.php';
 	include 'users.php';
 	include 'terms/scope.php';
+	include 'terms/term.php';
 ?>
