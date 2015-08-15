@@ -4,6 +4,7 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 
 		this.last20Steps = [];
 		this.currentUndoOrder = 1;
+		this.savedInServer = false;
 
 		var passThis1 = this;
 		Server.getVersionList(23,function(result, error){
@@ -18,42 +19,47 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 
 		function ServerResquestComplete(serverSteps, passThis){
 			var dataFromLocalStorage = JSON.parse(localStorage.getItem("com.intel.steps.last20Steps"));
+			// init workspace
+			workspace.workflows = [];
+			workspace.lastWorkflowId = 0;
+			workspace.newWorkflowButtons = [];
+			workspace.selectedWorkflow = null;
+
 			if(serverSteps){
 				if(dataFromLocalStorage != null){
 					// compare 
+					if(Number(serverSteps.lastModified) < dataFromLocalStorage.lastModified){
+						passThis.last20Steps = dataFromLocalStorage.last20Steps;
+						passThis.currentUndoOrder = dataFromLocalStorage.currentUndoOrder;
+					}else{
+						passThis.last20Steps = serverSteps.last20Steps;
+						passThis.currentUndoOrder = serverSteps.currentUndoOrder;
+					}
+					
 				}else{
 					// only server steps
+					passThis.last20Steps = serverSteps.last20Steps;
+					passThis.currentUndoOrder = serverSteps.currentUndoOrder;
 				}
 			}else{
 				// only local steps
 				if(dataFromLocalStorage != null){
 					passThis.last20Steps = dataFromLocalStorage.last20Steps;
 					passThis.currentUndoOrder = dataFromLocalStorage.currentUndoOrder;
-					workspace.workflows = [];
-					workspace.lastWorkflowId = 0;
-					workspace.newWorkflowButtons = [];
-					workspace.selectedWorkflow = null;
-					passThis.restoreStep(workspace, function(){
-						workspace.updateNewWorkflowButtons();
-						workspace.updateLastId();
-						console.log(workspace);
-					});
-					return;
 				}else{
 					workspace = new Workspace();
 					passThis.InsertStepToLastSteps(workspace);
 				}
 			}
+			passThis.commitSteps();
+			passThis.savedInServer = true;
+			// update layout of workspace
+			passThis.restoreStep(workspace, function(){
+				workspace.updateNewWorkflowButtons();
+				workspace.updateLastId();
+				console.log(workspace);
+			});
 		}
-		
-		// check if there is saved steps in server side
-			// compare with saved steps in localStorage
-			// restore the newest saved steps
-
-		// check if there is saved data in Local
-			// restore local saved steps
-		
-		// create new steps object
 	}
 
 	Steps.prototype = {
@@ -147,6 +153,7 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
                 	}
                 }
                 this.currentUndoOrder++;
+                this.savedInServer = false;
                 callback();
 			}
 		},
@@ -203,6 +210,7 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
                 	}
                 }
                 this.currentUndoOrder--;
+                this.savedInServer = false;
                 callback();
 			}
 		},
@@ -249,10 +257,8 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
             for (var i = 0; i < this.last20Steps.length; i++) {
                 this.last20Steps[i].orderSteps = (i + 1);
             }
-            localStorage.setItem("com.intel.steps.last20Steps", JSON.stringify({
-            	"last20Steps": this.last20Steps,
-            	"currentUndoOrder": this.currentUndoOrder
-            }));
+            localStorage.setItem("com.intel.steps.last20Steps", JSON.stringify(this.toJson()));
+            this.savedInServer = false;
 		},
 
 		restoreStep: function(workspace, callback){
@@ -293,9 +299,38 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 		/**
 		 * Save last steps to server
 		 */
-		commitSteps: function(){
+		commitSteps: function(callback){
+			// var svr = new Server("Steps");
+			// svr.saveElement(this.toJson(), callback);
+			
+			this.savedInServer = true;
+			// locate index of next step (indexOfNextStep = IONS)
+			var IONS = -1;
+			for(var i = this.last20Steps.length - 1; i >= 0; i--){
+				if(this.currentUndoOrder > this.last20Steps[i].orderSteps){
+					IONS = i;
+					break;
+				}
+			}
+			if(IONS < 0){
+				console.log(new Error("Steps: commitSteps() cannot remove redo, IONS = -1"));
+				return;
+			}
+			
+		},
 
+		/**
+         * Creates Json 
+         * @return {Object} Json object
+         */
+		toJson: function(){
+			return {
+				"last20Steps": this.last20Steps,
+				"currentUndoOrder": this.currentUndoOrder,
+				"lastModified": +(new Date())
+			}
 		}
+
 
 	}
 

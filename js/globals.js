@@ -8,6 +8,13 @@ app.value('Globals', {
 	},
 	clear: function(){
 		this.CashedObjects = {};
+	},
+	allObjectsaved: function(){
+		var isSaved = 1;
+		for(var i=0; i<this.CashedObjects.length; i++){
+			isSaved *= ((this.CashedObjects[i].inProgress)?0:1);
+		}
+		return isSaved;
 	}
 })
 .value('TypeOf', {
