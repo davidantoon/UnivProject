@@ -118,8 +118,63 @@ app.factory('Storage', ["Globals", "TypeOf", function(Globals, TypeOf){
 
 		},
 
-		clear: function(key, value){
-			localStorage.clear();
+		/**
+		 * Clears the local storage or removes item from it
+		 * @param  {string}   key      the key we are going to remove
+		 * @param  {string}   value    the value we are going to remove
+		 * @param  {Function} callback callback funtion
+		 */
+		clear: function(key, value, callback){
+			// clear all storage
+			if(key == null || key == undefined || key == ""){
+				localStorage.clear();
+				callback("sucsess", null);
+				return;
+			}
+
+			// remove specific key from storage
+			if(value == null || value == undefined || value == ""){
+				localStorage.removeItem(key);
+				callback(JSON.parse(localStorage.getItem(key))), null);
+				return;
+			}
+
+			//remove specific value from key in storage
+			var tempData = JSON.parse(localStorage.getItem(key));
+			for (var i = tempData.length - 1; i >= 0; i--) {
+				if( JSON.stringify(value) == JSON.stringify(tempData[i]) ){
+					tempData.splice(i, 1);
+					localStorage.setItem(key, tempData);
+					callback(JSON.parse(localStorage.getItem(key)), null);
+					return;
+				}
+			}
+			callback(null, {"message": "no item has been removed","code": "");
+			return;
+		},
+
+		/**
+		 * Saves steps locally
+		 * @param  {object}   steps    steps we are going to save
+		 * @param  {Function} callback callback function
+		 */
+		saveStepsLocaly: function(steps, callback){
+			if(steps == null || steps == undefined){
+				callback(null, {"message": "steps you wanted to save is null or undefined", "code": ""});
+				return;
+			}
+			localStorage.setItem("steps",JSON.stringify(steps));
+			callback({"message":"steps has sucsessfully save in local storage","code":""}, null);
+			return;
+		},
+
+		/**
+		 * Gets steps from local storage
+		 * @param  {Function} callback callback function
+		 */
+		getStepsFromStorage: function(callback){
+			callback(JSON.parse(localStorage.getItem("steps")), null);
+			return;
 		}
 	};
 

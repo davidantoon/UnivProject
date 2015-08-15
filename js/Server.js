@@ -219,7 +219,7 @@ app.factory('Server', function(){
 		 * @return {object}            the object version we need
 		 */
 		getVersionsByID: function(objID, callback){
-
+			callback(null, null);
 		},
 
 		/**
@@ -230,9 +230,48 @@ app.factory('Server', function(){
 		 */
 		getVersionList: function(objID, callback){
 			callback(null, null);
+		},
+
+		/**
+		 * Gets the steps from server.
+		 * @param  {callback} callback callback funtion
+		 * @return {json}              steps
+		 */
+		getSteps: function(callback){
+			var stepsDB = localStorage.getItem("com.intel.server.steps");
+			if(stepsDB == null || stepsDB == undefined){
+				callback(null, {"message":"could not get steps from server", "code": ""});
+				return;
+			}else{
+				if(stepsDB.length == 0){
+					callback({"message":"there is no steps in server", "code": ""}, null );
+					return;
+				}
+				callback(JSON.parse(stepsDB), null);
+				return;
+			}
+		},
+
+		/**
+		 * 	------------------------------- ASK IF IT SHOULD TAKE ID TO GET SPECIFIC SETTINGS -------------------------------------
+		 * Gets the settings from Server
+		 * @param  {callback} callback callback function
+		 * @return {json}              steps found in server
+		 */
+		getSettings: function(callback){
+			var settingsDB = localStorage.getItem("com.intel.server.settings");
+			if(settingsDB == null || settingsDB == undefined){
+				callback(null, {"message":"could not get settings from server","code":""});
+				return;
+			}else{
+				if(settingsDB.length == 0){
+					callback({"message":"there is no settings in server", "code": ""}, null );
+					return;
+				}
+				callback(JSON.parse(settingsDB), null);
+				return;
+			}
 		}
-
-
 	}
 	return Server(connectionType);
 });
