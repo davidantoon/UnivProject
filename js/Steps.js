@@ -319,6 +319,8 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 			
 		},
 
+
+
 		/**
          * Creates Json 
          * @return {Object} Json object
@@ -330,8 +332,6 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 				"lastModified": +(new Date())
 			}
 		}
-
-
 	}
 
 	return Steps;
