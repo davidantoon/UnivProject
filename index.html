@@ -27,13 +27,19 @@
               <ons-col width="220px" class="Logo rtl">
                 <img src="img/IntelIcon.png" style="height: 100%;margin: auto;">
               </ons-col>
-              <ons-col id="NotificationsButton" ng-click="updateAllTabName();" width="100px" style="width:100px; position:relative;" class="">
+              <ons-col id="NotificationsButton" ng-click="Steps.commitSteps();" width="100px" style="width:100px; position:relative;" class="">
                 <div class="TopTabbarButton clickable hoverOp">Settings</div>
               </ons-col>
               <ons-col id="NotificationsButton" ng-click="testFun2();" width="150px" style="width:150px; position:relative;" class="">
                 <div class="TopTabbarButton clickable hoverOp">New Workflow</div>
               </ons-col>
               <ons-col>
+              </ons-col>
+              <ons-col id="NotificationsButton" ng-click="Steps.commitSteps();" width="80px" style="width:50px; position:relative;" class="{{'col ons-col-inner '+((Steps.savedInServer == false)?'clickable hoverOp':'opacityLow')}}">
+                <div class="TopTabbarButton" style="border-right:0;font-size: 13px;">
+                  <ons-icon icon="ion-upload" size="25px"></ons-icon>
+                  Save
+                </div>
               </ons-col>
               <ons-col id="NotificationsButton" ng-click="UndoWorkflow();" width="80px" style="width:50px; position:relative;" class="{{'col ons-col-inner '+((Steps.canUndo() == true)?'clickable hoverOp':'opacityLow')}}">
                 <div class="TopTabbarButton" style="border-right:0;font-size: 13px;">

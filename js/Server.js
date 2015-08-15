@@ -18,96 +18,6 @@ app.factory('Server', function(){
 		searchElement: function(searchText, callback){
 			if(this.baseUrl == "dummy"){
 				setTimeout(function(){
-
-
-					// localStorage.setItem("delivery", "[{}]");
-					// $.getJSON("ServerDummyContent/deliveryDB.json", function(deliveryDB) {
-					// 	localStorage.setItem("delivery", JSON.stringify(deliveryDB));
-
-					// })
-					
-					// /* START =>  dummy response for search request */
-					// var dataFromServer = [{
-					// 	"ID": "1",
-					// 	"Name": "Element 1",
-					// 	"Url": "Url 1",
-					// 	"Category": "Category 1",
-					// 	"Terms":["C","C#","Java"],
-					// 	"KbitsNeeded": [],
-					// 	"KbitProvided": [],
-					// 	"Locked": false,
-
-					// },{
-					// 	"ID": "2",
-					// 	"Name": "Element 2",
-					// 	"Url": "Url 2",
-					// 	"Category": "Category 2",
-					// 	"Terms":["C","C#","Java"],
-					// 	"KbitsNeeded": [],
-					// 	"KbitProvided": [],
-					// 	"Locked": false,
-
-					// },{
-					// 	"ID": "3",
-					// 	"Name": "Element 3",
-					// 	"Url": "Url 3",
-					// 	"Category": "Category 3",
-					// 	"Terms":["C","C#","Java"],
-					// 	"KbitsNeeded": [],
-					// 	"KbitProvided": [],
-					// 	"Locked": false,
-
-					// },{
-					// 	"ID": "4",
-					// 	"Name": "Element 4",
-					// 	"Url": "Url 4",
-					// 	"Category": "Category 4",
-					// 	"Terms":["C","C#","Java"],
-					// 	"KbitsNeeded": [],
-					// 	"KbitProvided": [],
-					// 	"Locked": false,
-
-					// },{
-					// 	"ID": "5",
-					// 	"Name": "Element 5",
-					// 	"Url": "Url 5",
-					// 	"Category": "Category 5",
-					// 	"Terms":["C","C#","Java"],
-					// 	"KbitsNeeded": [],
-					// 	"KbitProvided": [],
-					// 	"Locked": false,
-
-					// },{
-					// 	"ID": "6",
-					// 	"Name": "Element 6",
-					// 	"Url": "Url 6",
-					// 	"Category": "Category 6",
-					// 	"Terms":["C","C#","Java"],
-					// 	"KbitsNeeded": [],
-					// 	"KbitProvided": [],
-					// 	"Locked": false,
-
-					// },{
-					// 	"ID": "7",
-					// 	"Name": "Element 7",
-					// 	"Url": "Url 7",
-					// 	"Category": "Category 7",
-					// 	"Terms":["C","C#","Java"],
-					// 	"KbitsNeeded": [],
-					// 	"KbitProvided": [],
-					// 	"Locked": false,
-
-					// }];
-					/* dummy response for search request  <= END */
-
-
-					// var dataToReturn = [];
-					// for(var i=0; i<dataFromServer.length; i++){
-					// 	if(CashedObjects[dataFromServer[i].ID] == undefined){
-					// 		CashedObjects[dataFromServer[i].ID] = new content(dataFromServer[i]);
-					// 	}
-					// 	dataToReturn.push(CashedObjects[dataFromServer[i].ID]);
-					// }
 				},300);
 			}else{
 				$.ajax({
@@ -152,65 +62,43 @@ app.factory('Server', function(){
 
 			switch (this.TypeOfData){
 				case "delivery":
-					// $.getJSON("ServerDummyContent/deliveryDB.json", function(deliveryDB) {
-						var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
-						deliveryDB.push(obj);
-						localStorage.setItem("com.intel.Server.delivery", JSON.stringify(deliveryDB));
-						callback(obj);
-					//})
+					var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
+					deliveryDB.push(obj);
+					localStorage.removeItem("com.intel.Server.delivery");
+					localStorage.setItem("com.intel.Server.delivery", JSON.stringify(deliveryDB));
+					callback({"message":"delivery saved correctly","code":""} ,null);
 				break;
 				case "kbits":
 					var kbitsDB = JSON.parse(localStorage.getItem("com.intel.server.kbits"));
 					kbitsDB.push(obj);
+					localStorage.removeItem("com.intel.server.kbits");
 					localStorage.setItem("com.intel.server.kbits", JSON.stringify(kbitsDB));
-					callback(obj);
+					callback({"message":"kbits saved correctly","code":""}, null);
 				break;
 				case "settings":
 					var settingsDB = JSON.parse(localStorage.getItem("com.intel.server.settings"));
 					settingsDB.push(obj);
+					localStorage.removeItem("com.intel.server.settings");
 					localStorage.setItem("com.intel.server.settings", JSON.stringify(settingsDB));
-					callback(obj);
+					callback({"message":"settings saved correctly","code":""}, null);
 				break;
 				case "steps":
 					var stepsDB = JSON.parse(localStorage.getItem("com.intel.server.steps"));
-					stepsDB.push(obj);
+					localStorage.removeItem("com.intel.server.steps");
 					localStorage.setItem("com.intel.server.steps", JSON.stringify(stepsDB));
-					callback(obj);
+					callback({"message":"steps saved correctly","code":""}, null);
 				break;
 				case "term":
 					var termsDB = JSON.parse(localStorage.getItem("com.intel.server.terms"));
 					termsDB.push(obj);
+					localStorage.removeItem("com.intel.server.terms");
 					localStorage.setItem("com.intel.server.terms", JSON.stringify(termsDB));
-					callback(obj);
+					callback({"message":"term saved correctly","code":""}, null);
 				break;
 				default:
+				callback(null, {"message":"Could not save element","code":""});
 				break;
 			}
-			
-
-			/*	if(saveObjectQuery == "dummy"){
-					setTimeout(function(){
-						callback(obj);
-					},500);
-			}else{
-				$.ajax({
-					url: baseUrl+saveObjectQuery,
-					type: 'POST',
-					dataType: 'Content-Type: application/json',
-					data: {"Object": obj},
-					success: function(res){
-						callback(res);
-					},
-					error: function(err){
-						callback("Error");
-					}
-				});
-			}
-			}else if(TypeOfData == "Kbits"){
-			
-			}else{
-
-			}*/
 		},
 
 		/**
@@ -226,41 +114,41 @@ app.factory('Server', function(){
 
 			switch (this.TypeOfData){
 				case "delivery":
-					deliveryDB =JSON.parse(localStorage.getItem("objID"));
+					var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
 					for(var i = 0; deliveryDB.length; i++){
 						if(deleviry[i].id == obj.id){
 							callback(deleviry[i], null);
 							return;
 						}
 					}
-					callback(null, {"message":"Object not found","code":"404"});
+					callback(null, {"message":"Object delivery not found","code":"404"});
 					return;
 				break;
 				case "kbits":
 					var kbitsDB = JSON.parse(localStorage.getItem("com.intel.server.kbits"));
-					kbitsDB.push(obj);
-					localStorage.setItem("com.intel.server.kbits", JSON.stringify(kbitsDB));
-					callback(obj);
-				break;
-				case "settings":
-					var settingsDB = JSON.parse(localStorage.getItem("com.intel.server.settings"));
-					settingsDB.push(obj);
-					localStorage.setItem("com.intel.server.settings", JSON.stringify(settingsDB));
-					callback(obj);
-				break;
-				case "steps":
-					var stepsDB = JSON.parse(localStorage.getItem("com.intel.server.steps"));
-					stepsDB.push(obj);
-					localStorage.setItem("com.intel.server.steps", JSON.stringify(stepsDB));
-					callback(obj);
+					for(var i = 0; kbitsDB.length; i++){
+						if(kbitsDB[i].id == obj.id){
+							callback(kbitsDB[i],null);
+							return;
+						}
+					}
+					callback(null, {"message":"Object kbits not found","code":"404"});
+					return;
 				break;
 				case "term":
 					var termsDB = JSON.parse(localStorage.getItem("com.intel.server.terms"));
-					termsDB.push(obj);
-					localStorage.setItem("com.intel.server.terms", JSON.stringify(termsDB));
-					callback(obj);
+					for(var i = 0; termsDB.length; i++){
+						if(termsDB[i].id == obj.id){
+							callback(termsDB[i],null);
+							return;
+						}
+					}
+					callback(null, {"message":"Object term not found","code":"404"});
+					return;
 				break;
 				default:
+					callback(null, {"message":"Save Element func Object is not found","code":"404"});
+					return;
 				break;
 			}
 
@@ -272,7 +160,56 @@ app.factory('Server', function(){
 		 * @param  {Function} callback callback funtion
 		 */
 		deleteElementByID: function(objID, callback){
+			if(saveObjectQuery == "dummy"){
+				localStorage.removeItem("dummy");
+				callback("success",{"message": "dummy has been removed","code" : ""});
+			}
 
+			switch(this.TypeOfData){
+				case "delivery":
+					var deliveryDB = JSON.parse(localStorage.getItem("com.intel.server.delivery");
+					for(var i = 0; i < deliveryDB.length; i++){
+						if(deliveryDB[i].id == obj.id){
+							deliveryDB.splice(i,1);
+							localStorage.setItem("com.intel.server.delivery",deliveryDB);
+							callback({"message":"delivery has successfuly removed","code":""},null);
+							return;
+						}
+					}
+					callback(null,{"message":"could not remove delivery","code":""});
+					return;
+				break;
+				case "kbits":
+					var kbitsDB = JSON.parse(localStorage.getItem("com.intel.server.kbits");
+					for(var i = 0; i < kbitsDB.length; i++){
+						if(kbitsDB[i].id == obj.id){
+							kbitsDB.splice(i,1);
+							localStorage.setItem("com.intel.server.kbits",kbitsDB);
+							callback({"message":"kbits has successfuly removed","code":""},null);
+							return;
+						}
+					}
+					callback(null,{"message":"could not remove kbits","code":""});
+					return;
+				break;
+				case "term":
+					var termsDB = JSON.parse(localStorage.getItem("com.intel.server.term");
+					for(var i = 0; i < termsDB.length; i++){
+						if(termsDB[i].id == obj.id){
+							termsDB.splice(i,1);
+							localStorage.setItem("com.intel.server.term",termsDB);
+							callback({"message":"term has successfuly removed","code":""},null);
+							return;
+						}
+					}
+					callback(null,{"message":"could not remove term","code":""});
+					return;
+				break;
+				default:
+					callback(null, {"message":"Delete Element func Object is not found","code":"404"});
+					return;
+				break;
+			}
 		},
 
 		/**
@@ -297,160 +234,6 @@ app.factory('Server', function(){
 
 
 	}
-	return new Server();
+	return Server(connectionType);
 });
 
-/*
-function svrData(connectionType) {
-
-	var baseUrl = "dummy";
-	var searchQuery = "dummy";
-	var getElemQuery = "dummy";
-	var saveObjectQuery = "dummy";
-	var TypeOfData = connectionType;
-
-
-	this.searchElem = function(searchText, callback) {
-
-		if(baseUrl == "dummy"){
-			setTimeout(function(){
-
-				/* START =>  dummy response for search request 
-				var dataFromServer = [{
-					"ID": "1",
-					"Name": "Element 1",
-					"Url": "Url 1",
-					"Category": "Category 1",
-					"Terms":["C","C#","Java"],
-					"KbitsNeeded": [],
-					"KbitProvided": [],
-					"Locked": false,
-
-				},{
-					"ID": "2",
-					"Name": "Element 2",
-					"Url": "Url 2",
-					"Category": "Category 2",
-					"Terms":["C","C#","Java"],
-					"KbitsNeeded": [],
-					"KbitProvided": [],
-					"Locked": false,
-
-				},{
-					"ID": "3",
-					"Name": "Element 3",
-					"Url": "Url 3",
-					"Category": "Category 3",
-					"Terms":["C","C#","Java"],
-					"KbitsNeeded": [],
-					"KbitProvided": [],
-					"Locked": false,
-
-				},{
-					"ID": "4",
-					"Name": "Element 4",
-					"Url": "Url 4",
-					"Category": "Category 4",
-					"Terms":["C","C#","Java"],
-					"KbitsNeeded": [],
-					"KbitProvided": [],
-					"Locked": false,
-
-				},{
-					"ID": "5",
-					"Name": "Element 5",
-					"Url": "Url 5",
-					"Category": "Category 5",
-					"Terms":["C","C#","Java"],
-					"KbitsNeeded": [],
-					"KbitProvided": [],
-					"Locked": false,
-
-				},{
-					"ID": "6",
-					"Name": "Element 6",
-					"Url": "Url 6",
-					"Category": "Category 6",
-					"Terms":["C","C#","Java"],
-					"KbitsNeeded": [],
-					"KbitProvided": [],
-					"Locked": false,
-
-				},{
-					"ID": "7",
-					"Name": "Element 7",
-					"Url": "Url 7",
-					"Category": "Category 7",
-					"Terms":["C","C#","Java"],
-					"KbitsNeeded": [],
-					"KbitProvided": [],
-					"Locked": false,
-
-				}];
-				/* dummy response for search request  <= END 
-
-
-				var dataToReturn = [];
-				for(var i=0; i<dataFromServer.length; i++){
-					if(CashedObjects[dataFromServer[i].ID] == undefined){
-						CashedObjects[dataFromServer[i].ID] = new content(dataFromServer[i]);
-					}
-					dataToReturn.push(CashedObjects[dataFromServer[i].ID]);
-				}
-
-			},300);
-		}else{
-			$.ajax({
-				url: baseUrl+searchQuery,
-				type: 'GET',
-				dataType: 'Content-Type: application/json',
-				data: {text: searchText},
-				success: function(res){
-					callback(res);
-				},
-				error: function(err){
-					callback("Error");
-				}
-			});
-			
-		}
-	}
-
-	/**
-	 * Saves data to server
-	 * @param {object}   obj      object we are going to save
-	 * @param {Function} callback callback function
-	 
-	this.Save = function(obj, callback){
-		if(TypeOfData == "Object"){
-			if(saveObjectQuery == "dummy"){
-				setTimeout(function(){
-					callback(obj);
-				},500);
-			}else{
-				$.ajax({
-					url: baseUrl+saveObjectQuery,
-					type: 'POST',
-					dataType: 'Content-Type: application/json',
-					data: {"Object": obj},
-					success: function(res){
-						callback(res);
-					},
-					error: function(err){
-						callback("Error");
-					}
-				});
-			}
-
-		}else if(TypeOfData == "Kbits"){
-			
-		}else{
-
-		}
-	}
-
-	this.getItemByID = function(objID, callback){
-		
-	}
-}
-*/

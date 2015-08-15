@@ -1,7 +1,6 @@
 var app = angular.module('IntelLearner', ['onsen', 'firebase']);
-
-app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage",
-    function($scope, $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server,Storage) {
+app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals",
+    function($scope, $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals) {
 
 
         // PRIM COLOR = rgb(8,96,168)
@@ -35,6 +34,14 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
         // new implementaion for steps
         $scope.Steps;
 
+        // $scope.$on('$destroy', function() {
+        //     delete $window.onbeforeunload;
+        // });
+        $window.onbeforeunload = function (event) {
+            if(!$scope.Steps.savedInServer || !Globals.allObjectsaved()){
+                return "Are you sure you want to leave this page?";
+            }
+        };
         
 
 
