@@ -248,7 +248,33 @@ class term {
 		if(count($results) == 0)
 			return null;
 
-		return $results[0];	
+		$selected_term = $results[0];
+
+		if($lang != '')
+			return $selected_term;
+
+		// get term's other languages
+		$other_langs = term::get_term_by_UID_in_all_languages($UID);
+		if(count($other_langs) > 1) {
+			for($i=0; $i<count($other_langs); $i++) {
+				if($other_langs[$i] == $selected_term) {
+					unset($other_langs[$i]);
+				}
+			}
+			$selected_term["other_langs"] = array();
+			$selected_term["other_langs"] = array_merge($selected_term["other_langs"], $other_langs);
+		}
+		return $selected_term;
+	}
+
+	// return term by UID in all languages language
+	private static function get_term_by_UID_in_all_languages($UID) {
+		
+		$dbObj = new dbAPI();
+		// validate user in database
+		$query = "SELECT * FROM TERM_STRING where UID = '" . $UID . "' AND ENABLED = '1'";
+		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
+		return $results;
 	}
 
 

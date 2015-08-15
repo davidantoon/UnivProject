@@ -29,7 +29,7 @@ class scope {
 
 		return $results[0];	
 	}
-	public static function get_scope_by_UID_with_relations($UID) {
+	public static function get_scope_by_UID_with_relations($UID, $lang = '') {
 
 		// check if scope exists
 		$Scope = scope::get_scope_by_UID($UID);
@@ -38,6 +38,8 @@ class scope {
 
 		// add related scopes to scope object
 		$Scope["RELATED_SCOPES"] = scope::get_relations_of_scope($UID);
+
+		$Scope["TERMS"] = scope::get_terms_of_scope($UID, $lang);
 		return $Scope;
 	}
 
@@ -72,7 +74,7 @@ class scope {
 	}
 
 	// remove relation
-	public static function remove_relation($$parent_scope_UID, $child_scope_UID) {
+	public static function remove_relation($parent_scope_UID, $child_scope_UID) {
 
 		// disable old relation
 		$dbObj = new dbAPI();
@@ -129,6 +131,27 @@ class scope {
 	}
 
 
+	public static function get_terms_of_scope($scope_UID, $lang = '') {
+
+		$terms = array();
+
+		// extract scope terms relations
+		$dbObj = new dbAPI();
+		$query = "SELECT * FROM TERMS where ENABLED = 1 AND ( ID_SCOPE = " . $scope_UID .  ")";
+		$terms_related = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
+
+		if($terms_related == null)
+			return null;
+
+		// get terms details
+		for($i=0; $i<count($terms_related); $i++) {
+			$curr_term = term::get_term_by_UID($terms_related[$i]["ID_TERM_STRING"], $lang);
+			if($curr_term != null)
+				array_push($terms, $curr_term);
+		}
+
+		return $terms;
+	}
 }
 
 

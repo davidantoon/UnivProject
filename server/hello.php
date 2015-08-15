@@ -123,13 +123,13 @@
 	// add_relation_to_scope($parent_scope_UID, $child_scope_UID, $is_hier);
 	// debugLog::important_log(dbAPI::print_json_s(scope::add_relation_to_scope(1, 1, 0, 2), 0));
 
-	debugLog::important_log(dbAPI::print_json_s(scope::get_scope_by_UID_with_relations(0), 0));
+	debugLog::important_log(dbAPI::print_json_s(scope::get_scope_by_UID_with_relations(4, 'ar'), 0));
 
 	debugLog::important_log("DONE");
 	/*==============================================================
 	================================================================*/
 
-	
+
 
 ?>
 
