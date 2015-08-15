@@ -8,7 +8,7 @@ echo 'Users included successfuly <hr>';
 // include 'DBobject.php';
 
 class users {
-
+     
 	public $id;
 	public $UID;
 	public $first_name;
