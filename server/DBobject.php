@@ -69,6 +69,30 @@ class dbAPI {
 	    return $results[0]["max_UID"];
     }
 
+    public function get_latest_Rivision_ID($database_name, $table_name, $whereSttmnt = '') {
+    	
+    	if($whereSttmnt != '')
+    		$whereSttmnt = ' WHERE (('. $whereSttmnt .'))';
+
+    	$query = 'SELECT MAX(REVISION) AS max_Riv FROM ' . $table_name . $whereSttmnt;
+    	$results = $this->db_select_query($database_name, $query);
+	    if(count($results) == 0)
+	    	return null;
+	    return $results[0]["max_Riv"];
+    }
+
+    public function disable_revision($database_name, $table_name, $whereSttmnt) {
+
+		$query = "UPDATE ". $table_name ." SET ENABLED = 0 WHERE ". $whereSttmnt . " ";
+		$results = $this->run_query($database_name, $query);
+		if($results) {
+			// on success
+			return true;
+		}
+		debugLog::debug_log("[disable_revision]: could not disbale rivision. [query]: <br>" . $query ."<hr>");
+		return false;
+    }
+
 
     public function print_table($results) {
     	echo "<hr>";
@@ -99,16 +123,19 @@ class dbAPI {
 		echo "<br/>";
     }
 
-    public static function print_json_s($arr) {
+    public static function print_json_s($arr, $prnt = 1) {
     	$dbo = new dbAPI();
-    	$dbo->print_json($arr);
+    	return $dbo->print_json($arr, $prnt);
     }
-    public function print_json($arr) {
-    	echo "<br/>";
-    	echo "<hr>";
-    	echo json_encode($arr);
-    	echo "<hr>";
-    	echo "<br/>";
+    public function print_json($arr, $prnt = 1) {
+    	$jsons = "<br/>" .
+    	"<hr>" .
+    	json_encode($arr) .
+    	"<hr>" .
+    	"<br/>";
+    	if($prnt == 1)
+	    	echo $jsons;
+    	return $jsons;
     }
 }
 

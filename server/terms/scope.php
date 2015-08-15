@@ -22,7 +22,6 @@ class scope {
 	public static function get_scope_by_UID($UID) {
 
 		$dbObj = new dbAPI();
-		// validate user in database
 		$query = "SELECT * FROM scope where UID = '" . $UID . "' AND ENABLED = '1'";
 		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
 		if(count($results) == 0)
@@ -30,10 +29,103 @@ class scope {
 
 		return $results[0];	
 	}
+	public static function get_scope_by_UID_with_relations($UID) {
 
-	// return a list of terms under selected scope
-	public static function get_all_terms_of_scope($scope_UID) {
+		// check if scope exists
+		$Scope = scope::get_scope_by_UID($UID);
+		if($Scope == null)
+			return null;
 
+		// add related scopes to scope object
+		$Scope["RELATED_SCOPES"] = scope::get_relations_of_scope($UID);
+		return $Scope;
+	}
+
+	// relate scope to another
+	public static function add_relation_to_scope($parent_scope_UID, $child_scope_UID, $is_hier, $user) {
+		
+		if($parent_scope_UID == $child_scope_UID) {
+			debugLog::log("parent scope (". $parent_scope_UID .") and child (". $child_scope_UID .") scope cannot be the same");
+			return null;
+		}
+		// disable old relation
+		scope::remove_relation($parent_scope_UID, $child_scope_UID);
+
+		// get latest revision number
+		$dbObj = new dbAPI();
+		// where statement
+		$where_sttmnt = " (PARENT_ID = " . $parent_scope_UID .
+			" AND CHILD_ID = " . $child_scope_UID . ") OR (CHILD_ID = " . $parent_scope_UID .
+			" AND PARENT_ID = " . $child_scope_UID . ")";
+		$old_rel = $dbObj->get_latest_Rivision_ID($dbObj->db_get_contentDB(), 'R_Ls2s', $where_sttmnt);
+		if($old_rel == null)
+			$old_rel = 0;
+
+
+		// add new relation
+		$query = "INSERT INTO R_Ls2s (REVISION, HIER, PARENT_ID, CHILD_ID, ENABLED, USER_ID, CREATION_DATE) VALUES (".
+			($old_rel + 1) . ", ". $is_hier . ", " . $parent_scope_UID .", " . $child_scope_UID .", 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
+		$dbObj->run_query($dbObj->db_get_contentDB(), $query);
+
+		// return recently created relation
+		return scope::get_scopes_relation($parent_scope_UID, $child_scope_UID);
+	}
+
+	// remove relation
+	public static function remove_relation($$parent_scope_UID, $child_scope_UID) {
+
+		// disable old relation
+		$dbObj = new dbAPI();
+		
+		// where statement
+		$where_sttmnt = " (PARENT_ID = " . $parent_scope_UID .
+			" AND CHILD_ID = " . $child_scope_UID . ") OR (CHILD_ID = " . $parent_scope_UID .
+			" AND PARENT_ID = " . $child_scope_UID . ")";
+
+		$dbObj->disable_revision($dbObj->db_get_contentDB(), 'R_Ls2s', $where_sttmnt);
+	}
+
+	public static function get_scopes_relation($first_scope, $second_scope) {
+
+		$dbObj = new dbAPI();
+		$query = "SELECT * FROM R_Ls2s where ENABLED = 1 AND ((PARENT_ID = " . $first_scope .
+			" AND CHILD_ID = " . $second_scope . ") OR (CHILD_ID = " . $first_scope .
+			" AND PARENT_ID = " . $second_scope . "))";
+	
+		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
+		if(count($results) == 0) {
+		}
+		return $results[0];	
+	}
+
+	public static function get_relations_of_scope($scope_UID) {
+
+		$parents = array();
+		$children = array();
+		$others = array();
+
+		// extract related scopes
+		$dbObj = new dbAPI();
+		$query = "SELECT * FROM R_Ls2s where ENABLED = 1 AND ( CHILD_ID = " . $scope_UID . " OR PARENT_ID = " . $scope_UID . ")";
+		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
+
+		for($i=0;$i<count($results);$i++) {
+			if($results[$i]["PARENT_ID"] == $scope_UID) {
+				if($results[$i]["HIER"] == 1)
+					array_push($children, scope::get_scope_by_UID($results[$i]["CHILD_ID"]));
+				else
+					array_push($others, scope::get_scope_by_UID($results[$i]["CHILD_ID"]));
+			}
+			else {
+				if($results[$i]["HIER"] == 1)
+					array_push($parents, scope::get_scope_by_UID($results[$i]["PARENT_ID"]));
+				else
+					array_push($others, scope::get_scope_by_UID($results[$i]["CHILD_ID"]));
+			}
+		}
+
+		$relatives = array("parents"=>$parents, "children"=>$children, "others"=>$others);
+		return $relatives;
 	}
 
 
