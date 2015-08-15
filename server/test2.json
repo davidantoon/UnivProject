@@ -1,0 +1,19 @@
+{
+  "messages": [
+    {
+      "id": 1,
+      "elements": "d2k",
+      "field": {
+        "title": "text that was found in the title"
+      }
+    },
+    {
+      "id": 2,
+      "elements": "term",
+      "field": {
+        "title": "text that was found in the title",
+        "info": "text that was found in info"
+      }
+    }
+  ]
+}
