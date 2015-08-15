@@ -74,7 +74,7 @@ class users {
 		// validate user existance
 		$tempUser = users::validate_username_password($username, $password);
 		if($tempUser == null)
-			return false;
+			return null;
 
 		// update user's password in database
 		$dbObj = new dbAPI();

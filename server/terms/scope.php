@@ -83,23 +83,8 @@ class scope {
 		$dbObj->run_query($dbObj->db_get_contentDB(), $query);
 
 		// returns an entity of recently added connection
-		return scope::get_connection_by_UID($UID);
+		return term::get_connection_by_UID($UID);
 	}
-
-
-	// returns a term + meaning + scope connection by its UID
-	public static function get_connection_by_UID($UID) {
-
-		$dbObj = new dbAPI();
-		$query = "SELECT * FROM TERMS where UID = '" . $UID . "' AND ENABLED = '1'";
-		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
-		if(count($results) == 0)
-			return null;
-
-		return $results[0];	
-	}
-
-
 
 }
 
