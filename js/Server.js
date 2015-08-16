@@ -85,6 +85,7 @@ app.factory('Server', function(){
 						callback(null, {"message":"Could not save element","code":""});
 					break;
 				}
+				console.warn("DUMMY REQUESTS");
 			}else{
 				// AJAX
 			}
