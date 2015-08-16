@@ -90,7 +90,19 @@ app.factory('Workspace', ['Workflow', function(Workflow){
 			}
 			maxId++;
 			this.lastWorkflowId = maxId;
+		},
+
+		scrollToLastWorkflow: function(Steps){
+			var indexOfScroll = 0;
+            for(var i=0; i< this.workflows.length; i++){
+                if(this.workflows[i].ID == Steps.lastFocusedWorkflow){
+                    indexOfScroll = i;
+                    break;
+                }
+            }
+            this.workflows[indexOfScroll].scrollTo();
 		}
+
 	}
 
 	return Workspace;
