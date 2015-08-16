@@ -21,13 +21,12 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 		function ServerResquestComplete(serverSteps, passThis){
 			var dataFromLocalStorage = JSON.parse(localStorage.getItem("com.intel.steps.last20Steps"));
 			// init workspace
-			var tempWorkspace = new Workspace();
-			tempWorkspace.workflows = [];
-			tempWorkspace.lastWorkflowId = 0;
-			tempWorkspace.newWorkflowButtons = [];
-			tempWorkspace.selectedWorkflow = null;
 
 			if(serverSteps){
+				workspace.workflows = [];
+				workspace.lastWorkflowId = 0;
+				workspace.newWorkflowButtons = [];
+				workspace.selectedWorkflow = null;
 				if(dataFromLocalStorage != null){
 					// compare 
 					if(Number(serverSteps.lastModified) < dataFromLocalStorage.lastModified){
@@ -49,35 +48,38 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 			}else{
 				// only local steps
 				if(dataFromLocalStorage != null){
+					workspace.workflows = [];
+					workspace.lastWorkflowId = 0;
+					workspace.newWorkflowButtons = [];
+					workspace.selectedWorkflow = null;
 					passThis.last20Steps = dataFromLocalStorage.last20Steps;
 					passThis.currentUndoOrder = dataFromLocalStorage.currentUndoOrder;
 					passThis.lastFocusedWorkflow = dataFromLocalStorage.lastFocusedWorkflow;
 				}else{
-					tempWorkspace = new Workspace();
-					tempWorkspace.selectedWorkflow = tempWorkspace.workflows[0];
-					passThis.InsertStepToLastSteps(tempWorkspace);
-					lastFocusedWorkflow = tempWorkspace.workflows[0].ID;
+					workspace = new Workspace();
+					workspace.selectedWorkflow = workspace.workflows[0];
+					passThis.InsertStepToLastSteps(workspace);
+					lastFocusedWorkflow = workspace.workflows[0].ID;
 				}
 			}
 			passThis.commitSteps();
 			passThis.savedInServer = true;
 			// update layout of workspace
-			passThis.restoreStep(tempWorkspace, function(){
+			passThis.restoreStep(workspace, function(){
 				if(passThis.lastFocusedWorkflow == null || passThis.lastFocusedWorkflow == undefined){
-					passThis.lastFocusedWorkflow = lastFocusedWorkflow = tempWorkspace.workflows[0].ID;
+					passThis.lastFocusedWorkflow = lastFocusedWorkflow = workspace.workflows[0].ID;
 				}else{
 					var indexOfScroll = 0;
-                    for(var i=0; i< tempWorkspace.workflows.length; i++){
-                        if(tempWorkspace.workflows[i].ID == passThis.lastFocusedWorkflow){
+                    for(var i=0; i< workspace.workflows.length; i++){
+                        if(workspace.workflows[i].ID == passThis.lastFocusedWorkflow){
                             indexOfScroll = i;
                             break;
                         }
                     }
-                    passThis.lastFocusedWorkflow = tempWorkspace.workflows[indexOfScroll].ID;
+                    passThis.lastFocusedWorkflow = workspace.workflows[indexOfScroll].ID;
 				}
-				tempWorkspace.updateNewWorkflowButtons();
-				tempWorkspace.updateLastId();
-				workspace = tempWorkspace;
+				workspace.updateNewWorkflowButtons();
+				workspace.updateLastId();
 			});
 		}
 	}

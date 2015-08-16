@@ -29,10 +29,12 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
         $scope.workSpaces = {};
         $scope.displayNewWorkflowTabButtons = true;
 		$scope.displayNewWorkflowButtons = true;
+        $scope.clickToMaximize = false;
 
 
         // new implementaion for steps
         $scope.Steps;
+        $scope.focusingLastWorkflow = true;
 
         // $scope.$on('$destroy', function() {
         //     delete $window.onbeforeunload;
@@ -134,14 +136,10 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                             var waitUntilLoad = setInterval(function(){
                             	if($('#Workflow'+$scope.Steps.lastFocusedWorkflow).position()){
                             		setTimeout(function(){
-                                        var indexOfScroll = 0;
-                                        for(var i=0; i< $scope.Workflow.length; i++){
-                                            if($scope.Workflow[i].ID == $scope.Steps.lastFocusedWorkflow){
-                                                indexOfScroll = i;
-                                                break;
-                                            }
-                                        }
-		                            	$scope.Workflow[indexOfScroll].scrollTo();
+                                        $scope.workSpaces.scrollToLastWorkflow($scope.Steps);
+                                        setTimeout(function(){
+                                            $scope.focusingLastWorkflow = true;
+                                        },500);
 	                            	},500);
 	                            	clearInterval(waitUntilLoad);
 	                            }
@@ -179,7 +177,6 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             
 
             $('#WorkFlowMatrix').css('min-width', "10000px").css('min-height', "10000px").css('width', "10000px").css('height', "10000px");
-            // $scope.settings = {}
         }
 
 
@@ -432,8 +429,32 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             $scope.InsertStepToLast10Steps();
         }
 
+        $scope.refocusLastWorkflow = function(){
+            $scope.workSpaces.scrollToLastWorkflow($scope.Steps);
+            setTimeout(function(){
+                $scope.focusingLastWorkflow = true;
+            },500);
+        }
+        $scope.focusThisWorkflow = function(workflow){
+            var lastFocusedWorkflow = $scope.Steps.lastFocusedWorkflow+1-1;
+            $scope.Steps.lastFocusedWorkflow = workflow.ID;
+            $scope.workSpaces.scrollToLastWorkflow($scope.Steps);
+            setTimeout(function(){
+                $({someValue: $("#ZoomRange").val()}).animate({someValue: 80}, {
+                    duration: 100,
+                    step: function() { 
+                       $("#ZoomRange").val(Math.ceil(this.someValue));
+                    }
+                });
+                setTimeout(function(){
+                    $scope.workSpaces.scrollToLastWorkflow($scope.Steps);
+                    setTimeout(function(){
+                        $scope.Steps.lastFocusedWorkflow = lastFocusedWorkflow;
+                    },200);
+                },200);
+            },200);
 
-
+        }
 
 
 
@@ -450,6 +471,14 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
          *                                                                                                                       *
          ************************************************************************************************************************/
 
+        var initBodyScroll = $interval(function(){
+            if($('#BodyRow').length > 0){
+                $('#BodyRow').on('scroll', function(e){
+                    $scope.focusingLastWorkflow = false;
+                });
+                $interval.cancel(initBodyScroll);
+            }
+        },1000);
         $interval(function() {
             if ($scope.lastZoomIn != $('#ZoomRange').val()) {
 
@@ -497,9 +526,17 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                 $('#pointToZoom').css('left', ((1 / pointToZoomRate) * (($('#BodyRow').width() / 2) + $('#BodyRow').scrollLeft())) + "px");
                 $('#pointToZoom').css('top', ((1 / pointToZoomRate) * (($('#BodyRow').height() / 2) + $('#BodyRow').scrollTop())) + "px");
             }
+            if($('#ZoomRange').val() <= 45){
+                if($scope.clickToMaximize != true)
+                    $scope.clickToMaximize = true;
+            }else{
+                if($scope.clickToMaximize != false)
+                    $scope.clickToMaximize = false;
+            }
         }, 50);
         $interval(function() {
             $('#BodyRow').css('height', ($(window).height() - 50) + "px");
+
             $('#FullScreenDiv').css('height', ($(window).height() - 50) + "px");
         }, 100);
         $interval(function() {

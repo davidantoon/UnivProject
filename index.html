@@ -35,6 +35,11 @@
               </ons-col>
               <ons-col>
               </ons-col>
+              <ons-col id="refocusButton" ng-click="refocusLastWorkflow();" width="45px" style="width:45px; position:relative;" class="{{'col ons-col-inner '+((focusingLastWorkflow == false)?'clickable hoverOp':'opacityLow')}}">
+                <div class="TopTabbarButton" style="border-right:0;font-size: 13px;">
+                  <ons-icon icon="ion-pinpoint" size="25px"></ons-icon>
+                </div>
+              </ons-col>
               <ons-col id="NotificationsButton3" ng-click="Steps.commitSteps();" width="80px" style="width:50px; position:relative;" class="{{'col ons-col-inner '+((Steps.savedInServer == false)?'clickable hoverOp':'opacityLow')}}">
                 <div class="TopTabbarButton" style="border-right:0;font-size: 13px;">
                   <ons-icon icon="ion-upload" size="25px"></ons-icon>
@@ -130,6 +135,11 @@
               
               <!-- <div ng-mouseenter="EnableScroll(2);" ng-mouseleave="EnableScroll(1);" -->
               <div ng-repeat="wFlow in Workflow" id="{{'Workflow'+wFlow.ID}}" class="WorkFlowBlock Available" ng-click="Steps.lastFocusedWorkflow = wFlow.ID" fx="{{wFlow.fx}}" fy="{{wFlow.fy}}" tx="{{wFlow.tx}}" ty="{{wFlow.ty}}">
+                <div ng-click="focusThisWorkflow(wFlow);" class="{{'MaximizeButton clickable '+((clickToMaximize == true)?'':'hidden')}}">
+                  <div>
+                    <ons-icon icon="ion-ios-search-strong" size="100px"></ons-icon>
+                  </div>
+                </div>
                 <div class="resizeDiv resizeWidthLeftDiv hoverOp clickable">
                   <ons-icon icon="ion-arrow-left-b" size="20px"></ons-icon>
                 </div>
@@ -143,7 +153,7 @@
                   <ons-icon icon="ion-arrow-down-b" size="20px"></ons-icon>
                 </div>
                 <ons-row class="row ons-row-inner WorkFlowTabs">
-                  <ons-col ng-repeat="tab in wFlow.tabs" ng-click="selectTab(wFlow, tab);" class="{{'col ons-col-inner WorkFlowTab '+((getSelectedTab(wFlow, tab.ID))?'ActiveTab':'')}}">
+                  <ons-col ng-repeat="tab in wFlow.tabs" ng-click="selectTab(wFlow, tab);" class="{{'col ons-col-inner WorkFlowTab '+((getSelectedTab(wFlow, tab.ID))?'ActiveTab':'') + ' '+ ((clickToMaximize == true)?'blured':'')}}">
                     <input id="{{'WorkflowI'+wFlow.ID+'Tab'+tab.ID}}" readonly="readonly" placeholder="Tab name" ng-enter="updateTabName(wFlow.ID, tab.ID, 'WorkflowI'+wFlow.ID+'Tab'+tab.ID);" ng-dblclick="ConvertTextBos('WorkflowI'+wFlow.ID+'Tab'+tab.ID);"
                     value="{{tab.title}}" />
                   </ons-col>
@@ -151,7 +161,7 @@
                     +
                   </ons-col>
                 </ons-row>
-                <div class="SelectedTabContent">
+                <div class="{{'SelectedTabContent '+((clickToMaximize == true)?'blured':'')}}">
                     <div class="{{((getSelectedTabType(wFlow) == 0)?'':'hidden')}}">
                       <div ng-click="MainButtonsPressed(wFlow,1);" class="SearchButton MainButtonsTab">
                         Search
