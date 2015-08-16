@@ -44,60 +44,49 @@ app.factory('Server', function(){
 		// deleviry , settings, kbits,steps, 
 		saveElement: function(obj, callback){
 
-			// if(this.saveObjectQuery == "dummy"){
-			// 	var dummyPlus = {
-			// 		"ID": "7",
-	 	// 			"Name": "Element 7",
-			// 	 	"Url": "Url 7",
-			// 	 	"Category": "Category 7",
-			// 	 	"Terms":["C","C#","Java"],
-			// 		"KbitsNeeded": [],
-			// 		"KbitProvided": [],
-			// 		"Locked": false
-			// 	};
-			// 	localStorage.setItem("dummy",JSON.stringify(dummyPlus));
-			// 	console.log("dummy saved");
-			// 	callback(obj);
-			// }
+			if(this.saveObjectQuery == "dummy"){
 
-			switch (this.TypeOfData){
-				case "delivery":
-					var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
-					deliveryDB.push(obj);
-					localStorage.removeItem("com.intel.Server.delivery");
-					localStorage.setItem("com.intel.Server.delivery", JSON.stringify(deliveryDB));
-					callback({"message":"delivery saved correctly","code":""} ,null);
-				break;
-				case "kbits":
-					var kbitsDB = JSON.parse(localStorage.getItem("com.intel.server.kbits"));
-					kbitsDB.push(obj);
-					localStorage.removeItem("com.intel.server.kbits");
-					localStorage.setItem("com.intel.server.kbits", JSON.stringify(kbitsDB));
-					callback({"message":"kbits saved correctly","code":""}, null);
-				break;
-				case "settings":
-					var settingsDB = JSON.parse(localStorage.getItem("com.intel.server.settings"));
-					settingsDB.push(obj);
-					localStorage.removeItem("com.intel.server.settings");
-					localStorage.setItem("com.intel.server.settings", JSON.stringify(settingsDB));
-					callback({"message":"settings saved correctly","code":""}, null);
-				break;
-				case "steps":
-					// var stepsDB = JSON.parse(localStorage.getItem("com.intel.server.steps"));
-					localStorage.removeItem("com.intel.server.steps");
-					localStorage.setItem("com.intel.server.steps", JSON.stringify(obj));
-					callback({"message":"steps saved correctly","code":""}, null);
-				break;
-				case "term":
-					var termsDB = JSON.parse(localStorage.getItem("com.intel.server.terms"));
-					termsDB.push(obj);
-					localStorage.removeItem("com.intel.server.terms");
-					localStorage.setItem("com.intel.server.terms", JSON.stringify(termsDB));
-					callback({"message":"term saved correctly","code":""}, null);
-				break;
-				default:
-					callback(null, {"message":"Could not save element","code":""});
-				break;
+				switch (this.TypeOfData){
+					case "delivery":
+						var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
+						deliveryDB.push(obj);
+						localStorage.removeItem("com.intel.Server.delivery");
+						localStorage.setItem("com.intel.Server.delivery", JSON.stringify(deliveryDB));
+						callback({"message":"delivery saved correctly","code":""} ,null);
+					break;
+					case "kbits":
+						var kbitsDB = JSON.parse(localStorage.getItem("com.intel.server.kbits"));
+						kbitsDB.push(obj);
+						localStorage.removeItem("com.intel.server.kbits");
+						localStorage.setItem("com.intel.server.kbits", JSON.stringify(kbitsDB));
+						callback({"message":"kbits saved correctly","code":""}, null);
+					break;
+					case "settings":
+						var settingsDB = JSON.parse(localStorage.getItem("com.intel.server.settings"));
+						settingsDB.push(obj);
+						localStorage.removeItem("com.intel.server.settings");
+						localStorage.setItem("com.intel.server.settings", JSON.stringify(settingsDB));
+						callback({"message":"settings saved correctly","code":""}, null);
+					break;
+					case "steps":
+						// var stepsDB = JSON.parse(localStorage.getItem("com.intel.server.steps"));
+						localStorage.removeItem("com.intel.server.steps");
+						localStorage.setItem("com.intel.server.steps", JSON.stringify(obj));
+						callback({"message":"steps saved correctly","code":""}, null);
+					break;
+					case "term":
+						var termsDB = JSON.parse(localStorage.getItem("com.intel.server.terms"));
+						termsDB.push(obj);
+						localStorage.removeItem("com.intel.server.terms");
+						localStorage.setItem("com.intel.server.terms", JSON.stringify(termsDB));
+						callback({"message":"term saved correctly","code":""}, null);
+					break;
+					default:
+						callback(null, {"message":"Could not save element","code":""});
+					break;
+				}
+			}else{
+				// AJAX
 			}
 		},
 
@@ -109,47 +98,50 @@ app.factory('Server', function(){
 		 */
 		getElementByID: function(objID, callback){
 			if(saveObjectQuery == "dummy"){
-				return localStorage.getItem("dummy");
-			}
+			// 	return localStorage.getItem("dummy");
+			// }
 
-			switch (this.TypeOfData){
-				case "delivery":
-					var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
-					for(var i = 0; deliveryDB.length; i++){
-						if(deleviry[i].id == obj.id){
-							callback(deleviry[i], null);
-							return;
+				switch (this.TypeOfData){
+					case "delivery":
+						var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
+						for(var i = 0; deliveryDB.length; i++){
+							if(deleviry[i].id == obj.id){
+								callback(deleviry[i], null);
+								return;
+							}
 						}
-					}
-					callback(null, {"message":"Object delivery not found","code":"404"});
-					return;
-				break;
-				case "kbits":
-					var kbitsDB = JSON.parse(localStorage.getItem("com.intel.server.kbits"));
-					for(var i = 0; kbitsDB.length; i++){
-						if(kbitsDB[i].id == obj.id){
-							callback(kbitsDB[i],null);
-							return;
+						callback(null, {"message":"Object delivery not found","code":"404"});
+						return;
+					break;
+					case "kbits":
+						var kbitsDB = JSON.parse(localStorage.getItem("com.intel.server.kbits"));
+						for(var i = 0; kbitsDB.length; i++){
+							if(kbitsDB[i].id == obj.id){
+								callback(kbitsDB[i],null);
+								return;
+							}
 						}
-					}
-					callback(null, {"message":"Object kbits not found","code":"404"});
-					return;
-				break;
-				case "term":
-					var termsDB = JSON.parse(localStorage.getItem("com.intel.server.terms"));
-					for(var i = 0; termsDB.length; i++){
-						if(termsDB[i].id == obj.id){
-							callback(termsDB[i],null);
-							return;
+						callback(null, {"message":"Object kbits not found","code":"404"});
+						return;
+					break;
+					case "term":
+						var termsDB = JSON.parse(localStorage.getItem("com.intel.server.terms"));
+						for(var i = 0; termsDB.length; i++){
+							if(termsDB[i].id == obj.id){
+								callback(termsDB[i],null);
+								return;
+							}
 						}
-					}
-					callback(null, {"message":"Object term not found","code":"404"});
-					return;
-				break;
-				default:
-					callback(null, {"message":"Save Element func Object is not found","code":"404"});
-					return;
-				break;
+						callback(null, {"message":"Object term not found","code":"404"});
+						return;
+					break;
+					default:
+						callback(null, {"message":"Save Element func Object is not found","code":"404"});
+						return;
+					break;
+				}
+			}else{
+				// AJAAAXXX
 			}
 
 		},
