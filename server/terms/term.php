@@ -320,6 +320,92 @@ class term {
 
 		return $results[0];	
 	}
+
+
+
+
+
+
+	// public static function get_scope_by_UID_with_relations($UID, $lang = '') {
+
+	// 	// check if scope exists
+	// 	$Scope = scope::get_scope_by_UID($UID);
+	// 	if($Scope == null)
+	// 		return null;
+
+	// 	// add related scopes to scope object
+	// 	$Scope["RELATED_SCOPES"] = scope::get_relations_of_scope($UID);
+
+	// 	$Scope["TERMS"] = scope::get_terms_of_scope($UID, $lang);
+	// 	return $Scope;
+	// }
+
+	// relate term to another
+	public static function add_relation_to_terms($parent_term_UID, $child_term_UID, $is_hier, $user) {
+		// create relation between two terms
+		refRelation::add_relation_to_object($parent_term_UID, $child_term_UID, $is_hier, $user, 'R_Lt2t');
+		// return recently created relation
+		return refRelation::get_objects_relation($parent_term_UID, $child_term_UID, 'R_Lt2t');
+	}
+
+
+
+	// remove relation
+	public static function remove_relation($parent_term_UID, $child_term_UID) {
+
+		refRelation::remove_relation($parent_term_UID, $child_term_UID, 'R_Lt2t');
+	}
+
+	// returns related terms
+	public static function get_relations_of_term($term_UID, $lang = '') {
+
+		return refRelation::get_relations_of_object($term_UID, 'R_Lt2t', 'term::get_term_by_UID', $lang);
+	}
+
+	// get related terms
+	public static function get_term_by_UID_with_relations($UID, $lang = '') {
+
+		// check if term exists
+		$term = term::get_term_by_UID($UID, $lang);
+		if($term == null)
+			return null;
+
+		// add related scopes to scope object
+		$term["RELATED_TERMS"] = term::get_relations_of_term($UID, $lang);
+
+		$term["SCOPES"] = term::get_scopes_of_term($UID, $lang);
+		return $term;
+	}
+
+	public static function get_scopes_of_term($term_UID, $lang = '') {
+
+		$scopes = array();
+
+		// extract scope terms relations
+		$dbObj = new dbAPI();
+		$query = "SELECT * FROM TERMS where ENABLED = 1 AND ( ID_TERM_STRING = " . $term_UID .  ")";
+		$scopes_related = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
+
+		if($scopes_related == null)
+			return null;
+
+		// get scopes and meanings details
+		for($i=0; $i<count($scopes_related); $i++) {
+			$curr_scope = scope::get_scope_by_UID($scopes_related[$i]["ID_SCOPE"], $lang);
+			$curr_meaning = term::get_term_meaning_by_UID($scopes_related[$i]["ID_TERM_MEAN"], $lang);
+			if($curr_scope != null) {
+				array_push($scopes, array('scope'=>$curr_scope, 'meaning'=>$curr_meaning));
+			}
+		}
+
+		return $scopes;
+	}
+
+	// public static function get_terms_relation($first_term, $second_term) {
+
+	// 	return refRelation::get_objects_relation($first_term, $second_term, 'R_Lt2t');
+	// }
+	
 	
 }
 ?>

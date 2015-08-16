@@ -29,6 +29,7 @@ class scope {
 
 		return $results[0];	
 	}
+	
 	public static function get_scope_by_UID_with_relations($UID, $lang = '') {
 
 		// check if scope exists
