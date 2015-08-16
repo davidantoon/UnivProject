@@ -128,8 +128,8 @@
             <div id="WorkFlowMatrix">
               <div id="pointToZoom"></div>
               
-
-              <div ng-mouseenter="EnableScroll(2);" ng-mouseleave="EnableScroll(1);" ng-repeat="wFlow in Workflow" id="{{'Workflow'+wFlow.ID}}" class="WorkFlowBlock Available" ng-click="Steps.lastFocusedWorkflow = wFlow.ID" fx="{{wFlow.fx}}" fy="{{wFlow.fy}}" tx="{{wFlow.tx}}" ty="{{wFlow.ty}}">
+              <!-- <div ng-mouseenter="EnableScroll(2);" ng-mouseleave="EnableScroll(1);" -->
+              <div ng-repeat="wFlow in Workflow" id="{{'Workflow'+wFlow.ID}}" class="WorkFlowBlock Available" ng-click="Steps.lastFocusedWorkflow = wFlow.ID" fx="{{wFlow.fx}}" fy="{{wFlow.fy}}" tx="{{wFlow.tx}}" ty="{{wFlow.ty}}">
                 <div class="resizeDiv resizeWidthLeftDiv hoverOp clickable">
                   <ons-icon icon="ion-arrow-left-b" size="20px"></ons-icon>
                 </div>
