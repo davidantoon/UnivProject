@@ -135,7 +135,7 @@ app.factory('Storage', ["Globals", "TypeOf", function(Globals, TypeOf){
 			// remove specific key from storage
 			if(value == null || value == undefined || value == ""){
 				localStorage.removeItem(key);
-				callback(JSON.parse(localStorage.getItem(key))), null);
+				callback(JSON.parse(localStorage.getItem(key)), null);
 				return;
 			}
 
@@ -149,7 +149,7 @@ app.factory('Storage', ["Globals", "TypeOf", function(Globals, TypeOf){
 					return;
 				}
 			}
-			callback(null, {"message": "no item has been removed","code": "");
+			callback(null, {"message": "no item has been removed","code": ""});
 			return;
 		},
 

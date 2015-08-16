@@ -132,10 +132,16 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                             $scope.AppStatus = 2;
                             $('#LoadingScreen').hide();
                             var waitUntilLoad = setInterval(function(){
-                            	if($('#Workflow0').position()){
+                            	if($('#Workflow'+$scope.Steps.lastFocusedWorkflow).position()){
                             		setTimeout(function(){
-                            			console.log($('#Workflow0').position());
-		                            	$scope.Workflow[0].scrollTo();
+                                        var indexOfScroll = 0;
+                                        for(var i=0; i< $scope.Workflow.length; i++){
+                                            if($scope.Workflow[i].ID == $scope.Steps.lastFocusedWorkflow){
+                                                indexOfScroll = i;
+                                                break;
+                                            }
+                                        }
+		                            	$scope.Workflow[indexOfScroll].scrollTo();
 	                            	},500);
 	                            	clearInterval(waitUntilLoad);
 	                            }

@@ -44,21 +44,21 @@ app.factory('Server', function(){
 		// deleviry , settings, kbits,steps, 
 		saveElement: function(obj, callback){
 
-			if(saveObjectQuery == "dummy"){
-				var dummyPlus = {
-					"ID": "7",
-	 				"Name": "Element 7",
-				 	"Url": "Url 7",
-				 	"Category": "Category 7",
-				 	"Terms":["C","C#","Java"],
-					"KbitsNeeded": [],
-					"KbitProvided": [],
-					"Locked": false
-				};
-				localStorage.setItem("dummy",JSON.stringify(dummyPlus));
-				console.log("dummy saved");
-				callback(obj);
-			}
+			// if(this.saveObjectQuery == "dummy"){
+			// 	var dummyPlus = {
+			// 		"ID": "7",
+	 	// 			"Name": "Element 7",
+			// 	 	"Url": "Url 7",
+			// 	 	"Category": "Category 7",
+			// 	 	"Terms":["C","C#","Java"],
+			// 		"KbitsNeeded": [],
+			// 		"KbitProvided": [],
+			// 		"Locked": false
+			// 	};
+			// 	localStorage.setItem("dummy",JSON.stringify(dummyPlus));
+			// 	console.log("dummy saved");
+			// 	callback(obj);
+			// }
 
 			switch (this.TypeOfData){
 				case "delivery":
@@ -83,9 +83,9 @@ app.factory('Server', function(){
 					callback({"message":"settings saved correctly","code":""}, null);
 				break;
 				case "steps":
-					var stepsDB = JSON.parse(localStorage.getItem("com.intel.server.steps"));
+					// var stepsDB = JSON.parse(localStorage.getItem("com.intel.server.steps"));
 					localStorage.removeItem("com.intel.server.steps");
-					localStorage.setItem("com.intel.server.steps", JSON.stringify(stepsDB));
+					localStorage.setItem("com.intel.server.steps", JSON.stringify(obj));
 					callback({"message":"steps saved correctly","code":""}, null);
 				break;
 				case "term":
@@ -96,7 +96,7 @@ app.factory('Server', function(){
 					callback({"message":"term saved correctly","code":""}, null);
 				break;
 				default:
-				callback(null, {"message":"Could not save element","code":""});
+					callback(null, {"message":"Could not save element","code":""});
 				break;
 			}
 		},
@@ -167,7 +167,7 @@ app.factory('Server', function(){
 
 			switch(this.TypeOfData){
 				case "delivery":
-					var deliveryDB = JSON.parse(localStorage.getItem("com.intel.server.delivery");
+					var deliveryDB = JSON.parse(localStorage.getItem("com.intel.server.delivery"));
 					for(var i = 0; i < deliveryDB.length; i++){
 						if(deliveryDB[i].id == obj.id){
 							deliveryDB.splice(i,1);
@@ -180,7 +180,7 @@ app.factory('Server', function(){
 					return;
 				break;
 				case "kbits":
-					var kbitsDB = JSON.parse(localStorage.getItem("com.intel.server.kbits");
+					var kbitsDB = JSON.parse(localStorage.getItem("com.intel.server.kbits"));
 					for(var i = 0; i < kbitsDB.length; i++){
 						if(kbitsDB[i].id == obj.id){
 							kbitsDB.splice(i,1);
@@ -193,7 +193,7 @@ app.factory('Server', function(){
 					return;
 				break;
 				case "term":
-					var termsDB = JSON.parse(localStorage.getItem("com.intel.server.term");
+					var termsDB = JSON.parse(localStorage.getItem("com.intel.server.term"));
 					for(var i = 0; i < termsDB.length; i++){
 						if(termsDB[i].id == obj.id){
 							termsDB.splice(i,1);
@@ -244,7 +244,7 @@ app.factory('Server', function(){
 				return;
 			}else{
 				if(stepsDB.length == 0){
-					callback({"message":"there is no steps in server", "code": ""}, null );
+					callback(null, {"message":"there is no steps in server", "code": ""});
 					return;
 				}
 				callback(JSON.parse(stepsDB), null);
@@ -273,6 +273,6 @@ app.factory('Server', function(){
 			}
 		}
 	}
-	return Server(connectionType);
+	return Server;
 });
 
