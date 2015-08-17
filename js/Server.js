@@ -15,10 +15,84 @@ app.factory('Server', function(){
 		 * @param  {string}   searchText The text we are going to search
 		 * @param  {Function} callback   callback function
 		 */
-		searchElement: function(searchText, callback){
+		searchElement: function(dataToSeach, callback){
 			if(this.baseUrl == "dummy"){
-				setTimeout(function(){
-				},300);
+				switch (dataToSeach.dataType){
+					case 0:
+						var KbitsDB = JSON.parse(localStorage.getItem("com.intel.Server.Kbits"));
+						for (var i = KbitsDB.length - 1; i >= 0; i--) {
+							switch (dataToSeach.searchBy){
+							case 0:
+								if( KbitsDB[i].name.toLowerCase() == dataToSeach.text.toLowerCase() ){
+									callback(KbitsDB[i], null);
+									return;
+								}
+							break;
+							case 1:
+								if( contains( KbitsDB[i].description, dataToSeach.text) ){
+									callback(KbitsDB[i], null);
+									return;
+								}
+							break;
+							case 2:
+								if( KbitsDB[i].id.toLowerCase() == dataToSeach.text.toLowerCase() ){
+									callback(KbitsDB[i], null);
+									return;
+								}
+							break;
+							}
+						}
+					case 1:
+					var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
+						for (var i = deliveryDB.length - 1; i >= 0; i--) {
+							switch (dataToSeach.searchBy){
+							case 0:
+								if( deliveryDB[i].name.toLowerCase() == dataToSeach.text.toLowerCase() ){
+									callback(deliveryDB[i], null);
+									return;
+								}
+							break;
+							case 1:
+								if( contains( deliveryDB[i].description, dataToSeach.text) ){
+									callback(deliveryDB[i], null);
+									return;
+								}
+							break;
+							case 2:
+								if( deliveryDB[i].id.toLowerCase() == dataToSeach.text.toLowerCase() ){
+									callback(deliveryDB[i], null);
+									return;
+								}
+							break;
+							}
+						}
+					break;
+					case 2:
+					var termsDB = JSON.parse(localStorage.getItem("com.intel.Server.terms"));
+						for (var i = termsDB.length - 1; i >= 0; i--) {
+							switch (dataToSeach.searchBy){
+							case 0:
+								if( termsDB[i].name.toLowerCase() == dataToSeach.text.toLowerCase() ){
+									callback(termsDB[i], null);
+									return;
+								}
+							break;
+							case 1:
+								if( termsDB[i].description.toLowerCase() == dataToSeach.text.toLowerCase()) ){
+									callback(termsDB[i], null);
+									return;
+								}
+							break;
+							case 2:
+								if( termsDB[i].id.toLowerCase() == dataToSeach.text.toLowerCase() ){
+									callback(termsDB[i], null);
+									return;
+								}
+							break;
+							}
+						}
+					break;
+				}
 			}else{
 				$.ajax({
 					url: baseUrl+searchQuery,
@@ -47,7 +121,7 @@ app.factory('Server', function(){
 			if(this.saveObjectQuery == "dummy"){
 
 				switch (this.TypeOfData){
-					case "delivery":
+					case "Deliveries":
 						var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
 						deliveryDB.push(obj);
 						localStorage.removeItem("com.intel.Server.delivery");
@@ -74,7 +148,7 @@ app.factory('Server', function(){
 						localStorage.setItem("com.intel.server.steps", JSON.stringify(obj));
 						callback({"message":"steps saved correctly","code":""}, null);
 					break;
-					case "term":
+					case "Terms":
 						var termsDB = JSON.parse(localStorage.getItem("com.intel.server.terms"));
 						termsDB.push(obj);
 						localStorage.removeItem("com.intel.server.terms");
