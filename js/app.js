@@ -612,8 +612,9 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             $scope.InsertStepToLast10Steps();
         }
 
-
-
+        $scope.testFunction = function(wFlow){
+            console.log(wFlow.selectedTab.dataHolding);
+        }
 
 
 
