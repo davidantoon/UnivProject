@@ -12,10 +12,10 @@ app.factory('Server', function(){
 
 		/**
 		 * Search element in server
-		 * @param  {string}   searchText The text we are going to search
-		 * @param  {Function} callback   callback function
+		 * @param  {string}   dataToSearch The data that defines the search we are going to do
+		 * @param  {Function} callback     callback function
 		 */
-		searchElement: function(dataToSeach, callback){
+		search: function(dataToSeach, callback){
 			if(this.baseUrl == "dummy"){
 				switch (dataToSeach.dataType){
 					case 0:
