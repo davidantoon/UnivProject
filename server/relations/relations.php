@@ -19,12 +19,10 @@ class refRelation {
 	// relate scope to another
 	public static function add_relation_to_object($parent_UID, $child_UID, $is_hier, $user, $tableName) {
 		
-		echo "sssssss";
 		if($parent_UID == $child_UID) {
 			debugLog::log("parent ". $tableName ." (". $parent_UID .") and child (". $child_UID .") ". $tableName ." cannot be the same");
 			return null;
 		}
-		echo "sssssss";
 		// disable old relation
 		refRelation::remove_relation($parent_UID, $child_UID, $tableName);
 		// get latest revision number
@@ -104,7 +102,7 @@ class refRelation {
 				if($results[$i]["HIER"] == 1)
 					array_push($parents, call_user_func($anonFunc, $results[$i]["PARENT_ID"], $param2));
 				else
-					array_push($others, call_user_func($anonFunc, $results[$i]["CHILD_ID"], $param2));
+					array_push($others, call_user_func($anonFunc, $results[$i]["PARENT_ID"], $param2));
 			}
 		}
 

@@ -306,8 +306,37 @@ class term {
 		if(count($results) == 0)
 			return null;
 
-		return $results[0];	
+		$selected_meaning = $results[0];
+
+		if($lang != '')
+			return $selected_meaning;
+
+		// get other languages
+		$other_langs = term::get_term_meaning_by_UID_in_all_languages($UID);
+		if(count($other_langs) > 1) {
+			for($i=0; $i<count($other_langs); $i++) {
+				if($other_langs[$i] == $selected_meaning) {
+					unset($other_langs[$i]);
+				}
+			}
+			$selected_meaning["other_langs"] = array();
+			$selected_meaning["other_langs"] = array_merge($selected_meaning["other_langs"], $other_langs);
+		}
+
+		return $selected_meaning;
 	}
+
+
+	// return term meaning by UID in all languages
+	private static function get_term_meaning_by_UID_in_all_languages($UID) {
+		
+		$dbObj = new dbAPI();
+		// validate user in database
+		$query = "SELECT * FROM TERM_MEAN where UID = '" . $UID . "' AND ENABLED = '1'";
+		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
+		return $results;
+	}
+
 
 	// returns a term + meaning + scope connection by its UID
 	public static function get_connection_by_UID($UID) {
@@ -325,25 +354,13 @@ class term {
 
 
 
-
-	// public static function get_scope_by_UID_with_relations($UID, $lang = '') {
-
-	// 	// check if scope exists
-	// 	$Scope = scope::get_scope_by_UID($UID);
-	// 	if($Scope == null)
-	// 		return null;
-
-	// 	// add related scopes to scope object
-	// 	$Scope["RELATED_SCOPES"] = scope::get_relations_of_scope($UID);
-
-	// 	$Scope["TERMS"] = scope::get_terms_of_scope($UID, $lang);
-	// 	return $Scope;
-	// }
-
 	// relate term to another
 	public static function add_relation_to_terms($parent_term_UID, $child_term_UID, $is_hier, $user) {
 		// create relation between two terms
-		refRelation::add_relation_to_object($parent_term_UID, $child_term_UID, $is_hier, $user, 'R_Lt2t');
+		if(refRelation::add_relation_to_object($parent_term_UID, $child_term_UID, $is_hier, $user, 'R_Lt2t') == null) {
+			debugLog::log("parent term (". $parent_term_UID .") and child (". $child_term_UID .") term cannot be the same");
+			return null;
+		}
 		// return recently created relation
 		return refRelation::get_objects_relation($parent_term_UID, $child_term_UID, 'R_Lt2t');
 	}
@@ -369,13 +386,32 @@ class term {
 		$term = term::get_term_by_UID($UID, $lang);
 		if($term == null)
 			return null;
-
-		// add related scopes to scope object
+		// add related terms to term
 		$term["RELATED_TERMS"] = term::get_relations_of_term($UID, $lang);
 
+		// add term's scopes
 		$term["SCOPES"] = term::get_scopes_of_term($UID, $lang);
 		return $term;
 	}
+
+
+	// // get term by UID and scope with meaning
+	// public static function get_term_by_UID_with_meanings($UID, $scope_UID, $lang = '') {
+
+	// 	// check if term exists
+	// 	$term = term::get_term_by_UID($UID, $lang);
+	// 	if($term == null)
+	// 		return null;
+		
+	// 	// add meanings of term by scope
+	// 	$term["MEANING"] = term::get_scopes_of_term($UID, $lang);
+
+	// 	// add related terms to term
+	// 	$term["RELATED_TERMS"] = term::get_relations_of_term($UID, $lang);
+
+	// 	return $term;
+	// }
+
 
 	public static function get_scopes_of_term($term_UID, $lang = '') {
 
@@ -388,7 +424,6 @@ class term {
 
 		if($scopes_related == null)
 			return null;
-
 		// get scopes and meanings details
 		for($i=0; $i<count($scopes_related); $i++) {
 			$curr_scope = scope::get_scope_by_UID($scopes_related[$i]["ID_SCOPE"], $lang);
@@ -401,11 +436,6 @@ class term {
 		return $scopes;
 	}
 
-	// public static function get_terms_relation($first_term, $second_term) {
-
-	// 	return refRelation::get_objects_relation($first_term, $second_term, 'R_Lt2t');
-	// }
-	
 	
 }
 ?>
