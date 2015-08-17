@@ -73,7 +73,14 @@ app.factory('Tab', ['Content','Globals', function(Content, Globals){
 					});
 				break;
 				case Tab.CREATE_TAB:
-					
+					this.addData({
+						"searchText": "",
+						"resultsCount": 0,
+						"results": [],
+						"selectedResult": -1,
+						"elementsToSearch": 0,
+						"searchBy": 0
+					});
 				break;
 				case Tab.EDIT_TAB:
 					
@@ -90,6 +97,7 @@ app.factory('Tab', ['Content','Globals', function(Content, Globals){
 		 */
 		addData: function(dataHolding){
 			this.dataHolding = dataHolding;
+			
 		},
 
 		/**
