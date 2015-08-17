@@ -175,28 +175,29 @@
                     </div>
                     <div class="{{((getSelectedTabType(wFlow) == 1)?'':'hidden')}}">
                       <div class="searchTextboxDiv">
-                        <input class="searchTextbox" placeholder="Search Text" id="1" ng-model="wFlow.selectedTab.content.searchText">
+                        <input class="searchTextbox" ng-change="InsertStepToLast10Steps()" placeholder="Search Text" id="1" ng-model="wFlow.selectedTab.dataHolding.searchText">
                       </div>
                       <div class="searchOptions">
+                        <ons-row class="LabelOfOptionsButtons">
+                          Elements to search:
+                        </ons-row>
+                        <ons-row>
+                          <ons-col ng-click="wFlow.selectedTab.dataHolding.elementsToSearch = 0; InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.elementsToSearch == 0)?'checked':'')}}">Kbits</ons-col>
+                          <ons-col ng-click="wFlow.selectedTab.dataHolding.elementsToSearch = 1; InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.elementsToSearch == 1)?'checked':'')}}">Deliveries</ons-col>
+                          <ons-col ng-click="wFlow.selectedTab.dataHolding.elementsToSearch = 2; InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.elementsToSearch == 2)?'checked':'')}}">Terms</ons-col>
+                        </ons-row>
                         <ons-row class="LabelOfOptionsButtons">
                           Search By:
                         </ons-row>
                         <ons-row>
-                          <ons-col class="searchOptionButton checked">Kbits</ons-col>
-                          <ons-col class="searchOptionButton">Delivery</ons-col>
-                          <ons-col class="searchOptionButton">Terms</ons-col>
-                        </ons-row>
-                        <ons-row class="LabelOfOptionsButtons">
-                          Order By: 
-                        </ons-row>
-                        <ons-row>
-                          <ons-col class="searchOptionButton">Newest</ons-col>
-                          <ons-col class="searchOptionButton checked">Popular</ons-col>
+                          <ons-col class="searchOptionButton">Name</ons-col>
+                          <ons-col class="searchOptionButton checked">Description</ons-col>
+                          <ons-col class="searchOptionButton">ID</ons-col>
                         </ons-row>
                         <ons-row>
                           <ons-col></ons-col>
                           <ons-col>
-                            <div class="SearchButtonForQuery">Search</div>
+                            <div class="SearchButtonForQuery" ng-click="testFunction(wFlow);">Search</div>
                           </ons-col>
                           <ons-col></ons-col>
                         </ons-row>                        
