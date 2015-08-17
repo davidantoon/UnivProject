@@ -460,7 +460,8 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
 
         $scope.prepareForSearch = function(wFlow){
             var dataHolding = wFlow.selectedTab.dataHolding;
-            if(dataHolding.searchText && dataHolding.searchText != "" && dataHolding.elementsToSearch && dataHolding.elementsToSearch != "" && dataHolding.searchBy && dataHolding.searchBy != ""){
+
+            if(dataHolding.searchText && dataHolding.searchText != "" && dataHolding.elementsToSearch != null && dataHolding.searchBy != null){
                 var dataToSearch = {
                     "text":dataHolding.searchText,
                     "dataType": ((dataHolding.elementsToSearch == 0)?'Kbits':((dataHolding.elementsToSearch == 1)?'Deliveries':'Terms')),
@@ -471,7 +472,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                 // give the ability to choose where to open new workflow (display newWorkflowButtons)
 
                 var svr = new Server(dataToSearch.dataType);
-                /*svr.search(dataToSearch, function(result, error){
+                svr.search(dataToSearch, function(result, error){
                     if(error || !result){
                         // HANDLE ERROR
                         $scope.alert("OPPSS");
@@ -479,7 +480,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
 
                         console.log(result);
                     }
-                });*/
+                });
 
             }else{
                 // HANDLE ERROR FILL INPUTS

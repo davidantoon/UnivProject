@@ -15,51 +15,59 @@ app.factory('Server', function(){
 		 * @param  {string}   dataToSearch The data that defines the search we are going to do
 		 * @param  {Function} callback     callback function
 		 */
-		search: function(dataToSeach, callback){
+		search: function(dataToSearch, callback){
 			if(this.baseUrl == "dummy"){
-				switch (dataToSeach.dataType){
-					case 0:
+				debugger;
+				var searchResults = [];
+				switch (this.TypeOfData){
+					case "Kbits":
 						var KbitsDB = JSON.parse(localStorage.getItem("com.intel.Server.Kbits"));
+						var SplitText = dataToSearch.text.split(' ');
 						for (var i = KbitsDB.length - 1; i >= 0; i--) {
-							switch (dataToSeach.searchBy){
-							case 0:
-								if( KbitsDB[i].name.toLowerCase() == dataToSeach.text.toLowerCase() ){
-									callback(KbitsDB[i], null);
-									return;
+							var found = false;
+							for(var j = 0; j < SplitText.length; j++){
+								switch (dataToSearch.searchBy){
+									case "Name":
+										if(KbitsDB[i].name.indexOf(SplitText[j]) != -1){
+											found = true;
+										}		
+									break;
+									case "Description":
+										if(KbitsDB[i].description.indexOf(SplitText[j]) != -1){
+											found = true;
+										}
+									break;
+									case "ID":
+										if(KbitsDB[i].id.indexOf(SplitText[j]) != -1){
+											found = true;
+										}
+									break;
+									default: break;
 								}
-							break;
-							case 1:
-								if( contains( KbitsDB[i].description, dataToSeach.text) ){
-									callback(KbitsDB[i], null);
-									return;
-								}
-							break;
-							case 2:
-								if( KbitsDB[i].id.toLowerCase() == dataToSeach.text.toLowerCase() ){
-									callback(KbitsDB[i], null);
-									return;
-								}
-							break;
+							}
+							if(found == true){
+								searchResults.push(KbitsDB[i]);
 							}
 						}
-					case 1:
-					var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
+					break;
+					case "Deliveries":
+						var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
 						for (var i = deliveryDB.length - 1; i >= 0; i--) {
-							switch (dataToSeach.searchBy){
-							case 0:
-								if( deliveryDB[i].name.toLowerCase() == dataToSeach.text.toLowerCase() ){
+							switch (dataToSearch.searchBy){
+							case "Name":
+								if( deliveryDB[i].name.toLowerCase() == dataToSearch.text.toLowerCase() ){
 									callback(deliveryDB[i], null);
 									return;
 								}
 							break;
-							case 1:
-								if( contains( deliveryDB[i].description, dataToSeach.text) ){
+							case "Description":
+								if( contains( deliveryDB[i].description, dataToSearch.text) ){
 									callback(deliveryDB[i], null);
 									return;
 								}
 							break;
-							case 2:
-								if( deliveryDB[i].id.toLowerCase() == dataToSeach.text.toLowerCase() ){
+							case "ID":
+								if( deliveryDB[i].id.toLowerCase() == dataToSearch.text.toLowerCase() ){
 									callback(deliveryDB[i], null);
 									return;
 								}
@@ -67,24 +75,24 @@ app.factory('Server', function(){
 							}
 						}
 					break;
-					case 2:
-					var termsDB = JSON.parse(localStorage.getItem("com.intel.Server.terms"));
+					case "Terms":
+						var termsDB = JSON.parse(localStorage.getItem("com.intel.Server.terms"));
 						for (var i = termsDB.length - 1; i >= 0; i--) {
-							switch (dataToSeach.searchBy){
-							case 0:
-								if( termsDB[i].name.toLowerCase() == dataToSeach.text.toLowerCase() ){
+							switch (dataToSearch.searchBy){
+							case "Name":
+								if( termsDB[i].name.toLowerCase() == dataToSearch.text.toLowerCase() ){
 									callback(termsDB[i], null);
 									return;
 								}
 							break;
-							case 1:
-								if( termsDB[i].description.toLowerCase() == dataToSeach.text.toLowerCase()) ){
+							case "Description":
+								if( termsDB[i].description.toLowerCase() == dataToSearch.text.toLowerCase()) {
 									callback(termsDB[i], null);
 									return;
 								}
 							break;
-							case 2:
-								if( termsDB[i].id.toLowerCase() == dataToSeach.text.toLowerCase() ){
+							case "ID":
+								if( termsDB[i].id.toLowerCase() == dataToSearch.text.toLowerCase()) {
 									callback(termsDB[i], null);
 									return;
 								}
@@ -92,7 +100,10 @@ app.factory('Server', function(){
 							}
 						}
 					break;
+					default: break;
 				}
+				callback(searchResults, null);
+				return;
 			}else{
 				$.ajax({
 					url: baseUrl+searchQuery,
