@@ -458,6 +458,36 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
 
 
 
+        $scope.prepareForSearch = function(wFlow){
+            var dataHolding = wFlow.selectedTab.dataHolding;
+            if(dataHolding.searchText && dataHolding.searchText != "" && dataHolding.elementsToSearch && dataHolding.elementsToSearch != "" && dataHolding.searchBy && dataHolding.searchBy != ""){
+                var dataToSearch = {
+                    "text":dataHolding.searchText,
+                    "dataType": ((dataHolding.elementsToSearch == 0)?'Kbits':((dataHolding.elementsToSearch == 1)?'Deliveries':'Terms')),
+                    "searchBy": ((dataHolding.searchBy == 0)?'Name':((dataHolding.searchBy == 1)?'Description':'ID'))
+                }
+
+                // Check setting default open new workflows
+                // give the ability to choose where to open new workflow (display newWorkflowButtons)
+
+                var svr = new Server(dataToSearch.dataType);
+                /*svr.search(dataToSearch, function(result, error){
+                    if(error || !result){
+                        // HANDLE ERROR
+                        $scope.alert("OPPSS");
+                    }else{
+
+                        console.log(result);
+                    }
+                });*/
+
+            }else{
+                // HANDLE ERROR FILL INPUTS
+                $scope.alert("OPPSS");
+            }
+        }
+
+
 
         /************************************************************************************************************************
          *                                                                                                                       *
@@ -567,6 +597,15 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                 }
             }
         }, 20);
+
+    
+
+
+
+
+
+
+
 
 
 

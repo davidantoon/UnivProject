@@ -190,14 +190,14 @@
                           Search By:
                         </ons-row>
                         <ons-row>
-                          <ons-col class="searchOptionButton">Name</ons-col>
-                          <ons-col class="searchOptionButton checked">Description</ons-col>
-                          <ons-col class="searchOptionButton">ID</ons-col>
+                          <ons-col ng-click="wFlow.selectedTab.dataHolding.searchBy = 0; InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.searchBy == 0)?'checked':'')}}">Name</ons-col>
+                          <ons-col ng-click="wFlow.selectedTab.dataHolding.searchBy = 1; InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.searchBy == 1)?'checked':'')}}">Description</ons-col>
+                          <ons-col ng-click="wFlow.selectedTab.dataHolding.searchBy = 2; InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.searchBy == 2)?'checked':'')}}">ID</ons-col>
                         </ons-row>
                         <ons-row>
                           <ons-col></ons-col>
                           <ons-col>
-                            <div class="SearchButtonForQuery" ng-click="testFunction(wFlow);">Search</div>
+                            <div class="SearchButtonForQuery" ng-click="prepareForSearch(wFlow);">Search</div>
                           </ons-col>
                           <ons-col></ons-col>
                         </ons-row>                        
