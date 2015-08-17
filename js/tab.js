@@ -67,7 +67,9 @@ app.factory('Tab', ['Content','Globals', function(Content, Globals){
 						"searchText": "",
 						"resultsCount": 0,
 						"results": [],
-						"selectedResult": -1
+						"selectedResult": -1,
+						"elementsToSearch": 0,
+						"searchBy": 0
 					});
 				break;
 				case Tab.CREATE_TAB:
