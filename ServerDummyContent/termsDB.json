@@ -2,40 +2,32 @@
 	"id": 1,
 	"description": "description 1",
 	"name": "term 1"
-
 },{
 	"id": 2,
 	"description": "description 2",
 	"name": "term2"
-	
 },{
 	"id": 3,
 	"description": "description 3",
 	"name": "term3"
-	
 },{
 	"id": 4,
 	"description": "description 4",
 	"name": "term4"
-	
 },{
 	"id": 5,
 	"description": "description 5",
 	"name": "term5"
-	
 },{
 	"id": 6,
 	"description": "description 6",
 	"name": "term6"
-	
 },{
 	"id": 7,
 	"description": "description 7",
 	"name": "term7"
-	
 },{
 	"id": 8,
 	"description": "description 8",
 	"name": "term8"
-	
 }]
