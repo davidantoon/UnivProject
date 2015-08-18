@@ -19,11 +19,10 @@ app.factory('Server', function(){
 			if(this.baseUrl == "dummy"){
 				debugger;
 				var searchResults = [];
+				var SplitText = dataToSearch.text.split(' ');
 				switch (this.TypeOfData){
 					case "Kbits":
 						var KbitsDB = JSON.parse(localStorage.getItem("com.intel.Server.Kbits"));
-						// check if null
-						var SplitText = dataToSearch.text.split(' ');
 						for (var i = KbitsDB.length - 1; i >= 0; i--) {
 							var found = false;
 							for(var j = 0; j < SplitText.length; j++){
@@ -54,50 +53,56 @@ app.factory('Server', function(){
 					case "Deliveries":
 						var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
 						for (var i = deliveryDB.length - 1; i >= 0; i--) {
-							switch (dataToSearch.searchBy){
-							case "Name":
-								if( deliveryDB[i].name.toLowerCase() == dataToSearch.text.toLowerCase() ){
-									callback(deliveryDB[i], null);
-									return;
+							var found = false;
+							for(var j=0; j < SplitText.length; j++){
+								switch (dataToSearch.searchBy){
+								case "Name":
+									if( deliveryDB[i].name.indexOf(SplitText[j]) != -1){
+										found = true;
+									}
+								break;
+								case "Description":
+									if( deliveryDB[i].description.indexOf(SplitText[j]) != -1){
+										found = true;
+									}
+								break;
+								case "ID":
+									if( deliveryDB[i].id.indexOf(SplitText[j]) != -1){
+										found = true;
+									}
+								break;
 								}
-							break;
-							case "Description":
-								if( contains( deliveryDB[i].description, dataToSearch.text) ){
-									callback(deliveryDB[i], null);
-									return;
-								}
-							break;
-							case "ID":
-								if( deliveryDB[i].id.toLowerCase() == dataToSearch.text.toLowerCase() ){
-									callback(deliveryDB[i], null);
-									return;
-								}
-							break;
+							}
+							if(found == true){
+								searchResults.push(deliveryDB[i]);
 							}
 						}
 					break;
 					case "Terms":
 						var termsDB = JSON.parse(localStorage.getItem("com.intel.Server.terms"));
 						for (var i = termsDB.length - 1; i >= 0; i--) {
-							switch (dataToSearch.searchBy){
-							case "Name":
-								if( termsDB[i].name.toLowerCase() == dataToSearch.text.toLowerCase() ){
-									callback(termsDB[i], null);
-									return;
+							var found = false;
+							for(var j=0; j<SplitText.length; j++){
+								switch (dataToSearch.searchBy){
+								case "Name":
+									if( termsDB[i].name.indexOf(SplitText[j]) != -1){
+										found = true;
+									}
+								break;
+								case "Description":
+									if( termsDB[i].description.indexOf(SplitText[j]) != -1){
+										found = true;
+									}
+								break;
+								case "ID":
+									if( termsDB[i].id.indexOf(SplitText[j]) != -1){
+										found = true;
+									}
+								break;
 								}
-							break;
-							case "Description":
-								if( termsDB[i].description.toLowerCase() == dataToSearch.text.toLowerCase()) {
-									callback(termsDB[i], null);
-									return;
-								}
-							break;
-							case "ID":
-								if( termsDB[i].id.toLowerCase() == dataToSearch.text.toLowerCase()) {
-									callback(termsDB[i], null);
-									return;
-								}
-							break;
+							}
+							if(found == true){
+								searchResults.push(termsDB[i]);
 							}
 						}
 					break;
@@ -183,7 +188,7 @@ app.factory('Server', function(){
 		 * @param  {Function} callback callback funtion
 		 * @return {object}            returns the objects we asked for
 		 */
-		getElementByID: function(objID, callback){
+		getElementByID: function(objD, callback){
 			if(saveObjectQuery == "dummy"){
 			// 	return localStorage.getItem("dummy");
 			// }
@@ -192,7 +197,7 @@ app.factory('Server', function(){
 					case "delivery":
 						var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
 						for(var i = 0; deliveryDB.length; i++){
-							if(deleviry[i].id == obj.id){
+							if(deleviry[i].id == objID){
 								callback(deleviry[i], null);
 								return;
 							}
@@ -203,7 +208,7 @@ app.factory('Server', function(){
 					case "kbits":
 						var kbitsDB = JSON.parse(localStorage.getItem("com.intel.server.kbits"));
 						for(var i = 0; kbitsDB.length; i++){
-							if(kbitsDB[i].id == obj.id){
+							if(kbitsDB[i].id == objID){
 								callback(kbitsDB[i],null);
 								return;
 							}
@@ -214,7 +219,7 @@ app.factory('Server', function(){
 					case "term":
 						var termsDB = JSON.parse(localStorage.getItem("com.intel.server.terms"));
 						for(var i = 0; termsDB.length; i++){
-							if(termsDB[i].id == obj.id){
+							if(termsDB[i].id == objID){
 								callback(termsDB[i],null);
 								return;
 							}
@@ -248,7 +253,7 @@ app.factory('Server', function(){
 				case "delivery":
 					var deliveryDB = JSON.parse(localStorage.getItem("com.intel.server.delivery"));
 					for(var i = 0; i < deliveryDB.length; i++){
-						if(deliveryDB[i].id == obj.id){
+						if(deliveryDB[i].id == objID){
 							deliveryDB.splice(i,1);
 							localStorage.setItem("com.intel.server.delivery",deliveryDB);
 							callback({"message":"delivery has successfuly removed","code":""},null);
@@ -261,7 +266,7 @@ app.factory('Server', function(){
 				case "kbits":
 					var kbitsDB = JSON.parse(localStorage.getItem("com.intel.server.kbits"));
 					for(var i = 0; i < kbitsDB.length; i++){
-						if(kbitsDB[i].id == obj.id){
+						if(kbitsDB[i].id == objID){
 							kbitsDB.splice(i,1);
 							localStorage.setItem("com.intel.server.kbits",kbitsDB);
 							callback({"message":"kbits has successfuly removed","code":""},null);
@@ -274,7 +279,7 @@ app.factory('Server', function(){
 				case "term":
 					var termsDB = JSON.parse(localStorage.getItem("com.intel.server.term"));
 					for(var i = 0; i < termsDB.length; i++){
-						if(termsDB[i].id == obj.id){
+						if(termsDB[i].id == objID){
 							termsDB.splice(i,1);
 							localStorage.setItem("com.intel.server.term",termsDB);
 							callback({"message":"term has successfuly removed","code":""},null);
