@@ -22,6 +22,7 @@ app.factory('Server', function(){
 				switch (this.TypeOfData){
 					case "Kbits":
 						var KbitsDB = JSON.parse(localStorage.getItem("com.intel.Server.Kbits"));
+						// check if null
 						var SplitText = dataToSearch.text.split(' ');
 						for (var i = KbitsDB.length - 1; i >= 0; i--) {
 							var found = false;

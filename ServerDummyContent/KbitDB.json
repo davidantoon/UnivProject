@@ -1,31 +1,81 @@
 [{
-	"id" : 1,
-	"name" : "first kbit " ,
-	"description" : "this is the first kbit in the DB",
-	"lastModified": "",
-	"locked": false
+	"id":1,
+	"name":"kbit 1",
+	"desciption":"desciption 1",
+	"terms": [1,2,7]	
 },{
-	"id" : 2,
-	"name" : "second kbit " ,
-	"description" : "this is the second kbit in the DB",
-	"lastModified": "",
-	"locked": false
+	"id":2,
+	"name":"kbit 2",
+	"desciption":"desciption 2",
+	"terms": [2,3]	
 },{
-	"id" : 3,
-	"name" : "third kbit " ,
-	"description" : "this is the third kbit in the DB",
-	"lastModified": "",
-	"locked": false
+	"id":3,
+	"name":"kbit 3",
+	"desciption":"desciption 3",
+	"terms": [1,2,4,7]	
 },{
-	"id" : 4,
-	"name" : "fourth kbit " ,
-	"description" : "this is the fourth kbit in the DB",
-	"lastModified": "",
-	"locked": false
+	"id":4,
+	"name":"kbit 4",
+	"desciption":"desciption 4",
+	"terms": [1,3,5]	
 },{
-	"id" : 5,
-	"name" : "fifth kbit " ,
-	"description" : "this is the fifth kbit in the DB",
-	"lastModified": "",
-	"locked": false
+	"id":5,
+	"name":"kbit 5",
+	"desciption":"desciption 5",
+	"terms": [3]	
+},{
+	"id":6,
+	"name":"kbit 6",
+	"desciption":"desciption 6",
+	"terms": [1,7]
+},{
+	"id":7,
+	"name":"kbit 7",
+	"desciption":"desciption 7",
+	"terms": [5,6]	
+},{
+	"id":8,
+	"name":"kbit 8",
+	"desciption":"desciption 8",
+	"terms": [1,4,7]	
+},{
+	"id":9,
+	"name":"kbit 9",
+	"desciption":"desciption 9",
+	"terms": [2,3]	
+},{
+	"id":10,
+	"name":"kbit 10",
+	"desciption":"desciption 10",
+	"terms": [1,2,4,7]	
+},{
+	"id":11,
+	"name":"kbit 11",
+	"desciption":"desciption 11",
+	"terms": [1,3,5]	
+},{
+	"id":12,
+	"name":"kbit 12",
+	"desciption":"desciption 12",
+	"terms": [3]	
+},{
+	"id":13,
+	"name":"kbit 13",
+	"desciption":"desciption 13",
+	"terms": [1,7]	
+},{
+	"id":14,
+	"name":"kbit 14",
+	"desciption":"desciption 14",
+	"terms": [3,6]	
+},{
+	"id":15,
+	"name":"kbit 15",
+	"desciption":"desciption 15",
+	"terms": [2,3]	
+},{
+	"id":16,
+	"name":"kbit 16",
+	"desciption":"desciption 16",
+	"terms": [1,2]	
 }]

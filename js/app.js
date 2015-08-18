@@ -48,7 +48,20 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
 
 
         
-
+        // INIT Dummy Data
+        function dummyData(){
+            console.warn("Dummy Data Init");
+            $.getJSON('./ServerDummyContent/KbitDB.json',{}, function(json, textStatus) {
+                localStorage.setItem("com.intel.Server.Kbits",json); 
+            });
+            $.getJSON('./ServerDummyContent/deliveryDB.json',{}, function(json, textStatus) {
+                localStorage.setItem("com.intel.Server.delivery",json); 
+            });
+            $.getJSON('./ServerDummyContent/termsDB.json',{}, function(json, textStatus) {
+                localStorage.setItem("com.intel.Server.terms",json); 
+            });
+        }
+        dummyData();
 
 
 
