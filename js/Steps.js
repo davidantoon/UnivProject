@@ -2,7 +2,6 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 
 	function Steps(workspace){
 
-
 		this.last20Steps = [];	
 		this.currentUndoOrder = 1;
 		this.savedInServer = false;
@@ -21,12 +20,7 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 		function ServerResquestComplete(serverSteps, passThis){
 			var dataFromLocalStorage = JSON.parse(localStorage.getItem("com.intel.steps.last20Steps"));
 			// init workspace
-
 			if(serverSteps){
-				workspace.workflows = [];
-				workspace.lastWorkflowId = 0;
-				workspace.newWorkflowButtons = [];
-				workspace.selectedWorkflow = null;
 				if(dataFromLocalStorage != null){
 					// compare 
 					if(Number(serverSteps.lastModified) < dataFromLocalStorage.lastModified){
@@ -48,10 +42,6 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 			}else{
 				// only local steps
 				if(dataFromLocalStorage != null){
-					workspace.workflows = [];
-					workspace.lastWorkflowId = 0;
-					workspace.newWorkflowButtons = [];
-					workspace.selectedWorkflow = null;
 					passThis.last20Steps = dataFromLocalStorage.last20Steps;
 					passThis.currentUndoOrder = dataFromLocalStorage.currentUndoOrder;
 					passThis.lastFocusedWorkflow = dataFromLocalStorage.lastFocusedWorkflow;
@@ -294,22 +284,31 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 
 			// get json object of previous step
 			var tempJsonWorkflows =  JSON.parse(this.last20Steps[IONS].allWorkFlowContents);
-			var DiffObjects = getDiffArrays(workspace.workflows,tempJsonWorkflows);
+			if(tempJsonWorkflows.length == 0){
+				callback();
+			}else{
+				workspace.workflows = [];
+				workspace.lastWorkflowId = 0;
+				workspace.newWorkflowButtons = [];
+				workspace.selectedWorkflow = null;
 
-        	// check inserted workflows
-        	for(var j1=0; j1<DiffObjects.inserted.length; j1++){
-            	workspace.workflows.push(new Workflow(DiffObjects.inserted[j1]));
-            }
+				var DiffObjects = getDiffArrays(workspace.workflows,tempJsonWorkflows);
 
-            // update workflow tabs contents
-            for (var i1 = 0; i1 < tempJsonWorkflows.length; i1++) {
-            	for(var i2=0; i2< workspace.workflows.length; i2++){
-            		if(tempJsonWorkflows[i1].ID == workspace.workflows[i2].ID){
-            			workspace.workflows[i2].updateAllParams(tempJsonWorkflows[i1]);
-            		}
-            	}
-            }
-            callback();
+	        	// check inserted workflows
+	        	for(var j1=0; j1<DiffObjects.inserted.length; j1++){
+	            	workspace.workflows.push(new Workflow(DiffObjects.inserted[j1]));
+	            }
+
+	            // update workflow tabs contents
+	            for (var i1 = 0; i1 < tempJsonWorkflows.length; i1++) {
+	            	for(var i2=0; i2< workspace.workflows.length; i2++){
+	            		if(tempJsonWorkflows[i1].ID == workspace.workflows[i2].ID){
+	            			workspace.workflows[i2].updateAllParams(tempJsonWorkflows[i1]);
+	            		}
+	            	}
+	            }
+	            callback();
+	        }
 		},
 		/**
 		 * Remove all steps from local and server, and add one step represents current state

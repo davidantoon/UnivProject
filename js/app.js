@@ -1,6 +1,6 @@
 var app = angular.module('IntelLearner', ['onsen', 'firebase']);
-app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals",
-    function($scope, $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals) {
+app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings",
+    function($scope, $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings) {
 
 
         // PRIM COLOR = rgb(8,96,168)
@@ -28,13 +28,15 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
         $scope.selectedWorkflow = 0;
         $scope.workSpaces = {};
         $scope.displayNewWorkflowTabButtons = true;
-		$scope.displayNewWorkflowButtons = true;
+		$scope.displayNewWorkflowButtons = false;
         $scope.clickToMaximize = false;
 
 
         // new implementaion for steps
         $scope.Steps;
         $scope.focusingLastWorkflow = true;
+        $scope.holdingNewWorkflowData = null;
+        $scope.Settings;
 
         // $scope.$on('$destroy', function() {
         //     delete $window.onbeforeunload;
@@ -48,7 +50,20 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
 
 
         
-
+        // INIT Dummy Data
+        function dummyData(){
+            console.warn("Dummy Data Init");
+            $.getJSON('./ServerDummyContent/KbitDB.json', function(json, textStatus) {
+                localStorage.setItem("com.intel.Server.Kbits",JSON.stringify(json)); 
+            });
+            $.getJSON('./ServerDummyContent/deliveryDB.json',{}, function(json, textStatus) {
+                localStorage.setItem("com.intel.Server.delivery",JSON.stringify(json)); 
+            });
+            $.getJSON('./ServerDummyContent/termsDB.json',{}, function(json, textStatus) {
+                localStorage.setItem("com.intel.Server.terms",JSON.stringify(json)); 
+            });
+        }
+        dummyData();
 
 
 
@@ -170,6 +185,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
 
             // init worksace
             $scope.workSpaces = new Workspace();
+            $scope.Settings = new Settings();
             $scope.Steps = new Steps($scope.workSpaces);
             $scope.Workflow = $scope.workSpaces.workflows;
             $scope.updateAllTabName();
@@ -309,6 +325,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             console.log("Edit");
         }
         $scope.closeTab = function(workflow){
+            alert("FIX PARENT TAB HOLDING DATA");
             workflow.tabs.splice($scope.getSelectedTabIndex(workflow),1);
             if(workflow.tabs.length > 0){
                 workflow.selectedTab = workflow.tabs[0];
@@ -318,6 +335,10 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                         $scope.Workflow.splice(i,1);
                         break;
                     }
+                }
+                if($scope.Workflow.length == 0){
+                    $scope.Workflow.push(new Workflow(null, 0, 12, 12, 13, 13));
+                    $scope.workSpaces.selectedWorkflow = $scope.Workflow[0];
                 }
             }
             $scope.updateMatrixLayout();
@@ -424,9 +445,38 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
         }
 
         $scope.convertToWorkflow = function(newWorkflow){
-            $scope.workSpaces.addNewWorkflow(newWorkflow);
-            $scope.workSpaces.updateNewWorkflowButtons();
-            $scope.InsertStepToLast10Steps();
+            if($scope.holdingNewWorkflowData == null){
+                // display color picker to open new workflow
+                $scope.workSpaces.addNewWorkflow(newWorkflow);
+                $scope.workSpaces.updateNewWorkflowButtons();
+                $scope.InsertStepToLast10Steps();
+            }else{
+                // update workflow content related to action property
+                switch($scope.holdingNewWorkflowData.Action){
+                    case "Search":
+                        // initialize new tab
+                        $scope.workSpaces.updateLastId();
+                        newWorkflow.ID = $scope.workSpaces.lastWorkflowId;
+                        $scope.workSpaces.updateLastId();
+                        newWorkflow.selectedTab = newWorkflow.addTab();
+                        newWorkflow.selectedTab.type = 4;
+                        newWorkflow.name = $scope.holdingNewWorkflowData.selectedTab.parentWF.name+" | Search";
+                        newWorkflow.selectedTab.color = $scope.holdingNewWorkflowData.selectedTab.color;
+                        newWorkflow.selectedTab.changeType(newWorkflow.selectedTab.type);
+                        newWorkflow.selectedTab.dataHolding.parentTab.workflowId = $scope.holdingNewWorkflowData.selectedTab.parentWF.ID;
+                        newWorkflow.selectedTab.dataHolding.parentTab.tabId = $scope.holdingNewWorkflowData.selectedTab.ID;
+
+                        // modify parent tab
+                        $scope.holdingNewWorkflowData.selectedTab.dataHolding.childTab.workflowId = newWorkflow.ID;
+                        $scope.holdingNewWorkflowData.selectedTab.dataHolding.childTab.tabId = newWorkflow.selectedTab.ID;
+
+                        $scope.workSpaces.workflows.push(newWorkflow);
+                    break;
+                    default:break;
+                }
+                $scope.holdingNewWorkflowData = null;
+            }
+            $scope.displayNewWorkflowButtons = false;
         }
 
         $scope.refocusLastWorkflow = function(){
@@ -457,6 +507,76 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
         }
 
 
+
+        $scope.prepareForSearch = function(wFlow){
+
+            var dataHolding = wFlow.selectedTab.dataHolding;
+            if(dataHolding.searchText && dataHolding.searchText != "" && dataHolding.elementsToSearch != null && dataHolding.searchBy != null){
+                var dataToSearch = {
+                    "text":dataHolding.searchText,
+                    "dataType": ((dataHolding.elementsToSearch == 0)?'Kbits':((dataHolding.elementsToSearch == 1)?'Deliveries':'Terms')),
+                    "searchBy": ((dataHolding.searchBy == 0)?'Name':((dataHolding.searchBy == 1)?'Description':'ID'))
+                }
+                // check if there is old child tab search
+                if(wFlow.selectedTab.dataHolding.childTab.workflowId == null || wFlow.selectedTab.dataHolding.childTab.tabId == null){
+                    if($scope.Settings.autoOpenTabs == true){
+                        // open in tab
+                        $scope.holdingNewWorkflowData = {"selectedTab":wFlow.selectedTab, "Action":"Search"};
+                    }else{
+                        // give the ability to choose where to open new workflow (display newWorkflowButtons)
+                        $scope.holdingNewWorkflowData = {"selectedTab":wFlow.selectedTab, "Action":"Search"};
+                        $scope.displayNewWorkflowButtons = true;
+                    }
+                    var waitForUserResponse = $interval(function(){
+                        if($scope.displayNewWorkflowButtons == false){
+                            $interval.cancel(waitForUserResponse);
+                            if(wFlow.selectedTab.dataHolding.childTab.workflowId == null || wFlow.selectedTab.dataHolding.childTab.tabId == null){
+                                // new workflow canceled
+                                $scope.holdingNewWorkflowData = null;
+                                $scope.displayNewWorkflowButtons = false;
+                            }else{
+                                $scope.workSpaces.updateDataInTab(wFlow.selectedTab.dataHolding.childTab, null);
+                                var svr = new Server(dataToSearch.dataType);
+                                svr.search(dataToSearch, function(result, error){
+                                    debugger;
+                                    if(error || !result){
+                                        // Remove new workflow and display error message
+                                        $scope.alert("OPPSS");
+                                    }else{
+                                        setTimeout(function(){
+                                            $scope.workSpaces.updateDataInTab(wFlow.selectedTab.dataHolding.childTab, result);
+                                            debugger;
+                                        },1500);
+                                    }
+                                });
+                            }
+                        }
+                    },100);
+                }else{
+                    $scope.workSpaces.updateDataInTab(wFlow.selectedTab.dataHolding.childTab, null);
+                    var svr = new Server(dataToSearch.dataType);
+                    svr.search(dataToSearch, function(result, error){
+                        if(error || !result){
+                            // Remove new workflow and display error message
+                            $scope.alert("OPPSS");
+                        }else{
+                            setTimeout(function(){
+                                $scope.workSpaces.updateDataInTab(wFlow.selectedTab.dataHolding.childTab, result);
+                                debugger;
+                            },1500);
+                        }
+                    });
+                }
+            }else{
+                // HANDLE ERROR FILL INPUTS
+                $scope.alert("OPPSS");
+            }
+        }
+
+
+        $scope.CancelNewWorkflow = function(wFlow){
+            $scope.displayNewWorkflowButtons = false;
+        }
 
 
         /************************************************************************************************************************
@@ -567,6 +687,15 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                 }
             }
         }, 20);
+
+    
+
+
+
+
+
+
+
 
 
 

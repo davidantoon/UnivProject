@@ -8,4 +8,6 @@ app.factory('Settings', ["Storage", "Server", function(Storage, Server){
 		this.autoOpenTabs = false;
 		
 	}
+
+	return Settings;
 }]);
