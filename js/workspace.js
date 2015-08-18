@@ -101,6 +101,22 @@ app.factory('Workspace', ['Workflow', function(Workflow){
                 }
             }
             this.workflows[indexOfScroll].scrollTo();
+		},
+
+		updateDataInTab: function(tabHoldingData, results){
+			// tabHoldingData = {"workflowId":"111", "tabId":"1223"}
+			
+			for(var i=0; i<this.workflows.length; i++){
+				if(this.workflows[i].ID == tabHoldingData.workflowId){
+					for(var j=0; j<this.workflows[i].tabs.length; j++){
+						if(this.workflows[i].tabs[j].ID == tabHoldingData.tabId){
+							this.workflows[i].tabs[j].addResults(results);
+							break;
+						}
+					}
+					break;
+				}
+			}
 		}
 
 	}

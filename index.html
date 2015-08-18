@@ -140,6 +140,12 @@
                     <ons-icon icon="ion-ios-search-strong" size="100px"></ons-icon>
                   </div>
                 </div>
+                <div ng-click="CancelNewWorkflow();" class="{{'CancelNewWorkflow clickable '+((displayNewWorkflowButtons == true)?'':'hidden')}}">
+                  Open new workflow or new tab
+                  <div>
+                    Cancel
+                  </div>
+                </div>
                 <div class="resizeDiv resizeWidthLeftDiv hoverOp clickable">
                   <ons-icon icon="ion-arrow-left-b" size="20px"></ons-icon>
                 </div>
@@ -153,15 +159,19 @@
                   <ons-icon icon="ion-arrow-down-b" size="20px"></ons-icon>
                 </div>
                 <ons-row class="row ons-row-inner WorkFlowTabs">
-                  <ons-col ng-repeat="tab in wFlow.tabs" ng-click="selectTab(wFlow, tab);" class="{{'col ons-col-inner WorkFlowTab '+((getSelectedTab(wFlow, tab.ID))?'ActiveTab':'') + ' '+ ((clickToMaximize == true)?'blured':'')}}">
-                    <input id="{{'WorkflowI'+wFlow.ID+'Tab'+tab.ID}}" readonly="readonly" placeholder="Tab name" ng-enter="updateTabName(wFlow.ID, tab.ID, 'WorkflowI'+wFlow.ID+'Tab'+tab.ID);" ng-dblclick="ConvertTextBos('WorkflowI'+wFlow.ID+'Tab'+tab.ID);"
+                  <ons-col ng-repeat="tab in wFlow.tabs" 
+                    ng-click="((displayNewWorkflowButtons == true)?return:selectTab(wFlow, tab));" 
+                    class="{{'col ons-col-inner WorkFlowTab '+((getSelectedTab(wFlow, tab.ID))?'ActiveTab':'') + ' '+ ((clickToMaximize == true || displayNewWorkflowButtons == true)?'blured':'')}}"
+                    style="{{'box-shadow: 0px 17px 0px -13px '+tab.color}}">
+                    <input id="{{'WorkflowI'+wFlow.ID+'Tab'+tab.ID}}" readonly="readonly" placeholder="Tab name" ng-enter="updateTabName(wFlow.ID, tab.ID, 'WorkflowI'+wFlow.ID+'Tab'+tab.ID);" 
+                    ng-dblclick="((displayNewWorkflowButtons == true)?return:ConvertTextBos('WorkflowI'+wFlow.ID+'Tab'+tab.ID));"
                     value="{{tab.title}}" />
                   </ons-col>
-                  <ons-col ng-click="addNewTabToWorkflow(wFlow);" class="{{'col ons-col-inner newWorkflowTab ' + ((displayNewWorkflowTabButtons == true)?'':'hidden')}}">
+                  <ons-col ng-click="addNewTabToWorkflow(wFlow);" class="{{'col ons-col-inner newWorkflowTab ' + ((displayNewWorkflowButtons == true)?'':'hidden')}}">
                     +
                   </ons-col>
                 </ons-row>
-                <div class="{{'SelectedTabContent '+((clickToMaximize == true)?'blured':'')}}">
+                <div class="{{'SelectedTabContent '+((clickToMaximize == true || displayNewWorkflowButtons == true)?'blured':'')}}">
                     <div class="{{((getSelectedTabType(wFlow) == 0)?'':'hidden')}}">
                       <div ng-click="MainButtonsPressed(wFlow,1);" class="SearchButton MainButtonsTab">
                         Search
@@ -213,6 +223,10 @@
                     </div>
                     <div class="{{((getSelectedTabType(wFlow) == 3)?'':'hidden')}}">
                       edit
+                    </div>
+                    <div class="{{((getSelectedTabType(wFlow) == 4)?'':'hidden')}}">
+                      <!-- check if null => loader , length=0 => no content -->
+                      <pre>{{(((wFlow.selectedTab.dataHolding.results == null)?{"result":"Loading..."}:((wFlow.selectedTab.dataHolding.resultsCount == 0)?{"result":"No Content"}:wFlow.selectedTab.dataHolding.results)) | json)}}</pre>
                     </div>
                 </div>
                 <div class="openFullScreenButton" ng-click="openFullScreen($index);">
@@ -289,6 +303,7 @@
   <script type="text/javascript" src="js/globals.js"></script>
   <script type="text/javascript" src="js/Storage.js"></script>
   <script type="text/javascript" src="js/Server.js"></script>
+  <script type="text/javascript" src="js/Settings.js"></script>
   <script type="text/javascript" src="js/Steps.js"></script>
   <script type="text/javascript" src="js/content.js"></script>
   <script type="text/javascript" src="js/tab.js"></script>
