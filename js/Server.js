@@ -188,7 +188,7 @@ app.factory('Server', function(){
 		 * @param  {Function} callback callback funtion
 		 * @return {object}            returns the objects we asked for
 		 */
-		getElementByID: function(objID, callback){
+		getElementByID: function(objD, callback){
 			if(saveObjectQuery == "dummy"){
 			// 	return localStorage.getItem("dummy");
 			// }
@@ -197,7 +197,7 @@ app.factory('Server', function(){
 					case "delivery":
 						var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
 						for(var i = 0; deliveryDB.length; i++){
-							if(deleviry[i].id == obj.id){
+							if(deleviry[i].id == objID){
 								callback(deleviry[i], null);
 								return;
 							}
@@ -208,7 +208,7 @@ app.factory('Server', function(){
 					case "kbits":
 						var kbitsDB = JSON.parse(localStorage.getItem("com.intel.server.kbits"));
 						for(var i = 0; kbitsDB.length; i++){
-							if(kbitsDB[i].id == obj.id){
+							if(kbitsDB[i].id == objID){
 								callback(kbitsDB[i],null);
 								return;
 							}
@@ -219,7 +219,7 @@ app.factory('Server', function(){
 					case "term":
 						var termsDB = JSON.parse(localStorage.getItem("com.intel.server.terms"));
 						for(var i = 0; termsDB.length; i++){
-							if(termsDB[i].id == obj.id){
+							if(termsDB[i].id == objID){
 								callback(termsDB[i],null);
 								return;
 							}
@@ -253,7 +253,7 @@ app.factory('Server', function(){
 				case "delivery":
 					var deliveryDB = JSON.parse(localStorage.getItem("com.intel.server.delivery"));
 					for(var i = 0; i < deliveryDB.length; i++){
-						if(deliveryDB[i].id == obj.id){
+						if(deliveryDB[i].id == objID){
 							deliveryDB.splice(i,1);
 							localStorage.setItem("com.intel.server.delivery",deliveryDB);
 							callback({"message":"delivery has successfuly removed","code":""},null);
@@ -266,7 +266,7 @@ app.factory('Server', function(){
 				case "kbits":
 					var kbitsDB = JSON.parse(localStorage.getItem("com.intel.server.kbits"));
 					for(var i = 0; i < kbitsDB.length; i++){
-						if(kbitsDB[i].id == obj.id){
+						if(kbitsDB[i].id == objID){
 							kbitsDB.splice(i,1);
 							localStorage.setItem("com.intel.server.kbits",kbitsDB);
 							callback({"message":"kbits has successfuly removed","code":""},null);
@@ -279,7 +279,7 @@ app.factory('Server', function(){
 				case "term":
 					var termsDB = JSON.parse(localStorage.getItem("com.intel.server.term"));
 					for(var i = 0; i < termsDB.length; i++){
-						if(termsDB[i].id == obj.id){
+						if(termsDB[i].id == objID){
 							termsDB.splice(i,1);
 							localStorage.setItem("com.intel.server.term",termsDB);
 							callback({"message":"term has successfuly removed","code":""},null);
