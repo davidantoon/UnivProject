@@ -1,81 +1,81 @@
 [{
 	"id":1,
 	"name":"kbit 1",
-	"desciption":"desciption 1",
+	"description":"description 1",
 	"terms": [1,2,7]	
 },{
 	"id":2,
 	"name":"kbit 2",
-	"desciption":"desciption 2",
+	"description":"description 2",
 	"terms": [2,3]	
 },{
 	"id":3,
 	"name":"kbit 3",
-	"desciption":"desciption 3",
+	"description":"description 3",
 	"terms": [1,2,4,7]	
 },{
 	"id":4,
 	"name":"kbit 4",
-	"desciption":"desciption 4",
+	"description":"description 4",
 	"terms": [1,3,5]	
 },{
 	"id":5,
 	"name":"kbit 5",
-	"desciption":"desciption 5",
+	"description":"description 5",
 	"terms": [3]	
 },{
 	"id":6,
 	"name":"kbit 6",
-	"desciption":"desciption 6",
+	"description":"description 6",
 	"terms": [1,7]
 },{
 	"id":7,
 	"name":"kbit 7",
-	"desciption":"desciption 7",
+	"description":"description 7",
 	"terms": [5,6]	
 },{
 	"id":8,
 	"name":"kbit 8",
-	"desciption":"desciption 8",
+	"description":"description 8",
 	"terms": [1,4,7]	
 },{
 	"id":9,
 	"name":"kbit 9",
-	"desciption":"desciption 9",
+	"description":"description 9",
 	"terms": [2,3]	
 },{
 	"id":10,
 	"name":"kbit 10",
-	"desciption":"desciption 10",
+	"description":"description 10",
 	"terms": [1,2,4,7]	
 },{
 	"id":11,
 	"name":"kbit 11",
-	"desciption":"desciption 11",
+	"description":"description 11",
 	"terms": [1,3,5]	
 },{
 	"id":12,
 	"name":"kbit 12",
-	"desciption":"desciption 12",
+	"description":"description 12",
 	"terms": [3]	
 },{
 	"id":13,
 	"name":"kbit 13",
-	"desciption":"desciption 13",
+	"description":"description 13",
 	"terms": [1,7]	
 },{
 	"id":14,
 	"name":"kbit 14",
-	"desciption":"desciption 14",
+	"description":"description 14",
 	"terms": [3,6]	
 },{
 	"id":15,
 	"name":"kbit 15",
-	"desciption":"desciption 15",
+	"description":"description 15",
 	"terms": [2,3]	
 },{
 	"id":16,
 	"name":"kbit 16",
-	"desciption":"desciption 16",
+	"description":"description 16",
 	"terms": [1,2]	
 }]

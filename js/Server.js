@@ -17,35 +17,34 @@ app.factory('Server', function(){
 		 */
 		search: function(dataToSearch, callback){
 			if(this.baseUrl == "dummy"){
-				debugger;
 				var searchResults = [];
 				var SplitText = dataToSearch.text.split(' ');
 				switch (this.TypeOfData){
 					case "Kbits":
 						var KbitsDB = JSON.parse(localStorage.getItem("com.intel.Server.Kbits"));
 						for (var i = KbitsDB.length - 1; i >= 0; i--) {
-							var found = false;
+							var found = 1;
 							for(var j = 0; j < SplitText.length; j++){
 								switch (dataToSearch.searchBy){
 									case "Name":
-										if(KbitsDB[i].name.indexOf(SplitText[j]) != -1){
-											found = true;
+										if(KbitsDB[i].name.indexOf(SplitText[j]) == -1){
+											found *=0;
 										}		
 									break;
 									case "Description":
-										if(KbitsDB[i].description.indexOf(SplitText[j]) != -1){
-											found = true;
+										if(KbitsDB[i].description.indexOf(SplitText[j]) == -1){
+											found *=0;
 										}
 									break;
 									case "ID":
-										if(KbitsDB[i].id.indexOf(SplitText[j]) != -1){
-											found = true;
+										if(KbitsDB[i].id.toString() != SplitText[j]){
+											found *=0;
 										}
 									break;
 									default: break;
 								}
 							}
-							if(found == true){
+							if(found){
 								searchResults.push(KbitsDB[i]);
 							}
 						}
@@ -53,27 +52,27 @@ app.factory('Server', function(){
 					case "Deliveries":
 						var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
 						for (var i = deliveryDB.length - 1; i >= 0; i--) {
-							var found = false;
+							var found = 1;
 							for(var j=0; j < SplitText.length; j++){
 								switch (dataToSearch.searchBy){
 								case "Name":
-									if( deliveryDB[i].name.indexOf(SplitText[j]) != -1){
-										found = true;
+									if( deliveryDB[i].name.indexOf(SplitText[j]) == -1){
+										found *=0;
 									}
 								break;
 								case "Description":
-									if( deliveryDB[i].description.indexOf(SplitText[j]) != -1){
-										found = true;
+									if( deliveryDB[i].description.indexOf(SplitText[j]) == -1){
+										found *=0;
 									}
 								break;
 								case "ID":
-									if( deliveryDB[i].id.indexOf(SplitText[j]) != -1){
-										found = true;
+									if( deliveryDB[i].id.toString() != SplitText[j]){
+										found *=0;
 									}
 								break;
 								}
 							}
-							if(found == true){
+							if(found == 1){
 								searchResults.push(deliveryDB[i]);
 							}
 						}
@@ -85,23 +84,23 @@ app.factory('Server', function(){
 							for(var j=0; j<SplitText.length; j++){
 								switch (dataToSearch.searchBy){
 								case "Name":
-									if( termsDB[i].name.indexOf(SplitText[j]) != -1){
-										found = true;
+									if( termsDB[i].name.indexOf(SplitText[j]) == -1){
+										found *=0;
 									}
 								break;
 								case "Description":
-									if( termsDB[i].description.indexOf(SplitText[j]) != -1){
-										found = true;
+									if( termsDB[i].description.indexOf(SplitText[j]) == -1){
+										found *=0;
 									}
 								break;
 								case "ID":
-									if( termsDB[i].id.indexOf(SplitText[j]) != -1){
-										found = true;
+									if( termsDB[i].id.toString() != SplitText[j]){
+										found *=0;
 									}
 								break;
 								}
 							}
-							if(found == true){
+							if(found == 1){
 								searchResults.push(termsDB[i]);
 							}
 						}

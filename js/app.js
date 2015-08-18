@@ -51,14 +51,14 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
         // INIT Dummy Data
         function dummyData(){
             console.warn("Dummy Data Init");
-            $.getJSON('./ServerDummyContent/KbitDB.json',{}, function(json, textStatus) {
-                localStorage.setItem("com.intel.Server.Kbits",json); 
+            $.getJSON('./ServerDummyContent/KbitDB.json', function(json, textStatus) {
+                localStorage.setItem("com.intel.Server.Kbits",JSON.stringify(json)); 
             });
             $.getJSON('./ServerDummyContent/deliveryDB.json',{}, function(json, textStatus) {
-                localStorage.setItem("com.intel.Server.delivery",json); 
+                localStorage.setItem("com.intel.Server.delivery",JSON.stringify(json)); 
             });
             $.getJSON('./ServerDummyContent/termsDB.json',{}, function(json, textStatus) {
-                localStorage.setItem("com.intel.Server.terms",json); 
+                localStorage.setItem("com.intel.Server.terms",JSON.stringify(json)); 
             });
         }
         dummyData();
