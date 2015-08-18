@@ -190,6 +190,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             $scope.Workflow = $scope.workSpaces.workflows;
             $scope.updateAllTabName();
             $scope.updateMatrixLayout();
+            console.log($scope.Workflow);
             
 
             $('#WorkFlowMatrix').css('min-width', "10000px").css('min-height', "10000px").css('width', "10000px").css('height', "10000px");
