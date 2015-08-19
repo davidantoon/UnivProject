@@ -180,5 +180,5 @@ app.factory('Storage', ["Globals", "TypeOf", function(Globals, TypeOf){
 		}
 	};
 
-	return new Storage();
+	return Storage;
 }]);
