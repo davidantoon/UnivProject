@@ -747,6 +747,13 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
         }
 
 
+        $scope.clearLocalStorage = function () {
+            debugger;
+            var str = new Storage();
+            str.clear(null,null,function(){
+                alert("Cleard");
+            });
+        }
 
 
 

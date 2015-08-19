@@ -5,6 +5,7 @@ app.factory('Storage', ["Globals", "TypeOf", function(Globals, TypeOf){
 	 * Default constructor to prevent errors!
 	 */
 	function Storage(){}
+	
 	Storage.prototype = {
 		save: function(key, value, callback){
 
@@ -126,6 +127,7 @@ app.factory('Storage', ["Globals", "TypeOf", function(Globals, TypeOf){
 		 */
 		clear: function(key, value, callback){
 			// clear all storage
+			debugger;
 			if(key == null || key == undefined || key == ""){
 				localStorage.clear();
 				callback("sucsess", null);
