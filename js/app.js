@@ -37,7 +37,9 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
         $scope.focusingLastWorkflow = true;
         $scope.holdingNewWorkflowData = null;
         $scope.Settings;
-        $scope.counterBeforeSave
+        $scope.counterBeforeSave = 0;
+        $scope.blurAllWindow = false;
+        $scope.handlePickColor = false;
 
 
         // $scope.$on('$destroy', function() {
@@ -348,6 +350,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                     $scope.Workflow.push(new Workflow(null, 0, 12, 12, 13, 13));
                     $scope.workSpaces.selectedWorkflow = $scope.Workflow[0];
                 }
+                $scope.EnableScroll(1);
             }
             $scope.updateMatrixLayout();
             $scope.workSpaces.updateNewWorkflowButtons();
@@ -355,7 +358,9 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
         }
         
 
-
+        $scope.isColorUsed = function(color){
+            return (color == '#ED143D' || color == '#0860A8' || color == '#FF8C00');
+        }
 
 
         /*********************************************************************************
@@ -563,7 +568,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                     if($scope.Settings.autoOpenTabs == true){
                         // open in tab
                         $scope.holdingNewWorkflowData = {"selectedTab":holdingRequestTab, "Action":"Search"};
-
+                        $scope.addNewTabToWorkflow(holdingRequestTab.parentWF);
                     }else{
                         // give the ability to choose where to open new workflow (display newWorkflowButtons)
                         $scope.holdingNewWorkflowData = {"selectedTab":holdingRequestTab, "Action":"Search"};
@@ -623,6 +628,13 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
 
         $scope.CancelNewWorkflow = function(wFlow){
             $scope.displayNewWorkflowButtons = false;
+            $scope.holdingNewWorkflowData = null;
+        }
+
+
+        $scope.openNewWorkflow = function(){
+            $scope.displayNewWorkflowButtons = true;
+            $scope.holdingNewWorkflowData = null;
         }
 
 
@@ -740,7 +752,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             // check login user
             if($scope.Settings.autoSave == true){
                 $scope.counterBeforeSave++;
-                if($scope.counterBeforeSave > 5){
+                if($scope.counterBeforeSave > 7){
                     if($scope.Steps.savedInServer == false){
                         $scope.Steps.commitSteps();
                     }

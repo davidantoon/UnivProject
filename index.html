@@ -19,7 +19,7 @@
 </head>
 <body ng-controller="MainCtrl">
 
-    <div id="MainDiv" ng-switch="AppStatus" style="display:none">
+    <div id="MainDiv" class="{{((blurAllWindow == true)?'blured':'')}}" ng-switch="AppStatus" style="display:none">
       <div class="AppPage" ng-switch-when="2" style="">  
       <ons-page>
           <ons-tabbar position="top" class="" style="height: 50px;">
@@ -30,7 +30,7 @@
               <ons-col id="NotificationsButton1" ng-click="" width="100px" style="width:100px; position:relative;" class="">
                 <div class="TopTabbarButton clickable hoverOp">Settings</div>
               </ons-col>
-              <ons-col id="NotificationsButton2" ng-click="testFun2();" width="150px" style="width:150px; position:relative;" class="">
+              <ons-col id="NotificationsButton2" ng-click="openNewWorkflow();" width="150px" style="width:150px; position:relative;" class="">
                 <div class="TopTabbarButton clickable hoverOp">New Workflow</div>
               </ons-col>
               <ons-col>
@@ -43,8 +43,9 @@
               <ons-col id="NotificationsButton3" ng-click="Steps.commitSteps();" width="85px" style="width:50px; position:relative;" class="{{'col ons-col-inner '+((Steps.savedInServer == false)?'clickable hoverOp':'opacityLow')}}">
                 <div class="TopTabbarButton" style="border-right:0;font-size: 13px;">
                   <ons-icon icon="ion-upload" size="25px"></ons-icon>
-                  Save {{((Settings.autoSave == true)?((Steps.savedInServer == false)?'('+(5-counterBeforeSave)+')':''):'')}}
+                  Save <!-- {{((Settings.autoSave == true)?((Steps.savedInServer == false)?'('+(5-(7-counterBeforeSave))+')':''):'')}} -->
                 </div>
+                <div class="backgroundSaveButton" style="{{((Settings.autoSave == true)?((Steps.savedInServer == false && counterBeforeSave > 2)?'height:'+ ((5-(7-counterBeforeSave))*20)+'%':'hidden'):'hidden')}}"></div>
               </ons-col>
               <ons-col id="NotificationsButton4" ng-click="UndoWorkflow();" width="80px" style="width:50px; position:relative;" class="{{'col ons-col-inner '+((Steps.canUndo() == true)?'clickable hoverOp':'opacityLow')}}">
                 <div class="TopTabbarButton" style="border-right:0;font-size: 13px;">
@@ -185,7 +186,7 @@
                     </div>
                     <div class="{{((getSelectedTabType(wFlow) == 1)?'':'hidden')}}">
                       <div class="searchTextboxDiv">
-                        <input class="searchTextbox" ng-change="InsertStepToLast10Steps()" placeholder="Search Text" id="1" ng-model="wFlow.selectedTab.dataHolding.searchText">
+                        <input class="searchTextbox" ng-enter="prepareForSearch(wFlow);" ng-change="InsertStepToLast10Steps(); " placeholder="Search Text" id="1" ng-model="wFlow.selectedTab.dataHolding.searchText">
                       </div>
                       <div class="searchOptions">
                         <ons-row class="LabelOfOptionsButtons">
@@ -278,7 +279,50 @@
           </div>
         </div>
       </div>
+      <div id="blurWindow" class="{{((blurAllWindow == true)?'':'hidden')}}"></div>
     </div>
+    <div id="colorPickerDiv" class="{{((handlePickColor == true)?'':'hidden')}}">
+      <ons-row class="colorPickerTitle">
+        <ons-col></ons-col>
+        <ons-col>Pick color</ons-col>
+        <ons-col></ons-col>
+      </ons-row>
+      <ons-row>
+        <ons-col><div class="{{'redColor colorPick '+((isColorUsed('#ED143D') == false)?'clickable hoverOp':'')}}">
+          <div class="{{'colorUsed '+((isColorUsed('#ED143D') == true)?'':'hidden')}}">Used</div>
+        </div></ons-col>
+        <ons-col><div class="{{'greenColor colorPick '+((isColorUsed('#7FFF00') == false)?'clickable hoverOp':'')}}">
+          <div class="{{'colorUsed '+((isColorUsed('#7FFF00') == true)?'':'hidden')}}">Used</div>
+        </div></ons-col>
+        <ons-col><div class="{{'blueColor colorPick '+((isColorUsed('#0860A8') == false)?'clickable hoverOp':'')}}">
+          <div class="{{'colorUsed '+((isColorUsed('#0860A8') == true)?'':'hidden')}}">Used</div>
+        </div></ons-col>
+        <ons-col><div class="{{'orangeColor colorPick '+((isColorUsed('#FF8C00') == false)?'clickable hoverOp':'')}}">
+          <div class="{{'colorUsed '+((isColorUsed('#FF8C00') == true)?'':'hidden')}}">Used</div>
+        </div></ons-col>
+        <ons-col><div class="{{'pinkColor colorPick '+((isColorUsed('#FF1493') == false)?'clickable hoverOp':'')}}">
+          <div class="{{'colorUsed '+((isColorUsed('#FF1493') == true)?'':'hidden')}}">Used</div>
+        </div></ons-col>
+      </ons-row>
+      <ons-row>
+        <ons-col><div class="{{'violateColor colorPick '+((isColorUsed('#9400D3') == false)?'clickable hoverOp':'')}}">
+          <div class="{{'colorUsed '+((isColorUsed('#9400D3') == true)?'':'hidden')}}">Used</div>
+        </div></ons-col>
+        <ons-col><div class="{{'goldColor colorPick '+((isColorUsed('#FFD700') == false)?'clickable hoverOp':'')}}">
+          <div class="{{'colorUsed '+((isColorUsed('#FFD700') == true)?'':'hidden')}}">Used</div>
+        </div></ons-col>
+        <ons-col><div class="{{'brownColor colorPick '+((isColorUsed('#8B4513') == false)?'clickable hoverOp':'')}}">
+          <div class="{{'colorUsed '+((isColorUsed('#8B4513') == true)?'':'hidden')}}">Used</div>
+        </div></ons-col>
+        <ons-col><div class="{{'grayColor colorPick '+((isColorUsed('#808080') == false)?'clickable hoverOp':'')}}">
+          <div class="{{'colorUsed '+((isColorUsed('#808080') == true)?'':'hidden')}}">Used</div>
+        </div></ons-col>
+        <ons-col><div class="{{'blackColor colorPick '+((isColorUsed('#000') == false)?'clickable hoverOp':'')}}">
+          <div class="{{'colorUsed '+((isColorUsed('#000') == true)?'':'hidden')}}">Used</div>
+        </div></ons-col>
+      </ons-row>
+    </div>
+
     <div id="LoadingScreen" style="z-index: 100000;display:block;position: fixed;width: 100%;height: 100%;background: rgb(8,96,168);">
       <img src="img/IntelIcon.png" style="width: 200px;position: absolute;top: 0;bottom: 0;left: 0;right: 0;margin: auto;opacity: .85;z-index: 3;">
       <img src="img/IntelIcon.png" class="animatedLogo" style="width: 200px;position: absolute;top: 0;bottom: 0;left: 0;right: 0;margin: auto;">
