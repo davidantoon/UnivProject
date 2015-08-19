@@ -32,7 +32,6 @@ app.factory('Workflow', ['Tab', 'TypeOf', function(Tab, TypeOf){
                 this.name = tempJson.name;
                 this.tabsIds = tempJson.tabsIds;
                 this.tabs = [];
-                debugger;
                 for (var i = 0; i < tempJson.tabs.length; i++) {
                     var tempTab = new Tab(null, this, tempJson.tabs[i]);
                     this.tabs.push(tempTab);

@@ -33,9 +33,6 @@
               <ons-col id="NotificationsButton2" ng-click="testFun2();" width="150px" style="width:150px; position:relative;" class="">
                 <div class="TopTabbarButton clickable hoverOp">New Workflow</div>
               </ons-col>
-              <ons-col id="ClearLocalStorageButton" ng-click="clearLocalStorage();" width="150px" style="width:150px; position:relative;" class="">
-                <div class="TopTabbarButton clickable hoverOp">Clear LocalStorage</div>
-              </ons-col>
               <ons-col>
               </ons-col>
               <ons-col id="refocusButton" ng-click="refocusLastWorkflow();" width="45px" style="width:45px; position:relative;" class="{{'col ons-col-inner '+((focusingLastWorkflow == false)?'clickable hoverOp':'opacityLow')}}">
@@ -43,10 +40,10 @@
                   <ons-icon icon="ion-pinpoint" size="25px"></ons-icon>
                 </div>
               </ons-col>
-              <ons-col id="NotificationsButton3" ng-click="Steps.commitSteps();" width="80px" style="width:50px; position:relative;" class="{{'col ons-col-inner '+((Steps.savedInServer == false)?'clickable hoverOp':'opacityLow')}}">
+              <ons-col id="NotificationsButton3" ng-click="Steps.commitSteps();" width="85px" style="width:50px; position:relative;" class="{{'col ons-col-inner '+((Steps.savedInServer == false)?'clickable hoverOp':'opacityLow')}}">
                 <div class="TopTabbarButton" style="border-right:0;font-size: 13px;">
                   <ons-icon icon="ion-upload" size="25px"></ons-icon>
-                  Save
+                  Save {{((Settings.autoSave == true)?((Steps.savedInServer == false)?'('+(5-counterBeforeSave)+')':''):'')}}
                 </div>
               </ons-col>
               <ons-col id="NotificationsButton4" ng-click="UndoWorkflow();" width="80px" style="width:50px; position:relative;" class="{{'col ons-col-inner '+((Steps.canUndo() == true)?'clickable hoverOp':'opacityLow')}}">

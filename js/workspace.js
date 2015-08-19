@@ -117,6 +117,34 @@ app.factory('Workspace', ['Workflow', function(Workflow){
 					break;
 				}
 			}
+		},
+
+		selectTabAfterSearch: function(tabHoldingData){
+			for(var i=0; i<this.workflows.length; i++){
+				if(this.workflows[i].ID == tabHoldingData.workflowId){
+					for(var j=0; j<this.workflows[i].tabs.length; j++){
+						if(this.workflows[i].tabs[j].ID == tabHoldingData.tabId){
+							this.workflows[i].selectedTab = this.workflows[i].tabs[j];
+							break;
+						}
+					}
+					break;
+				}
+			}
+		},
+
+		deleteChildTabIds: function(tabHoldingData){
+			for(var i=0; i<this.workflows.length; i++){
+				if(this.workflows[i].ID == tabHoldingData.workflowId){
+					for(var j=0; j<this.workflows[i].tabs.length; j++){
+						if(this.workflows[i].tabs[j].ID == tabHoldingData.tabId){
+							this.workflows[i].tabs[j].dataHolding.childTab = {"workflowId":null,"tabId":null};
+							break;
+						}
+					}
+					break;
+				}
+			}
 		}
 
 	}
