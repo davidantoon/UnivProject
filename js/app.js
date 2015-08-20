@@ -457,6 +457,8 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             if($scope.holdingNewWorkflowData == null){
                 // display color picker to open new workflow
                 workflow.selectedTab = workflow.addTab();
+                workflow.selectedTab.color = $scope.colorPicked;
+                $scope.colorPicked = null;
                 $scope.InsertStepToLast10Steps();
             }else{
                 // update workflow content related to action property
@@ -489,7 +491,10 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
         $scope.convertToWorkflow = function(newWorkflow){
             if($scope.holdingNewWorkflowData == null){
                 // display color picker to open new workflow
-                $scope.workSpaces.addNewWorkflow(newWorkflow);
+                
+                newWorkflow = $scope.workSpaces.addNewWorkflow(newWorkflow);
+                newWorkflow.selectedTab.color = $scope.colorPicked;
+                $scope.colorPicked = null;
                 $scope.workSpaces.updateNewWorkflowButtons();
                 $scope.InsertStepToLast10Steps();
             }else{
@@ -629,12 +634,30 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
         $scope.CancelNewWorkflow = function(wFlow){
             $scope.displayNewWorkflowButtons = false;
             $scope.holdingNewWorkflowData = null;
+            $scope.blurAllWindow = false;
+            $scope.handlePickColor = false;
         }
 
 
         $scope.openNewWorkflow = function(){
-            $scope.displayNewWorkflowButtons = true;
-            $scope.holdingNewWorkflowData = null;
+            $scope.blurAllWindow = true;
+            $scope.handlePickColor = true;
+            $scope.colorPicked = null;
+            $scope.Pickcolor(function(){
+                $scope.blurAllWindow = false;
+                $scope.handlePickColor = false;
+                $scope.displayNewWorkflowButtons = true;
+                $scope.holdingNewWorkflowData = null;
+            });
+        }
+
+        $scope.Pickcolor = function(callback){
+            var waitForUserResponse = $interval(function(){
+                if($scope.colorPicked != null){
+                    callback();
+                    $interval.cancel(waitForUserResponse);
+                }
+            },100);
         }
 
 

@@ -32,6 +32,10 @@ app.factory('Tab', ['Content','Globals', function(Content, Globals){
 			this.ID = tempJson.ID;
 			this.title = tempJson.title;
 			this.Type = tempJson.Type;
+			if(tempJson.color)
+				this.color = tempJson.color;
+			else
+				this.color = "#0860A8";
 
 			console.error("Check if new content passed from Undo, Redo, Server and Create");
 			if(tempJson.content != null && tempJson.content != null){
@@ -164,7 +168,8 @@ app.factory('Tab', ['Content','Globals', function(Content, Globals){
                 "Type": this.Type,
                 "content": ((this.content == null)?null:this.content.toString()),
                 "orderTab": this.orderTab,
-                "dataHolding": this.dataHolding
+                "dataHolding": this.dataHolding,
+                "color": this.color
             }
             return JSON.stringify(strToReturn);
 		}

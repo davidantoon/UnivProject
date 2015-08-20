@@ -279,7 +279,7 @@
           </div>
         </div>
       </div>
-      <div id="blurWindow" class="{{((blurAllWindow == true)?'':'hidden')}}"></div>
+      <div id="blurWindow" ng-click="CancelNewWorkflow();" class="{{((blurAllWindow == true)?'':'hidden')}}"></div>
     </div>
     <div id="colorPickerDiv" class="{{((handlePickColor == true)?'':'hidden')}}">
       <ons-row class="colorPickerTitle">
@@ -288,36 +288,36 @@
         <ons-col></ons-col>
       </ons-row>
       <ons-row>
-        <ons-col><div class="{{'redColor colorPick '+((isColorUsed('#ED143D') == false)?'clickable hoverOp':'')}}">
+        <ons-col><div ng-click="((isColorUsed('#ED143D') == true)?return:colorPicked='#ED143D')" class="{{'redColor colorPick '+((isColorUsed('#ED143D') == false)?'clickable hoverOp':'')}}">
           <div class="{{'colorUsed '+((isColorUsed('#ED143D') == true)?'':'hidden')}}">Used</div>
         </div></ons-col>
-        <ons-col><div class="{{'greenColor colorPick '+((isColorUsed('#7FFF00') == false)?'clickable hoverOp':'')}}">
+        <ons-col><div ng-click="((isColorUsed('#7FFF00') == true)?return:colorPicked='#7FFF00')" class="{{'greenColor colorPick '+((isColorUsed('#7FFF00') == false)?'clickable hoverOp':'')}}">
           <div class="{{'colorUsed '+((isColorUsed('#7FFF00') == true)?'':'hidden')}}">Used</div>
         </div></ons-col>
-        <ons-col><div class="{{'blueColor colorPick '+((isColorUsed('#0860A8') == false)?'clickable hoverOp':'')}}">
+        <ons-col><div ng-click="((isColorUsed('#0860A8') == true)?return:colorPicked='#0860A8')" class="{{'blueColor colorPick '+((isColorUsed('#0860A8') == false)?'clickable hoverOp':'')}}">
           <div class="{{'colorUsed '+((isColorUsed('#0860A8') == true)?'':'hidden')}}">Used</div>
         </div></ons-col>
-        <ons-col><div class="{{'orangeColor colorPick '+((isColorUsed('#FF8C00') == false)?'clickable hoverOp':'')}}">
+        <ons-col><div ng-click="((isColorUsed('#FF8C00') == true)?return:colorPicked='#FF8C00')" class="{{'orangeColor colorPick '+((isColorUsed('#FF8C00') == false)?'clickable hoverOp':'')}}">
           <div class="{{'colorUsed '+((isColorUsed('#FF8C00') == true)?'':'hidden')}}">Used</div>
         </div></ons-col>
-        <ons-col><div class="{{'pinkColor colorPick '+((isColorUsed('#FF1493') == false)?'clickable hoverOp':'')}}">
+        <ons-col><div ng-click="((isColorUsed('#FF1493') == true)?return:colorPicked='#FF1493')" class="{{'pinkColor colorPick '+((isColorUsed('#FF1493') == false)?'clickable hoverOp':'')}}">
           <div class="{{'colorUsed '+((isColorUsed('#FF1493') == true)?'':'hidden')}}">Used</div>
         </div></ons-col>
       </ons-row>
       <ons-row>
-        <ons-col><div class="{{'violateColor colorPick '+((isColorUsed('#9400D3') == false)?'clickable hoverOp':'')}}">
+        <ons-col><div ng-click="((isColorUsed('#9400D3') == true)?return:colorPicked='#9400D3')" class="{{'violateColor colorPick '+((isColorUsed('#9400D3') == false)?'clickable hoverOp':'')}}">
           <div class="{{'colorUsed '+((isColorUsed('#9400D3') == true)?'':'hidden')}}">Used</div>
         </div></ons-col>
-        <ons-col><div class="{{'goldColor colorPick '+((isColorUsed('#FFD700') == false)?'clickable hoverOp':'')}}">
+        <ons-col><div ng-click="((isColorUsed('#FFD700') == true)?return:colorPicked='#FFD700')" class="{{'goldColor colorPick '+((isColorUsed('#FFD700') == false)?'clickable hoverOp':'')}}">
           <div class="{{'colorUsed '+((isColorUsed('#FFD700') == true)?'':'hidden')}}">Used</div>
         </div></ons-col>
-        <ons-col><div class="{{'brownColor colorPick '+((isColorUsed('#8B4513') == false)?'clickable hoverOp':'')}}">
+        <ons-col><div ng-click="((isColorUsed('#8B4513') == true)?return:colorPicked='#8B4513')" class="{{'brownColor colorPick '+((isColorUsed('#8B4513') == false)?'clickable hoverOp':'')}}">
           <div class="{{'colorUsed '+((isColorUsed('#8B4513') == true)?'':'hidden')}}">Used</div>
         </div></ons-col>
-        <ons-col><div class="{{'grayColor colorPick '+((isColorUsed('#808080') == false)?'clickable hoverOp':'')}}">
+        <ons-col><div ng-click="((isColorUsed('#808080') == true)?return:colorPicked='#808080')" class="{{'grayColor colorPick '+((isColorUsed('#808080') == false)?'clickable hoverOp':'')}}">
           <div class="{{'colorUsed '+((isColorUsed('#808080') == true)?'':'hidden')}}">Used</div>
         </div></ons-col>
-        <ons-col><div class="{{'blackColor colorPick '+((isColorUsed('#000') == false)?'clickable hoverOp':'')}}">
+        <ons-col><div ng-clic((isColorUsed('#000') == true)?return:k="colorPice )= '#000'" class="{{'blackColor colorPick '+((isColorUsed('#000') == false)?'clickable hoverOp':'')}}">
           <div class="{{'colorUsed '+((isColorUsed('#000') == true)?'':'hidden')}}">Used</div>
         </div></ons-col>
       </ons-row>

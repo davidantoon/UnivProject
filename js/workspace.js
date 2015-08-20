@@ -16,7 +16,9 @@ app.factory('Workspace', ['Workflow', function(Workflow){
 		 * @param {[workflow]}
 		 */
 		addNewWorkflow: function(newWorkflow){
-			this.workflows.push(new Workflow(null,this.lastWorkflowId++,newWorkflow.fx,newWorkflow.fy,newWorkflow.tx,newWorkflow.ty));
+			var tempWorkflow = new Workflow(null,this.lastWorkflowId++,newWorkflow.fx,newWorkflow.fy,newWorkflow.tx,newWorkflow.ty)
+			this.workflows.push(tempWorkflow);
+			return tempWorkflow;
 		},
 
 		/**
