@@ -20,6 +20,8 @@ app.factory('Workflow', ['Tab', 'TypeOf', function(Tab, TypeOf){
                 this.tx = tx;
                 this.ty = ty;
                 this.tabs = [];
+                this.tabsIds = 1;
+                this.selectedTab = null;
                 this.name = "New Workflow";
             }else {
                 this.ID = tempJson.ID;

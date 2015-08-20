@@ -7,7 +7,7 @@ app.factory('Content', ['Globals', function(Globals){
 		this.kBitsNeeded = ((conData && conData.kBitsNeeded) || []);
 		this.kBitProvided = ((conData && conData.kBitProvided) || []);
 		this.terms = ((conData && conData.terms) || []);
-		this.category = ((conData && conData.category) || "");
+		this.description = ((conData && conData.description) || "");
 		this.url = ((conData && conData.url) || "");
 		this.locked = ((conData && conData.locked) || null);
 		this.lastModified = ((conData && conData.lastModified) || null);
@@ -119,7 +119,7 @@ app.factory('Content', ['Globals', function(Globals){
 				"kBitsNeeded": this.kBitsNeeded,
 				"kBitProvided": this.kBitProvided,
 				"terms": this.terms,
-				"category": this.category,
+				"description": this.description,
 				"url": this.url,
 				"locked": this.locked,
 				"lastModified": this.lastModified,

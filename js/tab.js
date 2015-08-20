@@ -5,14 +5,23 @@ app.factory('Tab', ['Content','Globals', function(Content, Globals){
 	Tab.SEARCH_TAB = 1;
 	Tab.CREATE_TAB = 2;
 	Tab.EDIT_TAB = 3;
+	Tab.RESULTS_TAB = 4;
 
-	function Tab(id, workflow, tempJson){
+	function Tab(id, workflow, tempJson, color, isResultTab){
 
+		if(color != undefined && color != null){
+			this.color = color;
+		}else{
+			this.color = "#0860A8";
+		}
 		if(id != null && workflow != null){
 			this.parentWF = workflow;
 			this.ID = id;
 			this.title = 'Tab '+id;
-			this.Type = Tab.NORMAL_TAB; /*  0 => 'Search/Create/Edit'  ||  1 => 'Search'  ||  2 => 'Create'  ||  3 => 'Edit'  */
+			if(isResultTab != undefined && isResultTab != null)
+				this.Type = Tab.RESULTS_TAB;
+			else
+				this.Type = Tab.NORMAL_TAB; /*  0 => 'Search/Create/Edit'  ||  1 => 'Search'  ||  2 => 'Create'  ||  3 => 'Edit' || 4 => 'Search Results' */
 			this.content = null;
 			this.orderTab = id;
 			this.dataHolding = {};
@@ -23,6 +32,10 @@ app.factory('Tab', ['Content','Globals', function(Content, Globals){
 			this.ID = tempJson.ID;
 			this.title = tempJson.title;
 			this.Type = tempJson.Type;
+			if(tempJson.color)
+				this.color = tempJson.color;
+			else
+				this.color = "#0860A8";
 
 			console.error("Check if new content passed from Undo, Redo, Server and Create");
 			if(tempJson.content != null && tempJson.content != null){
@@ -65,16 +78,32 @@ app.factory('Tab', ['Content','Globals', function(Content, Globals){
 				case Tab.SEARCH_TAB:
 					this.addData({
 						"searchText": "",
-						"resultsCount": 0,
-						"results": [],
-						"selectedResult": -1
+						"elementsToSearch": 0,
+						"searchBy": 0,
+						"childTab":{"workflowId":null,"tabId":null}
 					});
 				break;
 				case Tab.CREATE_TAB:
-					
+					this.addData({
+						"searchText": "",
+						"resultsCount": 0,
+						"results": [],
+						"selectedResult": -1,
+						"elementsToSearch": 0,
+						"searchBy": 0
+					});
 				break;
 				case Tab.EDIT_TAB:
 					
+				break;
+				case Tab.RESULTS_TAB:
+					this.addData({
+						"resultsCount": 0,
+						"results": [],
+						"selectedResult": -1,
+						"childTab":{"workflowId":null,"tabId":null},
+						"parentTab":{"workflowId":null,"tabId":null}
+					});
 				break;
 				default:
 				break;
@@ -88,6 +117,7 @@ app.factory('Tab', ['Content','Globals', function(Content, Globals){
 		 */
 		addData: function(dataHolding){
 			this.dataHolding = dataHolding;
+			
 		},
 
 		/**
@@ -99,7 +129,19 @@ app.factory('Tab', ['Content','Globals', function(Content, Globals){
 
 			// check if exsit
 
-			// this.content = contentObj;
+			this.content = contentObj;
+		},
+
+		addResults: function(contentObj){
+
+			// check if exsit
+			if(contentObj == null){
+				this.dataHolding.resultsCount = -1;
+				this.dataHolding.results = null;
+			}else{
+				this.dataHolding.resultsCount = contentObj.length;
+				this.dataHolding.results = contentObj;
+			}
 		},
 
 		/**
@@ -126,7 +168,8 @@ app.factory('Tab', ['Content','Globals', function(Content, Globals){
                 "Type": this.Type,
                 "content": ((this.content == null)?null:this.content.toString()),
                 "orderTab": this.orderTab,
-                "dataHolding": this.dataHolding
+                "dataHolding": this.dataHolding,
+                "color": this.color
             }
             return JSON.stringify(strToReturn);
 		}

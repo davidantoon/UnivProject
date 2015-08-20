@@ -2,69 +2,81 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 
 	function Steps(workspace){
 
-		this.last20Steps = [];
+		this.last20Steps = [];	
 		this.currentUndoOrder = 1;
 		this.savedInServer = false;
+		this.lastFocusedWorkflow = null;
 
 		var passThis1 = this;
-		Server.getVersionList(23,function(result, error){
+		var svr = new Server(this.objectType);
+		svr.getSteps(function(result, error){
 			if(error || !result){
 				ServerResquestComplete(null, passThis1);
 			}else{
-				ServerResquestComplete(result);
+				ServerResquestComplete(result, passThis1);
 			}
 		});
-		
-		ServerResquestComplete(null, this); // remove after server available
 
 		function ServerResquestComplete(serverSteps, passThis){
 			var dataFromLocalStorage = JSON.parse(localStorage.getItem("com.intel.steps.last20Steps"));
 			// init workspace
-			workspace.workflows = [];
-			workspace.lastWorkflowId = 0;
-			workspace.newWorkflowButtons = [];
-			workspace.selectedWorkflow = null;
-
 			if(serverSteps){
 				if(dataFromLocalStorage != null){
 					// compare 
 					if(Number(serverSteps.lastModified) < dataFromLocalStorage.lastModified){
 						passThis.last20Steps = dataFromLocalStorage.last20Steps;
 						passThis.currentUndoOrder = dataFromLocalStorage.currentUndoOrder;
+						passThis.lastFocusedWorkflow = dataFromLocalStorage.lastFocusedWorkflow;
 					}else{
 						passThis.last20Steps = serverSteps.last20Steps;
 						passThis.currentUndoOrder = serverSteps.currentUndoOrder;
+						passThis.lastFocusedWorkflow = serverSteps.lastFocusedWorkflow;
 					}
 					
 				}else{
 					// only server steps
 					passThis.last20Steps = serverSteps.last20Steps;
 					passThis.currentUndoOrder = serverSteps.currentUndoOrder;
+					passThis.lastFocusedWorkflow = serverSteps.lastFocusedWorkflow;
 				}
 			}else{
 				// only local steps
 				if(dataFromLocalStorage != null){
 					passThis.last20Steps = dataFromLocalStorage.last20Steps;
 					passThis.currentUndoOrder = dataFromLocalStorage.currentUndoOrder;
+					passThis.lastFocusedWorkflow = dataFromLocalStorage.lastFocusedWorkflow;
 				}else{
 					workspace = new Workspace();
+					workspace.selectedWorkflow = workspace.workflows[0];
 					passThis.InsertStepToLastSteps(workspace);
+					lastFocusedWorkflow = workspace.workflows[0].ID;
 				}
 			}
 			passThis.commitSteps();
 			passThis.savedInServer = true;
 			// update layout of workspace
 			passThis.restoreStep(workspace, function(){
+				if(passThis.lastFocusedWorkflow == null || passThis.lastFocusedWorkflow == undefined){
+					passThis.lastFocusedWorkflow = lastFocusedWorkflow = workspace.workflows[0].ID;
+				}else{
+					var indexOfScroll = 0;
+                    for(var i=0; i< workspace.workflows.length; i++){
+                        if(workspace.workflows[i].ID == passThis.lastFocusedWorkflow){
+                            indexOfScroll = i;
+                            break;
+                        }
+                    }
+                    passThis.lastFocusedWorkflow = workspace.workflows[indexOfScroll].ID;
+				}
 				workspace.updateNewWorkflowButtons();
 				workspace.updateLastId();
-				console.log(workspace);
 			});
 		}
 	}
 
 	Steps.prototype = {
 
-		objectType: "Steps",
+		objectType: "steps",
 		/**
 		 * check if there is older step to undo it
 		 * @return {Boolean} True if older step exist, else False
@@ -153,7 +165,8 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
                 	}
                 }
                 this.currentUndoOrder++;
-                this.savedInServer = false;
+                localStorage.setItem("com.intel.steps.last20Steps", JSON.stringify(this.toJson()));
+	            this.savedInServer = false;
                 callback();
 			}
 		},
@@ -210,7 +223,8 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
                 	}
                 }
                 this.currentUndoOrder--;
-                this.savedInServer = false;
+                localStorage.setItem("com.intel.steps.last20Steps", JSON.stringify(this.toJson()));
+	            this.savedInServer = false;
                 callback();
 			}
 		},
@@ -270,22 +284,31 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 
 			// get json object of previous step
 			var tempJsonWorkflows =  JSON.parse(this.last20Steps[IONS].allWorkFlowContents);
-			var DiffObjects = getDiffArrays(workspace.workflows,tempJsonWorkflows);
+			if(tempJsonWorkflows.length == 0){
+				callback();
+			}else{
+				workspace.workflows = [];
+				workspace.lastWorkflowId = 0;
+				workspace.newWorkflowButtons = [];
+				workspace.selectedWorkflow = null;
 
-        	// check inserted workflows
-        	for(var j1=0; j1<DiffObjects.inserted.length; j1++){
-            	workspace.workflows.push(new Workflow(DiffObjects.inserted[j1]));
-            }
+				var DiffObjects = getDiffArrays(workspace.workflows,tempJsonWorkflows);
 
-            // update workflow tabs contents
-            for (var i1 = 0; i1 < tempJsonWorkflows.length; i1++) {
-            	for(var i2=0; i2< workspace.workflows.length; i2++){
-            		if(tempJsonWorkflows[i1].ID == workspace.workflows[i2].ID){
-            			workspace.workflows[i2].updateAllParams(tempJsonWorkflows[i1]);
-            		}
-            	}
-            }
-            callback();
+	        	// check inserted workflows
+	        	for(var j1=0; j1<DiffObjects.inserted.length; j1++){
+	            	workspace.workflows.push(new Workflow(DiffObjects.inserted[j1]));
+	            }
+
+	            // update workflow tabs contents
+	            for (var i1 = 0; i1 < tempJsonWorkflows.length; i1++) {
+	            	for(var i2=0; i2< workspace.workflows.length; i2++){
+	            		if(tempJsonWorkflows[i1].ID == workspace.workflows[i2].ID){
+	            			workspace.workflows[i2].updateAllParams(tempJsonWorkflows[i1]);
+	            		}
+	            	}
+	            }
+	            callback();
+	        }
 		},
 		/**
 		 * Remove all steps from local and server, and add one step represents current state
@@ -300,24 +323,32 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 		 * Save last steps to server
 		 */
 		commitSteps: function(callback){
-			// var svr = new Server("Steps");
-			// svr.saveElement(this.toJson(), callback);
-			
-			this.savedInServer = true;
-			// locate index of next step (indexOfNextStep = IONS)
-			var IONS = -1;
-			for(var i = this.last20Steps.length - 1; i >= 0; i--){
-				if(this.currentUndoOrder > this.last20Steps[i].orderSteps){
-					IONS = i;
-					break;
+
+			if(this.savedInServer == false){
+				this.savedInServer = true;
+				// locate index of next step (indexOfNextStep = IONS)
+				var IONS = -1;
+				for(var i = this.last20Steps.length - 1; i >= 0; i--){
+					if(this.currentUndoOrder > this.last20Steps[i].orderSteps){
+						IONS = (i+1);
+						break;
+					}
 				}
+				if(IONS > 0){
+					this.last20Steps = this.last20Steps.slice(IONS);
+				}
+				var svr = new Server(this.objectType);
+				if(typeof callback == "funtion")
+					svr.saveElement(this.toJson(), callback);
+				else
+					svr.saveElement(this.toJson(), function(){});
+			}else{
+				if(typeof callback == "funtion")
+					callback(null, {"message": "Steps up to date", "code":""});
 			}
-			if(IONS < 0){
-				console.log(new Error("Steps: commitSteps() cannot remove redo, IONS = -1"));
-				return;
-			}
-			
 		},
+
+
 
 		/**
          * Creates Json 
@@ -327,11 +358,10 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 			return {
 				"last20Steps": this.last20Steps,
 				"currentUndoOrder": this.currentUndoOrder,
-				"lastModified": +(new Date())
+				"lastModified": +(new Date()),
+				"lastFocusedWorkflow": this.lastFocusedWorkflow
 			}
 		}
-
-
 	}
 
 	return Steps;

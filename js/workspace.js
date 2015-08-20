@@ -16,7 +16,9 @@ app.factory('Workspace', ['Workflow', function(Workflow){
 		 * @param {[workflow]}
 		 */
 		addNewWorkflow: function(newWorkflow){
-			this.workflows.push(new Workflow(null,this.lastWorkflowId++,newWorkflow.fx,newWorkflow.fy,newWorkflow.tx,newWorkflow.ty));
+			var tempWorkflow = new Workflow(null,this.lastWorkflowId++,newWorkflow.fx,newWorkflow.fy,newWorkflow.tx,newWorkflow.ty)
+			this.workflows.push(tempWorkflow);
+			return tempWorkflow;
 		},
 
 		/**
@@ -90,7 +92,63 @@ app.factory('Workspace', ['Workflow', function(Workflow){
 			}
 			maxId++;
 			this.lastWorkflowId = maxId;
+		},
+
+		scrollToLastWorkflow: function(Steps){
+			var indexOfScroll = 0;
+            for(var i=0; i< this.workflows.length; i++){
+                if(this.workflows[i].ID == Steps.lastFocusedWorkflow){
+                    indexOfScroll = i;
+                    break;
+                }
+            }
+            this.workflows[indexOfScroll].scrollTo();
+		},
+
+		updateDataInTab: function(tabHoldingData, results){
+			// tabHoldingData = {"workflowId":"111", "tabId":"1223"}
+			
+			for(var i=0; i<this.workflows.length; i++){
+				if(this.workflows[i].ID == tabHoldingData.workflowId){
+					for(var j=0; j<this.workflows[i].tabs.length; j++){
+						if(this.workflows[i].tabs[j].ID == tabHoldingData.tabId){
+							this.workflows[i].tabs[j].addResults(results);
+							break;
+						}
+					}
+					break;
+				}
+			}
+		},
+
+		selectTabAfterSearch: function(tabHoldingData){
+			for(var i=0; i<this.workflows.length; i++){
+				if(this.workflows[i].ID == tabHoldingData.workflowId){
+					for(var j=0; j<this.workflows[i].tabs.length; j++){
+						if(this.workflows[i].tabs[j].ID == tabHoldingData.tabId){
+							this.workflows[i].selectedTab = this.workflows[i].tabs[j];
+							break;
+						}
+					}
+					break;
+				}
+			}
+		},
+
+		deleteChildTabIds: function(tabHoldingData){
+			for(var i=0; i<this.workflows.length; i++){
+				if(this.workflows[i].ID == tabHoldingData.workflowId){
+					for(var j=0; j<this.workflows[i].tabs.length; j++){
+						if(this.workflows[i].tabs[j].ID == tabHoldingData.tabId){
+							this.workflows[i].tabs[j].dataHolding.childTab = {"workflowId":null,"tabId":null};
+							break;
+						}
+					}
+					break;
+				}
+			}
 		}
+
 	}
 
 	return Workspace;
