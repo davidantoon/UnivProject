@@ -186,9 +186,10 @@ app.factory('Workspace', ['Workflow', function(Workflow){
 		 */
 		checkUserColorsInWorkspace: function(){
 			//init the colors object
-			for(var i=0; i<this.colors.length; i++){
-				this.colors[i] = false;
-			}
+			var passThis = this;
+			$.each(this.colors, function(key, value) {
+				passThis.colors[key] = false;
+			});
 
 			//for each workflow
 			for(var i=0; i < this.workflows.length; i++){
