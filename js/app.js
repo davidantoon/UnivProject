@@ -173,6 +173,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
         // 		callbackFunction(true);
         // 	},3000);
         // }
+        
         $scope.loadDataFromSRV = function(callbackFunction) {
             callbackFunction(true);
             $scope.currentUser = {
@@ -359,6 +360,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
         
 
         $scope.isColorUsed = function(color){
+
             return (color == '#ED143D' || color == '#0860A8' || color == '#FF8C00');
         }
 
@@ -392,7 +394,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                 var tempBlockTop = ((fromY * blockDims));
                 $($('#WorkFlowMatrix > .WorkFlowBlock')[i]).css('height', tempBlockHeight + "px").css('width', tempBlockWidth + "px");
                 $($('#WorkFlowMatrix > .WorkFlowBlock')[i]).css('left', tempBlockLeft + "px").css('top', tempBlockTop + "px");
-                $($('#WorkFlowMatrix > .WorkFlowBlock')[i]).find('.SelectedTabContent').css('height', (tempBlockHeight-73) + "px");
+                $($('#WorkFlowMatrix > .WorkFlowBlock')[i]).find('.SelectedTabContent').css('height', (tempBlockHeight-33) + "px");
             }
             // if($scope.workSpaces != null)
                 // $scope.workSpaces.updateNewWorkflowButtons();
@@ -452,6 +454,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             // workflowId.ty = workflowId.fy+2;
             // $scope.workSpaces.updateNewWorkflowButtons();
         }
+
 
         $scope.addNewTabToWorkflow = function(workflow){
             if($scope.holdingNewWorkflowData == null){

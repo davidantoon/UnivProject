@@ -30,7 +30,7 @@ class dbAPI {
 		}
 		return $conn;
     }
-
+    
     public function run_query($database_name, $sql) {
 		$conn = $this->db_get_connection($database_name);
 		$result = $conn->query($sql);

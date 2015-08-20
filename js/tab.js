@@ -6,7 +6,7 @@ app.factory('Tab', ['Content','Globals', function(Content, Globals){
 	Tab.CREATE_TAB = 2;
 	Tab.EDIT_TAB = 3;
 	Tab.RESULTS_TAB = 4;
-
+	
 	function Tab(id, workflow, tempJson, color, isResultTab){
 
 		if(color != undefined && color != null){

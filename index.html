@@ -43,7 +43,7 @@
               <ons-col id="NotificationsButton3" ng-click="Steps.commitSteps();" width="85px" style="width:50px; position:relative;" class="{{'col ons-col-inner '+((Steps.savedInServer == false)?'clickable hoverOp':'opacityLow')}}">
                 <div class="TopTabbarButton" style="border-right:0;font-size: 13px;">
                   <ons-icon icon="ion-upload" size="25px"></ons-icon>
-                  Save <!-- {{((Settings.autoSave == true)?((Steps.savedInServer == false)?'('+(5-(7-counterBeforeSave))+')':''):'')}} -->
+                  Save
                 </div>
                 <div class="backgroundSaveButton" style="{{((Settings.autoSave == true)?((Steps.savedInServer == false && counterBeforeSave > 2)?'height:'+ ((5-(7-counterBeforeSave))*20)+'%':'hidden'):'hidden')}}"></div>
               </ons-col>
@@ -87,34 +87,6 @@
               </ons-col> -->
             </ons-row>
           </ons-tabbar>
-          <div id="FullScreenDiv">
-            <div class="resizeDiv resizeWidthLeftDiv hoverOp clickable">
-              <ons-icon icon="ion-arrow-left-b" size="20px"></ons-icon>
-            </div>
-            <div class="resizeDiv resizeWidthRightDiv hoverOp clickable">
-              <ons-icon icon="ion-arrow-right-b" size="20px"></ons-icon>
-            </div>
-            <div class="resizeDiv resizeHeightTopDiv hoverOp clickable">
-              <ons-icon icon="ion-arrow-up-b" size="20px"></ons-icon>
-            </div>
-            <div class="resizeDiv resizeHeightBottomDiv hoverOp clickable">
-              <ons-icon icon="ion-arrow-down-b" size="20px"></ons-icon>
-            </div>
-
-            <ons-row>
-              <ons-col ng-click="closeFullScreen();" class="ExitFullScreenButton" width="200px">
-                Exit Fullscreen
-              </ons-col>
-              <ons-col></ons-col>
-            </ons-row>
-            <ons-row class="row ons-row-inner WorkFlowTabs">
-              <ons-col ng-repeat="tab in Workflow[selectedWorkflow].tabs" ng-click="selectTab(Workflow[selectedWorkflow], tab);" class="{{'col ons-col-inner WorkFlowTab '+((getSelectedTab(Workflow[selectedWorkflow], tab.ID))?'ActiveTab':'')}}">
-                <input id="{{'FWorkflowI'+Workflow[selectedWorkflow].ID+'Tab'+tab.ID}}" readonly="readonly" placeholder="Tab name" ng-enter="updateTabName(Workflow[selectedWorkflow].ID, tab.ID, 'FWorkflowI'+Workflow[selectedWorkflow].ID+'Tab'+tab.ID);" ng-dblclick="ConvertTextBos('FWorkflowI'+Workflow[selectedWorkflow].ID+'Tab'+tab.ID);"
-                value="{{tab.title}}" />
-              </ons-col>
-
-            </ons-row>
-          </div>
           <ons-row id="BodyRow" style="margin-top: 50px;  overflow: scroll;">
 
             <!-- <ons-col width="32%" class="col ons-col-inner leftCol WorkFlowDiv">
@@ -167,6 +139,8 @@
                     <input id="{{'WorkflowI'+wFlow.ID+'Tab'+tab.ID}}" readonly="readonly" placeholder="Tab name" ng-enter="updateTabName(wFlow.ID, tab.ID, 'WorkflowI'+wFlow.ID+'Tab'+tab.ID);" 
                     ng-dblclick="((displayNewWorkflowButtons == true)?return:ConvertTextBos('WorkflowI'+wFlow.ID+'Tab'+tab.ID));"
                     value="{{tab.title}}" />
+                    <ons-icon class="closeTabButton" icon="ion-ios-close" size="18px"></ons-icon>
+                    <ons-icon class="optionTabButton" icon="ion-navicon-round" size="18px"></ons-icon>
                   </ons-col>
                   <ons-col ng-click="addNewTabToWorkflow(wFlow);" class="{{'col ons-col-inner newWorkflowTab ' + ((displayNewWorkflowButtons == true)?'':'hidden')}}">
                     +
@@ -230,16 +204,6 @@
                       <pre>{{(((wFlow.selectedTab.dataHolding.results == null)?{"result":"Loading..."}:((wFlow.selectedTab.dataHolding.resultsCount == 0)?{"result":"No Content"}:wFlow.selectedTab.dataHolding.results)) | json)}}</pre>
                     </div>
                 </div>
-                <div class="openFullScreenButton" ng-click="openFullScreen($index);">
-                  <ons-icon size="35px" icon="ion-arrow-expand" class="ons-icon ons-icon--ion ion-arrow-expand" style="line-height: 45px;width: 40px;text-align: center;height: 40px;"></ons-icon>
-                </div>
-                <div class="editTabSettingsButton" ng-click="editTabSettings($index);">
-                  <ons-icon size="35px" icon="ion-gear-a" class="ons-icon ons-icon--ion ion-gear-a" style="line-height: 45px;width: 40px;text-align: center;height: 40px;"></ons-icon>
-                </div>
-                <div class="closeTabButton" ng-click="closeTab(wFlow);">
-                  <ons-icon size="35px" icon="ion-close" class="ons-icon ons-icon--ion ion-close" style="line-height: 45px;width: 40px;text-align: center;height: 40px;"></ons-icon>
-                </div>
-                <!-- <div class="{{'holdNoClicks ' + ((displayNewWorkflowButtons == true || displayNewWorkflowTabButtons == true)?'':'hidden')}}"></div> -->
               </div>
 
               <div ng-repeat="newButtons in workSpaces.newWorkflowButtons" id="{{'newWorkflowButton'+newButtons.ID}}" class="{{'newWorkflowButtonDiv WorkFlowBlock ' + ((displayNewWorkflowButtons == true)?'':'hidden')}}" fx="{{newButtons.fx}}" fy="{{newButtons.fy}}" tx="{{newButtons.tx}}" ty="{{newButtons.ty}}" >

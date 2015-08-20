@@ -6107,6 +6107,8 @@ div.vertical {
   font-size: 14px;
 }
 .WorkFlowTab{
+
+  max-height: 33px;
   cursor: pointer;
   min-width: 5px;
   padding: 3px 3px;
@@ -6125,10 +6127,7 @@ div.vertical {
   -o-transition-timing-function: ease-out;
   transition-timing-function: ease-out;
 }
-.WorkFlowTab.ActiveTab{
-  background: rgb(8,96,168);
-  min-width: 100px;
-}
+
 .WorkFlowTab:hover{
   min-width: 100px;
   background: rgba(255,255,255,.4);
@@ -6383,15 +6382,69 @@ div.vertical {
   color: white;
   cursor: pointer;
 }
-.closeTabButton{
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  bottom: 0;
-  background: rgb(207,50,50);
-  left: 80px;
+
+.optionTabButton{
+  position: relative;
+  width: 24px;
+  height: 22px;
   color: white;
   cursor: pointer;
+  top: -23px;
+  left: -53%;
+  opacity: 0;
+  -webkit-transition-property: all;
+  -moz-transition-property: all;
+  -o-transition-property: all;
+  transition-property: all;
+  -webkit-transition-duration: 0.15s;
+  -moz-transition-duration: 0.15s;
+  -o-transition-duration: 0.15s;
+  transition-duration: 0.15s;
+  -webkit-transition-timing-function: ease-out;
+  -moz-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.closeTabButton{
+  position: relative;
+  width: 24px;
+  height: 22px;
+  color: white;
+  cursor: pointer;
+  top: -22px;
+  left: 55%;
+  opacity: 0;
+  -webkit-transition-property: all;
+  -moz-transition-property: all;
+  -o-transition-property: all;
+  transition-property: all;
+  -webkit-transition-duration: 0.15s;
+  -moz-transition-duration: 0.15s;
+  -o-transition-duration: 0.15s;
+  transition-duration: 0.15s;
+  -webkit-transition-timing-function: ease-out;
+  -moz-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+
+.WorkFlowTab.ActiveTab{
+  background: rgb(8,96,168);
+  min-width: 100px;
+}
+.WorkFlowTab.ActiveTab > .closeTabButton{
+  opacity: 0.5;
+}
+
+.WorkFlowTab.ActiveTab > .closeTabButton:hover{
+  opacity: 1;
+}
+.WorkFlowTab.ActiveTab > .optionTabButton{
+  opacity: 0.5;
+}
+
+.WorkFlowTab.ActiveTab > .optionTabButton:hover{
+  opacity: 1;
 }
 
 .newWorkflowTab{
@@ -6638,6 +6691,7 @@ div.vertical {
     padding: 10px;
     cursor: default;
 }
+
 
 
 

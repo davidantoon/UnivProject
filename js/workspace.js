@@ -7,6 +7,9 @@ app.factory('Workspace', ['Workflow', function(Workflow){
 		this.selectedWorkflow = firstWorkflow;
 		this.objectType = "Workspace";
 		this.progressLines = [];
+		this.colors ={
+			
+		}
 	}
 
 	Workspace.prototype = {
