@@ -94,6 +94,9 @@ app.factory('Workspace', ['Workflow', function(Workflow){
 			return flag;
 		},
 
+		/**
+		 * Updates the ID for the last workflow
+		 */
 		updateLastId: function(){
 			var maxId = 0;
 			for(var i=0; i<this.workflows.length; i++){
@@ -106,6 +109,10 @@ app.factory('Workspace', ['Workflow', function(Workflow){
 			this.lastWorkflowId = maxId;
 		},
 
+		/**
+		 * Scrolls to specific workflow 
+		 * @param  {object} Steps Steps object to check workflow
+		 */
 		scrollToLastWorkflow: function(Steps){
 			var indexOfScroll = 0;
             for(var i=0; i< this.workflows.length; i++){
@@ -117,6 +124,11 @@ app.factory('Workspace', ['Workflow', function(Workflow){
             this.workflows[indexOfScroll].scrollTo();
 		},
 
+		/**
+		 * Updates data in specific tab	
+		 * @param  {object} tabHoldingData the workflow and tab id we are going to update
+		 * @param  {object} results        the new contet
+		 */
 		updateDataInTab: function(tabHoldingData, results){
 			// tabHoldingData = {"workflowId":"111", "tabId":"1223"}
 			
@@ -133,6 +145,10 @@ app.factory('Workspace', ['Workflow', function(Workflow){
 			}
 		},
 
+		/**
+		 * Focus on specific tab after doing a search
+		 * @param  {object} tabHoldingData the workflow id and the ab id we want to select
+		 */
 		selectTabAfterSearch: function(tabHoldingData){
 			for(var i=0; i<this.workflows.length; i++){
 				if(this.workflows[i].ID == tabHoldingData.workflowId){
@@ -147,6 +163,10 @@ app.factory('Workspace', ['Workflow', function(Workflow){
 			}
 		},
 
+		/**
+		 * Delets the childs id of specific tab in workflow
+		 * @param  {object} tabHoldingData the workflow id and the tab id which we want to delete its childs
+		 */
 		deleteChildTabIds: function(tabHoldingData){
 			for(var i=0; i<this.workflows.length; i++){
 				if(this.workflows[i].ID == tabHoldingData.workflowId){
