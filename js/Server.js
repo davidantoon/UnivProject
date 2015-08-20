@@ -80,7 +80,7 @@ app.factory('Server', function(){
 					case "Terms":
 						var termsDB = JSON.parse(localStorage.getItem("com.intel.Server.terms"));
 						for (var i = termsDB.length - 1; i >= 0; i--) {
-							var found = false;
+							var found = 1;
 							for(var j=0; j<SplitText.length; j++){
 								switch (dataToSearch.searchBy){
 								case "Name":
