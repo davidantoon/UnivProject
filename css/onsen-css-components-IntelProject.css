@@ -6107,6 +6107,8 @@ div.vertical {
   font-size: 14px;
 }
 .WorkFlowTab{
+  position: relative;
+  max-height: 33px;
   cursor: pointer;
   min-width: 5px;
   padding: 3px 3px;
@@ -6125,10 +6127,7 @@ div.vertical {
   -o-transition-timing-function: ease-out;
   transition-timing-function: ease-out;
 }
-.WorkFlowTab.ActiveTab{
-  background: rgb(8,96,168);
-  min-width: 100px;
-}
+
 .WorkFlowTab:hover{
   min-width: 100px;
   background: rgba(255,255,255,.4);
@@ -6383,15 +6382,69 @@ div.vertical {
   color: white;
   cursor: pointer;
 }
-.closeTabButton{
+
+.optionTabButton{
   position: absolute;
-  width: 40px;
-  height: 40px;
-  bottom: 0;
-  background: rgb(207,50,50);
-  left: 80px;
+  width: 24px;
+  height: 22px;
   color: white;
   cursor: pointer;
+  top: 9px;
+  left: 0;
+  opacity: 0;
+  -webkit-transition-property: all;
+  -moz-transition-property: all;
+  -o-transition-property: all;
+  transition-property: all;
+  -webkit-transition-duration: 0.15s;
+  -moz-transition-duration: 0.15s;
+  -o-transition-duration: 0.15s;
+  transition-duration: 0.15s;
+  -webkit-transition-timing-function: ease-out;
+  -moz-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.closeTabButton{
+  position: absolute;
+  width: 24px;
+  height: 22px;
+  color: white;
+  cursor: pointer;
+  top: 9px;
+  right: 0;
+  opacity: 0;
+  -webkit-transition-property: all;
+  -moz-transition-property: all;
+  -o-transition-property: all;
+  transition-property: all;
+  -webkit-transition-duration: 0.15s;
+  -moz-transition-duration: 0.15s;
+  -o-transition-duration: 0.15s;
+  transition-duration: 0.15s;
+  -webkit-transition-timing-function: ease-out;
+  -moz-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+
+.WorkFlowTab.ActiveTab{
+  background: rgb(8,96,168);
+  min-width: 100px;
+}
+.WorkFlowTab.ActiveTab > .closeTabButton{
+  opacity: 0.5;
+}
+
+.WorkFlowTab.ActiveTab > .closeTabButton:hover{
+  opacity: 1;
+}
+.WorkFlowTab.ActiveTab > .optionTabButton{
+  opacity: 0.5;
+}
+
+.WorkFlowTab.ActiveTab > .optionTabButton:hover{
+  opacity: 1;
 }
 
 .newWorkflowTab{
@@ -6638,6 +6691,45 @@ div.vertical {
     padding: 10px;
     cursor: default;
 }
+
+.ToastContainer{
+  position: absolute;
+  height: 40px;
+  margin: auto;
+  left: 0;
+  right: 0;
+  width: 380px;
+  background-color: rgb(80,80,80);
+  z-index: 10000;
+  color: lightgrey;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 0px 9px -2px black;
+  padding: 5px;
+  text-align: center;
+  font-size: 13px;
+}
+.ToastTitle{
+  font-size: 16px;
+  font-weight: 700;
+}
+.ToastContainer.Center{
+  bottom: 0;
+  top: 0;
+}
+.ToastContainer.Top{
+  top: 55px;
+}
+.ToastContainer.Bottom{
+  bottom: 20px;
+}
+
+
+
+
+
+
+
 
 
 

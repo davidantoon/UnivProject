@@ -7,6 +7,18 @@ app.factory('Workspace', ['Workflow', function(Workflow){
 		this.selectedWorkflow = firstWorkflow;
 		this.objectType = "Workspace";
 		this.progressLines = [];
+		this.colors = {
+			"#ED143D" : false,
+			"#7FFF00" : false,
+			"#0860A8" : false,
+			"#FF8C00" : false,
+			"#FF1493" : false,
+			"#9400D3" : false,
+			"#FFD700" : false,
+			"#8B4513" : false,
+			"#808080" : false,
+			"#000" : false
+		};
 	}
 
 	Workspace.prototype = {
@@ -82,6 +94,9 @@ app.factory('Workspace', ['Workflow', function(Workflow){
 			return flag;
 		},
 
+		/**
+		 * Updates the ID for the last workflow
+		 */
 		updateLastId: function(){
 			var maxId = 0;
 			for(var i=0; i<this.workflows.length; i++){
@@ -94,6 +109,10 @@ app.factory('Workspace', ['Workflow', function(Workflow){
 			this.lastWorkflowId = maxId;
 		},
 
+		/**
+		 * Scrolls to specific workflow 
+		 * @param  {object} Steps Steps object to check workflow
+		 */
 		scrollToLastWorkflow: function(Steps){
 			var indexOfScroll = 0;
             for(var i=0; i< this.workflows.length; i++){
@@ -105,6 +124,11 @@ app.factory('Workspace', ['Workflow', function(Workflow){
             this.workflows[indexOfScroll].scrollTo();
 		},
 
+		/**
+		 * Updates data in specific tab	
+		 * @param  {object} tabHoldingData the workflow and tab id we are going to update
+		 * @param  {object} results        the new contet
+		 */
 		updateDataInTab: function(tabHoldingData, results){
 			// tabHoldingData = {"workflowId":"111", "tabId":"1223"}
 			
@@ -121,6 +145,10 @@ app.factory('Workspace', ['Workflow', function(Workflow){
 			}
 		},
 
+		/**
+		 * Focus on specific tab after doing a search
+		 * @param  {object} tabHoldingData the workflow id and the ab id we want to select
+		 */
 		selectTabAfterSearch: function(tabHoldingData){
 			for(var i=0; i<this.workflows.length; i++){
 				if(this.workflows[i].ID == tabHoldingData.workflowId){
@@ -135,6 +163,10 @@ app.factory('Workspace', ['Workflow', function(Workflow){
 			}
 		},
 
+		/**
+		 * Delets the childs id of specific tab in workflow
+		 * @param  {object} tabHoldingData the workflow id and the tab id which we want to delete its childs
+		 */
 		deleteChildTabIds: function(tabHoldingData){
 			for(var i=0; i<this.workflows.length; i++){
 				if(this.workflows[i].ID == tabHoldingData.workflowId){
@@ -147,8 +179,26 @@ app.factory('Workspace', ['Workflow', function(Workflow){
 					break;
 				}
 			}
-		}
+		},
 
+		/**
+		 * Changes the colors objects to know what colors are in used
+		 */
+		checkUserColorsInWorkspace: function(){
+			//init the colors object
+			var passThis = this;
+			$.each(this.colors, function(key, value) {
+				passThis.colors[key] = false;
+			});
+
+			//for each workflow
+			for(var i=0; i < this.workflows.length; i++){
+				// for each tab in workflow
+				for(var j=0; j< this.workflows[i].tabs.length; j++){
+					this.colors[(this.workflows[i].tabs[j].color)] = true;
+				}
+			}
+		}
 	}
 
 	return Workspace;

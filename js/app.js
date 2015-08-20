@@ -173,6 +173,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
         // 		callbackFunction(true);
         // 	},3000);
         // }
+        
         $scope.loadDataFromSRV = function(callbackFunction) {
             callbackFunction(true);
             $scope.currentUser = {
@@ -195,6 +196,8 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             $scope.updateAllTabName();
             $scope.updateMatrixLayout();
             console.log($scope.Workflow);
+            console.warn("UPDATE COLOR");
+            $scope.workSpaces.checkUserColorsInWorkspace();
             
 
             $('#WorkFlowMatrix').css('min-width', "10000px").css('min-height', "10000px").css('width', "10000px").css('height', "10000px");
@@ -225,6 +228,10 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                 $scope.updateAllTabName();
                 $scope.updateMatrixLayout();
                 $scope.workSpaces.updateNewWorkflowButtons();
+                console.warn("UPDATE COLOR");
+                $timeout(function(){
+                    $scope.workSpaces.checkUserColorsInWorkspace();
+                },200);
             });
         }
         $scope.RedoWorkflow = function() {
@@ -233,11 +240,16 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                 $scope.updateAllTabName();
                 $scope.updateMatrixLayout();
                 $scope.workSpaces.updateNewWorkflowButtons();
+                console.warn("UPDATE COLOR");
+                $timeout(function(){
+                    $scope.workSpaces.checkUserColorsInWorkspace();
+                },200);
             });
         }
         $scope.InsertStepToLast10Steps = function() {
             $scope.counterBeforeSave = 0;
             $scope.Steps.InsertStepToLastSteps($scope.workSpaces);
+            $scope.workSpaces.checkUserColorsInWorkspace();
         }
 
 
@@ -329,9 +341,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             });
         }
 
-        $scope.editTabSettings = function(index){
-            console.log("Edit");
-        }
+        
         $scope.closeTab = function(workflow){
             var parentTabToDelete = workflow.selectedTab.dataHolding.parentTab;
             if(parentTabToDelete != null && parentTabToDelete.workflowId != null && parentTabToDelete.tabId != null)
@@ -355,11 +365,21 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             $scope.updateMatrixLayout();
             $scope.workSpaces.updateNewWorkflowButtons();
             $scope.InsertStepToLast10Steps();
+            console.warn("UPDATE COLOR");
+            $scope.workSpaces.checkUserColorsInWorkspace();
         }
         
 
         $scope.isColorUsed = function(color){
-            return (color == '#ED143D' || color == '#0860A8' || color == '#FF8C00');
+            if($scope.workSpaces != undefined && $scope.workSpaces != null && $scope.workSpaces.colors != undefined &&  $scope.workSpaces.colors != null)
+                return $scope.workSpaces.colors[color];
+            else
+                return true;
+        }
+
+
+        $scope.openTabOptions = function(wFlow){
+
         }
 
 
@@ -392,7 +412,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                 var tempBlockTop = ((fromY * blockDims));
                 $($('#WorkFlowMatrix > .WorkFlowBlock')[i]).css('height', tempBlockHeight + "px").css('width', tempBlockWidth + "px");
                 $($('#WorkFlowMatrix > .WorkFlowBlock')[i]).css('left', tempBlockLeft + "px").css('top', tempBlockTop + "px");
-                $($('#WorkFlowMatrix > .WorkFlowBlock')[i]).find('.SelectedTabContent').css('height', (tempBlockHeight-73) + "px");
+                $($('#WorkFlowMatrix > .WorkFlowBlock')[i]).find('.SelectedTabContent').css('height', (tempBlockHeight-33) + "px");
             }
             // if($scope.workSpaces != null)
                 // $scope.workSpaces.updateNewWorkflowButtons();
@@ -453,6 +473,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             // $scope.workSpaces.updateNewWorkflowButtons();
         }
 
+
         $scope.addNewTabToWorkflow = function(workflow){
             if($scope.holdingNewWorkflowData == null){
                 // display color picker to open new workflow
@@ -487,6 +508,8 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             $scope.updateAllTabName();
             $scope.updateMatrixLayout();
             $scope.workSpaces.updateNewWorkflowButtons();
+            console.warn("UPDATE COLOR");
+            $scope.workSpaces.checkUserColorsInWorkspace();
         }
         $scope.convertToWorkflow = function(newWorkflow){
             if($scope.holdingNewWorkflowData == null){
@@ -815,8 +838,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
 
 
 
-        $scope.testFun = function() {
-
+        $scope.testFunc = function() {
             // $scope.workSpaces.updateNewWorkflowButtons();
             // $scope.Workflow[0].addTab();
             // $scope.InsertStepToLast10Steps();
@@ -846,8 +868,6 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                 alert("Cleard");
             });
         }
-
-
 
 
 
