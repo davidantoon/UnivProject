@@ -196,6 +196,8 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             $scope.updateAllTabName();
             $scope.updateMatrixLayout();
             console.log($scope.Workflow);
+            console.warn("UPDATE COLOR");
+            $scope.updateColors();
             
 
             $('#WorkFlowMatrix').css('min-width', "10000px").css('min-height', "10000px").css('width', "10000px").css('height', "10000px");
@@ -226,6 +228,8 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                 $scope.updateAllTabName();
                 $scope.updateMatrixLayout();
                 $scope.workSpaces.updateNewWorkflowButtons();
+                console.warn("UPDATE COLOR");
+                $scope.updateColors();
             });
         }
         $scope.RedoWorkflow = function() {
@@ -234,6 +238,8 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                 $scope.updateAllTabName();
                 $scope.updateMatrixLayout();
                 $scope.workSpaces.updateNewWorkflowButtons();
+                console.warn("UPDATE COLOR");
+                $scope.updateColors();
             });
         }
         $scope.InsertStepToLast10Steps = function() {
@@ -356,6 +362,8 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             $scope.updateMatrixLayout();
             $scope.workSpaces.updateNewWorkflowButtons();
             $scope.InsertStepToLast10Steps();
+            console.warn("UPDATE COLOR");
+            $scope.updateColors();
         }
         
 
@@ -490,6 +498,8 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             $scope.updateAllTabName();
             $scope.updateMatrixLayout();
             $scope.workSpaces.updateNewWorkflowButtons();
+            console.warn("UPDATE COLOR");
+            $scope.updateColors();
         }
         $scope.convertToWorkflow = function(newWorkflow){
             if($scope.holdingNewWorkflowData == null){
@@ -818,8 +828,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
 
 
 
-        $scope.testFun = function() {
-
+        $scope.testFunc = function() {
             // $scope.workSpaces.updateNewWorkflowButtons();
             // $scope.Workflow[0].addTab();
             // $scope.InsertStepToLast10Steps();
@@ -853,7 +862,10 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
 
 
 
-
+        $scope.updateColors = function(){
+            debugger;
+            $scope.workSpaces.checkUserColorsInWorkspace();
+        }
         $scope.EnableScroll = function(a){
             if(a==1){
                 $('#BodyRow').css('overflow','scroll');
