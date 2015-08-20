@@ -7,6 +7,18 @@ app.factory('Workspace', ['Workflow', function(Workflow){
 		this.selectedWorkflow = firstWorkflow;
 		this.objectType = "Workspace";
 		this.progressLines = [];
+		this.colors = {
+			"#ED143D" : false,
+			"#7FFF00" : false,
+			"#0860A8" : false,
+			"#FF8C00" : false,
+			"#FF1493" : false,
+			"#9400D3" : false,
+			"#FFD700" : false,
+			"#8B4513" : false,
+			"#808080" : false,
+			"#000" : false
+		};
 	}
 
 	Workspace.prototype = {
@@ -147,8 +159,21 @@ app.factory('Workspace', ['Workflow', function(Workflow){
 					break;
 				}
 			}
-		}
+		},
 
+		/**
+		 * Changes the colors objects to know what colors are in used
+		 */
+		checkUserColorsInWorkspace: function(){
+		//for each workflow
+			debugger;
+			for(var i=0; i < this.workflows.length; i++){
+				// for each tab in workflow
+				for(var j=0; j< this.workflows[i].tabs.length; j++){
+					this.colors[(this.workflows[i].tabs[j].color).toString()] = true;
+				}
+			}
+		}
 	}
 
 	return Workspace;
