@@ -27,7 +27,7 @@
               <ons-col width="220px" class="Logo rtl">
                 <img src="img/IntelIcon.png" style="height: 100%;margin: auto;">
               </ons-col>
-              <ons-col id="NotificationsButton1" ng-click="updateColors();" width="100px" style="width:100px; position:relative;" class="">
+              <ons-col id="NotificationsButton1" ng-click="workSpaces.checkUserColorsInWorkspace();" width="100px" style="width:100px; position:relative;" class="">
                 <div class="TopTabbarButton clickable hoverOp">Settings</div>
               </ons-col>
               <ons-col id="NotificationsButton2" ng-click="openNewWorkflow();" width="150px" style="width:150px; position:relative;" class="">
@@ -139,8 +139,8 @@
                     <input id="{{'WorkflowI'+wFlow.ID+'Tab'+tab.ID}}" readonly="readonly" placeholder="Tab name" ng-enter="updateTabName(wFlow.ID, tab.ID, 'WorkflowI'+wFlow.ID+'Tab'+tab.ID);" 
                     ng-dblclick="((displayNewWorkflowButtons == true)?return:ConvertTextBos('WorkflowI'+wFlow.ID+'Tab'+tab.ID));"
                     value="{{tab.title}}" />
-                    <ons-icon class="closeTabButton" icon="ion-ios-close" size="18px"></ons-icon>
-                    <ons-icon class="optionTabButton" icon="ion-navicon-round" size="18px"></ons-icon>
+                    <ons-icon ng-click="closeTab(wFlow);" class="closeTabButton" icon="ion-ios-close" size="18px"></ons-icon>
+                    <ons-icon ng-click="openTabOptions(wFlow);" class="optionTabButton" icon="ion-navicon-round" size="18px"></ons-icon>
                   </ons-col>
                   <ons-col ng-click="addNewTabToWorkflow(wFlow);" class="{{'col ons-col-inner newWorkflowTab ' + ((displayNewWorkflowButtons == true)?'':'hidden')}}">
                     +

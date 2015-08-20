@@ -6107,7 +6107,7 @@ div.vertical {
   font-size: 14px;
 }
 .WorkFlowTab{
-
+  position: relative;
   max-height: 33px;
   cursor: pointer;
   min-width: 5px;
@@ -6384,13 +6384,13 @@ div.vertical {
 }
 
 .optionTabButton{
-  position: relative;
+  position: absolute;
   width: 24px;
   height: 22px;
   color: white;
   cursor: pointer;
-  top: -23px;
-  left: -53%;
+  top: 9px;
+  left: 0;
   opacity: 0;
   -webkit-transition-property: all;
   -moz-transition-property: all;
@@ -6406,13 +6406,13 @@ div.vertical {
   transition-timing-function: ease-out;
 }
 .closeTabButton{
-  position: relative;
+  position: absolute;
   width: 24px;
   height: 22px;
   color: white;
   cursor: pointer;
-  top: -22px;
-  left: 55%;
+  top: 9px;
+  right: 0;
   opacity: 0;
   -webkit-transition-property: all;
   -moz-transition-property: all;

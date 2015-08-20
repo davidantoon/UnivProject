@@ -165,12 +165,11 @@ app.factory('Workspace', ['Workflow', function(Workflow){
 		 * Changes the colors objects to know what colors are in used
 		 */
 		checkUserColorsInWorkspace: function(){
-		//for each workflow
-			debugger;
+			//for each workflow
 			for(var i=0; i < this.workflows.length; i++){
 				// for each tab in workflow
 				for(var j=0; j< this.workflows[i].tabs.length; j++){
-					this.colors[(this.workflows[i].tabs[j].color).toString()] = true;
+					this.colors[(this.workflows[i].tabs[j].color)] = true;
 				}
 			}
 		}

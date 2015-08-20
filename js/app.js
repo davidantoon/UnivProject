@@ -197,7 +197,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             $scope.updateMatrixLayout();
             console.log($scope.Workflow);
             console.warn("UPDATE COLOR");
-            $scope.updateColors();
+            $scope.workSpaces.checkUserColorsInWorkspace();
             
 
             $('#WorkFlowMatrix').css('min-width', "10000px").css('min-height', "10000px").css('width', "10000px").css('height', "10000px");
@@ -229,7 +229,9 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                 $scope.updateMatrixLayout();
                 $scope.workSpaces.updateNewWorkflowButtons();
                 console.warn("UPDATE COLOR");
-                $scope.updateColors();
+                $timeout(function(){
+                    $scope.workSpaces.checkUserColorsInWorkspace();
+                },200);
             });
         }
         $scope.RedoWorkflow = function() {
@@ -239,12 +241,15 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                 $scope.updateMatrixLayout();
                 $scope.workSpaces.updateNewWorkflowButtons();
                 console.warn("UPDATE COLOR");
-                $scope.updateColors();
+                $timeout(function(){
+                    $scope.workSpaces.checkUserColorsInWorkspace();
+                },200);
             });
         }
         $scope.InsertStepToLast10Steps = function() {
             $scope.counterBeforeSave = 0;
             $scope.Steps.InsertStepToLastSteps($scope.workSpaces);
+            $scope.workSpaces.checkUserColorsInWorkspace();
         }
 
 
@@ -336,9 +341,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             });
         }
 
-        $scope.editTabSettings = function(index){
-            console.log("Edit");
-        }
+        
         $scope.closeTab = function(workflow){
             var parentTabToDelete = workflow.selectedTab.dataHolding.parentTab;
             if(parentTabToDelete != null && parentTabToDelete.workflowId != null && parentTabToDelete.tabId != null)
@@ -363,13 +366,20 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             $scope.workSpaces.updateNewWorkflowButtons();
             $scope.InsertStepToLast10Steps();
             console.warn("UPDATE COLOR");
-            $scope.updateColors();
+            $scope.workSpaces.checkUserColorsInWorkspace();
         }
         
 
         $scope.isColorUsed = function(color){
+            if($scope.workSpaces != undefined && $scope.workSpaces != null && $scope.workSpaces.colors != undefined &&  $scope.workSpaces.colors != null)
+                return $scope.workSpaces.colors[color];
+            else
+                return true;
+        }
 
-            return (color == '#ED143D' || color == '#0860A8' || color == '#FF8C00');
+
+        $scope.openTabOptions = function(wFlow){
+
         }
 
 
@@ -499,7 +509,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             $scope.updateMatrixLayout();
             $scope.workSpaces.updateNewWorkflowButtons();
             console.warn("UPDATE COLOR");
-            $scope.updateColors();
+            $scope.workSpaces.checkUserColorsInWorkspace();
         }
         $scope.convertToWorkflow = function(newWorkflow){
             if($scope.holdingNewWorkflowData == null){
@@ -861,11 +871,6 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
 
 
 
-
-        $scope.updateColors = function(){
-            debugger;
-            $scope.workSpaces.checkUserColorsInWorkspace();
-        }
         $scope.EnableScroll = function(a){
             if(a==1){
                 $('#BodyRow').css('overflow','scroll');
