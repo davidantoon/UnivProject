@@ -246,9 +246,14 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             });
         }
         $scope.InsertStepToLast10Steps = function() {
-            $scope.counterBeforeSave = 0;
-            $scope.Steps.InsertStepToLastSteps($scope.workSpaces);
-            $scope.workSpaces.checkUserColorsInWorkspace();
+            try{
+                $scope.counterBeforeSave = 0;
+                $scope.Steps.InsertStepToLastSteps($scope.workSpaces);
+                $scope.workSpaces.checkUserColorsInWorkspace();
+            }catch(e){
+                //$scope.Toast.show("Error!","Cannot insert last step");
+                console.error("InsertStepToLast10Steps: ", e);
+            }
         }
 
 

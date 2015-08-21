@@ -6708,19 +6708,20 @@ div.vertical {
   padding: 5px;
   text-align: center;
   font-size: 13px;
+  display: none;
 }
 .ToastTitle{
   font-size: 16px;
   font-weight: 700;
 }
-.ToastContainer.Center{
+.ToastContainer.CENTER{
   bottom: 0;
   top: 0;
 }
-.ToastContainer.Top{
+.ToastContainer.TOP{
   top: 55px;
 }
-.ToastContainer.Bottom{
+.ToastContainer.BOTTOM{
   bottom: 20px;
 }
 
