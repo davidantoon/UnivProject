@@ -2,18 +2,23 @@
 app.factory('Content', ['Globals', function(Globals){
 	
 	function Content(conData){
-		this.id = ((conData && conData.id != null) || ""); 
-		this.name = ((conData && conData.name) || ""); 
-		this.kBitsNeeded = ((conData && conData.kBitsNeeded) || []);
-		this.kBitProvided = ((conData && conData.kBitProvided) || []);
-		this.terms = ((conData && conData.terms) || []);
-		this.description = ((conData && conData.description) || "");
-		this.url = ((conData && conData.url) || "");
-		this.locked = ((conData && conData.locked) || null);
-		this.lastModified = ((conData && conData.lastModified) || null);
-		this.inProgress = ((conData && conData.inProgress) || null);
-		this.type = ((conData && conData.type) || "");
-		this.connectToDataBase = ((this.type && new Server(this.type)) || null);
+		try{
+			this.id = ((conData && conData.id != null) || ""); 
+			this.name = ((conData && conData.name) || ""); 
+			this.kBitsNeeded = ((conData && conData.kBitsNeeded) || []);
+			this.kBitProvided = ((conData && conData.kBitProvided) || []);
+			this.terms = ((conData && conData.terms) || []);
+			this.description = ((conData && conData.description) || "");
+			this.url = ((conData && conData.url) || "");
+			this.locked = ((conData && conData.locked) || null);
+			this.lastModified = ((conData && conData.lastModified) || null);
+			this.inProgress = ((conData && conData.inProgress) || null);
+			this.type = ((conData && conData.type) || "");
+			this.connectToDataBase = ((this.type && new Server(this.type)) || null);
+		}catch(e){
+			$scope.Toast.show("Error!","There was an error in creating new Content", Toast.LONG, Toast.ERROR);
+            console.error("Content: ", e);
+		}
 	}
 
 	Content.prototype = {
@@ -24,7 +29,12 @@ app.factory('Content', ['Globals', function(Globals){
 		 * @param  {Function} callback Function called after execute object method. Return success/error result
 		 */
 		lock: function(callback){
+			try{
 
+			}catch(e){
+				$scope.Toast.show("Error!","There was an error in locking content", Toast.LONG, Toast.ERROR);
+           		console.error("lock: ", e);
+			}
 		},
 
 		/**
@@ -32,7 +42,12 @@ app.factory('Content', ['Globals', function(Globals){
 		 * @param  {Function} callback Function called after execute object method. Return success/error result
 		 */
 		unlock: function(callback){
-			
+			try{
+
+			}catch(e){
+				$scope.Toast.show("Error!","There was an error in unlocking content", Toast.LONG, Toast.ERROR);
+           		console.error("unlock: ", e);
+			}
 		},
 
 		/**
@@ -41,15 +56,20 @@ app.factory('Content', ['Globals', function(Globals){
 		 * @param  {Function} callback Function called after execute object method. Return success/error result
 		 */
 		save: function(versionNotes, callback){
-			var mThis = this;
-			this.connectToDataBase.Save(mThis, function(res){
-				if(res != "Error"){
-					mThis.lastModified = res.lastModified;
-					mThis.inProgress = false;
-					callback(true);
-				}else
-					callback(false);
-			});
+			try{
+				var mThis = this;
+				this.connectToDataBase.Save(mThis, function(res){
+					if(res != "Error"){
+						mThis.lastModified = res.lastModified;
+						mThis.inProgress = false;
+						callback(true);
+					}else
+						callback(false);
+				});
+			}catch(e){
+				$scope.Toast.show("Error!","There was an error in saving Content", Toast.LONG, Toast.ERROR);
+            	console.error("save: ", e);
+            }
 		},
 
 		/**
@@ -58,7 +78,12 @@ app.factory('Content', ['Globals', function(Globals){
 		 * @param  {Function} callback     Function called after execute object method. Return success/error result
 		 */
 		release: function(versionNotes, callback){
-			
+			try{
+
+			}catch(e){
+				$scope.Toast.show("Error!","There was an error in releasing content", Toast.LONG, Toast.ERROR);
+           		console.error("release: ", e);
+			}
 		},
 
 		/**
@@ -67,7 +92,12 @@ app.factory('Content', ['Globals', function(Globals){
 		 * @param  {Function} callback                Function called after execute object method. Return success/error result
 		 */
 		remove: function(includePreviousVersions, callback){
+			try{
 
+			}catch(e){
+				$scope.Toast.show("Error!","There was an error in removing content", Toast.LONG, Toast.ERROR);
+           		console.error("remove: ", e);
+			}
 		},
 
 		/**
@@ -76,7 +106,12 @@ app.factory('Content', ['Globals', function(Globals){
 		 * @param  {Function} callback  Function called after execute object method. Return success/error result
 		 */
 		reversion: function(versionId, callback){
+			try{
 
+			}catch(e){
+				$scope.Toast.show("Error!","There was an error in restoring content", Toast.LONG, Toast.ERROR);
+           		console.error("reversion: ", e);
+			}
 		},
 
 		/**
@@ -84,7 +119,12 @@ app.factory('Content', ['Globals', function(Globals){
 		 * @param  {Function} callback Function called after execute object method. Return success/error result
 		 */
 		getVersions: function(callback){
+			try{
 
+			}catch(e){
+				$scope.Toast.show("Error!","There was an error in getting previous versions", Toast.LONG, Toast.ERROR);
+           		console.error("getVersions: ", e);
+			}
 		},
 
 		/**
@@ -93,7 +133,12 @@ app.factory('Content', ['Globals', function(Globals){
 		 * @return {Boolean} If this object is the same as passed object
 		 */
 		equals: function(contentObj){
-			return (this.id == contentObj.id);
+			try{
+				return (this.id == contentObj.id);
+			}catch(e){
+				$scope.Toast.show("Error!","There was an error in checking equal content", Toast.LONG, Toast.ERROR);
+           		console.error("equal: ", e);
+			}
 		},
 
 		/**
@@ -102,7 +147,12 @@ app.factory('Content', ['Globals', function(Globals){
 		 * @return {[type]}            [description]
 		 */
 		dublicate: function(contentObj){
-			return new Content(contentObj);
+			try{
+				return new Content(contentObj);
+			}catch(e){
+				$scope.Toast.show("Error!","There was an error in dublicating content", Toast.LONG, Toast.ERROR);
+           		console.error("dublicate: ", e);
+			}
 		},
 
 		/**
