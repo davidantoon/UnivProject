@@ -16,6 +16,14 @@ app.factory('Toast',  function(){
 	Toast.BOTTOM = "BOTTOM";
 	Toast.prototype = {
 
+		/**
+		 * Shows the toast massage.
+		 * @param  {Strgin} title         the title of the massage
+		 * @param  {Strgin} text          the context of the massage
+		 * @param  {String} duration      the duration of the massage
+		 * @param  {String} toastClass    the class of the massage
+		 * @param  {String} forcePosition the position of the massage
+		 */
 		show: function(title, text, duration, toastClass, forcePosition){
 			duration = ((duration != null)?duration:this.SHORT);
 			toastClass = ((toastClass == null || toastClass == undefined)?this.NORMAL:toastClass);
