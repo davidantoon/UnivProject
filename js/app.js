@@ -512,6 +512,11 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             $scope.updateMatrixLayout();
             $scope.workSpaces.updateNewWorkflowButtons();
             $scope.workSpaces.checkUserColorsInWorkspace();
+            
+            setTimeout(function(){
+                $scope.Steps.lastFocusedWorkflow = newWorkflow.ID;
+                $scope.refocusLastWorkflow();
+            },300);
         }
         $scope.convertToWorkflow = function(newWorkflow){
             if($scope.holdingNewWorkflowData == null){
@@ -552,6 +557,10 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             $scope.updateAllTabName();
             $scope.updateMatrixLayout();
             $scope.workSpaces.updateNewWorkflowButtons();
+            setTimeout(function(){
+                $scope.Steps.lastFocusedWorkflow = newWorkflow.ID;
+                $scope.refocusLastWorkflow();
+            },300);
         }
 
         $scope.refocusLastWorkflow = function(){
@@ -647,6 +656,14 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                             },1500);
                         }
                     });
+                    setTimeout(function(){
+                        $scope.Steps.lastFocusedWorkflow = holdingRequestTab.dataHolding.childTab.workflowId;
+                        $scope.refocusLastWorkflow();
+                        setTimeout(function(){
+                            $scope.Steps.lastFocusedWorkflow = holdingRequestTab.parentWF.ID;
+                            $scope.focusingLastWorkflow = false;
+                        },600);
+                    },300);
                 }
             }else{
                 $scope.Toast.show("Wrong Input", "Most be at least one Element.Most be at least one Element, one Search By and Search.", Toast.LONG, Toast.ERROR);
@@ -872,10 +889,14 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
 
 
         $scope.EnableScroll = function(a){
-            if(a==1){
-                $('#BodyRow').css('overflow','scroll');
+            if($scope.Settings.removeScrollOnMouseOver == true){
+                if(a==1){
+                    $('#BodyRow').css('overflow','scroll');
+                }else{
+                    $('#BodyRow').css('overflow','hidden');
+                }
             }else{
-                $('#BodyRow').css('overflow','hidden');
+                $('#BodyRow').css('overflow','scroll');
             }
         }
 

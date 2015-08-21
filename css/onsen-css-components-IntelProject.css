@@ -6392,6 +6392,7 @@ div.vertical {
   top: 9px;
   left: 0;
   opacity: 0;
+  display: none;
   -webkit-transition-property: all;
   -moz-transition-property: all;
   -o-transition-property: all;
@@ -6414,6 +6415,7 @@ div.vertical {
   top: 9px;
   right: 0;
   opacity: 0;
+  display: none;
   -webkit-transition-property: all;
   -moz-transition-property: all;
   -o-transition-property: all;
@@ -6434,17 +6436,21 @@ div.vertical {
 }
 .WorkFlowTab.ActiveTab > .closeTabButton{
   opacity: 0.5;
+  display: block;
 }
 
 .WorkFlowTab.ActiveTab > .closeTabButton:hover{
   opacity: 1;
+  display: block;
 }
 .WorkFlowTab.ActiveTab > .optionTabButton{
   opacity: 0.5;
+  display: block;
 }
 
 .WorkFlowTab.ActiveTab > .optionTabButton:hover{
   opacity: 1;
+  display: block;
 }
 
 .newWorkflowTab{
@@ -6532,6 +6538,7 @@ div.vertical {
 }
 
 .MaximizeButton{
+  cursor: -webkit-zoom-in;
   position: absolute;
   width: 100%;
   height: 100%;

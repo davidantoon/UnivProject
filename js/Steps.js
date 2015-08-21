@@ -362,6 +362,9 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 				"lastFocusedWorkflow": this.lastFocusedWorkflow
 			}
 		}
+
+
+		
 	}
 
 	return Steps;
