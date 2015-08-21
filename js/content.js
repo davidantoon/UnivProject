@@ -2,18 +2,23 @@
 app.factory('Content', ['Globals', function(Globals){
 	
 	function Content(conData){
-		this.id = ((conData && conData.id != null) || ""); 
-		this.name = ((conData && conData.name) || ""); 
-		this.kBitsNeeded = ((conData && conData.kBitsNeeded) || []);
-		this.kBitProvided = ((conData && conData.kBitProvided) || []);
-		this.terms = ((conData && conData.terms) || []);
-		this.description = ((conData && conData.description) || "");
-		this.url = ((conData && conData.url) || "");
-		this.locked = ((conData && conData.locked) || null);
-		this.lastModified = ((conData && conData.lastModified) || null);
-		this.inProgress = ((conData && conData.inProgress) || null);
-		this.type = ((conData && conData.type) || "");
-		this.connectToDataBase = ((this.type && new Server(this.type)) || null);
+		try{
+			this.id = ((conData && conData.id != null) || ""); 
+			this.name = ((conData && conData.name) || ""); 
+			this.kBitsNeeded = ((conData && conData.kBitsNeeded) || []);
+			this.kBitProvided = ((conData && conData.kBitProvided) || []);
+			this.terms = ((conData && conData.terms) || []);
+			this.description = ((conData && conData.description) || "");
+			this.url = ((conData && conData.url) || "");
+			this.locked = ((conData && conData.locked) || null);
+			this.lastModified = ((conData && conData.lastModified) || null);
+			this.inProgress = ((conData && conData.inProgress) || null);
+			this.type = ((conData && conData.type) || "");
+			this.connectToDataBase = ((this.type && new Server(this.type)) || null);
+		}catch(e){
+			$scope.Toast.show("Error!","There was an error in creating new Content", Toast.LONG, Toast.ERROR);
+            console.error("Content: ", e);
+		}
 	}
 
 	Content.prototype = {
@@ -41,15 +46,20 @@ app.factory('Content', ['Globals', function(Globals){
 		 * @param  {Function} callback Function called after execute object method. Return success/error result
 		 */
 		save: function(versionNotes, callback){
-			var mThis = this;
-			this.connectToDataBase.Save(mThis, function(res){
-				if(res != "Error"){
-					mThis.lastModified = res.lastModified;
-					mThis.inProgress = false;
-					callback(true);
-				}else
-					callback(false);
-			});
+			try{
+				var mThis = this;
+				this.connectToDataBase.Save(mThis, function(res){
+					if(res != "Error"){
+						mThis.lastModified = res.lastModified;
+						mThis.inProgress = false;
+						callback(true);
+					}else
+						callback(false);
+				});
+			}catch(e){
+				$scope.Toast.show("Error!","There was an error in saving Content", Toast.LONG, Toast.ERROR);
+            	console.error("save: ", e);
+            }
 		},
 
 		/**
