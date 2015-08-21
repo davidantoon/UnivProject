@@ -78,7 +78,6 @@
 	// $temp = users::validate_username_password('antoon91', 'pass3');
 	// echo $dbObj->print_json($temp);
 	// var_dump($tem);
-	$dbObj = new dbAPI();
 	// echo $dbObj->get_latest_UID($dbObj->db_get_usersDB(), 'users');
 
 	// $dbObj->db_update('11es');
@@ -86,7 +85,6 @@
 
  //    $dbObj->print_table($results);
  //    $dbObj->print_json($results);
-	echo 'aa2';
 
 
 	/*==============================================================
@@ -123,7 +121,7 @@
 	// add_relation_to_scope($parent_scope_UID, $child_scope_UID, $is_hier);
 	// debugLog::important_log(dbAPI::print_json_s(scope::add_relation_to_scope(1, 1, 0, 2), 0));
 
-	debugLog::important_log(dbAPI::print_json_s(scope::get_scope_by_UID_with_relations(4, 'ar'), 0));
+	// debugLog::important_log(dbAPI::print_json_s(scope::get_scope_by_UID_with_relations(4, 'ar'), 0));
 
 	
 	// debugLog::important_log(dbAPI::print_json_s(term::add_relation_to_terms(1, 2, 0, 2), 0));	
@@ -134,6 +132,11 @@
 	================================================================*/
 
 
+	$front = array('FRONT_TYPE'=>'KBIT_FRONT', 'PATH'=>'http://google.com');
+	// debugLog::important_log(dbAPI::print_json_s(Kbit::add_new_Kbit_in_edit_mode("first kbit title (base)", "first Kbit description (base)", 2, $front), 0));
+	Kbit::begin_editing_kbit(1, 1);
+	// Lock::acquire_lock(2, 'abc', 3);
+	// Lock::release_lock(2, 'abc', 3);
 	debugLog::important_log("DONE");
 ?>
 
