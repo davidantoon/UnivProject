@@ -650,8 +650,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                     });
                 }
             }else{
-                // HANDLE ERROR FILL INPUTS
-                $scope.alert("OPPSS");
+                $scope.Toast.show("Wrong Input", "Most be at least one Element, one Search By and Search Text", Toast.LONG);
             }
         }
 

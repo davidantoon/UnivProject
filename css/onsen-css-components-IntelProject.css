@@ -6714,6 +6714,15 @@ div.vertical {
   font-size: 16px;
   font-weight: 700;
 }
+.ToastTitle.ERROR{
+  color: rgba(50,255,50,1.7);
+}
+.ToastTitle.NORMAL{
+  color: lightgrey;
+}
+.ToastTitle.SUCCESS{
+  color: rgba(255,50,50,1.7);
+}
 .ToastContainer.CENTER{
   bottom: 0;
   top: 0;
