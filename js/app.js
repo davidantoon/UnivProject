@@ -34,6 +34,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
 
         // new implementaion for steps
         $scope.Steps;
+        $scope.Tosat;
         $scope.focusingLastWorkflow = true;
         $scope.holdingNewWorkflowData = null;
         $scope.Settings;
@@ -196,8 +197,8 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             $scope.updateAllTabName();
             $scope.updateMatrixLayout();
             console.log($scope.Workflow);
-            console.warn("UPDATE COLOR");
             $scope.workSpaces.checkUserColorsInWorkspace();
+            // $scope.Tosat = new Tosat();
             
 
             $('#WorkFlowMatrix').css('min-width', "10000px").css('min-height', "10000px").css('width', "10000px").css('height', "10000px");
@@ -228,7 +229,6 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                 $scope.updateAllTabName();
                 $scope.updateMatrixLayout();
                 $scope.workSpaces.updateNewWorkflowButtons();
-                console.warn("UPDATE COLOR");
                 $timeout(function(){
                     $scope.workSpaces.checkUserColorsInWorkspace();
                 },200);
@@ -240,7 +240,6 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                 $scope.updateAllTabName();
                 $scope.updateMatrixLayout();
                 $scope.workSpaces.updateNewWorkflowButtons();
-                console.warn("UPDATE COLOR");
                 $timeout(function(){
                     $scope.workSpaces.checkUserColorsInWorkspace();
                 },200);
@@ -365,7 +364,6 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             $scope.updateMatrixLayout();
             $scope.workSpaces.updateNewWorkflowButtons();
             $scope.InsertStepToLast10Steps();
-            console.warn("UPDATE COLOR");
             $scope.workSpaces.checkUserColorsInWorkspace();
         }
         
@@ -508,7 +506,6 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             $scope.updateAllTabName();
             $scope.updateMatrixLayout();
             $scope.workSpaces.updateNewWorkflowButtons();
-            console.warn("UPDATE COLOR");
             $scope.workSpaces.checkUserColorsInWorkspace();
         }
         $scope.convertToWorkflow = function(newWorkflow){
