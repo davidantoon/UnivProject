@@ -351,9 +351,14 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 		 * Remove all steps from local and server, and add one step represents current state
 		 */
 		clearLastSteps: function(workspace){
-			this.last20Steps = [];
-			this.currentUndoOrder = 1;
-			this.InsertStepToLastSteps(workspace);
+			try{
+				this.last20Steps = [];
+				this.currentUndoOrder = 1;
+				this.InsertStepToLastSteps(workspace);
+			}catch(e){
+				$scope.Toast.show("Error!","There was an error in clearing last steps", Toast.LONG, Toast.ERROR);
+           		console.error("clearLastSteps: ", e);
+			}
 		},
 
 		/**

@@ -29,7 +29,12 @@ app.factory('Content', ['Globals', function(Globals){
 		 * @param  {Function} callback Function called after execute object method. Return success/error result
 		 */
 		lock: function(callback){
+			try{
 
+			}catch(e){
+				$scope.Toast.show("Error!","There was an error in locking content", Toast.LONG, Toast.ERROR);
+           		console.error("lock: ", e);
+			}
 		},
 
 		/**
@@ -37,7 +42,12 @@ app.factory('Content', ['Globals', function(Globals){
 		 * @param  {Function} callback Function called after execute object method. Return success/error result
 		 */
 		unlock: function(callback){
-			
+			try{
+
+			}catch(e){
+				$scope.Toast.show("Error!","There was an error in unlocking content", Toast.LONG, Toast.ERROR);
+           		console.error("unlock: ", e);
+			}
 		},
 
 		/**
@@ -68,7 +78,12 @@ app.factory('Content', ['Globals', function(Globals){
 		 * @param  {Function} callback     Function called after execute object method. Return success/error result
 		 */
 		release: function(versionNotes, callback){
-			
+			try{
+
+			}catch(e){
+				$scope.Toast.show("Error!","There was an error in releasing content", Toast.LONG, Toast.ERROR);
+           		console.error("release: ", e);
+			}
 		},
 
 		/**
@@ -77,7 +92,12 @@ app.factory('Content', ['Globals', function(Globals){
 		 * @param  {Function} callback                Function called after execute object method. Return success/error result
 		 */
 		remove: function(includePreviousVersions, callback){
+			try{
 
+			}catch(e){
+				$scope.Toast.show("Error!","There was an error in removing content", Toast.LONG, Toast.ERROR);
+           		console.error("remove: ", e);
+			}
 		},
 
 		/**
@@ -86,7 +106,12 @@ app.factory('Content', ['Globals', function(Globals){
 		 * @param  {Function} callback  Function called after execute object method. Return success/error result
 		 */
 		reversion: function(versionId, callback){
+			try{
 
+			}catch(e){
+				$scope.Toast.show("Error!","There was an error in restoring content", Toast.LONG, Toast.ERROR);
+           		console.error("reversion: ", e);
+			}
 		},
 
 		/**
@@ -94,7 +119,12 @@ app.factory('Content', ['Globals', function(Globals){
 		 * @param  {Function} callback Function called after execute object method. Return success/error result
 		 */
 		getVersions: function(callback){
+			try{
 
+			}catch(e){
+				$scope.Toast.show("Error!","There was an error in getting previous versions", Toast.LONG, Toast.ERROR);
+           		console.error("getVersions: ", e);
+			}
 		},
 
 		/**
@@ -103,7 +133,12 @@ app.factory('Content', ['Globals', function(Globals){
 		 * @return {Boolean} If this object is the same as passed object
 		 */
 		equals: function(contentObj){
-			return (this.id == contentObj.id);
+			try{
+				return (this.id == contentObj.id);
+			}catch(e){
+				$scope.Toast.show("Error!","There was an error in checking equal content", Toast.LONG, Toast.ERROR);
+           		console.error("equal: ", e);
+			}
 		},
 
 		/**
@@ -112,7 +147,12 @@ app.factory('Content', ['Globals', function(Globals){
 		 * @return {[type]}            [description]
 		 */
 		dublicate: function(contentObj){
-			return new Content(contentObj);
+			try{
+				return new Content(contentObj);
+			}catch(e){
+				$scope.Toast.show("Error!","There was an error in dublicating content", Toast.LONG, Toast.ERROR);
+           		console.error("dublicate: ", e);
+			}
 		},
 
 		/**

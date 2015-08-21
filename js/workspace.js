@@ -1,24 +1,29 @@
 app.factory('Workspace', ['Workflow', function(Workflow){
 	function Workspace() {
-		var firstWorkflow = new Workflow(null, 0, 12, 12, 13, 13);
-		this.workflows = [firstWorkflow];
-		this.lastWorkflowId = 0;
-		this.newWorkflowButtons = this.getNewWorkflowButtons(null);
-		this.selectedWorkflow = firstWorkflow;
-		this.objectType = "Workspace";
-		this.progressLines = [];
-		this.colors = {
-			"#ED143D" : false,
-			"#7FFF00" : false,
-			"#0860A8" : false,
-			"#FF8C00" : false,
-			"#FF1493" : false,
-			"#9400D3" : false,
-			"#FFD700" : false,
-			"#8B4513" : false,
-			"#808080" : false,
-			"#000" : false
-		};
+		try{
+			var firstWorkflow = new Workflow(null, 0, 12, 12, 13, 13);
+			this.workflows = [firstWorkflow];
+			this.lastWorkflowId = 0;
+			this.newWorkflowButtons = this.getNewWorkflowButtons(null);
+			this.selectedWorkflow = firstWorkflow;
+			this.objectType = "Workspace";
+			this.progressLines = [];
+			this.colors = {
+				"#ED143D" : false,
+				"#7FFF00" : false,
+				"#0860A8" : false,
+				"#FF8C00" : false,
+				"#FF1493" : false,
+				"#9400D3" : false,
+				"#FFD700" : false,
+				"#8B4513" : false,
+				"#808080" : false,
+				"#000" : false
+			};
+		}catch(e){
+			$scope.Toast.show("Error!","There was an error in creating workspace", Toast.LONG, Toast.ERROR);
+           	console.error("canUndo: ", e);
+		}
 	}
 
 	Workspace.prototype = {
@@ -28,9 +33,14 @@ app.factory('Workspace', ['Workflow', function(Workflow){
 		 * @param {[workflow]}
 		 */
 		addNewWorkflow: function(newWorkflow){
-			var tempWorkflow = new Workflow(null,this.lastWorkflowId++,newWorkflow.fx,newWorkflow.fy,newWorkflow.tx,newWorkflow.ty)
-			this.workflows.push(tempWorkflow);
-			return tempWorkflow;
+			try{
+				var tempWorkflow = new Workflow(null,this.lastWorkflowId++,newWorkflow.fx,newWorkflow.fy,newWorkflow.tx,newWorkflow.ty)
+				this.workflows.push(tempWorkflow);
+				return tempWorkflow;
+			}catch(e){
+				$scope.Toast.show("Error!","There was an error in adding new workflow", Toast.LONG, Toast.ERROR);
+           		console.error("addNewWorkflow: ", e);
+			}
 		},
 
 		/**

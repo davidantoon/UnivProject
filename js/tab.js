@@ -125,8 +125,12 @@ app.factory('Tab', ['Content','Globals', function(Content, Globals){
 		 * @param {Object} dataHolding Current tab's data holding state 
 		 */
 		addData: function(dataHolding){
-			this.dataHolding = dataHolding;
-			
+			try{	
+				this.dataHolding = dataHolding;
+			}catch{
+				$scope.Toast.show("Error!","There was an error in adding data in tab", Toast.LONG, Toast.ERROR);
+            	console.error("addData: ", e);
+			}
 		},
 
 		/**
@@ -135,21 +139,29 @@ app.factory('Tab', ['Content','Globals', function(Content, Globals){
 		 *                    					 if the type is String, will check global cached contents, or get from server.
 		 */
 		addContent: function(contentObj){
+			try{
+				// check if exsit
 
-			// check if exsit
-
-			this.content = contentObj;
+				this.content = contentObj;
+			}catch(e){
+				$scope.Toast.show("Error!","There was an error in adding content to tab", Toast.LONG, Toast.ERROR);
+           		console.error("addContent: ", e);
+			}
 		},
 
 		addResults: function(contentObj){
-
-			// check if exsit
-			if(contentObj == null){
-				this.dataHolding.resultsCount = -1;
-				this.dataHolding.results = null;
-			}else{
-				this.dataHolding.resultsCount = contentObj.length;
-				this.dataHolding.results = contentObj;
+			try{
+				// check if exsit
+				if(contentObj == null){
+					this.dataHolding.resultsCount = -1;
+					this.dataHolding.results = null;
+				}else{
+					this.dataHolding.resultsCount = contentObj.length;
+					this.dataHolding.results = contentObj;
+				}
+			}catch(e){
+				$scope.Toast.show("Error!","There was an error in adding results in tab", Toast.LONG, Toast.ERROR);
+           		console.error("addResults: ", e);
 			}
 		},
 
@@ -158,12 +170,17 @@ app.factory('Tab', ['Content','Globals', function(Content, Globals){
 		 * @return {Object} Tab Position {'left': LeftPosition, 'top': TopPosition}
 		 */
 		getTabPos: function(){
-			var parentWFPos = this.parentWF.getPosition();
-			var tabPos = {
-				"left": (parentWFPos.width / this.parentWF.tabs.length)/2 + parentWFPos.left,
-				"top": parentWFPos.top + 15
-			};
-			return tabPos;
+			try{
+				var parentWFPos = this.parentWF.getPosition();
+				var tabPos = {
+					"left": (parentWFPos.width / this.parentWF.tabs.length)/2 + parentWFPos.left,
+					"top": parentWFPos.top + 15
+				};
+				return tabPos;
+			}catch(e){
+				$scope.Toast.show("Error!","There was an error in getting tab position", Toast.LONG, Toast.ERROR);
+           		console.error("getTabPos: ", e);
+			}
 		},
 
 		/**
