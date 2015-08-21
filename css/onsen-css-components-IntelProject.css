@@ -6392,6 +6392,7 @@ div.vertical {
   top: 9px;
   left: 0;
   opacity: 0;
+  display: none;
   -webkit-transition-property: all;
   -moz-transition-property: all;
   -o-transition-property: all;
@@ -6414,6 +6415,7 @@ div.vertical {
   top: 9px;
   right: 0;
   opacity: 0;
+  display: none;
   -webkit-transition-property: all;
   -moz-transition-property: all;
   -o-transition-property: all;
@@ -6434,17 +6436,21 @@ div.vertical {
 }
 .WorkFlowTab.ActiveTab > .closeTabButton{
   opacity: 0.5;
+  display: block;
 }
 
 .WorkFlowTab.ActiveTab > .closeTabButton:hover{
   opacity: 1;
+  display: block;
 }
 .WorkFlowTab.ActiveTab > .optionTabButton{
   opacity: 0.5;
+  display: block;
 }
 
 .WorkFlowTab.ActiveTab > .optionTabButton:hover{
   opacity: 1;
+  display: block;
 }
 
 .newWorkflowTab{
@@ -6532,6 +6538,7 @@ div.vertical {
 }
 
 .MaximizeButton{
+  cursor: -webkit-zoom-in;
   position: absolute;
   width: 100%;
   height: 100%;
@@ -6694,7 +6701,6 @@ div.vertical {
 
 .ToastContainer{
   position: absolute;
-  height: 40px;
   margin: auto;
   left: 0;
   right: 0;
@@ -6708,19 +6714,29 @@ div.vertical {
   padding: 5px;
   text-align: center;
   font-size: 13px;
+  display: none;
 }
 .ToastTitle{
   font-size: 16px;
   font-weight: 700;
 }
-.ToastContainer.Center{
+.ToastTitle.ERROR{
+  color: rgba(255,50,50,1.7);
+}
+.ToastTitle.NORMAL{
+  color: lightgrey;
+}
+.ToastTitle.SUCCESS{
+  color: rgba(50,255,50,1.7);
+}
+.ToastContainer.CENTER{
   bottom: 0;
   top: 0;
 }
-.ToastContainer.Top{
+.ToastContainer.TOP{
   top: 55px;
 }
-.ToastContainer.Bottom{
+.ToastContainer.BOTTOM{
   bottom: 20px;
 }
 

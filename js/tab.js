@@ -6,7 +6,7 @@ app.factory('Tab', ['Content','Globals', function(Content, Globals){
 	Tab.CREATE_TAB = 2;
 	Tab.EDIT_TAB = 3;
 	Tab.RESULTS_TAB = 4;
-	
+
 	function Tab(id, workflow, tempJson, color, isResultTab){
 
 		if(color != undefined && color != null){
@@ -40,6 +40,7 @@ app.factory('Tab', ['Content','Globals', function(Content, Globals){
 			console.error("Check if new content passed from Undo, Redo, Server and Create");
 			if(tempJson.content != null && tempJson.content != null){
 				var tempData = Globals.get(JSON.parse(tempJson.content).id);
+				
 				if(tempData == null)
 					this.content = new Content(tempJson.content);
 				else
