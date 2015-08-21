@@ -20,9 +20,12 @@ class dbAPI {
 		return $this->dbContent;
 	}
     
-    private function db_get_connection($database_name) {
+    private function db_get_connection($database_name = '') {
     	// Create connection
-		$conn = new mysqli($this->host, $this->user, $this->password, $database_name);
+    	if($database_name != '')
+			$conn = new mysqli($this->host, $this->user, $this->password, $database_name);
+		else
+			$conn = new mysqli($this->host, $this->user, $this->password);
 
 		// Check connection
 		if ($conn->connect_error) {
@@ -41,8 +44,13 @@ class dbAPI {
 		    return $result;
 		}
 		else {
+			echo "<br><hr>". date("d-m-y h:i:s") ."<br>SQL ERROR:<br>" . mysql_error() ."<br>QUERY:<br>" . $sql . "<br>";
+			echo '<hr>';
+			echo '<hr>';
+			var_dump($conn);
+			echo '<hr>';
+			echo "<hr><br>";
 			$conn->close();
-			echo "<br><hr>". date("d-m-y h:i:s") ."<br>SQL ERROR:<br>" . mysql_error() ."<br>QUERY:<br>" . $sql . "<br><hr><br>";
 		}
     }
 
@@ -58,6 +66,39 @@ class dbAPI {
 		catch (Exception $e) {
 		    echo 'Caught exception: ',  $e->getMessage(), "\n";
 		}
+    }
+
+    public function db_get_columns_names($database_name, $table_name, $separated = false) {
+    	
+    	$query = "select column_name from INFORMATION_SCHEMA.COLUMNS  where table_name = '". $table_name ."' AND TABLE_SCHEMA = '". $database_name ."'";
+    	$results = $this->db_select_query($database_name, $query);
+    	if($separated == false)
+	    	return $results;
+		$ar = implode(', ', array_map(function ($entry) {return $entry['column_name'];}, $results));
+		return $ar;
+    }
+
+    public function insert_batch($database_name, $table_name, $data) {
+
+    	echo '13<br>';
+    	$conn = $this->db_get_connection($database_name);
+    	echo '14<br>';
+    	// debugLog::important_log(dbAPI::print_json_s($data, 0));
+		// $result = $conn->insert_batch($table_name, $data);
+		$result = $this->db->insert_batch($table_name, $data);
+		debugLog::important_log("aa");
+		var_dump($result);
+		debugLog::important_log("aa");
+		echo '15<br>';
+		if($result == false) {
+			echo "<br><hr>". date("d-m-y h:i:s") ."<br>SQL ERROR";
+			echo '<hr>';
+			echo '<hr>';
+			var_dump($conn);
+			echo '<hr>';
+			echo "<hr><br>";
+		}
+		return $result;
     }
 
     public function get_latest_UID($database_name, $table_name) {
