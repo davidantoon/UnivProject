@@ -1,6 +1,6 @@
 var app = angular.module('IntelLearner', ['onsen', 'firebase']);
-app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings",
-    function($scope, $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings) {
+app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast",
+    function($scope, $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast) {
 
 
         // PRIM COLOR = rgb(8,96,168)
@@ -198,7 +198,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             $scope.updateMatrixLayout();
             console.log($scope.Workflow);
             $scope.workSpaces.checkUserColorsInWorkspace();
-            // $scope.Tosat = new Tosat();
+            $scope.Toast = new Toast();
             
 
             $('#WorkFlowMatrix').css('min-width', "10000px").css('min-height', "10000px").css('width', "10000px").css('height', "10000px");
@@ -251,7 +251,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                 $scope.Steps.InsertStepToLastSteps($scope.workSpaces);
                 $scope.workSpaces.checkUserColorsInWorkspace();
             }catch(e){
-                //$scope.Toast.show("Error!","Cannot insert last step");
+                $scope.Toast.show("Error!","Cannot insert last step", Toast.LONG, Toast.SUCCESS);
                 console.error("InsertStepToLast10Steps: ", e);
             }
         }
