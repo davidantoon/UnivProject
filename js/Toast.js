@@ -5,34 +5,34 @@ app.factory('Toast',  function(){
 		this.title = "";
 		this.position = (Settings != null)?Settings.defaultToastPosition:"BOTTOM";
 		this.toastsArray = [];
-		this.toastClass = "NOTE";
+		this.toastClass = "NORMAL";
 	};
 	Toast.LONG = 2500;
 	Toast.SHORT = 1000;
 	Toast.SUCCESS = "SUCCESS";
 	Toast.ERROR = "ERROR";
-	Toast.NOTE = "NOTE";
-	Toast.TOP = 'TOP';
-	Toast.BOTTOM = 'BOTTOM';
-	Toast.CENTER = 'CENTER';
+	Toast.NORMAL = "NORMAL";
+	Toast.TOP = "TOP";
+	Toast.BOTTOM = "BOTTOM";
 	Toast.prototype = {
 
 		show: function(title, text, duration, toastClass, forcePosition){
 			duration = ((duration != null)?duration:this.SHORT);
-			toastClass = ((toastClass == null || toastClass == undefined)?this.NOTE:(toastClass == this.SUCCESS)?this.SUCCESS:this.ERROR);
+			toastClass = ((toastClass == null || toastClass == undefined)?this.NORMAL:toastClass);
 			if($('#ToastMessage').css('display')=="none"){
 				$('#ToastMessage .ToastTitle').html(title);
 				$('#ToastMessage .ToastBody').html(text);
-				$('#ToastMessage').removeClass(this.TOP).removeClass(this.BOTTOM).removeClass(this.CENTER);
+				$('#ToastMessage').removeClass(this.TOP).removeClass(this.BOTTOM);
 				$('#ToastMessage').addClass(((forcePosition == undefined || forcePosition == null)?this.position:forcePosition));
+				$('#ToastMessage .ToastTitle').removeClass(this.SUCCESS).removeClass(this.NORMAL).removeClass(this.ERROR);
 				$('#ToastMessage .ToastTitle').addClass(toastClass);
 				$('#ToastMessage').fadeIn(500).delay(duration).fadeOut(500);
 				var passThis = this;
 				setTimeout(function(){
 					$('#ToastMessage .ToastTitle').html("");
 					$('#ToastMessage .ToastBody').html("");
-					$('#ToastMessage').removeClass(this.TOP).removeClass(this.BOTTOM).removeClass(this.CENTER);
-					
+					$('#ToastMessage').removeClass(this.TOP).removeClass(this.BOTTOM);
+					$('#ToastMessage .ToastTitle').removeClass(this.SUCCESS).removeClass(this.NORMAL).removeClass(this.ERROR);
 					var nextToast = passThis.toastsArray.shift();
 					if(nextToast != undefined){
 						passThis.show(nextToast.title, nextToast.text, nextToast.duration, nextToast.toastClass, nextToast.position);

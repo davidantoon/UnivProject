@@ -6694,7 +6694,6 @@ div.vertical {
 
 .ToastContainer{
   position: absolute;
-  height: 40px;
   margin: auto;
   left: 0;
   right: 0;
@@ -6715,13 +6714,13 @@ div.vertical {
   font-weight: 700;
 }
 .ToastTitle.ERROR{
-  color: rgba(50,255,50,1.7);
+  color: rgba(255,50,50,1.7);
 }
 .ToastTitle.NORMAL{
   color: lightgrey;
 }
 .ToastTitle.SUCCESS{
-  color: rgba(255,50,50,1.7);
+  color: rgba(50,255,50,1.7);
 }
 .ToastContainer.CENTER{
   bottom: 0;

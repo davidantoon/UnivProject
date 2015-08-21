@@ -34,7 +34,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
 
         // new implementaion for steps
         $scope.Steps;
-        $scope.Tosat;
+        $scope.Toast;
         $scope.focusingLastWorkflow = true;
         $scope.holdingNewWorkflowData = null;
         $scope.Settings;
@@ -251,7 +251,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                 $scope.Steps.InsertStepToLastSteps($scope.workSpaces);
                 $scope.workSpaces.checkUserColorsInWorkspace();
             }catch(e){
-                $scope.Toast.show("Error!","Cannot insert last step", Toast.LONG, Toast.SUCCESS);
+                $scope.Toast.show("Error!","Cannot insert last step", Toast.LONG, Toast.ERROR);
                 console.error("InsertStepToLast10Steps: ", e);
             }
         }
@@ -616,8 +616,9 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                                 var svr = new Server(dataToSearch.dataType);
                                 svr.search(dataToSearch, function(result, error){
                                     if(error || !result){
-                                        // Remove new workflow and display error message
-                                        $scope.alert("OPPSS");
+                                        $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, []);
+                                        $scope.InsertStepToLast10Steps();
+                                        $scope.Toast.show("Server Error", error.message, Toast.LONG, Toast.ERROR);
                                         $scope.InsertStepToLast10Steps();
                                     }else{
                                         setTimeout(function(){
@@ -630,16 +631,14 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                         }
                     },100);
                 }else{
-                    // if(holdingRequestTab.parentWF.ID == holdingRequestTab.dataHolding.childTab.workflowId){
-                    //     // select Tab
-                    // }
                     $scope.workSpaces.selectTabAfterSearch(holdingRequestTab.dataHolding.childTab);
                     $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, null);
                     var svr = new Server(dataToSearch.dataType);
                     svr.search(dataToSearch, function(result, error){
                         if(error || !result){
-                            // Remove new workflow and display error message
-                            $scope.alert("OPPSS");
+                            $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, []);
+                            $scope.InsertStepToLast10Steps();
+                            $scope.Toast.show("Server Error", error.message, Toast.LONG, Toast.ERROR);
                             $scope.InsertStepToLast10Steps();
                         }else{
                             setTimeout(function(){
@@ -650,7 +649,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                     });
                 }
             }else{
-                $scope.Toast.show("Wrong Input", "Most be at least one Element, one Search By and Search Text", Toast.LONG);
+                $scope.Toast.show("Wrong Input", "Most be at least one Element.Most be at least one Element, one Search By and Search.", Toast.LONG, Toast.ERROR);
             }
         }
 
