@@ -138,13 +138,19 @@
 	// Kbit::publish_changes(1,1);
 	// Lock::acquire_lock(2, 'abc', 3);
 	// Lock::release_lock(2, 'abc', 3);
+	// Kbit::cancel_edited_kbit(1, 1);
+	// 
+
+	$arr = array("column_name"=>'DELIVERY_BASE_ID', "value"=>5);
+	// $arr["column_name"] = 'DELIVERY_BASE_ID';
+	// $arr["value"] = '20';
+
+	debugLog::important_log("<i>[hello.php:test]</i> " . dbAPI::print_json_s($arr ,0));
 	
-	debugLog::important_log("<i>[hello.php:test]</i> test cancel edit");
-	debugLog::important_log("<i>[hello.php:test]</i> test publish edit");
-	debugLog::important_log("<i>[hello.php:test]</i> implement add new kbit");
-	debugLog::important_log("<i>[hello.php:test]</i> implement add edit to kbit");
+
 	debugLog::important_log("<i>[hello.php:test]</i> implement relations for kbit");
 	debugLog::important_log("<i>[hello.php:test]</i> implement delivery");
+	debugLog::important_log("<i>[hello.php:test]</i> design and implement getters");
 	
 	
 	
