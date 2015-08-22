@@ -1,5 +1,6 @@
 <?php
-echo 'Term included successfuly <hr>';
+debugLog::included_log("Term");
+
 class term {
 	
 	

@@ -1,5 +1,6 @@
 <?php
-echo 'Scope included successfuly <hr>';
+debugLog::included_log("Scope");
+
 class scope {
 
 	// add new scope
