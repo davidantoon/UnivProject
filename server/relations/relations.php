@@ -150,7 +150,7 @@ class O2TRelation {
 		
 		$database_name = dbAPI::get_db_name($database_name);	
 		// disable old relation
-		genRelation::remove_O2T_relation($object_UID, $term_UID, $link_type, $database_name);
+		O2TRelation::remove_O2T_relation($object_UID, $term_UID, $link_type, $database_name);
 		// get latest revision number
 		$dbObj = new dbAPI();
 		// where statement
@@ -216,6 +216,7 @@ class O2TRelation {
 	 * @param {int} $term_UID      	term UID
 	 * @param {string} $link_type     The link type
 	 * @param {string} $tableName     Table name of the relation which depends on object type, e.g. R_LD2T, R_LK2T.
+	 * @param {string} $database_name database name e.g. 'content', 'user'
 	 * @return {O2TRelation}  
 	 */
 	public static function get_O2T_relation($object_UID, $term_UID, $link_type, $tableName, $database_name) {
@@ -246,7 +247,7 @@ class O2TRelation {
 	/**
 	 * returns list of terms that are related to object
 	 * @param {array} $object_UID    array of type array("column_name"=>'DELIVERY_BASE_ID', "value"=>5)
-	 * @param {string} $link_type     The link type
+	 * @param {string} $database_name database name e.g. 'content', 'user'
 	 * @param {string} $tableName     Table name of the relation which depends on object type, e.g. R_LD2T, R_LK2T.
 	 * @param  {string} $lang          The required language, if no language is selected all languages will be returned
 	 * @return {array:terms}                array of terms
@@ -281,6 +282,126 @@ class O2TRelation {
 	}
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+// D2K
+class D2KRelation {
+
+	
+	/**
+	 * connect Kbit to Delivery (add relation)
+	 * @param {int} $Kbit_UID    kbit UID
+	 * @param {int} $delivery_UID      delivery UID
+	 * @param {string} $link_type     The link type e.g. NEEDED, PROVIDED
+	 * @param {float} $link_weight      The wight of the link
+	 * @param {int} $user          user's id that is performing the operation
+	 * @param {string} $database_name database name e.g. 'content', 'user'
+	 * @return  {D2KRelation} The relation that was just created
+	 */
+	public static function add_D2K_relation($Kbit_UID, $delivery_UID, $link_type, $link_weight, $user, $database_name) {
+		
+		$database_name = dbAPI::get_db_name($database_name);
+		// disable old relation
+		D2KRelation::remove_D2K_relation($Kbit_UID, $delivery_UID, $link_type, $database_name);
+		// get latest revision number
+		$dbObj = new dbAPI();
+		$where_sttmnt = " KBIT_BASE_UID = ". $Kbit_UID .", DELIVERY_BASE_ID = ". $delivery_UID .", LINK_TYPE = '". $link_type ."' AND ENABLED = 1 ";
+		$old_rev = $dbObj->get_latest_Rivision_ID($database_name, $tableName, $where_sttmnt);
+		if($old_rev == null)
+			$old_rev = 0;
+
+		// add new relation
+		$query = "INSERT INTO R_LD2K (REVISION, KBIT_BASE_UID, DELIVERY_BASE_ID, LINK_TYPE, LINK_WEIGHT, ENABLED, USER_ID, CREATION_DATE) VALUES (". ($old_rev + 1) . ", ". $Kbit_UID . ", " . $delivery_UID .", " . $link_type ."," . $link_weight .", 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
+		$dbObj->run_query($database_name, $query);
+
+		// return recently created relation
+		return D2KRelation::get_D2K_relation($Kbit_UID, $delivery_UID, $link_type, $database_name);
+	}
+
+
+
+
+
+	/**
+	 * Remove a relation between Kbit and Delivery
+	 * @param {int} $Kbit_UID    Kbit UID
+	 * @param {int} $delivery_UID      delivery UID
+	 * @param {string} $link_type     The link type
+	 * @param {string} $database_name database name e.g. 'content', 'user'
+	 */
+	public static function remove_D2K_relation($Kbit_UID, $delivery_UID, $link_type, $database_name) {
+
+		$database_name = dbAPI::get_db_name($database_name);
+
+		// disable old relation
+		$dbObj = new dbAPI();
+		
+		// where statement
+		$where_sttmnt = " KBIT_BASE_UID = ". $Kbit_UID .", DELIVERY_BASE_ID = ". $delivery_UID .", LINK_TYPE = '". $link_type ."' AND ENABLED = 1 ";
+		$dbObj->disable_revision($database_name, 'R_LD2K', $where_sttmnt);
+	}
+
+
+
+	/**
+	 * returns between Kbit and delivery as object
+	 * @param {int} $Kbit_UID    Kbit UID
+	 * @param {int} $delivery_UID      	Delivery UID
+	 * @param {string} $link_type     The link type
+	 * @param {string} $database_name database name e.g. 'content', 'user'
+	 * @return {D2KRelation}   the relation object
+	 */
+	public static function get_D2K_relation($Kbit_UID, $delivery_UID, $link_type, $database_name) {
+
+		$database_name = dbAPI::get_db_name($database_name);
+
+		$dbObj = new dbAPI();
+		// where statement
+		$where_sttmnt = " KBIT_BASE_UID = ". $Kbit_UID .", DELIVERY_BASE_ID = ". $delivery_UID .", LINK_TYPE = '". $link_type ."' AND ENABLED = 1 ";
+		$query = "SELECT * FROM R_LD2K where " . $where_sttmnt;
+	
+		$results = $dbObj->db_select_query($database_name, $query);
+		if(count($results) == 0) {
+			return null;
+		}
+		return $results[0];	
+	}
+
+
+
+	/**
+	 * returns list of terms that are related to object
+	 * @param {array} $object_UID    array of type array("column_name"=>'DELIVERY_BASE_ID', "value"=>5)
+	 * @param {string} $link_type     The link type
+	 * @param {string} $tableName     Table name of the relation which depends on object type, e.g. R_LD2T, R_LK2T.
+	 * @param  {string} $lang          The required language, if no language is selected all languages will be returned
+	 * @return {array:terms}                array of terms
+	 */
+	// public static function get_related_Kbits($Delivery_UID, $database_name) {
+
+	// 	// get database name
+	// 	$database_name = dbAPI::get_db_name($database_name);
+		
+	// 	$dbObj = new dbAPI();
+
+	// 	// get all needed and provide Kbits (as relation objects)
+	// 	$query = "SELECT * FROM R_LD2K where ENABLED = 1 AND (DELIVERY_BASE_ID = " . $Delivery_UID .")";
+	// 	$results = $dbObj->db_select_query($database_name, $query);
+
+	// 	return $results;
+	// }
+}
 ?>
 
 
