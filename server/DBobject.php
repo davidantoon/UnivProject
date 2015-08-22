@@ -20,6 +20,13 @@ class dbAPI {
 	public function db_get_contentDB(){
 		return $this->dbContent;
 	}
+	public static function get_db_name($source) {
+		$dbObj = new dbAPI();
+		if($source == 'content')
+			return $dbObj->db_get_contentDB();
+		else
+			return $dbObj->db_get_usersDB();
+	}
     
     private function db_get_connection($database_name = '') {
     	// Create connection
@@ -104,7 +111,7 @@ class dbAPI {
 
     public function get_latest_UID($database_name, $table_name) {
     	
-    	$query = 'SELECT MAX(UID) AS max_UID FROM ' . $table_name;
+    	$query = 'SELECT MAX(id) AS max_UID FROM ' . $table_name;
     	$results = $this->db_select_query($database_name, $query);
 	    if(count($results) == 0)
 	    	return 0;
