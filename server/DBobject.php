@@ -4,7 +4,8 @@
  */
 
 //a basic API for database connector
-echo 'dbAPI included successfuly <hr>';
+debugLog::included_log("dbAPI");
+
 class dbAPI {
 
 	private $user = 'root';
@@ -20,9 +21,12 @@ class dbAPI {
 		return $this->dbContent;
 	}
     
-    private function db_get_connection($database_name) {
+    private function db_get_connection($database_name = '') {
     	// Create connection
-		$conn = new mysqli($this->host, $this->user, $this->password, $database_name);
+    	if($database_name != '')
+			$conn = new mysqli($this->host, $this->user, $this->password, $database_name);
+		else
+			$conn = new mysqli($this->host, $this->user, $this->password);
 
 		// Check connection
 		if ($conn->connect_error) {
@@ -41,8 +45,13 @@ class dbAPI {
 		    return $result;
 		}
 		else {
+			echo "<br><hr>". date("d-m-y h:i:s") ."<br>SQL ERROR:<br>" . mysql_error() ."<br>QUERY:<br>" . $sql . "<br>";
+			echo '<hr>';
+			echo '<hr>';
+			var_dump($conn);
+			echo '<hr>';
+			echo "<hr><br>";
 			$conn->close();
-			echo "<br><hr>". date("d-m-y h:i:s") ."<br>SQL ERROR:<br>" . mysql_error() ."<br>QUERY:<br>" . $sql . "<br><hr><br>";
 		}
     }
 
@@ -60,6 +69,39 @@ class dbAPI {
 		}
     }
 
+    public function db_get_columns_names($database_name, $table_name, $separated = false) {
+    	
+    	$query = "select column_name from INFORMATION_SCHEMA.COLUMNS  where table_name = '". $table_name ."' AND TABLE_SCHEMA = '". $database_name ."'";
+    	$results = $this->db_select_query($database_name, $query);
+    	if($separated == false)
+	    	return $results;
+		$ar = implode(', ', array_map(function ($entry) {return $entry['column_name'];}, $results));
+		return $ar;
+    }
+
+    public function insert_batch($database_name, $table_name, $data) {
+
+    	echo '13<br>';
+    	$conn = $this->db_get_connection($database_name);
+    	echo '14<br>';
+    	// debugLog::important_log(dbAPI::print_json_s($data, 0));
+		// $result = $conn->insert_batch($table_name, $data);
+		$result = $this->db->insert_batch($table_name, $data);
+		debugLog::important_log("aa");
+		var_dump($result);
+		debugLog::important_log("aa");
+		echo '15<br>';
+		if($result == false) {
+			echo "<br><hr>". date("d-m-y h:i:s") ."<br>SQL ERROR";
+			echo '<hr>';
+			echo '<hr>';
+			var_dump($conn);
+			echo '<hr>';
+			echo "<hr><br>";
+		}
+		return $result;
+    }
+
     public function get_latest_UID($database_name, $table_name) {
     	
     	$query = 'SELECT MAX(UID) AS max_UID FROM ' . $table_name;
@@ -68,6 +110,31 @@ class dbAPI {
 	    	return 0;
 	    return $results[0]["max_UID"];
     }
+
+    public function get_latest_Rivision_ID($database_name, $table_name, $whereSttmnt = '') {
+    	
+    	if($whereSttmnt != '')
+    		$whereSttmnt = ' WHERE (('. $whereSttmnt .'))';
+
+    	$query = 'SELECT MAX(REVISION) AS max_Riv FROM ' . $table_name . $whereSttmnt;
+    	$results = $this->db_select_query($database_name, $query);
+	    if(count($results) == 0)
+	    	return null;
+	    return $results[0]["max_Riv"];
+    }
+
+    public function disable_revision($database_name, $table_name, $whereSttmnt) {
+
+		$query = "UPDATE ". $table_name ." SET ENABLED = 0 WHERE ". $whereSttmnt . " ";
+		$results = $this->run_query($database_name, $query);
+		if($results) {
+			// on success
+			return true;
+		}
+		debugLog::debug_log("[disable_revision]: could not disbale rivision. [query]: <br>" . $query ."<hr>");
+		return false;
+    }
+
 
     public function print_table($results) {
     	echo "<hr>";
@@ -98,13 +165,26 @@ class dbAPI {
 		echo "<br/>";
     }
 
-    public function print_json($arr) {
-    	echo "<br/>";
-    	echo "<hr>";
-    	echo json_encode($arr);
-    	echo "<hr>";
-    	echo "<br/>";
+    public static function print_json_s($arr, $prnt = 1) {
+    	$dbo = new dbAPI();
+    	return $dbo->print_json($arr, $prnt);
+    }
+    public function print_json($arr, $prnt = 1) {
+    	$jsons = "<br/>" .
+    	"<hr>" .
+    	json_encode($arr) .
+    	"<hr>" .
+    	"<br/>";
+    	if($prnt == 1)
+	    	echo $jsons;
+    	return $jsons;
     }
 }
 
 ?>
+
+
+
+
+
+

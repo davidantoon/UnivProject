@@ -1,5 +1,6 @@
 <?php
-echo 'Scope included successfuly <hr>';
+debugLog::included_log("Scope");
+
 class scope {
 
 	// add new scope
@@ -22,7 +23,6 @@ class scope {
 	public static function get_scope_by_UID($UID) {
 
 		$dbObj = new dbAPI();
-		// validate user in database
 		$query = "SELECT * FROM scope where UID = '" . $UID . "' AND ENABLED = '1'";
 		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
 		if(count($results) == 0)
@@ -30,77 +30,71 @@ class scope {
 
 		return $results[0];	
 	}
+	
+	public static function get_scope_by_UID_with_relations($UID, $lang = '') {
 
-	// return a list of terms under selected scope
-	public static function get_all_terms_of_scope($scope_UID) {
+		// check if scope exists
+		$Scope = scope::get_scope_by_UID($UID);
+		if($Scope == null)
+			return null;
 
+		// add related scopes to scope object
+		$Scope["RELATED_SCOPES"] = scope::get_relations_of_scope($UID);
+
+		$Scope["TERMS"] = scope::get_terms_of_scope($UID, $lang);
+		return $Scope;
 	}
 
 
-	// add new language to term
-	// add new term meaning to scope+term
-	// add new term meaning language to scope+term
 
-	// add term to scope
-	public static function add_new_term($scopeUID, $term, $meaning, $lang, $user) {
 
-		// add term to database
-		$term = term::add_new_term($term, $lang, $user);
-		if($term == null)
+
+	// relate scope to another
+	public static function add_relation_to_scope($parent_scope_UID, $child_scope_UID, $is_hier, $user) {
+
+		// create relation between two terms
+		if(refRelation::add_relation_to_object($parent_scope_UID, $child_scope_UID, $is_hier, $user, 'R_Ls2s') == null) {
+			debugLog::log("parent scope (". $parent_scope_UID .") and child (". $child_scope_UID .") scope cannot be the same");
 			return null;
-
-		// extract termUID
-		$termUID = $term[0]["UID"];
-		// add term meaning to term and scope
-		$term_meaning = scope::add_new_meaning_to_term($meaning, $termUID, $scopeUID, $lang, $user);
-		
-		// validate that the connection was successfully added
-		if($term_meaning == null)
-			return null;
-
-
+		}
+		// return recently created relation
+		return refRelation::get_objects_relation($parent_scope_UID, $child_scope_UID, 'R_Ls2s');
 	}
 
-	// add new term with meaning to term in scope
-	public static function add_new_meaning_to_term($meaning, $termUID, $scopeUID, $lang, $user) {
-		
-		// add new meaning
-		$temp = term::add_meaning($meaning, $lang, $user);
-		
-		// validate the the term meaning was created successfully
-		if($temp == null)
-			return null;
-		// extract term meaning UID
-		$term_meaning_UID = $temp[0]["UID"];
-		// connection term + meaning + scope
+	// remove relation
+	public static function remove_relation($parent_scope_UID, $child_scope_UID) {
+
+		refRelation::remove_relation($$parent_scope_UID, $child_scope_UID, 'R_Ls2s');
+	}
+
+
+	public static function get_relations_of_scope($scope_UID) {
+
+		return refRelation::get_relations_of_object($scope_UID, 'R_Ls2s', 'scope::get_scope_by_UID');
+	}
+
+
+	public static function get_terms_of_scope($scope_UID, $lang = '') {
+
+		$terms = array();
+
+		// extract scope terms relations
 		$dbObj = new dbAPI();
-		// get new UID
-		$UID = $dbObj->get_latest_UID($dbObj->db_get_contentDB(), 'TERMS');
-		$UID++;
-		// add record to database
-		$query = "INSERT INTO TERMS (UID, ID_TERM_MEAN, ID_SCOPE, ID_TERM_STRING, ENABLED, USER_ID, CREATION_DATE) VALUES (".
-			$UID . ", '". $term_meaning_UID . "', '" . $scopeUID ."', '" . $termUID ."', 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
-		$dbObj->run_query($dbObj->db_get_contentDB(), $query);
+		$query = "SELECT * FROM TERMS where ENABLED = 1 AND ( ID_SCOPE = " . $scope_UID .  ")";
+		$terms_related = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
 
-		// returns an entity of recently added connection
-		return scope::get_connection_by_UID($UID);
-	}
-
-
-	// returns a term + meaning + scope connection by its UID
-	public static function get_connection_by_UID($UID) {
-
-		$dbObj = new dbAPI();
-		$query = "SELECT * FROM TERMS where UID = '" . $UID . "' AND ENABLED = '1'";
-		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
-		if(count($results) == 0)
+		if($terms_related == null)
 			return null;
 
-		return $results[0];	
+		// get terms details
+		for($i=0; $i<count($terms_related); $i++) {
+			$curr_term = term::get_term_by_UID_with_relations($terms_related[$i]["ID_TERM_STRING"], $lang);
+			if($curr_term != null)
+				array_push($terms, $curr_term);
+		}
+
+		return $terms;
 	}
-
-
-
 }
 
 

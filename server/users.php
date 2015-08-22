@@ -4,11 +4,11 @@
  */
 
 //a basic API for database connector
-echo 'Users included successfuly <hr>';
+debugLog::included_log("Users");
 // include 'DBobject.php';
 
 class users {
-
+     
 	public $id;
 	public $UID;
 	public $first_name;
@@ -74,7 +74,7 @@ class users {
 		// validate user existance
 		$tempUser = users::validate_username_password($username, $password);
 		if($tempUser == null)
-			return false;
+			return null;
 
 		// update user's password in database
 		$dbObj = new dbAPI();
