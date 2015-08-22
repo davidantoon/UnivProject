@@ -21,11 +21,11 @@
 
     <div id="MainDiv" class="{{((blurAllWindow == true)?'blured':'')}}" ng-switch="AppStatus" style="display:none">
       <div class="AppPage" ng-switch-when="2" style="">  
-      <ons-page>
+        <ons-page>
           <ons-tabbar position="top" class="" style="height: 50px;">
             <ons-row>
               <ons-col width="220px" class="Logo rtl">
-                <img src="img/IntelIcon.png" style="height: 100%;margin: auto;">
+                <!-- <img src="img/IntelIcon.png" style="height: 100%;margin: auto;"> -->
               </ons-col>
               <ons-col id="NotificationsButton1" ng-click="workSpaces.checkUserColorsInWorkspace();" width="100px" style="width:100px; position:relative;" class="">
                 <div class="TopTabbarButton clickable hoverOp">Settings</div>
@@ -224,12 +224,12 @@
           <img class="blurBackground" src="img/loginbg1.jpg" />
           <div class="holdLoginDiv">
             <div class="LoginHeader">
-              <img src="img/IntelIcon.png" />
+              <!-- <img src="img/IntelIcon.png" /> -->
             </div>
             <div class="LoginBody">
               <form autocomplete="off">
-                <input ng-enter="LoginWithUsernameAndPassrod();" id="username" type="text" placeholder="מספר נהג">
-                <input ng-enter="LoginWithUsernameAndPassrod();" id="password" type="password" placeholder="סיסמה">
+                <input ng-enter="LoginWithUsernameAndPassrod();" id="username" type="text" placeholder="username">
+                <input ng-enter="LoginWithUsernameAndPassrod();" id="password" type="password" placeholder="password">
               </form>
             </div>
             <div class="LoginFooter" ng-click="LoginWithUsernameAndPassrod();">
@@ -237,7 +237,7 @@
                 <ons-icon spin="true" icon="ion-load-d" size="30px"></ons-icon>
               </div>
               <div class="LoginButton">
-                התחבר
+                Login
               </div>
             </div>
           </div>
@@ -293,8 +293,8 @@
     <!-- $('#ToastMessage').fadeIn(500).delay(2000).fadeOut(500); // add before show title and body and porsition -->
 
     <div id="LoadingScreen" style="z-index: 100000;display:block;position: fixed;width: 100%;height: 100%;background: rgb(8,96,168);">
-      <img src="img/IntelIcon.png" style="width: 200px;position: absolute;top: 0;bottom: 0;left: 0;right: 0;margin: auto;opacity: .85;z-index: 3;">
-      <img src="img/IntelIcon.png" class="animatedLogo" style="width: 200px;position: absolute;top: 0;bottom: 0;left: 0;right: 0;margin: auto;">
+      <!-- <img src="img/IntelIcon.png" style="width: 200px;position: absolute;top: 0;bottom: 0;left: 0;right: 0;margin: auto;opacity: .85;z-index: 3;"> -->
+      <!-- <img src="img/IntelIcon.png" class="animatedLogo" style="width: 200px;position: absolute;top: 0;bottom: 0;left: 0;right: 0;margin: auto;"> -->
       <div class="statusBarLoading">
         <div class="StatusBarPerc"></div>
       </div>

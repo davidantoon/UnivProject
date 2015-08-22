@@ -1,12 +1,12 @@
-app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Workspace, Server){
+app.factory('Steps', ["$rootScope", "Workflow", "Workspace", "Server", function($rootScope, Workflow, Workspace, Server){
 
-	function Steps(workspace){
+	function Steps(workspace, scope){
 
 		this.last20Steps = [];	
 		this.currentUndoOrder = 1;
 		this.savedInServer = false;
 		this.lastFocusedWorkflow = null;
-
+		
 		var passThis1 = this;
 		var svr = new Server(this.objectType);
 		svr.getSteps(function(result, error){
@@ -16,7 +16,7 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 				ServerResquestComplete(result, passThis1);
 			}
 		});
-
+		$rootScope.currentScope.Toast.show("david","dasds");
 		function ServerResquestComplete(serverSteps, passThis){
 			try{
 				var dataFromLocalStorage = JSON.parse(localStorage.getItem("com.intel.steps.last20Steps"));
@@ -72,10 +72,10 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 					workspace.updateNewWorkflowButtons();
 					workspace.updateLastId();
 				});
+			}catch(e){
+				$rootScope.currentScope.Toast.show("Error!","There was an error in ", Toast.LONG, Toast.ERROR);
+	            console.error("ServerResquestComplete: ", e);
 			}
-		}catch(e){
-			$scope.Toast.show("Error!","There was an error in ", Toast.LONG, Toast.ERROR);
-            console.error("ServerResquestComplete: ", e);
 		}
 	}
 
@@ -100,7 +100,7 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 	            }
 	            return undoFound;
 	        }catch(e){
-	        	$scope.Toast.show("Error!","There was an error in Undo function", Toast.LONG, Toast.ERROR);
+	        	$rootScope.currentScope.Toast.show("Error!","There was an error in Undo function", Toast.LONG, Toast.ERROR);
                 console.error("canUndo: ", e);
 	        }
 		},
@@ -123,7 +123,7 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 	            }
 	            return redoFound;
 	        }catch(e){
-	        	$scope.Toast.show("Error!","There was an error in redo function", Toast.LONG, Toast.ERROR);
+	        	$rootScope.currentScope.Toast.show("Error!","There was an error in redo function", Toast.LONG, Toast.ERROR);
                 console.error("canRedo: ", e);
 	        }
 		},
@@ -185,7 +185,7 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 	                callback();
 				}
 			}catch(e){
-				$scope.Toast.show("Error!","there was an error in undo function", Toast.LONG, Toast.ERROR);
+				$rootScope.currentScope.Toast.show("Error!","there was an error in undo function", Toast.LONG, Toast.ERROR);
                 console.error("undoWorkflow: ", e);
 			}
 		},
@@ -233,7 +233,7 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 	                	workspace.workflows.push(new Workflow(DiffObjects.inserted[j1]));
 	                }
 
-	                // update workflow tabs contents
+	                // update workflow tabs contents that if changed
 	                for (var i1 = 0; i1 < tempJsonWorkflows.length; i1++) {
 	                	for(var i2=0; i2< workspace.workflows.length; i2++){
 	                		if(tempJsonWorkflows[i1].ID == workspace.workflows[i2].ID){
@@ -247,7 +247,7 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 	                callback();
 				}
 			}catch(e){
-				$scope.Toast.show("Error!","there was an error in redo function", Toast.LONG, Toast.ERROR);
+				$rootScope.currentScope.Toast.show("Error!","there was an error in redo function", Toast.LONG, Toast.ERROR);
                 console.error("redoWorkflow: ", e);
 			}
 		},
@@ -270,7 +270,7 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 	            }
 	            this.currentUndoOrder = 1;
 	        }catch(e){
-	        	$scope.Toast.show("Error!","there was an error in updating last steps", Toast.LONG, Toast.ERROR);
+	        	$rootScope.currentScope.Toast.show("Error!","there was an error in updating last steps", Toast.LONG, Toast.ERROR);
                 console.error("UpdateLastSteps: ", e);
 	        }
 		},
@@ -303,7 +303,7 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 	            localStorage.setItem("com.intel.steps.last20Steps", JSON.stringify(this.toJson()));
 	            this.savedInServer = false;
 	        }catch(e){
-	        	$scope.Toast.show("Error!","there was an error in upadting last steps", Toast.LONG, Toast.ERROR);
+	        	$rootScope.currentScope.Toast.show("Error!","there was an error in upadting last steps", Toast.LONG, Toast.ERROR);
                 console.error("InsertStepToLastSteps: ", e);
 	        }
 		},
@@ -329,23 +329,33 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 					var DiffObjects = getDiffArrays(workspace.workflows,tempJsonWorkflows);
 
 		        	// check inserted workflows
-		        	for(var j1=0; j1<DiffObjects.inserted.length; j1++){
-		            	workspace.workflows.push(new Workflow(DiffObjects.inserted[j1]));
-		            }
+		        	loopDiffObjects(0, DiffObjects.inserted);
+		        	function workflowsReturn(newWorkflow, index, passWorkspace, workflowsToBuild){
+		        		passWorkspace.workflows.push(newWorkflow);
+		        		loopDiffObjects(index,workflowsToBuild);
+		        	}
+		        	function loopDiffObjects(index, workflowsToBuild){
+		        		if(index < workflowsToBuild.length){
+		        			workflowsToBuild[index].requestFrom="restoreStep";
+		        			workflowsToBuild[index].callback = workflowsReturn;
+		        			workflowsToBuild[index].passindex = index + 1;
+		        			workflowsToBuild[index].passWorkspace = workspace;
+		        			workflowsToBuild[index].workflowsToBuild = workflowsToBuild;
+		        			var tempWorkflow = new Workflow(workflowsToBuild[index]);
+		        		}else{
+		        			loopDiffObjectsDone();
+		        		}
+		        	}
+		        	function loopDiffObjectsDone(){
+		        		callback();
+		        	}
+		        }
 
-		            // update workflow tabs contents
-		            for (var i1 = 0; i1 < tempJsonWorkflows.length; i1++) {
-		            	for(var i2=0; i2< workspace.workflows.length; i2++){
-		            		if(tempJsonWorkflows[i1].ID == workspace.workflows[i2].ID){
-		            			workspace.workflows[i2].updateAllParams(tempJsonWorkflows[i1]);
-		            		}
-		            	}
-		            }
-		            callback();
-		        }catch(e){
-			        $scope.Toast.show("Error!","there was an error in restoring steps", Toast.LONG, Toast.ERROR);
-	                console.error("restoreStep: ", e);
-	            }
+		        
+	        }catch(e){
+		        $rootScope.currentScope.Toast.show("Error!","there was an error in restoring steps", Toast.LONG, Toast.ERROR);
+                console.error("restoreStep: ", e);
+            }
 		},
 		/**
 		 * Remove all steps from local and server, and add one step represents current state
@@ -356,7 +366,7 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 				this.currentUndoOrder = 1;
 				this.InsertStepToLastSteps(workspace);
 			}catch(e){
-				$scope.Toast.show("Error!","There was an error in clearing last steps", Toast.LONG, Toast.ERROR);
+				$rootScope.currentScope.Toast.show("Error!","There was an error in clearing last steps", Toast.LONG, Toast.ERROR);
            		console.error("clearLastSteps: ", e);
 			}
 		},
@@ -389,7 +399,7 @@ app.factory('Steps', ["Workflow", "Workspace", "Server", function(Workflow, Work
 						callback(null, {"message": "Steps up to date", "code":""});
 				}
 			}catch(e){
-				$scope.Toast.show("Error!","there was an error in saving steps", Toast.LONG, Toast.ERROR);
+				$rootScope.currentScope.Toast.show("Error!","there was an error in saving steps", Toast.LONG, Toast.ERROR);
                 console.error("commitSteps: ", e);
 			}
 		},

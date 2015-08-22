@@ -1,5 +1,5 @@
-app.factory('Workspace', ['Workflow', function(Workflow){
-	function Workspace() {
+app.factory('Workspace', ['$rootScope', 'Workflow', function($rootScope, Workflow){
+	function Workspace(scope) {
 		try{
 			var firstWorkflow = new Workflow(null, 0, 12, 12, 13, 13);
 			this.workflows = [firstWorkflow];
@@ -21,7 +21,7 @@ app.factory('Workspace', ['Workflow', function(Workflow){
 				"#000" : false
 			};
 		}catch(e){
-			$scope.Toast.show("Error!","There was an error in creating workspace", Toast.LONG, Toast.ERROR);
+			$rootScope.currentScope.Toast.show("Error!","There was an error in creating workspace", Toast.LONG, Toast.ERROR);
            	console.error("canUndo: ", e);
 		}
 	}

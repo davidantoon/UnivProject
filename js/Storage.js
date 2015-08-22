@@ -1,4 +1,4 @@
-app.factory('Storage', ["Globals", "TypeOf", function(Globals, TypeOf){
+app.factory('Storage', ["$rootScope", "Globals", "TypeOf", function($rootScope, Globals, TypeOf){
 
 
 	/**
@@ -91,7 +91,7 @@ app.factory('Storage', ["Globals", "TypeOf", function(Globals, TypeOf){
 					}
 				}
 			}catch(e){
-				$scope.Toast.show("Error!","There was an error in saving in storage", Toast.LONG, Toast.ERROR);
+				$rootScope.currentScope.Toast.show("Error!","There was an error in saving in storage", Toast.LONG, Toast.ERROR);
                 console.error("save: ", e);
 			}
 		},
@@ -138,7 +138,7 @@ app.factory('Storage', ["Globals", "TypeOf", function(Globals, TypeOf){
 			}catch(exp){
 				// callback(null, exp);
 				// console.error("Storage: save() ", exp);
-				$scope.Toast.show("Error!","There was an error in getting value from storage", Toast.LONG, Toast.ERROR);
+				$rootScope.currentScope.Toast.show("Error!","There was an error in getting value from storage", Toast.LONG, Toast.ERROR);
                 console.error("get: ", e);
 			}
 
@@ -179,7 +179,7 @@ app.factory('Storage', ["Globals", "TypeOf", function(Globals, TypeOf){
 				callback(null, {"message": "no item has been removed","code": ""});
 				return;
 			}catch(e){
-				$scope.Toast.show("Error!","There was an error in clearing local storage", Toast.LONG, Toast.ERROR);
+				$rootScope.currentScope.Toast.show("Error!","There was an error in clearing local storage", Toast.LONG, Toast.ERROR);
                 console.error("clear: ", e);
 			}
 		},
@@ -199,7 +199,7 @@ app.factory('Storage', ["Globals", "TypeOf", function(Globals, TypeOf){
 				callback({"message":"steps has sucsessfully save in local storage","code":""}, null);
 				return;
 			}catch(e){
-				$scope.Toast.show("Error!","There was an error in saving steps locally", Toast.LONG, Toast.ERROR);
+				$rootScope.currentScope.Toast.show("Error!","There was an error in saving steps locally", Toast.LONG, Toast.ERROR);
                 console.error("saveStepsLocaly: ", e);
 			}
 		},
@@ -213,10 +213,23 @@ app.factory('Storage', ["Globals", "TypeOf", function(Globals, TypeOf){
 				callback(JSON.parse(localStorage.getItem("steps")), null);
 				return;
 			}catch(e){
-				$scope.Toast.show("Error!","There was an error in getting steps from storage", Toast.LONG, Toast.ERROR);
+				$rootScope.currentScope.Toast.show("Error!","There was an error in getting steps from storage", Toast.LONG, Toast.ERROR);
                 console.error("getStepsFromStorage: ", e);
 			}
+		},
+
+
+		getElementById: function(elemId, jsonType,forceLastmodefied, callback){
+			callback(null);
+			if( elemId != undefined && elemId != null && elemId != ""){
+
+			}else{
+
+			}
 		}
+
+
+
 	};
 
 	return Storage;

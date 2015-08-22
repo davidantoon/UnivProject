@@ -1,4 +1,4 @@
-app.factory('Tab', ['Content','Globals', function(Content, Globals){
+app.factory('Tab', ["$rootScope", 'Content','Globals','Storage', function($rootScope, Content, Globals, Storage){
 	
 	// constant static members 
 	Tab.NORMAL_TAB = 0;// Search | Create | Edit'
@@ -32,23 +32,28 @@ app.factory('Tab', ['Content','Globals', function(Content, Globals){
 			this.ID = tempJson.ID;
 			this.title = tempJson.title;
 			this.Type = tempJson.Type;
-			if(tempJson.color)
-				this.color = tempJson.color;
-			else
-				this.color = "#0860A8";
-
-			console.error("Check if new content passed from Undo, Redo, Server and Create");
-			if(tempJson.content != null && tempJson.content != null){
-				var tempData = Globals.get(JSON.parse(tempJson.content).id);
-				
-				if(tempData == null)
-					this.content = new Content(tempJson.content);
-				else
-					this.content = tempData;
-			}
-			this.content = null;
 			this.orderTab = tempJson.orderTab;
 			this.dataHolding = tempJson.dataHolding;
+			this.color = ((tempJson.color != undefined)?tempJson.color:"#0860A8");
+			if(tempJson.requestFrom == "restoreStep"){
+					if(tempJson.content != null && tempJson.content != null){
+						var passThis = this;
+						Storage.getElementById(JSON.parse(tempJson.content).id, /* force last modefied */ true, /* force server pull */ false, function(dataFromStorage){
+							passThis.content = dataFromStorage;
+							tempJson.callback(passThis, tempJson.passindex, tempJson.passThis, tempJson.passTempJson);
+						});
+					}else{
+						tempJson.callback(this, tempJson.passindex, tempJson.passThis, tempJson.passTempJson);
+					}
+			}else{
+				if(tempJson.content != null && tempJson.content != null){
+					var tempData = Globals.get(JSON.parse(tempJson.content).id);
+					this.content = ((tempData != undefined)?(new Content(tempJson.content)):null);
+				}else{
+					this.content = null;
+				}
+			}
+
 		}else{
 			throw "Id or parentWorkflow not specified!";
 			return null;
