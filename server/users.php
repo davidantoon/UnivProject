@@ -4,7 +4,7 @@
  */
 
 //a basic API for database connector
-echo 'Users included successfuly <hr>';
+debugLog::included_log("Users");
 // include 'DBobject.php';
 
 class users {

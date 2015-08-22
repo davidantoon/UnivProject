@@ -25,5 +25,15 @@ class debugLog {
 			echo "<hr style='border-color:". $color ."'>";
 		}
 	}
+
+	STATIC $include_couter = 0;
+
+	public static function included_log($class_name) {
+		$color = 'green';
+		if(debugLog::debug_mode() == true) {
+			echo "<b>" . ++debugLog::$include_couter .") " . $class_name . "</b> included successfully";
+			echo "<hr style='border-color:". $color ."'>";
+		}
+	}
 }
 ?>

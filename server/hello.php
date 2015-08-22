@@ -134,9 +134,20 @@
 
 	$front = array('FRONT_TYPE'=>'KBIT_FRONT', 'PATH'=>'http://google.com');
 	// debugLog::important_log(dbAPI::print_json_s(Kbit::add_new_Kbit_in_edit_mode("first kbit title (base)", "first Kbit description (base)", 2, $front), 0));
-	Kbit::begin_editing_kbit(1, 1);
+	// Kbit::begin_editing_kbit(1, 1);
+	// Kbit::publish_changes(1,1);
 	// Lock::acquire_lock(2, 'abc', 3);
 	// Lock::release_lock(2, 'abc', 3);
+	
+	debugLog::important_log("<i>[hello.php:test]</i> test cancel edit");
+	debugLog::important_log("<i>[hello.php:test]</i> test publish edit");
+	debugLog::important_log("<i>[hello.php:test]</i> implement add new kbit");
+	debugLog::important_log("<i>[hello.php:test]</i> implement add edit to kbit");
+	debugLog::important_log("<i>[hello.php:test]</i> implement relations for kbit");
+	debugLog::important_log("<i>[hello.php:test]</i> implement delivery");
+	
+	
+	
 	debugLog::important_log("DONE");
 ?>
 

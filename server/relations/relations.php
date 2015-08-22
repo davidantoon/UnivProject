@@ -1,5 +1,6 @@
 <?php
-echo 'refRelation included successfuly <hr>';
+debugLog::included_log("refRelation");
+
 class refRelation {
 
 	// public static function get_scope_by_UID_with_relations($UID, $lang = '') {

@@ -4,7 +4,8 @@
  */
 
 //a basic API for database connector
-echo 'dbAPI included successfuly <hr>';
+debugLog::included_log("dbAPI");
+
 class dbAPI {
 
 	private $user = 'root';

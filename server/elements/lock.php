@@ -1,6 +1,6 @@
 <?php
 
-echo 'Lock included successfuly <hr>';
+debugLog::included_log("Lock");
 
 
 /**
@@ -68,7 +68,7 @@ class Lock {
 		return count($results) != 0;
 	}
 
-	private static function is_locked_by_user($UID, $entity_type, $user) {
+	public static function is_locked_by_user($UID, $entity_type, $user) {
 		
 		$dbObj = new dbAPI();
 		$query = "SELECT * FROM CONTENT_LOCK where LOCKED_UID = '" . $UID . "' AND ENTITY_TYPE = '" . $entity_type . "' AND LOCK_STATUS = 'LOCKED' AND ENABLED = 1 AND USER_ID = ". $user ." ";
