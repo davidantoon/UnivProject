@@ -522,6 +522,20 @@ class Kbit {
 		return $results[0];
 	}
 
+	public static function get_Kbit_details($UID, $user) {
+
+		if(Lock::is_locked_by_user($UID, 'KBIT_BASE', $user)) {
+			$kbit = Kbit::get_edited_kbit_by_UID($UID);
+		}
+		$kbit = Kbit::get_kbit_by_UID($UID);
+
+		// get locking user
+		$locking_user = Lock::get_locking_user($UID, 'KBIT_BASE');
+		if($locking_user != null)
+			$kbit["LOKING_USER"] = $locking_user;
+
+		return $kbit;
+	}
 
 
 }

@@ -388,19 +388,27 @@ class D2KRelation {
 	 * @param  {string} $lang          The required language, if no language is selected all languages will be returned
 	 * @return {array:terms}                array of terms
 	 */
-	// public static function get_related_Kbits($Delivery_UID, $database_name) {
+	public static function get_related_Kbits($Delivery_UID, $user) {
 
-	// 	// get database name
-	// 	$database_name = dbAPI::get_db_name($database_name);
+
+		// get database name
+		$database_name = dbAPI::get_db_name($database_name);
 		
-	// 	$dbObj = new dbAPI();
+		$dbObj = new dbAPI();
 
-	// 	// get all needed and provide Kbits (as relation objects)
-	// 	$query = "SELECT * FROM R_LD2K where ENABLED = 1 AND (DELIVERY_BASE_ID = " . $Delivery_UID .")";
-	// 	$results = $dbObj->db_select_query($database_name, $query);
+		// get all needed and provide Kbits (as relation objects)
+		$query = "SELECT * FROM R_LD2K where ENABLED = 1 AND (DELIVERY_BASE_ID = " . $Delivery_UID .")";
+		$results = $dbObj->db_select_query($database_name, $query);
 
-	// 	return $results;
-	// }
+
+		for($i=0;$i<count($results);$i++) {
+			$curr_Kbit = Kbit::get_term_by_UID($results[$i]["TERM_ID"], $lang);
+			// copy LINK_TYPE to term object
+			$curr_term["LINK_TYPE"] = $results["LINK_TYPE"];
+			array_push($terms, $curr_term);
+		}
+		return $terms;
+	}
 }
 ?>
 
