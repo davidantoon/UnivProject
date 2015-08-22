@@ -1,6 +1,6 @@
 var app = angular.module('IntelLearner', ['onsen', 'firebase']);
-app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast",
-    function($scope, $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast) {
+app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast",
+    function($rootScope,$scope, $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast) {
 
 
         // PRIM COLOR = rgb(8,96,168)
@@ -21,7 +21,6 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
          *********************************************************************************/
         $scope.AppStatus = 0;
         $scope.currentUser = {};
-        $scope.settings = {}
         $scope.Workflow = [];
         $scope.lastZoomIn = $('#ZoomRange').val();
         $scope.holdDoubleClickOnTab = false;
@@ -182,23 +181,20 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                 'lastName': 'Antoon',
                 'profilePicture': 'https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/v/t1.0-1/p320x320/988960_632550293533974_2658667833563570113_n.jpg?oh=c62dc24dba7545a6d06915cd01c11a3f&oe=55A4011C&__gda__=1436053802_e6b13ee76d8aa131e270234503c16cc8'
             };
-            $scope.settings = {
-                'defaultOpenTabs': 'splite', // over, Splite
-                'autoScroll': false
-
-            }
 
 
             // init worksace
+            $rootScope.currentScope = $scope;
+            $scope.Toast = new Toast();
             $scope.workSpaces = new Workspace();
             $scope.Settings = new Settings();
             $scope.Steps = new Steps($scope.workSpaces);
             $scope.Workflow = $scope.workSpaces.workflows;
+
             $scope.updateAllTabName();
             $scope.updateMatrixLayout();
-            console.log($scope.Workflow);
             $scope.workSpaces.checkUserColorsInWorkspace();
-            $scope.Toast = new Toast();
+            
             
 
             $('#WorkFlowMatrix').css('min-width', "10000px").css('min-height', "10000px").css('width', "10000px").css('height', "10000px");
@@ -831,7 +827,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
         }, 200);
 
         $interval(function() {
-            if ($scope.settings.autoScroll && $scope.settings.autoScroll == true) {
+            if ($scope.Settings != undefined && $scope.Settings.autoScroll && $scope.Settings.autoScroll == true) {
                 if (mouse.y > 50) {
                     if (mouse.x < 60) {
                         var leftScroll = (60 - mouse.x) / 5;
@@ -859,15 +855,16 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
         $interval(function(){
             // check login user
             if($scope.Settings.autoSave == true){
-                $scope.counterBeforeSave++;
-                if($scope.counterBeforeSave > 7){
-                    if($scope.Steps.savedInServer == false){
+                if($scope.Steps.savedInServer == false && $scope.Steps.canRedo() == false){
+                    $scope.counterBeforeSave++;
+                    if($scope.counterBeforeSave > 7){
                         $scope.Steps.commitSteps();
+                        $scope.counterBeforeSave = 0;
                     }
-                    $scope.counterBeforeSave = 0;
                 }
             }
         },1000);
+        
 
 
 

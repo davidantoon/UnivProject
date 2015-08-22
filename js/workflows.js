@@ -1,4 +1,4 @@
-app.factory('Workflow', ['Tab', 'TypeOf', function(Tab, TypeOf){
+app.factory('Workflow', ["$rootScope", 'Tab', 'TypeOf', function($rootScope, Tab, TypeOf){
 
     function Workflow(tempJson, id, fx, fy, tx, ty){
         try{
@@ -32,11 +32,36 @@ app.factory('Workflow', ['Tab', 'TypeOf', function(Tab, TypeOf){
                     this.name = tempJson.name;
                     this.tabsIds = tempJson.tabsIds;
                     this.tabs = [];
-                    for (var i = 0; i < tempJson.tabs.length; i++) {
-                        var tempTab = new Tab(null, this, tempJson.tabs[i]);
-                        this.tabs.push(tempTab);
-                        if(tempJson.selectedTab.ID == tempJson.tabs[i].ID){
-                            this.selectedTab = tempTab;
+
+                    if(tempJson.requestFrom == "restoreStep"){
+                        loopTabs(0, this, tempJson);
+                        function tabReturn(newTab, index, passThis, passTempJson){
+                            passThis.tabs.push(newTab);
+                            if(passTempJson.selectedTab.ID == passTempJson.tabs[index-1].ID){
+                                passThis.selectedTab = newTab;
+                            }
+                            loopTabs(index, passThis, passTempJson);
+                        }
+                        function loopTabs(index, passThis, passTempJson){
+                            if(index < passTempJson.tabs.length){
+                                passTempJson.tabs[index].requestFrom = passTempJson.requestFrom;
+                                passTempJson.tabs[index].callback = tabReturn;
+                                passTempJson.tabs[index].passThis = passThis;
+                                passTempJson.tabs[index].passindex = index+1;
+                                passTempJson.tabs[index].passTempJson = passTempJson;
+                                var tempTab = new Tab(null, passThis, passTempJson.tabs[index], passTempJson);
+                            }else{
+                                passTempJson.callback(passThis, passTempJson.passindex, passTempJson.passWorkspace, passTempJson.workflowsToBuild);
+                            }
+                        }
+                    }else{
+                        for (var i = 0; i < tempJson.tabs.length; i++) {
+                            tempJson.tabs[i].requestFrom = tempJson.requestFrom;
+                            var tempTab = new Tab(null, this, tempJson.tabs[i]);
+                            this.tabs.push(tempTab);
+                            if(tempJson.selectedTab.ID == tempJson.tabs[i].ID){
+                                this.selectedTab = tempTab;
+                            }
                         }
                     }
 
@@ -46,7 +71,7 @@ app.factory('Workflow', ['Tab', 'TypeOf', function(Tab, TypeOf){
                 return null;
             }
         }catch(e){
-            $scope.Toast.show("Error!","There was an error in creating workflow", Toast.LONG, Toast.ERROR);
+            $rootScope.currentScope.Toast.show("Error!","There was an error in creating workflow", Toast.LONG, Toast.ERROR);
             console.error("Workflow: ", e);
          }        
     }
@@ -66,6 +91,7 @@ app.factory('Workflow', ['Tab', 'TypeOf', function(Tab, TypeOf){
                 this.tx = tempJson.tx;
                 this.ty = tempJson.ty;
                 this.name = tempJson.name;
+                this.tabsIds = tempJson.tabsIds;
                 this.tabs = [];
                 for (var i = 0; i < tempJson.tabs.length; i++) {
                     var tempTab = new Tab(null, this, tempJson.tabs[i]);
@@ -75,7 +101,7 @@ app.factory('Workflow', ['Tab', 'TypeOf', function(Tab, TypeOf){
                     }
                 }
             }catch(e){
-                $scope.Toast.show("Error!","There was an error in updating workflow parameters", Toast.LONG, Toast.ERROR);
+                $rootScope.currentScope.Toast.show("Error!","There was an error in updating workflow parameters", Toast.LONG, Toast.ERROR);
                 console.error("updateAllParams: ", e);
             }
         },
@@ -89,7 +115,7 @@ app.factory('Workflow', ['Tab', 'TypeOf', function(Tab, TypeOf){
             try{
                 return (this.ID == obj.ID);
             }catch(e){
-                $scope.Toast.show("Error!","There was an error in compating two worflows", Toast.LONG, Toast.ERROR);
+                $rootScope.currentScope.Toast.show("Error!","There was an error in compating two worflows", Toast.LONG, Toast.ERROR);
                 console.error("equals: ", e);
             }        
         },
@@ -105,7 +131,7 @@ app.factory('Workflow', ['Tab', 'TypeOf', function(Tab, TypeOf){
                 this.tabsIds++;
                 return newTab;
             }catch(e){
-                $scope.Toast.show("Error!","There was an error in adding tab to workflow", Toast.LONG, Toast.ERROR);
+                $rootScope.currentScope.Toast.show("Error!","There was an error in adding tab to workflow", Toast.LONG, Toast.ERROR);
                 console.error("addTab: ", e);
             }
         },
@@ -126,7 +152,7 @@ app.factory('Workflow', ['Tab', 'TypeOf', function(Tab, TypeOf){
                 var sTop = blockPosT - ((wHeight - blockHeight) / 2);
                 $('#BodyRow').animate({ scrollTop: sTop, scrollLeft: sLeft }, 200);
             }catch(e){
-                $scope.Toast.show("Error!","There was an error in scrolling to specific location", Toast.LONG, Toast.ERROR);
+                $rootScope.currentScope.Toast.show("Error!","There was an error in scrolling to specific location", Toast.LONG, Toast.ERROR);
                 console.error("scrollTo: ", e);
             }
         },
@@ -144,7 +170,7 @@ app.factory('Workflow', ['Tab', 'TypeOf', function(Tab, TypeOf){
                     "height": Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).outerHeight(true)
                 }
             }catch(e){
-                $scope.Toast.show("Error!","There was an error in getting position of workflow", Toast.LONG, Toast.ERROR);
+                $rootScope.currentScope.Toast.show("Error!","There was an error in getting position of workflow", Toast.LONG, Toast.ERROR);
                 console.error("getPosition: ", e);
             }
         },
@@ -209,6 +235,26 @@ function getDiffArrays (before,after) {
 		}))
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

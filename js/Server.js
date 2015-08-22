@@ -1,6 +1,6 @@
-app.factory('Server', function(){
+app.factory('Server', function($rootScope){
 	
-	function Server(connectionType){
+	function Server(connectionType, scope){
 		try{
 			this.baseUrl = "dummy";
 			this.searchQuery = "dummy";
@@ -8,7 +8,7 @@ app.factory('Server', function(){
 			this.saveObjectQuery = "dummy";
 			this.TypeOfData = connectionType;
 		}catch(e){
-			$scope.Toast.show("Error!","There was an error in creating connection to server", Toast.LONG, Toast.ERROR);
+			$rootScope.currentScope.Toast.show("Error!","There was an error in creating connection to server", Toast.LONG, Toast.ERROR);
             console.error("server: ", e);
 		}
 	}
@@ -130,7 +130,7 @@ app.factory('Server', function(){
 					});
 				}
 			}catch(e){
-				$scope.Toast.show("Error!","There was an error in search in server", Toast.LONG, Toast.ERROR);
+				$rootScope.currentScope.Toast.show("Error!","There was an error in search in server", Toast.LONG, Toast.ERROR);
                 console.error("search: ", e);
 			}
 		},
@@ -190,7 +190,7 @@ app.factory('Server', function(){
 					// AJAX
 				}
 			}catch(e){
-				$scope.Toast.show("Error!","There was an error in saving element", Toast.LONG, Toast.ERROR);
+				$rootScope.currentScope.Toast.show("Error!","There was an error in saving element", Toast.LONG, Toast.ERROR);
                 console.error("saveElement: ", e);
 			}
 		},
@@ -250,7 +250,7 @@ app.factory('Server', function(){
 					// AJAAAXXX
 				}
 			}catch(e){
-				$scope.Toast.show("Error!","There was an error in getting element", Toast.LONG, Toast.ERROR);
+				$rootScope.currentScope.Toast.show("Error!","There was an error in getting element", Toast.LONG, Toast.ERROR);
                 console.error("getElementByID: ", e);
 			}
 		},
@@ -313,7 +313,7 @@ app.factory('Server', function(){
 					break;
 				}
 			}catch(e){
-				$scope.Toast.show("Error!","There was an error in deleting element", Toast.LONG, Toast.ERROR);
+				$rootScope.currentScope.Toast.show("Error!","There was an error in deleting element", Toast.LONG, Toast.ERROR);
                 console.error("deleteElementByID: ", e);
 			}
 		},
@@ -358,7 +358,7 @@ app.factory('Server', function(){
 					return;
 				}
 			}catch(e){
-				$scope.Toast.show("Error!","There was an error in getting steps from server", Toast.LONG, Toast.ERROR);
+				$rootScope.currentScope.Toast.show("Error!","There was an error in getting steps from server", Toast.LONG, Toast.ERROR);
                 console.error("getSteps: ", e);
 			}
 		},
@@ -384,7 +384,7 @@ app.factory('Server', function(){
 					return;
 				}
 			}catch(e){
-				$scope.Toast.show("Error!","There was an error in getting settings from server", Toast.LONG, Toast.ERROR);
+				$rootScope.currentScope.Toast.show("Error!","There was an error in getting settings from server", Toast.LONG, Toast.ERROR);
                 console.error("getSettings: ", e);
 			}
 		}
