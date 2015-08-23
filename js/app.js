@@ -763,6 +763,21 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             },100);
         }
 
+        /**
+         * Go back to parent tab
+         * @param  {object} dataHolding holding the data of parent tab
+         */
+       $scope.back = function(dataHolding){
+            try{
+                if(dataHolding != null && dataHolding != undefined){
+                    $scope.Workspace.selectTabAfterSearch(dataHolding);
+                }
+            }catch(e){
+                $scope.Toast.show("Error!","There was an error on going back to parent tab", Toast.LONG, Toast.ERROR);
+                console.error("$scope.back: ", e);
+            }
+        }
+
 
         /************************************************************************************************************************
          *                                                                                                                       *
