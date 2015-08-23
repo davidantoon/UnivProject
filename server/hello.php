@@ -147,10 +147,6 @@
 
 	debugLog::important_log("<i>[hello.php:test]</i> " . dbAPI::print_json_s($arr ,0));
 	
-
-	debugLog::important_log("<i>[hello.php:test]</i> implement relations for kbit");
-	debugLog::important_log("<i>[hello.php:test]</i> implement delivery");
-	debugLog::important_log("<i>[hello.php:test]</i> design and implement getters");
 	
 	
 	
