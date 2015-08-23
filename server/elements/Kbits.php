@@ -524,10 +524,10 @@ class Kbit {
 
 	public static function get_Kbit_details($UID, $user) {
 
-		if(Lock::is_locked_by_user($UID, 'KBIT_BASE', $user)) {
+		if(Lock::is_locked_by_user($UID, 'KBIT_BASE', $user))
 			$kbit = Kbit::get_edited_kbit_by_UID($UID);
-		}
-		$kbit = Kbit::get_kbit_by_UID($UID);
+		else
+			$kbit = Kbit::get_kbit_by_UID($UID);
 
 		// get locking user
 		$locking_user = Lock::get_locking_user($UID, 'KBIT_BASE');
@@ -538,6 +538,67 @@ class Kbit {
 	}
 
 
+
+	public static function add_K2K_relation($first_UID, $second_UID, $user) {
+
+		if(refRelation::add_relation_to_object($first_UID, $second_UID, $is_hier, $user, 'R_LK2K', 'user') == null) {
+			debugLog::log("<i>[Kbits.php:add_K2K_relation]</i> parent Kbit (". $first_UID .") and child (". $second_UID .") Kbit cannot be the same");
+			
+			return null;
+		}
+		// return recently created relation
+		return refRelation::get_objects_relation($first_UID, $second_UID, 'R_LK2K', 'user');
+	}
+
+	public static function remove_K2K_relation($first_UID, $second_UID) {
+
+		refRelation::remove_relation($first_UID, $second_UID, 'R_LK2K', 'user');
+	}
+
+	public static function get_K2K_relations($Kbit_UID, $user) {
+
+		return refRelation::get_relations_of_object($Kbit_UID, 'R_LK2K', 'Kbit::get_Kbit_details', $user);
+	}
+
+
+
+
+
+	public static function add_K2T_relation($Kbit_UID, $term_UID, $link_type, $user) {
+
+		if(Lock::is_locked_by_user($UID, 'KBIT_BASE', $user) == false) {
+			debugLog::log("<i>[Kbits.php:add_K2T_relation]</i> Kbit (". $Kbit_UID .") is not locked by the user (". $user .")");
+			return null;
+		}
+		return O2TRelation::add_O2T_relation($Kbit_UID, $term_UID, $link_type, $user, 'R_LK2T', 'user');
+	}
+
+	public static function get_terms_of_Kbit($Kbit_UID, $user = '', $lang = '') {
+
+		if($user != '' && Lock::is_locked_by_user($UID, 'KBIT_BASE', $user))
+			$database_name = 'user';
+		else
+			$database_name = 'content';
+
+		return O2TRelation::get_terms_of_object($Kbit_UID, $database_name, 'R_LK2T', $lang);
+	}
+
+	public static function remove_term_from_Kbit($Kbit_UID, $term_UID, $link_type, $user) {
+
+		if(Lock::is_locked_by_user($UID, 'KBIT_BASE', $user) == false) {
+			debugLog::log("<i>[Kbits.php:remove_term_from_Kbit]</i> Kbit (". $Kbit_UID .") is not locked by the user (". $user .")");
+			return null;
+		}
+
+		O2TRelation::remove_O2T_relation($Kbit_UID, $term_UID, $link_type, 'R_LK2T', 'R_LK2T');
+		return true;
+	}
+
+	
+
+	// public static function add_kbit_to_delivery() {}
+	// public static function remove_kbit_from_delivery() {}
+	// public static function get_Kbits_of_delivery() {}
 }
 
 ?>

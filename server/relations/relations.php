@@ -14,7 +14,9 @@ class refRelation {
 	 * @param {string} $tableName  table name of the relation, e.g. R_LT2T, R_LS2S..
 	 * @return {refRelation} the relation that was just created
 	 */
-	public static function add_relation_to_object($parent_UID, $child_UID, $is_hier, $user, $tableName) {
+	public static function add_relation_to_object($parent_UID, $child_UID, $is_hier, $user, $tableName, $database_name = 'content') {
+		
+		$database_name = dbAPI::get_db_name($database_name);
 		
 		if($parent_UID == $child_UID) {
 			debugLog::log("<i>[relations.php:add_relation_to_object]</i> parent ". $tableName ." (". $parent_UID .") and child (". $child_UID .") ". $tableName ." cannot be the same");
@@ -22,24 +24,24 @@ class refRelation {
 			return null;
 		}
 		// disable old relation
-		refRelation::remove_relation($parent_UID, $child_UID, $tableName);
+		refRelation::remove_relation($parent_UID, $child_UID, $tableName, $database_name);
 		// get latest revision number
 		$dbObj = new dbAPI();
 		// where statement
 		$where_sttmnt = " (PARENT_ID = " . $parent_UID .
 			" AND CHILD_ID = " . $child_UID . ") OR (CHILD_ID = " . $parent_UID .
 			" AND PARENT_ID = " . $child_UID . ")";
-		$old_rel = $dbObj->get_latest_Rivision_ID($dbObj->db_get_contentDB(), $tableName, $where_sttmnt);
+		$old_rel = $dbObj->get_latest_Rivision_ID($database_name, $tableName, $where_sttmnt);
 		if($old_rel == null)
 			$old_rel = 0;
 
 		// add new relation
 		$query = "INSERT INTO ". $tableName ." (REVISION, HIER, PARENT_ID, CHILD_ID, ENABLED, USER_ID, CREATION_DATE) VALUES (".
 			($old_rel + 1) . ", ". $is_hier . ", " . $parent_UID .", " . $child_UID .", 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
-		$dbObj->run_query($dbObj->db_get_contentDB(), $query);
+		$dbObj->run_query($database_name, $query);
 
 		// return recently created relation
-		return refRelation::get_objects_relation($parent_UID, $child_UID, $tableName);
+		return refRelation::get_objects_relation($parent_UID, $child_UID, $tableName, $database_name);
 	}
 
 
@@ -52,7 +54,9 @@ class refRelation {
 	 * @param  {int} $child_UID  second object UID
 	 * @param  {string} $tableName  table name of relations table
 	 */
-	public static function remove_relation($parent_UID, $child_UID, $tableName) {
+	public static function remove_relation($parent_UID, $child_UID, $tableName, $database_name = 'content') {
+
+		$database_name = dbAPI::get_db_name($database_name);
 
 		// disable old relation
 		$dbObj = new dbAPI();
@@ -62,7 +66,7 @@ class refRelation {
 			" AND CHILD_ID = " . $child_UID . ") OR (CHILD_ID = " . $parent_UID .
 			" AND PARENT_ID = " . $child_UID . ")";
 		
-		$dbObj->disable_revision($dbObj->db_get_contentDB(), $tableName, $where_sttmnt);
+		$dbObj->disable_revision($database_name, $tableName, $where_sttmnt);
 	}
 
 
@@ -74,14 +78,15 @@ class refRelation {
 	 * @param  {string} $tableName     table name of relations table
 	 * @return {refRelation}         relation between two objects
 	 */
-	public static function get_objects_relation($first_object, $second_object, $tableName) {
+	public static function get_objects_relation($first_object, $second_object, $tableName, $database_name = 'content') {
 
+		$database_name = dbAPI::get_db_name($database_name);
 		$dbObj = new dbAPI();
 		$query = "SELECT * FROM ". $tableName ." where ENABLED = 1 AND ((PARENT_ID = " . $first_object .
 			" AND CHILD_ID = " . $second_object . ") OR (CHILD_ID = " . $first_object .
 			" AND PARENT_ID = " . $second_object . "))";
 	
-		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
+		$results = $dbObj->db_select_query($database_name, $query);
 		if(count($results) == 0) {
 		}
 		return $results[0];	
@@ -96,8 +101,9 @@ class refRelation {
 	 * @param  {string} $param2     additional optional variable that should be passed to annonFunc if required
 	 * @return {array}             contains each of parents, children and others that each contains related objects
 	 */
-	public static function get_relations_of_object($object_UID, $tableName, $anonFunc, $param2 = '') {
+	public static function get_relations_of_object($object_UID, $tableName, $anonFunc, $param2 = '', $database_name = 'content') {
 
+		$database_name = dbAPI::get_db_name($database_name);
 		$parents = array();
 		$children = array();
 		$others = array();
@@ -105,7 +111,7 @@ class refRelation {
 		// extract related objects
 		$dbObj = new dbAPI();
 		$query = "SELECT * FROM ". $tableName ." where ENABLED = 1 AND ( CHILD_ID = " . $object_UID . " OR PARENT_ID = " . $object_UID . ")";
-		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
+		$results = $dbObj->db_select_query($database_name, $query);
 
 		for($i=0;$i<count($results);$i++) {
 			if($results[$i]["PARENT_ID"] == $object_UID) {
@@ -390,9 +396,15 @@ class D2KRelation {
 	 */
 	public static function get_related_Kbits($Delivery_UID, $user) {
 
+		$NEEDED = array();
+		$PROVIDED = array();
+		$OTHERS = array();
 
 		// get database name
-		$database_name = dbAPI::get_db_name($database_name);
+		if(Lock::is_locked_by_user($UID, 'KBIT_BASE', $user) == true)
+			$database_name = dbAPI::get_db_name('user');
+		else
+			$database_name = dbAPI::get_db_name('content');
 		
 		$dbObj = new dbAPI();
 
@@ -402,12 +414,19 @@ class D2KRelation {
 
 
 		for($i=0;$i<count($results);$i++) {
-			$curr_Kbit = Kbit::get_term_by_UID($results[$i]["TERM_ID"], $lang);
-			// copy LINK_TYPE to term object
-			$curr_term["LINK_TYPE"] = $results["LINK_TYPE"];
-			array_push($terms, $curr_term);
+			$curr_Kbit = Kbit::get_Kbit_details($results[$i]["KBIT_BASE_UID"], $user);
+			if($curr_Kbit["LINK_TYPE"] == 'NEEDED') {
+				array_push($NEEDED, $curr_Kbit);
+			}
+			else { 
+				if($curr_Kbit["LINK_TYPE"] == 'PROVIDED')
+				array_push($PROVIDED, $curr_Kbit);
+				else
+					array_push($OTHERS, $curr_Kbit);
+			}
 		}
-		return $terms;
+		$kbits = array("NEEDED"=>$NEEDED, "PROVIDED"=>$PROVIDED, "OTHERS"=>$OTHERS);
+		return $kbits;
 	}
 }
 ?>
