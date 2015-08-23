@@ -132,6 +132,7 @@ app.factory('Server', function($rootScope){
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","There was an error in search in server", Toast.LONG, Toast.ERROR);
                 console.error("search: ", e);
+                callback(null,{"message":e.message,"code":e.code});
 			}
 		},
 
@@ -192,6 +193,7 @@ app.factory('Server', function($rootScope){
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","There was an error in saving element", Toast.LONG, Toast.ERROR);
                 console.error("saveElement: ", e);
+                callback(null,{"message":e.message,"code":e.code});
 			}
 		},
 
@@ -252,6 +254,7 @@ app.factory('Server', function($rootScope){
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","There was an error in getting element", Toast.LONG, Toast.ERROR);
                 console.error("getElementByID: ", e);
+                callback(null,{"message":e.message,"code":e.code});
 			}
 		},
 
@@ -315,6 +318,7 @@ app.factory('Server', function($rootScope){
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","There was an error in deleting element", Toast.LONG, Toast.ERROR);
                 console.error("deleteElementByID: ", e);
+                callback(null,{"message":e.message,"code":e.code});
 			}
 		},
 
@@ -325,7 +329,11 @@ app.factory('Server', function($rootScope){
 		 * @return {object}            the object version we need
 		 */
 		getVersionsByID: function(objID, callback){
-			callback(null, null);
+			try{
+				callback(null, null);
+			}catch(e){
+				callback(null, {"message":e.message,"code":e.code});
+			}
 		},
 
 		/**
@@ -335,7 +343,11 @@ app.factory('Server', function($rootScope){
 		 * @return {list}              the object versions.
 		 */
 		getVersionList: function(objID, callback){
-			callback(null, null);
+			try{
+				callback(null, null);
+			}catch(e){
+				callback(null,{"message":e.message,"code":e.code});
+			}
 		},
 
 		/**
@@ -360,6 +372,7 @@ app.factory('Server', function($rootScope){
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","There was an error in getting steps from server", Toast.LONG, Toast.ERROR);
                 console.error("getSteps: ", e);
+                callback(null,{"message":e.message,"code":e.code});
 			}
 		},
 
@@ -386,6 +399,7 @@ app.factory('Server', function($rootScope){
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","There was an error in getting settings from server", Toast.LONG, Toast.ERROR);
                 console.error("getSettings: ", e);
+                callback(null,{"message":e.message,"code":e.code});
 			}
 		}
 	}

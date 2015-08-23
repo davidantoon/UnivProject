@@ -73,6 +73,7 @@ app.factory('Workflow', ["$rootScope", 'Tab', 'TypeOf', function($rootScope, Tab
         }catch(e){
             $rootScope.currentScope.Toast.show("Error!","There was an error in creating workflow", Toast.LONG, Toast.ERROR);
             console.error("Workflow: ", e);
+            return null;
          }        
     }
 
@@ -117,6 +118,7 @@ app.factory('Workflow', ["$rootScope", 'Tab', 'TypeOf', function($rootScope, Tab
             }catch(e){
                 $rootScope.currentScope.Toast.show("Error!","There was an error in compating two worflows", Toast.LONG, Toast.ERROR);
                 console.error("equals: ", e);
+                return false;
             }        
         },
 
@@ -133,6 +135,7 @@ app.factory('Workflow', ["$rootScope", 'Tab', 'TypeOf', function($rootScope, Tab
             }catch(e){
                 $rootScope.currentScope.Toast.show("Error!","There was an error in adding tab to workflow", Toast.LONG, Toast.ERROR);
                 console.error("addTab: ", e);
+                return null;
             }
         },
 
@@ -172,6 +175,7 @@ app.factory('Workflow', ["$rootScope", 'Tab', 'TypeOf', function($rootScope, Tab
             }catch(e){
                 $rootScope.currentScope.Toast.show("Error!","There was an error in getting position of workflow", Toast.LONG, Toast.ERROR);
                 console.error("getPosition: ", e);
+                return null;
             }
         },
 
@@ -180,7 +184,13 @@ app.factory('Workflow', ["$rootScope", 'Tab', 'TypeOf', function($rootScope, Tab
          * @return {String} Json stringify string
          */
         toString: function(){
-            return JSON.stringify(this.toJson());
+            try{
+                return JSON.stringify(this.toJson());
+            }catch(e){
+                $rootScope.currentScope.Toast.show("Error!","There was an error in converting to string", Toast.LONG, Toast.ERROR);
+                console.error("toString: ", e);
+                return null;
+            }
         },
 
         /**
@@ -188,23 +198,29 @@ app.factory('Workflow', ["$rootScope", 'Tab', 'TypeOf', function($rootScope, Tab
          * @return {Object} Json object
          */
         toJson:function(){
-            var tempJson = {
-                "ID": this.ID,
-                "fx": this.fx,
-                "fy": this.fy,
-                "tx": this.tx,
-                "ty": this.ty,
-                "name": this.name,
-                "tabsIds": this.tabsIds,
-                "tabs": []
+            try{
+                var tempJson = {
+                    "ID": this.ID,
+                    "fx": this.fx,
+                    "fy": this.fy,
+                    "tx": this.tx,
+                    "ty": this.ty,
+                    "name": this.name,
+                    "tabsIds": this.tabsIds,
+                    "tabs": []
+                }
+                tempJson.selectedTab = {
+                    "ID": this.selectedTab.ID
+                };
+                for (var i = 0; i < this.tabs.length; i++) {
+                    tempJson.tabs.push(JSON.parse(this.tabs[i].toString()));
+                }
+                return tempJson;
+            }catch(e){
+                $rootScope.currentScope.Toast.show("Error!","There was an error in converting to JSON", Toast.LONG, Toast.ERROR);
+                console.error("toJson: ", e);
+                return null;
             }
-            tempJson.selectedTab = {
-                "ID": this.selectedTab.ID
-            };
-            for (var i = 0; i < this.tabs.length; i++) {
-                tempJson.tabs.push(JSON.parse(this.tabs[i].toString()));
-            }
-            return tempJson;
         }
     };
 
