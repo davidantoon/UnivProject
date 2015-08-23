@@ -21,7 +21,7 @@ app.factory('Server', function($rootScope){
 		 * @param  {Function} callback     callback function
 		 */
 		search: function(dataToSearch, callback){
-			try{
+			try{ 
 				if(this.baseUrl == "dummy"){
 					var searchResults = [];
 					var SplitText = dataToSearch.text.split(' ');
