@@ -22,7 +22,8 @@ class dbAPI {
 	}
 	public static function get_db_name($source) {
 		$dbObj = new dbAPI();
-		if($source == 'content')
+		if(strpos($source,'content') !== false || strpos($source, "CMSdb") != false)
+		// if($source == 'content')
 			return $dbObj->db_get_contentDB();
 		else
 			return $dbObj->db_get_usersDB();
@@ -43,6 +44,10 @@ class dbAPI {
     }
 
     public function run_query($database_name, $sql) {
+    	
+    	if($database_name != '')
+    		$database_name = dbAPI::get_db_name($database_name);
+
 		$conn = $this->db_get_connection($database_name);
 		$result = $conn->query($sql);
 		
@@ -119,7 +124,7 @@ class dbAPI {
     }
 
     public function get_latest_Rivision_ID($database_name, $table_name, $whereSttmnt = '') {
-    	
+    	$database_name = dbAPI::get_db_name($database_name);
     	if($whereSttmnt != '')
     		$whereSttmnt = ' WHERE (('. $whereSttmnt .'))';
 

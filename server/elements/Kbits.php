@@ -75,7 +75,7 @@ class Kbit {
 
 		if($front != null) {
 			// add front data to database
-			$front_kbit = Kbit::add_new_front($UID, $front, $user, $dbObj->db_get_usersDB());
+			$front_kbit = Kbit::add_new_front($UID, $front, $user);
 			// check if the front was created successfully
 			if($front_kbit == null) {
 				debugLog::log("<i>[Kbits.php:add_new_edit_for_kbit]</i> FRONT Kbit (". $title .") faild to create!");
@@ -100,7 +100,7 @@ class Kbit {
 	 * @param {int} $user User id of the creator
 	 * @return {frontKbit}
 	 */
-	private static function add_new_front($UID, $front, $user, $source = 'content') {
+	private static function add_new_front($UID, $front, $user) {
 
 		$dbObj = new dbAPI();
 
@@ -113,7 +113,7 @@ class Kbit {
 		// determine which front kbit insertion function should be called
 		switch ($front_type) {
 		    case "KBIT_FRONT":
-		    	$kbit_front = Kbit::add_new_KBIT_FRONT($UID, $front, $user, $source);
+		    	$kbit_front = Kbit::add_new_KBIT_FRONT($UID, $front, $user);
 		    	if($kbit_front == null) {
 		    		debugLog::log("<i>[Kbits.php:add_new_front]</i> Could not insert a new front Kbit of the base (". $UID ."), [add_new_KBIT_FRONT] faild");
 		    		
@@ -140,22 +140,22 @@ class Kbit {
 	 * @param {int} $user User id of the creator
 	 * @return {frontKbit:KBIT_FRONT}
 	 */
-	private static function add_new_KBIT_FRONT($UID, $front, $user, $source = 'content') {
+	private static function add_new_KBIT_FRONT($UID, $front, $user) {
 		
 		$dbObj = new dbAPI();
 		// determines the database name which the {Kbit} should be imported from
-		$database_source = dbAPI::get_db_name($source);
+		$database_source = dbAPI::get_db_name('user');
 
 		// static table name of specific Kbit front
 		$tableName = 'KBIT_FRONT';
 		// aquire a new revision number
-		$rev_num = Kbit::get_new_Revision_and_disbale_old_ones($UID, $tableName, $source);
+		$rev_num = Kbit::get_new_Revision_and_disbale_old_ones($UID, $tableName, 'user');
 		// database insert query
 		$query = "INSERT INTO ". $tableName ." (UID, REVISION, PATH, ENABLED, USER_ID, CREATION_DATE) VALUES (".
 			$UID . ", 1, '" . $front["PATH"] ."', 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
 		$dbObj->run_query($database_source, $query);
 
-		return Kbit::get_front_Kbit($UID, $tableName, $source);
+		return Kbit::get_front_Kbit($UID, $tableName, 'user');
 	}
 
 
@@ -532,7 +532,7 @@ class Kbit {
 		// get locking user
 		$locking_user = Lock::get_locking_user($UID, 'KBIT_BASE');
 		if($locking_user != null)
-			$kbit["LOKING_USER"] = $locking_user;
+			$kbit["LOCKING_USER"] = $locking_user;
 
 		return $kbit;
 	}
@@ -566,7 +566,7 @@ class Kbit {
 
 	public static function add_K2T_relation($Kbit_UID, $term_UID, $link_type, $user) {
 
-		if(Lock::is_locked_by_user($UID, 'KBIT_BASE', $user) == false) {
+		if(Lock::is_locked_by_user($Kbit_UID, 'KBIT_BASE', $user) == false) {
 			debugLog::log("<i>[Kbits.php:add_K2T_relation]</i> Kbit (". $Kbit_UID .") is not locked by the user (". $user .")");
 			return null;
 		}
@@ -575,7 +575,7 @@ class Kbit {
 
 	public static function get_terms_of_Kbit($Kbit_UID, $user = '', $lang = '') {
 
-		if($user != '' && Lock::is_locked_by_user($UID, 'KBIT_BASE', $user))
+		if($user != '' && Lock::is_locked_by_user($Kbit_UID, 'KBIT_BASE', $user))
 			$database_name = 'user';
 		else
 			$database_name = 'content';
@@ -585,12 +585,12 @@ class Kbit {
 
 	public static function remove_term_from_Kbit($Kbit_UID, $term_UID, $link_type, $user) {
 
-		if(Lock::is_locked_by_user($UID, 'KBIT_BASE', $user) == false) {
+		if(Lock::is_locked_by_user($Kbit_UID, 'KBIT_BASE', $user) == false) {
 			debugLog::log("<i>[Kbits.php:remove_term_from_Kbit]</i> Kbit (". $Kbit_UID .") is not locked by the user (". $user .")");
 			return null;
 		}
 
-		O2TRelation::remove_O2T_relation($Kbit_UID, $term_UID, $link_type, 'R_LK2T', 'R_LK2T');
+		O2TRelation::remove_O2T_relation($Kbit_UID, $term_UID, $link_type, 'R_LK2T', 'user');
 		return true;
 	}
 
