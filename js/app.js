@@ -359,10 +359,21 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             try{
                 var parentTabToDelete = workflow.selectedTab.dataHolding.parentTab;
                 if(parentTabToDelete != null && parentTabToDelete.workflowId != null && parentTabToDelete.tabId != null)
+                {
                     $scope.workSpaces.deleteChildTabIds(workflow.selectedTab.dataHolding.parentTab);
+                }
                 workflow.tabs.splice($scope.getSelectedTabIndex(workflow),1);
                 if(workflow.tabs.length > 0){
-                    workflow.selectedTab = workflow.tabs[0];
+                    if(parentTabToDelete != null && parentTabToDelete.workflowId != null && parentTabToDelete.tabId != null){
+                        for(var i=0; i<workflow.tabs.length; i++){
+                            if(workflow.tabs[i].ID == parentTabToDelete.tabId){
+                                workflow.selectedTab = workflow.tabs[i];
+                                break;
+                            }
+                        }
+                    }
+                    else
+                        workflow.selectedTab = workflow.tabs[0];
                 }else{
                     for(var i=0; i<$scope.Workflow.length; i++){
                         if($scope.Workflow[i].ID == workflow.ID){
@@ -629,20 +640,20 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                 var dataHolding = wFlow.selectedTab.dataHolding;
                 var holdingRequestTab = wFlow.selectedTab;
                 if(dataHolding.searchText && dataHolding.searchText != "" && dataHolding.elementsToSearch != null && dataHolding.searchBy != null  && 
-                    (wFlow.selectedTab.dataHolding.searchBy[0] == 0 && wFlow.selectedTab.dataHolding.searchBy[1] == 0 && wFlow.selectedTab.dataHolding.searchBy[2] == 0) &&
-                    (wFlow.selectedTab.dataHolding.elementsToSearch[0] == 0 && wFlow.selectedTab.dataHolding.elementsToSearch[1] == 0 && wFlow.selectedTab.dataHolding.elementsToSearch[2] == 0)){
+                    (!(wFlow.selectedTab.dataHolding.searchBy[0] == 0 && wFlow.selectedTab.dataHolding.searchBy[1] == 0 && wFlow.selectedTab.dataHolding.searchBy[2] == 0)) &&
+                    (!(wFlow.selectedTab.dataHolding.elementsToSearch[0] == 0 && wFlow.selectedTab.dataHolding.elementsToSearch[1] == 0 && wFlow.selectedTab.dataHolding.elementsToSearch[2] == 0))){
                   
                     var dataToSearch = {
                         "text":dataHolding.searchText,
                         "dataType": [
-                            'Kbits':dataHolding.elementsToSearch[0],
-                            'Deliveries':dataHolding.elementsToSearch[1],
-                            'Terms':dataHolding.elementsToSearch[2]
+                            dataHolding.elementsToSearch[0], //  Kbits
+                            dataHolding.elementsToSearch[1], //  Deliveries
+                            dataHolding.elementsToSearch[2]  //  Terms
                         ],
                         "searchBy": [
-                            'Name':dataHolding.searchBy[0],
-                            'Description':dataHolding.searchBy[1],
-                            'ID':dataHolding.searchBy[2]
+                            dataHolding.searchBy[0], //  Name
+                            dataHolding.searchBy[1], //  Description
+                            dataHolding.searchBy[2]  //  ID
                         ]
                     }
                     // check if there is old child tab search
@@ -665,7 +676,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                                     $scope.displayNewWorkflowButtons = false;
                                 }else{
                                     $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, null);
-                                    var svr = new Server(dataToSearch.dataType);
+                                    var svr = new Server("SearchTab");
                                     svr.search(dataToSearch, function(result, error){
                                         if(error || !result){
                                             $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, []);
@@ -685,7 +696,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                     }else{
                         $scope.workSpaces.selectTabAfterSearch(holdingRequestTab.dataHolding.childTab);
                         $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, null);
-                        var svr = new Server(dataToSearch.dataType);
+                        var svr = new Server("SearchTab");
                         svr.search(dataToSearch, function(result, error){
                             if(error || !result){
                                 $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, []);
@@ -709,7 +720,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                         },300);
                     }
                 }else{
-                    $scope.Toast.show("Wrong Input", "Must be at least one Element, one Search By and Search.", Toast.LONG, Toast.ERROR);
+                    $scope.Toast.show("Wrong Input", "Must be at least one <b>Element</b>, one <b>Search By</b> and <b>Search Text</b>.", Toast.LONG, Toast.ERROR);
                 }
             }catch(e){
                 $scope.Toast.show("Error!","Could'nt complete search", Toast.LONG, Toast.ERROR);
@@ -945,11 +956,13 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
 
 
 
-        $scope.EnableScroll = function(a){
+        $scope.EnableScroll = function(a, wflwId){
             if($scope.Settings.removeScrollOnMouseOver == true){
                 if(a==1){
+                    $('#'+wflwId+' .SelectedTabContent').removeClass('SidebarDisplay');
                     $('#BodyRow').css('overflow','scroll');
                 }else{
+                    $('#'+wflwId+' .SelectedTabContent').addClass('SidebarDisplay');
                     $('#BodyRow').css('overflow','hidden');
                 }
             }else{

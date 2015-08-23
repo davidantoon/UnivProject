@@ -1,4 +1,4 @@
-app.factory('Server', function($rootScope){
+app.factory('Server', ["$rootScope", function($rootScope){
 	
 	function Server(connectionType, scope){
 		try{
@@ -25,7 +25,7 @@ app.factory('Server', function($rootScope){
 				if(this.baseUrl == "dummy"){
 					var searchResults = [];
 					var SplitText = dataToSearch.text.split(' ');
-					if(this.TypeOfData == 'Kbits' || this.TypeOfData == 'Deliveries' || this.TypeOfData == 'Terms'){
+					if(this.TypeOfData == "SearchTab"){
 						
 						if(dataToSearch.dataType[0] == 1){ // Kbits
 
@@ -45,7 +45,7 @@ app.factory('Server', function($rootScope){
 										}
 									}
 									if(dataToSearch.searchBy[2] == 1){ // Id 
-										if(KbitsDB[i].id.indexOf(SplitText[j]) == -1){
+										if(KbitsDB[i].id.toString().indexOf(SplitText[j]) == -1){
 											found *=0;
 										}
 									}
@@ -73,7 +73,7 @@ app.factory('Server', function($rootScope){
 										}
 									}
 									if(dataToSearch.searchBy[2] == 1){ // Id 
-										if(deliveryDB[i].id.indexOf(SplitText[j]) == -1){
+										if(deliveryDB[i].id.toString().indexOf(SplitText[j]) == -1){
 											found *=0;
 										}
 									}
@@ -101,7 +101,7 @@ app.factory('Server', function($rootScope){
 										}
 									}
 									if(dataToSearch.searchBy[2] == 1){ // Id 
-										if(termsDB[i].id.indexOf(SplitText[j]) == -1){
+										if(termsDB[i].id.toString().indexOf(SplitText[j]) == -1){
 											found *=0;
 										}
 									}
@@ -403,5 +403,5 @@ app.factory('Server', function($rootScope){
 		}
 	}
 	return Server;
-});
+}]);
 

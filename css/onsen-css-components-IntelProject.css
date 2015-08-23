@@ -6435,7 +6435,7 @@ div.vertical {
   min-width: 100px;
 }
 .WorkFlowTab.ActiveTab > .closeTabButton{
-  opacity: 0.5;
+  opacity: 0.1;
   display: block;
 }
 
@@ -6444,7 +6444,7 @@ div.vertical {
   display: block;
 }
 .WorkFlowTab.ActiveTab > .optionTabButton{
-  opacity: 0.5;
+  opacity: 0.1;
   display: block;
 }
 
@@ -6741,12 +6741,12 @@ div.vertical {
 }
 
 
-
-
-
-
-
-
+.SidebarDisplay::-webkit-scrollbar{
+  display: block;
+  -webkit-appearance: block;
+  height: 8px;
+  width: 8px;
+}
 
 
 
