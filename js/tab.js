@@ -95,8 +95,8 @@ app.factory('Tab', ["$rootScope", 'Content','Globals','Storage', function($rootS
 						"resultsCount": 0,
 						"results": [],
 						"selectedResult": -1,
-						"elementsToSearch": 0,
-						"searchBy": 0
+						"elementsToSearch": [1,0,0],
+						"searchBy": [1,0,0]
 					});
 				break;
 				case Tab.EDIT_TAB:

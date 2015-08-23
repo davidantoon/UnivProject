@@ -167,17 +167,18 @@
                           Elements to search:
                         </ons-row>
                         <ons-row>
-                          <ons-col ng-click="wFlow.selectedTab.dataHolding.elementsToSearch = 0; InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.elementsToSearch == 0)?'checked':'')}}">Kbits</ons-col>
-                          <ons-col ng-click="wFlow.selectedTab.dataHolding.elementsToSearch = 1; InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.elementsToSearch == 1)?'checked':'')}}">Deliveries</ons-col>
-                          <ons-col ng-click="wFlow.selectedTab.dataHolding.elementsToSearch = 2; InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.elementsToSearch == 2)?'checked':'')}}">Terms</ons-col>
+                          <ons-col 
+                          ng-click="((wFlow.selectedTab.dataHolding.elementsToSearch[0] == 1)?wFlow.selectedTab.dataHolding.elementsToSearch[0] = 0:wFlow.selectedTab.dataHolding.elementsToSearch[0] = 1); InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.elementsToSearch[0] == 1)?'checked':'')}}">Kbits</ons-col>
+                          <ons-col ng-click="((wFlow.selectedTab.dataHolding.elementsToSearch[1] == 1)?wFlow.selectedTab.dataHolding.elementsToSearch[1] = 0:wFlow.selectedTab.dataHolding.elementsToSearch[1] = 1); InsertStepToLast10Steps();"  class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.elementsToSearch[1] == 1)?'checked':'')}}">Deliveries</ons-col>
+                          <ons-col ng-click="((wFlow.selectedTab.dataHolding.elementsToSearch[2] == 1)?wFlow.selectedTab.dataHolding.elementsToSearch[2] = 0:wFlow.selectedTab.dataHolding.elementsToSearch[2] = 1); InsertStepToLast10Steps();"  class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.elementsToSearch[2] == 1)?'checked':'')}}">Terms</ons-col>
                         </ons-row>
                         <ons-row class="LabelOfOptionsButtons">
                           Search By:
                         </ons-row>
                         <ons-row>
-                          <ons-col ng-click="wFlow.selectedTab.dataHolding.searchBy = 0; InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.searchBy == 0)?'checked':'')}}">Name</ons-col>
-                          <ons-col ng-click="wFlow.selectedTab.dataHolding.searchBy = 1; InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.searchBy == 1)?'checked':'')}}">Description</ons-col>
-                          <ons-col ng-click="wFlow.selectedTab.dataHolding.searchBy = 2; InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.searchBy == 2)?'checked':'')}}">ID</ons-col>
+                          <ons-col ng-click="((wFlow.selectedTab.dataHolding.searchBy[0] == 1)?wFlow.selectedTab.dataHolding.searchBy[0] = 0:wFlow.selectedTab.dataHolding.searchBy[0] = 1); InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.searchBy[0] == 1)?'checked':'')}}">Name</ons-col>
+                          <ons-col ng-click="((wFlow.selectedTab.dataHolding.searchBy[1] == 1)?wFlow.selectedTab.dataHolding.searchBy[1] = 0:wFlow.selectedTab.dataHolding.searchBy[1] = 1); InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.searchBy[1] == 1)?'checked':'')}}">Description</ons-col>
+                          <ons-col ng-click="((wFlow.selectedTab.dataHolding.searchBy[2] == 1)?wFlow.selectedTab.dataHolding.searchBy[2] = 0:wFlow.selectedTab.dataHolding.searchBy[2] = 1); InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.searchBy[2] == 1)?'checked':'')}}">ID</ons-col>
                         </ons-row>
                         <ons-row>
                           <ons-col></ons-col>

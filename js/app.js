@@ -634,6 +634,19 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                         "dataType": ((dataHolding.elementsToSearch == 0)?'Kbits':((dataHolding.elementsToSearch == 1)?'Deliveries':'Terms')),
                         "searchBy": ((dataHolding.searchBy == 0)?'Name':((dataHolding.searchBy == 1)?'Description':'ID'))
                     }
+                    var dataToSearch1 = {
+                        "text":dataHolding.searchText,
+                        "dataType": [
+                            'Kbits':dataHolding.elementsToSearch[0],
+                            'Deliveries':dataHolding.elementsToSearch[1],
+                            'Terms':dataHolding.elementsToSearch[2]
+                        ],
+                        "searchBy": [
+                            'Name':dataHolding.searchBy[0],
+                            'Description':dataHolding.searchBy[1],
+                            'ID':dataHolding.searchBy[2]
+                        ]
+                    }
                     // check if there is old child tab search
                     if(holdingRequestTab.dataHolding.childTab.workflowId == null || holdingRequestTab.dataHolding.childTab.tabId == null){
                         if($scope.Settings.autoOpenTabs == true){

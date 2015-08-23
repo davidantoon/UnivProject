@@ -21,97 +21,136 @@ app.factory('Server', function($rootScope){
 		 * @param  {Function} callback     callback function
 		 */
 		search: function(dataToSearch, callback){
-			try{	
+			try{
 				if(this.baseUrl == "dummy"){
 					var searchResults = [];
 					var SplitText = dataToSearch.text.split(' ');
-					switch (this.TypeOfData){
-						case "Kbits":
+					if(this.TypeOfData == 'Kbits' || this.TypeOfData == 'Deliveries' || this.TypeOfData == 'Terms'){
+						
+						if(dataToSearch.dataType[0] == 1){ // Kbits
+
 							var KbitsDB = JSON.parse(localStorage.getItem("com.intel.Server.Kbits"));
 							for (var i = KbitsDB.length - 1; i >= 0; i--) {
 								var found = 1;
 								for(var j = 0; j < SplitText.length; j++){
-									switch (dataToSearch.searchBy){
-										case "Name":
-											if(KbitsDB[i].name.indexOf(SplitText[j]) == -1){
-												found *=0;
-											}		
-										break;
-										case "Description":
-											if(KbitsDB[i].description.indexOf(SplitText[j]) == -1){
-												found *=0;
-											}
-										break;
-										case "ID":
-											if(KbitsDB[i].id.toString() != SplitText[j]){
-												found *=0;
-											}
-										break;
-										default: break;
+
+									if(dataToSearch.searchBy[0] == 1){ // Name 
+										if(KbitsDB[i].name.indexOf(SplitText[j]) == -1){
+											found *=0;
+										}
+									}
+									if(dataToSearch.searchBy[1] == 1){ // Description 
+										if(KbitsDB[i].description.indexOf(SplitText[j]) == -1){
+											found *=0;
+										}
+									}
+									if(dataToSearch.searchBy[2] == 1){ // Id 
+										if(KbitsDB[i].id.indexOf(SplitText[j]) == -1){
+											found *=0;
+										}
 									}
 								}
 								if(found){
 									searchResults.push(KbitsDB[i]);
 								}
 							}
-						break;
-						case "Deliveries":
-							var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
-							for (var i = deliveryDB.length - 1; i >= 0; i--) {
+						}
+						if(dataToSearch.dataType[0] == 1){ // Kbits
+
+							var KbitsDB = JSON.parse(localStorage.getItem("com.intel.Server.Kbits"));
+							for (var i = KbitsDB.length - 1; i >= 0; i--) {
 								var found = 1;
-								for(var j=0; j < SplitText.length; j++){
-									switch (dataToSearch.searchBy){
-									case "Name":
-										if( deliveryDB[i].name.indexOf(SplitText[j]) == -1){
+								for(var j = 0; j < SplitText.length; j++){
+
+									if(dataToSearch.searchBy[0] == 1){ // Name 
+										if(KbitsDB[i].name.indexOf(SplitText[j]) == -1){
 											found *=0;
 										}
-									break;
-									case "Description":
-										if( deliveryDB[i].description.indexOf(SplitText[j]) == -1){
+									}
+									if(dataToSearch.searchBy[1] == 1){ // Description 
+										if(KbitsDB[i].description.indexOf(SplitText[j]) == -1){
 											found *=0;
 										}
-									break;
-									case "ID":
-										if( deliveryDB[i].id.toString() != SplitText[j]){
+									}
+									if(dataToSearch.searchBy[2] == 1){ // Id 
+										if(KbitsDB[i].id.indexOf(SplitText[j]) == -1){
 											found *=0;
 										}
-									break;
 									}
 								}
-								if(found == 1){
-									searchResults.push(deliveryDB[i]);
+								if(found){
+									searchResults.push(KbitsDB[i]);
 								}
 							}
-						break;
-						case "Terms":
-							var termsDB = JSON.parse(localStorage.getItem("com.intel.Server.terms"));
-							for (var i = termsDB.length - 1; i >= 0; i--) {
-								var found = 1;
-								for(var j=0; j<SplitText.length; j++){
-									switch (dataToSearch.searchBy){
-									case "Name":
-										if( termsDB[i].name.indexOf(SplitText[j]) == -1){
-											found *=0;
+						}
+
+						for(var i=0; i<dataToSearch.dataType.length; i++){
+							for(var i=0; i<dataToSearch.searchBy.length; i++){
+
+								switch (dataToSearch.dataType[i]){
+									case "Kbits":
+										
+									break;
+									case "Deliveries":
+										var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
+										for (var i = deliveryDB.length - 1; i >= 0; i--) {
+											var found = 1;
+											for(var j=0; j < SplitText.length; j++){
+												switch (dataToSearch.searchBy){
+												case "Name":
+													if( deliveryDB[i].name.indexOf(SplitText[j]) == -1){
+														found *=0;
+													}
+												break;
+												case "Description":
+													if( deliveryDB[i].description.indexOf(SplitText[j]) == -1){
+														found *=0;
+													}
+												break;
+												case "ID":
+													if( deliveryDB[i].id.toString() != SplitText[j]){
+														found *=0;
+													}
+												break;
+												}
+											}
+											if(found == 1){
+												searchResults.push(deliveryDB[i]);
+											}
 										}
 									break;
-									case "Description":
-										if( termsDB[i].description.indexOf(SplitText[j]) == -1){
-											found *=0;
+									case "Terms":
+										var termsDB = JSON.parse(localStorage.getItem("com.intel.Server.terms"));
+										for (var i = termsDB.length - 1; i >= 0; i--) {
+											var found = 1;
+											for(var j=0; j<SplitText.length; j++){
+												switch (dataToSearch.searchBy){
+												case "Name":
+													if( termsDB[i].name.indexOf(SplitText[j]) == -1){
+														found *=0;
+													}
+												break;
+												case "Description":
+													if( termsDB[i].description.indexOf(SplitText[j]) == -1){
+														found *=0;
+													}
+												break;
+												case "ID":
+													if( termsDB[i].id.toString() != SplitText[j]){
+														found *=0;
+													}
+												break;
+												}
+											}
+											if(found == 1){
+												searchResults.push(termsDB[i]);
+											}
 										}
 									break;
-									case "ID":
-										if( termsDB[i].id.toString() != SplitText[j]){
-											found *=0;
-										}
-									break;
-									}
-								}
-								if(found == 1){
-									searchResults.push(termsDB[i]);
+									default: break;
 								}
 							}
-						break;
-						default: break;
+						}
 					}
 					callback(searchResults, null);
 					return;
