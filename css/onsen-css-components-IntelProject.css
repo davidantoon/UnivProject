@@ -6750,3 +6750,34 @@ div.vertical {
 
 
 
+.searchTypeTab{
+  margin: 30px;
+}
+.ReturnToSearchButton{
+  position: absolute;
+  top: 36px;
+  padding: 5px 14px;
+  color: #0860A8;
+  background-color: whitesmoke;
+  left: 0;
+  font-weight: 400;
+  cursor: pointer;
+}
+.ReturnToSearchButton .ons-icon{
+  vertical-align: -14%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
