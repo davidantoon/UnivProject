@@ -55,99 +55,59 @@ app.factory('Server', function($rootScope){
 								}
 							}
 						}
-						if(dataToSearch.dataType[0] == 1){ // Kbits
+						if(dataToSearch.dataType[1] == 1){ // Deliveries
 
-							var KbitsDB = JSON.parse(localStorage.getItem("com.intel.Server.Kbits"));
-							for (var i = KbitsDB.length - 1; i >= 0; i--) {
+							var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
+							for (var i = deliveryDB.length - 1; i >= 0; i--) {
 								var found = 1;
 								for(var j = 0; j < SplitText.length; j++){
 
 									if(dataToSearch.searchBy[0] == 1){ // Name 
-										if(KbitsDB[i].name.indexOf(SplitText[j]) == -1){
+										if(deliveryDB[i].name.indexOf(SplitText[j]) == -1){
 											found *=0;
 										}
 									}
 									if(dataToSearch.searchBy[1] == 1){ // Description 
-										if(KbitsDB[i].description.indexOf(SplitText[j]) == -1){
+										if(deliveryDB[i].description.indexOf(SplitText[j]) == -1){
 											found *=0;
 										}
 									}
 									if(dataToSearch.searchBy[2] == 1){ // Id 
-										if(KbitsDB[i].id.indexOf(SplitText[j]) == -1){
+										if(deliveryDB[i].id.indexOf(SplitText[j]) == -1){
 											found *=0;
 										}
 									}
 								}
 								if(found){
-									searchResults.push(KbitsDB[i]);
+									searchResults.push(deliveryDB[i]);
 								}
 							}
 						}
+						if(dataToSearch.dataType[1] == 1){ // Terms
 
-						for(var i=0; i<dataToSearch.dataType.length; i++){
-							for(var i=0; i<dataToSearch.searchBy.length; i++){
+							var termsDB = JSON.parse(localStorage.getItem("com.intel.Server.terms"));
+							for (var i = termsDB.length - 1; i >= 0; i--) {
+								var found = 1;
+								for(var j = 0; j < SplitText.length; j++){
 
-								switch (dataToSearch.dataType[i]){
-									case "Kbits":
-										
-									break;
-									case "Deliveries":
-										var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
-										for (var i = deliveryDB.length - 1; i >= 0; i--) {
-											var found = 1;
-											for(var j=0; j < SplitText.length; j++){
-												switch (dataToSearch.searchBy){
-												case "Name":
-													if( deliveryDB[i].name.indexOf(SplitText[j]) == -1){
-														found *=0;
-													}
-												break;
-												case "Description":
-													if( deliveryDB[i].description.indexOf(SplitText[j]) == -1){
-														found *=0;
-													}
-												break;
-												case "ID":
-													if( deliveryDB[i].id.toString() != SplitText[j]){
-														found *=0;
-													}
-												break;
-												}
-											}
-											if(found == 1){
-												searchResults.push(deliveryDB[i]);
-											}
+									if(dataToSearch.searchBy[0] == 1){ // Name 
+										if(termsDB[i].name.indexOf(SplitText[j]) == -1){
+											found *=0;
 										}
-									break;
-									case "Terms":
-										var termsDB = JSON.parse(localStorage.getItem("com.intel.Server.terms"));
-										for (var i = termsDB.length - 1; i >= 0; i--) {
-											var found = 1;
-											for(var j=0; j<SplitText.length; j++){
-												switch (dataToSearch.searchBy){
-												case "Name":
-													if( termsDB[i].name.indexOf(SplitText[j]) == -1){
-														found *=0;
-													}
-												break;
-												case "Description":
-													if( termsDB[i].description.indexOf(SplitText[j]) == -1){
-														found *=0;
-													}
-												break;
-												case "ID":
-													if( termsDB[i].id.toString() != SplitText[j]){
-														found *=0;
-													}
-												break;
-												}
-											}
-											if(found == 1){
-												searchResults.push(termsDB[i]);
-											}
+									}
+									if(dataToSearch.searchBy[1] == 1){ // Description 
+										if(termsDB[i].description.indexOf(SplitText[j]) == -1){
+											found *=0;
 										}
-									break;
-									default: break;
+									}
+									if(dataToSearch.searchBy[2] == 1){ // Id 
+										if(termsDB[i].id.indexOf(SplitText[j]) == -1){
+											found *=0;
+										}
+									}
+								}
+								if(found){
+									searchResults.push(termsDB[i]);
 								}
 							}
 						}
