@@ -629,6 +629,10 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                 var dataHolding = wFlow.selectedTab.dataHolding;
                 var holdingRequestTab = wFlow.selectedTab;
                 if(dataHolding.searchText && dataHolding.searchText != "" && dataHolding.elementsToSearch != null && dataHolding.searchBy != null){
+                    if(wFlow.selectedTab.dataHolding.searchBy[0] == 0 && wFlow.selectedTab.dataHolding.searchBy[1] == 0 && wFlow.selectedTab.dataHolding.searchBy[2] == 0){
+                         $scope.Toast.show("Wrong Input", "Most be at least one Element.Most be at least one Element, one Search By and Search.", Toast.LONG, Toast.ERROR);
+                         return;
+                    }
                     var dataToSearch = {
                         "text":dataHolding.searchText,
                         "dataType": ((dataHolding.elementsToSearch == 0)?'Kbits':((dataHolding.elementsToSearch == 1)?'Deliveries':'Terms')),
