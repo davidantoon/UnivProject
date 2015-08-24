@@ -405,10 +405,15 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                     }
                     $scope.EnableScroll(1);
                 }
+                $scope.updateColorFilterWorkflows();
+                if($scope.workSpaces.coloredWorkflows.length == 0){
+                    $scope.selectColorFilter(0);
+                }
                 $scope.updateMatrixLayout();
                 $scope.workSpaces.updateNewWorkflowButtons();
                 $scope.InsertStepToLast10Steps();
                 $scope.workSpaces.checkUserColorsInWorkspace();
+
             }catch(e){
                 $scope.Toast.show("Error!","Could'nt close tab", Toast.LONG, Toast.ERROR);
                 console.error("closeTab: ", e);
@@ -739,6 +744,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                 $scope.Pickcolor(function(){
                     $scope.blurAllWindow = false;
                     $scope.handlePickColor = false;
+                    $scope.selectColorFilter(0);
                     $scope.displayNewWorkflowButtons = true;
                     $scope.holdingNewWorkflowData = null;
                 });
@@ -810,44 +816,47 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                     $scope.removeColorFromColorFilter(color);
                 else
                     $scope.workSpaces.selectedColors.push(color);
-                
-                $scope.workSpaces.coloredWorkflows = [];
-                
-                //loop in colors the are selected to filter
-                for(var i=0; i< $scope.workSpaces.selectedColors.length; i++){
-                    //loop on all workflows searching for selected colors
-                    for(var j=0; j<$scope.workSpaces.workflows.length; j++){
-                        //loop in all tabs in specific workflow to check if colors exists
-                        for(var k=0; k<$scope.workSpaces.workflows[j].tabs.length; k++){
-                            if($scope.workSpaces.selectedColors[i] == $scope.workSpaces.workflows[j].tabs[k].color){
-                                var holdingWorkflowColored = null;
-                                // loop in coloredWorkflows to check if exist
-                                for(var m=0; m<$scope.workSpaces.coloredWorkflows.length;m++){
-                                    if($scope.workSpaces.coloredWorkflows[m].ID == $scope.workSpaces.workflows[j].ID){
-                                        holdingWorkflowColored = $scope.workSpaces.coloredWorkflows[m];
-                                        break;
-                                    }
-                                }
 
-                                // if not exist
-                                if(holdingWorkflowColored == null){
-                                    holdingWorkflowColored = new Workflow($scope.workSpaces.workflows[j], null,null,null,null,null, true);
-                                    $scope.workSpaces.coloredWorkflows.push(holdingWorkflowColored);   
-                                }
-
-                                // add tab referece
-                                holdingWorkflowColored.tabs.push($scope.workSpaces.workflows[j].tabs[k]);
-                                holdingWorkflowColored.selectedTab = holdingWorkflowColored.tabs[0];
-                            }
-                        }
-
-                    }
-                }
-
+                $scope.updateColorFilterWorkflows();
             }
             // updates the layout
             $scope.updateAllTabName();
             $scope.updateMatrixLayout();
+        }  
+
+
+        $scope.updateColorFilterWorkflows = function(){
+            $scope.workSpaces.coloredWorkflows = [];
+            //loop in colors the are selected to filter
+            for(var i=0; i< $scope.workSpaces.selectedColors.length; i++){
+                //loop on all workflows searching for selected colors
+                for(var j=0; j<$scope.workSpaces.workflows.length; j++){
+                    //loop in all tabs in specific workflow to check if colors exists
+                    for(var k=0; k<$scope.workSpaces.workflows[j].tabs.length; k++){
+                        if($scope.workSpaces.selectedColors[i] == $scope.workSpaces.workflows[j].tabs[k].color){
+                            var holdingWorkflowColored = null;
+                            // loop in coloredWorkflows to check if exist
+                            for(var m=0; m<$scope.workSpaces.coloredWorkflows.length;m++){
+                                if($scope.workSpaces.coloredWorkflows[m].ID == $scope.workSpaces.workflows[j].ID){
+                                    holdingWorkflowColored = $scope.workSpaces.coloredWorkflows[m];
+                                    break;
+                                }
+                            }
+
+                            // if not exist
+                            if(holdingWorkflowColored == null){
+                                holdingWorkflowColored = new Workflow($scope.workSpaces.workflows[j], null,null,null,null,null, true);
+                                $scope.workSpaces.coloredWorkflows.push(holdingWorkflowColored);   
+                            }
+
+                            // add tab referece
+                            holdingWorkflowColored.tabs.push($scope.workSpaces.workflows[j].tabs[k]);
+                            holdingWorkflowColored.selectedTab = holdingWorkflowColored.tabs[0];
+                        }
+                    }
+
+                }
+            }
         }
 
         /**
@@ -936,6 +945,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                             // give the ability to choose where to open new workflow (display newWorkflowButtons)
                             $scope.holdingNewWorkflowData = {"selectedTab":holdingRequestTab, "Action":"Search"};
                             $scope.displayNewWorkflowButtons = true;
+                            $scope.selectColorFilter(0);
                         }
                         var waitForUserResponse = $interval(function(){
                             if($scope.displayNewWorkflowButtons == false){
@@ -1007,8 +1017,6 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             try{
                 // if there is no results
                 if(results == null || results == undefined || results.length == 0){
-                    $scope.Toast.show("Error!","There was an error filtering results", Toast.LONG, Toast.ERROR);
-                    console.error("FilterResults: ", e);
                     return [];
                 }
                 var newResults = [];
@@ -1019,7 +1027,6 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                 }
                 return newResults;
             }catch(e){
-                $scope.Toast.show("Error!","There was an error filtering results", Toast.LONG, Toast.ERROR);
                 console.error("FilterResults: ", e);
                 return [];
             }
