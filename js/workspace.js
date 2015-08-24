@@ -214,7 +214,7 @@ app.factory('Workspace', ['$rootScope', 'Workflow', function($rootScope, Workflo
 		 * Delets the childs id of specific tab in workflow
 		 * @param  {object} tabHoldingData the workflow id and the tab id which we want to delete its childs
 		 */
-		deleteChildTabIds: function(tabHoldingData){
+		deleteChildTabIds: function(tabHoldingData, deleteParent){
 			try{
 				for(var i=0; i<this.workflows.length; i++){
 					if(this.workflows[i].ID == tabHoldingData.workflowId){

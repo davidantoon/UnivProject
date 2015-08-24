@@ -204,7 +204,6 @@
                       <div ng-click="back(wFlow.selectedTab.dataHolding);" class="ReturnToSearchButton">
                         <ons-icon icon="ion-chevron-left" size="18px"></ons-icon> Back
                       </div>
-                      <pre>{{wFlow.selectedTab.dataHolding | json}}</pre>
                       <pre>{{(((wFlow.selectedTab.dataHolding.results == null)?{"result":"Loading..."}:((wFlow.selectedTab.dataHolding.resultsCount == 0)?{"result":"No Content"}:wFlow.selectedTab.dataHolding.results)) | json)}}</pre>
                     </div>
                 </div>
