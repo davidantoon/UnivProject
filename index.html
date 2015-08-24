@@ -242,10 +242,16 @@
                         <div>
                           <ons-row class="SearchResultsRow1 SearchResultsRow" ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Kbit')">
                             <ons-col>
-                              OPS1
-                            </ons-col>
-                            <ons-col>
-                              OPS2
+                              <ons-row>
+                                <ons-col>
+                                  <p class="searchResultName">{{result.name}}</p>
+                                </ons-col>
+                              </ons-row>
+                              <ons-row>
+                                <ons-col>
+                                  <p class="searchResultDescription">{{result.description}}</p>
+                                </ons-col>
+                              </ons-row>
                             </ons-col>
                           </ons-row>
                         </div>

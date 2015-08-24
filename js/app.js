@@ -57,13 +57,13 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
         // INIT Dummy Data
         function dummyData(){
             console.warn("Dummy Data Init");
-            $.getJSON('https://raw.githubusercontent.com/davidantoon/mopdqwompoaskdqomdiasjdiowqe/master/ServerDummyContent/KbitDB.json', function(json, textStatus) {
+            $.getJSON('./ServerDummyContent/KbitDB.json', function(json, textStatus) {
                 localStorage.setItem("com.intel.Server.Kbits",JSON.stringify(json)); 
             });
-            $.getJSON('https://raw.githubusercontent.com/davidantoon/mopdqwompoaskdqomdiasjdiowqe/master/ServerDummyContent/deliveryDB.json',{}, function(json, textStatus) {
+            $.getJSON('./ServerDummyContent/deliveryDB.json',{}, function(json, textStatus) {
                 localStorage.setItem("com.intel.Server.delivery",JSON.stringify(json)); 
             });
-            $.getJSON('https://raw.githubusercontent.com/davidantoon/mopdqwompoaskdqomdiasjdiowqe/master/ServerDummyContent/termsDB.json',{}, function(json, textStatus) {
+            $.getJSON('./ServerDummyContent/termsDB.json',{}, function(json, textStatus) {
                 localStorage.setItem("com.intel.Server.terms",JSON.stringify(json)); 
             });
         }
@@ -421,6 +421,12 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
          */
         $scope.closeTab = function(workflow){
             try{
+
+                debugger;
+
+                // check if filter color == true
+                    // replace coloredWorkflows with original workflow
+                
                 //update the parent tab and child tab after closing certan tab
                 var parentTabToDelete = workflow.selectedTab.dataHolding.parentTab;
                 var childTabToDelete = workflow.selectedTab.dataHolding.childTab;
@@ -444,8 +450,8 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                             }
                         }
                     }
-                    else
-                        workflow.selectedTab = workflow.tabs[0];
+
+                    workflow.selectedTab = workflow.tabs[0];
                 }else{
                     //if we are closing last tab in workflow, we need to delete it
                     for(var i=0; i<$scope.Workflow.length; i++){
@@ -458,9 +464,14 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                     if($scope.Workflow.length == 0){
                         $scope.Workflow.push(new Workflow(null, 0, 12, 12, 13, 13));
                         $scope.workSpaces.selectedWorkflow = $scope.Workflow[0];
+                        setTimeout(function(){
+                            $scope.Steps.lastFocusedWorkflow = $scope.workSpaces.selectedWorkflow.ID;
+                            $scope.refocusLastWorkflow();
+                        },300);
                     }
                     $scope.EnableScroll(1);
                 }
+
                 $scope.updateColorFilterWorkflows();
                 if($scope.workSpaces.coloredWorkflows.length == 0){
                     $scope.selectColorFilter(0);
