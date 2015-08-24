@@ -6,6 +6,7 @@ app.factory('Tab', ["$rootScope", 'Content','Globals','Storage', function($rootS
 	Tab.CREATE_TAB = 2;
 	Tab.EDIT_TAB = 3;
 	Tab.RESULTS_TAB = 4;
+	Tab.CONTENT_VIEW = 5;
 
 	function Tab(id, workflow, tempJson, color, isResultTab){
 
@@ -38,7 +39,7 @@ app.factory('Tab', ["$rootScope", 'Content','Globals','Storage', function($rootS
 			if(tempJson.requestFrom == "restoreStep"){
 					if(tempJson.content != null && tempJson.content != null){
 						var passThis = this;
-						Storage.getElementById(JSON.parse(tempJson.content).id, /* force last modefied */ true, /* force server pull */ false, function(dataFromStorage){
+						Storage.getElementById(JSON.parse(tempJson.content).id, tempJson.content, /* force last modefied */ true, /* force server pull */ false, function(dataFromStorage){
 							passThis.content = dataFromStorage;
 							tempJson.callback(passThis, tempJson.passindex, tempJson.passThis, tempJson.passTempJson);
 						});
@@ -79,7 +80,7 @@ app.factory('Tab', ["$rootScope", 'Content','Globals','Storage', function($rootS
 		 * 3) EDIT_TAB
 		 * @param  {String} newType (Tab.NORMAL_TAB || Tab.SEARCH_TAB || Tab.CREATE_TAB || Tab.EDIT_TAB)
 		 */
-		changeType: function(newType){
+		changeType: function(newType, content){
 			switch (newType){
 				case Tab.SEARCH_TAB:
 					this.addData({
@@ -106,10 +107,15 @@ app.factory('Tab', ["$rootScope", 'Content','Globals','Storage', function($rootS
 					this.addData({
 						"resultsCount": 0,
 						"results": [],
-						"selectedResult": -1,
-						"childTab":{"workflowId":null,"tabId":null},
+						"childTab":[],
 						"parentTab":{"workflowId":null,"tabId":null}
 					});
+				break;
+				case Tab.CONTENT_VIEW:
+					this.addData({
+						"parentTab":{"workflowId":null,"tabId":null}
+					});
+					this.addContent(content);
 				break;
 				default:
 				break;
@@ -132,9 +138,7 @@ app.factory('Tab', ["$rootScope", 'Content','Globals','Storage', function($rootS
 		 *                    					 if the type is String, will check global cached contents, or get from server.
 		 */
 		addContent: function(contentObj){
-
-			// check if exsit
-
+			// pass content to storage function to check if already in cache or add it and return new content
 			this.content = contentObj;
 		},
 
@@ -180,9 +184,12 @@ app.factory('Tab', ["$rootScope", 'Content','Globals','Storage', function($rootS
             return JSON.stringify(strToReturn);
 		}
 
+		addChildToSearch: function(childData){
+			// add childData to dataHolding.childTab
+		}
 
 
-		
+	
 	}
 
 

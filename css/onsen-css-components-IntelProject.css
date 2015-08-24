@@ -6195,6 +6195,7 @@ div.vertical {
 .SelectedTabContent{
   overflow: auto;
   width: 100%;
+  margin-top: 4px;
   height: 320px;
   -webkit-user-select: initial;
   -webkit-transition-property: all;
@@ -6768,18 +6769,19 @@ div.vertical {
 
 
 .searchTypeTab{
-  margin: 0px 5px 30px 5px;
+  margin: 0 0 30px 0;
 }
 .ReturnToSearchButton{
   position: absolute;
-  bottom: 1px;
+  bottom: 0px;
   padding: 5px 14px;
   color: whitesmoke;
-  left: 1px;
+  left: 0px;
   font-weight: 400;
   cursor: pointer;
   border-radius: 0px 28px 0 0px;
   background-color: #0860A8;
+  z-index: 10;
 }
 .ReturnToSearchButton .ons-icon{
   vertical-align: -14%;
@@ -6840,10 +6842,10 @@ div.vertical {
   position: absolute;
   width: 100%;
   left: 0;
-  top: 0;
-  z-index: 100;
-  height: 100%;
-  display: block;
+  top: 36px;
+  height: 91%;
+  opacity: 0;
+  z-index: 0;
 }
 .centerMeInDiv{
   margin: auto;
@@ -6860,15 +6862,59 @@ div.vertical {
 .hidden{
   display: none;
 }
-
+.SearchResultsRowTitle{
+  background-color: whitesmoke;
+  position: relative;
+  padding: 2px 14px;
+  color: rgb(60,60,60);
+  font-size: 14px;
+  border: 1px solid rgba(60,60,60,.1);
+}
+.SearchResultsRow{
+  padding: 5px 10px;
+  margin-bottom: 5px;
+  border-bottom: 1px solid rgba(0,0,0,.1);
+  height: 50px;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+.SearchResultsRow1:last-child{
+  border-bottom: 0;
+}
+.SearchResultsRow2:last-child{
+  border-bottom: 0;
+}
+.SearchResultsRow3:last-child{
+  border-bottom: 0;
+}
 .SearchResultsRows{
-
+  margin-top: 4px;
+  overflow: hidden;
 }
 .noResultsMessage{
-
+  text-align: center;
+  margin: 100px 0;
+  font-size: 30px;
+  color: rgb(200,200,200);
+  font-weight: 500;
+  text-shadow: 0px 0px 1px rgba(60,60,60,.2);
+  cursor: default;
 }
 
-
+.searchResultName{
+  margin: 0;
+  font-size: 20px;
+}
+.searchResultDescription{
+  margin: 0;
+  color: gray;
+  font-size: 14px;
+  overflow: hidden;
+  height: 32px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 
 
 

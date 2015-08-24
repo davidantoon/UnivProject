@@ -3,6 +3,7 @@ app.factory('Workflow', ["$rootScope", 'Tab', 'TypeOf', function($rootScope, Tab
     function Workflow(tempJson, id, fx, fy, tx, ty, colored){
         try{
             if(tempJson != null || (id != null && fx != null && fy != null && tx != null && ty != null)){
+                // we are creating workflow from specific id,fx,fy ... 
                 if (tempJson == null) {
                     this.ID = id;
                     this.fx = fx;
@@ -13,7 +14,7 @@ app.factory('Workflow', ["$rootScope", 'Tab', 'TypeOf', function($rootScope, Tab
                     this.tabsIds = 1;
                     this.tabs = [new Tab(0, this)];
                     this.selectedTab = this.tabs[0];
-                } else if(tempJson == "newWorkflowButton"){
+                } else if(tempJson == "newWorkflowButton"){ // creating workflow after clicking on new workflow button
                     this.ID = id;
                     this.fx = fx;
                     this.fy = fy;
@@ -24,7 +25,7 @@ app.factory('Workflow', ["$rootScope", 'Tab', 'TypeOf', function($rootScope, Tab
                     this.selectedTab = null;
                     this.name = "New Workflow";
                 }else {
-
+                    // other options, like creating new workflow after search
                     this.ID = tempJson.ID;
                     this.fx = tempJson.fx;
                     this.fy = tempJson.fy;
@@ -36,8 +37,16 @@ app.factory('Workflow', ["$rootScope", 'Tab', 'TypeOf', function($rootScope, Tab
 
                     if(colored != null && colored == true){
                     }else{
+                        // if we are adding new workflow from redo or undo or restoring steps
                         if(tempJson.requestFrom == "restoreStep"){
                             loopTabs(0, this, tempJson);
+                            /**
+                             * Selects tab
+                             * @param  {Object} newTab       the tab we might select
+                             * @param  {number} index        index for looping tabs
+                             * @param  {object} passThis     this
+                             * @param  {JSON} passTempJson   JSON to pass
+                             */
                             function tabReturn(newTab, index, passThis, passTempJson){
                                 passThis.tabs.push(newTab);
                                 if(passTempJson.selectedTab.ID == passTempJson.tabs[index-1].ID){
@@ -45,6 +54,12 @@ app.factory('Workflow', ["$rootScope", 'Tab', 'TypeOf', function($rootScope, Tab
                                 }
                                 loopTabs(index, passThis, passTempJson);
                             }
+                            /**
+                             * Loops over JSON tabs and create tabs
+                             * @param  {Number} index        index in JSON
+                             * @param  {Object} passThis     This
+                             * @param  {JSON} passTempJson   JSON that contains the data
+                             */
                             function loopTabs(index, passThis, passTempJson){
                                 if(index < passTempJson.tabs.length){
                                     passTempJson.tabs[index].requestFrom = passTempJson.requestFrom;
@@ -58,6 +73,7 @@ app.factory('Workflow', ["$rootScope", 'Tab', 'TypeOf', function($rootScope, Tab
                                 }
                             }
                         }else{
+                            // if we are restoring steps, loop over JSON and create tabs
                             for (var i = 0; i < tempJson.tabs.length; i++) {
                                 tempJson.tabs[i].requestFrom = tempJson.requestFrom;
                                 var tempTab = new Tab(null, this, tempJson.tabs[i]);
