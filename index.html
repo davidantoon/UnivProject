@@ -240,7 +240,7 @@
                         </p>
                         <div class="SearchResultsRowTitle" style="{{(((FilterResults(wFlow.selectedTab.dataHolding.results, 'Kbit')).length == 0)?'display:none':'')}}">Kbits</div>
                         <div>
-                          <ons-row class="SearchResultsRow1 SearchResultsRow" ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Kbit')">
+                          <ons-row class="SearchResultsRow1 SearchResultsRow  clickable hoverOp" ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Kbit')">
                             <ons-col>
                               <ons-row>
                                 <ons-col>
@@ -257,23 +257,35 @@
                         </div>
                         <div class="SearchResultsRowTitle" style="{{(((FilterResults(wFlow.selectedTab.dataHolding.results, 'Delivery')).length == 0)?'display:none':'')}}">Deliveries</div>
                         <div>
-                          <ons-row class="SearchResultsRow2 SearchResultsRow" ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Delivery')">
+                          <ons-row class="SearchResultsRow2 SearchResultsRow clickable hoverOp" ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Delivery')">
                             <ons-col>
-                              OPS1
-                            </ons-col>
-                            <ons-col>
-                              OPS2
+                              <ons-row>
+                                <ons-col>
+                                  <p class="searchResultName">{{result.name}}</p>
+                                </ons-col>
+                              </ons-row>
+                              <ons-row>
+                                <ons-col>
+                                  <p class="searchResultDescription">{{result.description}}</p>
+                                </ons-col>
+                              </ons-row>
                             </ons-col>
                           </ons-row>
                         </div>
                         <div class="SearchResultsRowTitle" style="{{(((FilterResults(wFlow.selectedTab.dataHolding.results, 'Term')).length == 0)?'display:none':'')}}">Terms</div>
                         <div>
-                          <ons-row class="SearchResultsRow3 SearchResultsRow" ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Term')">
+                          <ons-row class="SearchResultsRow3 SearchResultsRow clickable hoverOp" ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Term')">
                             <ons-col>
-                              OPS1
-                            </ons-col>
-                            <ons-col>
-                              OPS2
+                              <ons-row>
+                                <ons-col>
+                                  <p class="searchResultName">{{result.name}}</p>
+                                </ons-col>
+                              </ons-row>
+                              <ons-row>
+                                <ons-col>
+                                  <p class="searchResultDescription">{{result.description}}</p>
+                                </ons-col>
+                              </ons-row>
                             </ons-col>
                           </ons-row>
                         </div>

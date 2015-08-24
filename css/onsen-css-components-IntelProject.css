@@ -6874,9 +6874,10 @@ div.vertical {
   padding: 5px 10px;
   margin-bottom: 5px;
   border-bottom: 1px solid rgba(0,0,0,.1);
-  height: 60px;
+  height: 50px;
   position: relative;
   z-index: 1;
+  overflow: hidden;
 }
 .SearchResultsRow1:last-child{
   border-bottom: 0;
@@ -6901,7 +6902,19 @@ div.vertical {
   cursor: default;
 }
 
-
+.searchResultName{
+  margin: 0;
+  font-size: 20px;
+}
+.searchResultDescription{
+  margin: 0;
+  color: gray;
+  font-size: 14px;
+  overflow: hidden;
+  height: 32px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 
 
 

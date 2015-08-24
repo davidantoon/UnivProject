@@ -422,11 +422,10 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
         $scope.closeTab = function(workflow){
             try{
 
-                debugger;
 
                 // check if filter color == true
                     // replace coloredWorkflows with original workflow
-                
+
                 //update the parent tab and child tab after closing certan tab
                 var parentTabToDelete = workflow.selectedTab.dataHolding.parentTab;
                 var childTabToDelete = workflow.selectedTab.dataHolding.childTab;
