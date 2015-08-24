@@ -209,7 +209,7 @@ app.factory('Workspace', ['$rootScope', 'Workflow', function($rootScope, Workflo
            		console.error("selectTabAfterSearch: ", e);
 			}
 		},
-
+     
 		/**
 		 * Delets the childs id of specific tab in workflow
 		 * @param  {object} tabHoldingData the workflow id and the tab id which we want to delete its childs
