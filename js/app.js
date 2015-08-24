@@ -684,7 +684,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                             dataHolding.searchBy[1], //  Description
                             dataHolding.searchBy[2]  //  ID
                         ]
-                    }
+                    } 
                     // check if there is old child tab search
                     if(holdingRequestTab.dataHolding.childTab.workflowId == null || holdingRequestTab.dataHolding.childTab.tabId == null){
                         if($scope.Settings.autoOpenTabs == true){
