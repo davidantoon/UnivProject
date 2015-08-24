@@ -793,7 +793,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
 
 
         $scope.getCurrentWorkflows = function(){
-
+           
             // default colors, no color filter selected
             if($scope.workSpaces.selectedColors.length == 0)
                     return $scope.workSpaces.workflows;
