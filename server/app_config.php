@@ -10,4 +10,5 @@
 	include 'relations/relations.php';
 	include 'elements/Kbits.php';
 	include 'elements/Lock.php';
+	include 'elements/delivery.php';
 ?>

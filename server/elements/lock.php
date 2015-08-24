@@ -60,7 +60,7 @@ class Lock {
 		return $dbObj->run_query($dbObj->db_get_contentDB(), $query) == true;
 	}
 
-	private static function is_locked($UID, $entity_type) {
+	public static function is_locked($UID, $entity_type) {
 
 		$dbObj = new dbAPI();
 		$query = "SELECT * FROM CONTENT_LOCK where LOCKED_UID = '" . $UID . "' AND ENTITY_TYPE = '" . $entity_type . "' AND LOCK_STATUS = 'LOCKED' AND ENABLED = 1 ";
@@ -75,6 +75,37 @@ class Lock {
 		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
 		return count($results) != 0;	
 	}
+
+	public static function get_locking_user($UID, $entity_type) {
+
+		$dbObj = new dbAPI();
+		$query = "SELECT usr.* FROM ". dbAPI::get_db_name('content') .".CONTENT_LOCK AS lk INNER JOIN ". dbAPI::get_db_name('user') .".USERS AS usr ON (usr.UID = lk.USER_ID) where lk.LOCKED_UID = '" . $UID . "' AND lk.ENTITY_TYPE = '" . $entity_type . "' AND lk.LOCK_STATUS = 'LOCKED' AND lk.ENABLED = 1 ";
+		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
+		if(count($results) > 0)
+			return $results[0];
+		return null;
+	}
 }
 
 ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
