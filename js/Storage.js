@@ -219,14 +219,20 @@ app.factory('Storage', ["$rootScope", "Globals", "TypeOf", function($rootScope, 
 		},
 
 
-		getElementById: function(elemId, jsonType,forceLastmodefied, callback){
+		getElementById: function(elemId, jsonType, forceLastmodefied, forceServerPull, callback){
 			callback(null);
 			if( elemId != undefined && elemId != null && elemId != ""){
-
+				if(forceServerPull == true){
+					// check if lastmodified is same in cashe globals
+						// return from chashe
+					// else
+						// create new content and store in in cashe then return reference
+				}
 			}else{
 
 			}
 		}
+
 
 
 

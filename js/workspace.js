@@ -278,6 +278,12 @@ app.factory('Workspace', ['$rootScope', 'Workflow', function($rootScope, Workflo
 				$scope.Toast.show("Error!","There was an error in checking colors in workspace", Toast.LONG, Toast.ERROR);
            		console.error("checkUserColorsInWorkspace: ", e);
 			}
+		},
+
+
+		replaceSearchChildContent: function(childHoldingData, content){
+			// locate on workflows and tabs
+				// locatedTab.addContent(content);
 		}
 	}
 

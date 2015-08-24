@@ -39,7 +39,7 @@ app.factory('Tab', ["$rootScope", 'Content','Globals','Storage', function($rootS
 			if(tempJson.requestFrom == "restoreStep"){
 					if(tempJson.content != null && tempJson.content != null){
 						var passThis = this;
-						Storage.getElementById(JSON.parse(tempJson.content).id, /* force last modefied */ true, /* force server pull */ false, function(dataFromStorage){
+						Storage.getElementById(JSON.parse(tempJson.content).id, tempJson.content, /* force last modefied */ true, /* force server pull */ false, function(dataFromStorage){
 							passThis.content = dataFromStorage;
 							tempJson.callback(passThis, tempJson.passindex, tempJson.passThis, tempJson.passTempJson);
 						});
@@ -107,14 +107,15 @@ app.factory('Tab', ["$rootScope", 'Content','Globals','Storage', function($rootS
 					this.addData({
 						"resultsCount": 0,
 						"results": [],
-						"selectedResult": -1,
-						"childTab":{"workflowId":null,"tabId":null},
+						"childTab":[],
 						"parentTab":{"workflowId":null,"tabId":null}
 					});
 				break;
 				case Tab.CONTENT_VIEW:
-					// pass content to storage to check if already in cache or add it and return new content
-					this.content = content;
+					this.addData({
+						"parentTab":{"workflowId":null,"tabId":null}
+					});
+					this.addContent(content);
 				break;
 				default:
 				break;
@@ -137,9 +138,7 @@ app.factory('Tab', ["$rootScope", 'Content','Globals','Storage', function($rootS
 		 *                    					 if the type is String, will check global cached contents, or get from server.
 		 */
 		addContent: function(contentObj){
-
-			// check if exsit
-
+			// pass content to storage function to check if already in cache or add it and return new content
 			this.content = contentObj;
 		},
 
@@ -185,13 +184,10 @@ app.factory('Tab', ["$rootScope", 'Content','Globals','Storage', function($rootS
             return JSON.stringify(strToReturn);
 		}
 
-		addChildToSearch: function(){
-
+		addChildToSearch: function(childData){
+			// add childData to dataHolding.childTab
 		}
 
-		replaceSearchChildContent: function(){
-			
-		}
 
 	
 	}
