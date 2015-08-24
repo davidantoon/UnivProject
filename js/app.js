@@ -367,6 +367,11 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                 {
                     $scope.workSpaces.deleteChildTabIds(workflow.selectedTab.dataHolding.childTab, true);
                 }
+
+                if(childTabToDelete != null && childTabToDelete.workflowId != null && childTabToDelete.tabId != null)
+                {
+                    $scope.workSpaces.deleteAllChildsParentTab(workflow.selectedTab.dataHolding.childTab);
+                }
                 workflow.tabs.splice($scope.getSelectedTabIndex(workflow),1);
                 if(workflow.tabs.length > 0){
                     if(parentTabToDelete != null && parentTabToDelete.workflowId != null && parentTabToDelete.tabId != null){
@@ -415,14 +420,18 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
 
         }
 
-         /**
+        /**
          * Go back to parent tab
          * @param  {object} dataHolding holding the data of parent tab
          */
-       $scope.back = function(dataHolding){
+        $scope.back = function(dataHolding){
             try{
-                if(dataHolding != null && dataHolding != undefined){
-                    $scope.workSpaces.selectTabAfterSearch(dataHolding);
+                if(dataHolding != null && dataHolding != undefined ){
+                    if(dataHolding.parentTab.workflowId == null){
+                        $scope.Toast.show("Note","Parent tab is not found.", Toast.LONG, Toast.NORMAL);        
+                    }else{
+                        $scope.workSpaces.selectTabAfterSearch(dataHolding.parentTab);
+                    }
                 }
             }catch(e){
                 $scope.Toast.show("Error!","There was an error on going back to parent tab", Toast.LONG, Toast.ERROR);
@@ -655,6 +664,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
 
 
         $scope.prepareForSearch = function(wFlow){
+            debugger;
             try{
                 var dataHolding = wFlow.selectedTab.dataHolding;
                 var holdingRequestTab = wFlow.selectedTab;
@@ -781,7 +791,6 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                 }
             },100);
         }
-
 
         /************************************************************************************************************************
          *                                                                                                                       *

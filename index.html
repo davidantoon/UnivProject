@@ -158,7 +158,7 @@
                         Edit Element
                       </div>
                     </div>
-                    <div class="{{'searchTypeTab '+((getSelectedTabType(wFlow) == 1)?'':'hidden')}}">
+                    <div class="{{((getSelectedTabType(wFlow) == 1)?'':'hidden')}}">
                       <div class="searchTextboxDiv">
                         <input class="searchTextbox" ng-enter="prepareForSearch(wFlow);" ng-change="InsertStepToLast10Steps(); " placeholder="Search Text" id="1" ng-model="wFlow.selectedTab.dataHolding.searchText">
                       </div>
@@ -200,8 +200,10 @@
                     <div class="{{((getSelectedTabType(wFlow) == 3)?'':'hidden')}}">
                       edit
                     </div>
-                    <div class="{{((getSelectedTabType(wFlow) == 4)?'':'hidden')}}">
-                      <!-- check if null => loader , length=0 => no content -->
+                    <div class="{{'searchTypeTab '+((getSelectedTabType(wFlow) == 4)?'':'hidden')}}">
+                      <div ng-click="back(wFlow.selectedTab.dataHolding);" class="ReturnToSearchButton">
+                        <ons-icon icon="ion-chevron-left" size="18px"></ons-icon> Back
+                      </div>
                       <pre>{{(((wFlow.selectedTab.dataHolding.results == null)?{"result":"Loading..."}:((wFlow.selectedTab.dataHolding.resultsCount == 0)?{"result":"No Content"}:wFlow.selectedTab.dataHolding.results)) | json)}}</pre>
                     </div>
                 </div>
