@@ -6768,9 +6768,32 @@ div.vertical {
 }
 
 
+.TopTabbarOptions{
+  text-align: center;
+  padding: 5px;
+  border: 1px solid #0860A8;
+  background-color: whitesmoke;
+  box-shadow: 0px 3px 21px -6px rgba(0,0,0,.7);
+  width: 39px;
+  margin: 0 14px;
+  border-top: 0;
+  border-radius: 0 0 5px 5px;
+}
 
-
-
+.TopTabbarOptions ons-row{
+  border-bottom: 1px solid rgba(0,0,0,.1);
+}
+.TopTabbarOptions ons-row:last-child{
+  border-bottom: 0px 
+}
+.ColorCheckStatus{
+  font-size: 14px;
+  line-height: 20px;
+}
+.ColorCheckStatusA{
+  font-size: 16px;
+  line-height: 45px;
+}
 
 
 

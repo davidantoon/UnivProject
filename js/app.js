@@ -849,7 +849,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
         }
 
         $scope.colorIsChecked = function(color){
-            
+
             // flag = 0 
             // loop in selectedColors
                 // if exist
@@ -859,6 +859,10 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
 
         $scope.removeColorFromColorFilter = function(color){
 
+        }
+
+        $scope.getColors = function(){
+            return Object.keys($scope.workSpaces.colors);
         }
 
         /************************************************************************************************************************
