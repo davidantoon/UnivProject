@@ -353,7 +353,10 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             });
         }
 
-        
+        /**
+         * Closes specific tab
+         * @param  {Object} workflow the workflow that contains the tab we want to close
+         */
         $scope.closeTab = function(workflow){
             try{
                 var parentTabToDelete = workflow.selectedTab.dataHolding.parentTab;
@@ -401,7 +404,11 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             }
         }
         
-
+        /**
+         * Checks if color is used
+         * @param  {String}  color the color we want to look for
+         * @return {Boolean}       true if the color is used
+         */
         $scope.isColorUsed = function(color){
             if($scope.workSpaces != undefined && $scope.workSpaces != null && $scope.workSpaces.colors != undefined &&  $scope.workSpaces.colors != null)
                 return $scope.workSpaces.colors[color];
@@ -449,7 +456,9 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
          *                                                                                *
          *********************************************************************************/
 
-
+        /**
+         * Updates the matrix layout
+         */
         $scope.updateMatrixLayout = function() {
             try{
                 var w_Width = $(window).width();
@@ -504,7 +513,12 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             $scope.InsertStepToLast10Steps();
         }
     
-
+        /**
+         * Resizes the block
+         * @param  {[type]} direction  [description]
+         * @param  {[type]} workflowId [description]
+         * @return {[type]}            [description]
+         */
         $scope.resizeBlock = function(direction, workflowId) {
             try{
                 for(var i=0; i<$scope.workSpaces.workflows.length; i++){
@@ -535,7 +549,10 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             }
         }
 
-
+        /**
+         * Adds new tab to workflow
+         * @param {Object} workflow the workflow we want to add to
+         */
         $scope.addNewTabToWorkflow = function(workflow){
             try{
                 if($scope.holdingNewWorkflowData == null){
