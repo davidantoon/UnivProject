@@ -130,6 +130,7 @@ app.factory('Workspace', ['$rootScope', 'Workflow', function($rootScope, Workflo
 			try{
 				var maxId = 0;
 				for(var i=0; i<this.workflows.length; i++){
+					// find the max Id we can use to create new workflow
 					maxId = ((Number(this.workflows[i].ID) > maxId)?Number(this.workflows[i].ID):maxId);
 				}
 				for(var i=0; i<this.newWorkflowButtons.length; i++){
@@ -150,12 +151,14 @@ app.factory('Workspace', ['$rootScope', 'Workflow', function($rootScope, Workflo
 		scrollToLastWorkflow: function(Steps){
 			try{
 				var indexOfScroll = 0;
+				// loop of ID to locate last focused workflow
 	            for(var i=0; i< this.workflows.length; i++){
 	                if(this.workflows[i].ID == Steps.lastFocusedWorkflow){
 	                    indexOfScroll = i;
 	                    break;
 	                }
 	            }
+	            // scrolls to the workflow we located
 	            this.workflows[indexOfScroll].scrollTo();
 	        }catch(e){
 	        	$scope.Toast.show("Error!","There was an error in scrolling to last workflow", Toast.LONG, Toast.ERROR);
@@ -171,7 +174,7 @@ app.factory('Workspace', ['$rootScope', 'Workflow', function($rootScope, Workflo
 		updateDataInTab: function(tabHoldingData, results){
 			try{
 				// tabHoldingData = {"workflowId":"111", "tabId":"1223"}
-				
+				// loop over workflows and tabs to locate the specific tab and update its data
 				for(var i=0; i<this.workflows.length; i++){
 					if(this.workflows[i].ID == tabHoldingData.workflowId){
 						for(var j=0; j<this.workflows[i].tabs.length; j++){
@@ -195,6 +198,7 @@ app.factory('Workspace', ['$rootScope', 'Workflow', function($rootScope, Workflo
 		 */
 		selectTabAfterSearch: function(tabHoldingData){
 			try{
+				// loop over workflows and tabs and locate selected tab
 				for(var i=0; i<this.workflows.length; i++){
 					if(this.workflows[i].ID == tabHoldingData.workflowId){
 						for(var j=0; j<this.workflows[i].tabs.length; j++){
@@ -213,11 +217,13 @@ app.factory('Workspace', ['$rootScope', 'Workflow', function($rootScope, Workflo
 		},
      
 		/**
-		 * Delets the childs id of specific tab in workflow
-		 * @param  {object} tabHoldingData the workflow id and the tab id which we want to delete its childs
+		 * Deletes child tab
+		 * @param  {Object} tabHoldingData Data holding that contain the Ids
+		 * @param  {Boolean} deleteParent  True if we want to update child after deleting it's parent
 		 */
 		deleteChildTabIds: function(tabHoldingData, deleteParent){
 			try{
+				// if we want to update child tab after closing / deleting parent
 				if(deleteParent){
 					for(var i=0; i<this.workflows.length; i++){
 						if(this.workflows[i].ID == tabHoldingData.workflowId){
@@ -231,6 +237,7 @@ app.factory('Workspace', ['$rootScope', 'Workflow', function($rootScope, Workflo
 						}
 					}
 				}else{
+					// updating the parent tab after deleting the child
 					for(var i=0; i<this.workflows.length; i++){
 						if(this.workflows[i].ID == tabHoldingData.workflowId){
 							for(var j=0; j<this.workflows[i].tabs.length; j++){
