@@ -998,9 +998,31 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             }
         }
 
-        
-        $scope.FilterResults = function(objects, type){
-
+        /**
+         * Filter the search results by type
+         * @param {object} results results we want to filter
+         * @param {string} type    the type we want
+         */
+        $scope.FilterResults = function(results, type){
+            try{
+                // if there is no results
+                if(results == null || results == undefined || results.length == 0){
+                    $scope.Toast.show("Error!","There was an error filtering results", Toast.LONG, Toast.ERROR);
+                    console.error("FilterResults: ", e);
+                    return [];
+                }
+                var newResults = [];
+                for(var i=0; i<results.length; i++){
+                    if(results[i].type == type){
+                        newResults.push(results[i]);
+                    }
+                }
+                return newResults;
+            }catch(e){
+                $scope.Toast.show("Error!","There was an error filtering results", Toast.LONG, Toast.ERROR);
+                console.error("FilterResults: ", e);
+                return [];
+            }
         }
 
 
