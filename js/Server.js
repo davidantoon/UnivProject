@@ -1,4 +1,4 @@
-app.factory('Server', function($rootScope){
+app.factory('Server', ["$rootScope", function($rootScope){
 	
 	function Server(connectionType, scope){
 		try{
@@ -12,7 +12,7 @@ app.factory('Server', function($rootScope){
             console.error("server: ", e);
 		}
 	}
-
+ 
 	Server.prototype = {
 
 		/**
@@ -21,97 +21,96 @@ app.factory('Server', function($rootScope){
 		 * @param  {Function} callback     callback function
 		 */
 		search: function(dataToSearch, callback){
-			try{	
+			try{ 
 				if(this.baseUrl == "dummy"){
 					var searchResults = [];
 					var SplitText = dataToSearch.text.split(' ');
-					switch (this.TypeOfData){
-						case "Kbits":
+					if(this.TypeOfData == "SearchTab"){
+						
+						if(dataToSearch.dataType[0] == 1){ // Kbits
+
 							var KbitsDB = JSON.parse(localStorage.getItem("com.intel.Server.Kbits"));
 							for (var i = KbitsDB.length - 1; i >= 0; i--) {
 								var found = 1;
 								for(var j = 0; j < SplitText.length; j++){
-									switch (dataToSearch.searchBy){
-										case "Name":
-											if(KbitsDB[i].name.indexOf(SplitText[j]) == -1){
-												found *=0;
-											}		
-										break;
-										case "Description":
-											if(KbitsDB[i].description.indexOf(SplitText[j]) == -1){
-												found *=0;
-											}
-										break;
-										case "ID":
-											if(KbitsDB[i].id.toString() != SplitText[j]){
-												found *=0;
-											}
-										break;
-										default: break;
+
+									if(dataToSearch.searchBy[0] == 1){ // Name 
+										if(KbitsDB[i].name.indexOf(SplitText[j]) == -1){
+											found *=0;
+										}
+									}
+									if(dataToSearch.searchBy[1] == 1){ // Description 
+										if(KbitsDB[i].description.indexOf(SplitText[j]) == -1){
+											found *=0;
+										}
+									}
+									if(dataToSearch.searchBy[2] == 1){ // Id 
+										if(KbitsDB[i].id.toString().indexOf(SplitText[j]) == -1){
+											found *=0;
+										}
 									}
 								}
 								if(found){
 									searchResults.push(KbitsDB[i]);
 								}
 							}
-						break;
-						case "Deliveries":
+						}
+						if(dataToSearch.dataType[1] == 1){ // Deliveries
+
 							var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
 							for (var i = deliveryDB.length - 1; i >= 0; i--) {
 								var found = 1;
-								for(var j=0; j < SplitText.length; j++){
-									switch (dataToSearch.searchBy){
-									case "Name":
-										if( deliveryDB[i].name.indexOf(SplitText[j]) == -1){
+								for(var j = 0; j < SplitText.length; j++){
+
+									if(dataToSearch.searchBy[0] == 1){ // Name 
+										if(deliveryDB[i].name.indexOf(SplitText[j]) == -1){
 											found *=0;
 										}
-									break;
-									case "Description":
-										if( deliveryDB[i].description.indexOf(SplitText[j]) == -1){
+									}
+									if(dataToSearch.searchBy[1] == 1){ // Description 
+										if(deliveryDB[i].description.indexOf(SplitText[j]) == -1){
 											found *=0;
 										}
-									break;
-									case "ID":
-										if( deliveryDB[i].id.toString() != SplitText[j]){
+									}
+									if(dataToSearch.searchBy[2] == 1){ // Id 
+										if(deliveryDB[i].id.toString().indexOf(SplitText[j]) == -1){
 											found *=0;
 										}
-									break;
 									}
 								}
-								if(found == 1){
+								if(found){
 									searchResults.push(deliveryDB[i]);
 								}
 							}
-						break;
-						case "Terms":
+						}
+						if(dataToSearch.dataType[1] == 1){ // Terms
+
 							var termsDB = JSON.parse(localStorage.getItem("com.intel.Server.terms"));
 							for (var i = termsDB.length - 1; i >= 0; i--) {
 								var found = 1;
-								for(var j=0; j<SplitText.length; j++){
-									switch (dataToSearch.searchBy){
-									case "Name":
-										if( termsDB[i].name.indexOf(SplitText[j]) == -1){
+								for(var j = 0; j < SplitText.length; j++){
+
+									if(dataToSearch.searchBy[0] == 1){ // Name 
+										if(termsDB[i].name.indexOf(SplitText[j]) == -1){
 											found *=0;
 										}
-									break;
-									case "Description":
-										if( termsDB[i].description.indexOf(SplitText[j]) == -1){
+									}
+									if(dataToSearch.searchBy[1] == 1){ // Description 
+										if(termsDB[i].description.indexOf(SplitText[j]) == -1){
 											found *=0;
 										}
-									break;
-									case "ID":
-										if( termsDB[i].id.toString() != SplitText[j]){
+									}
+									if(dataToSearch.searchBy[2] == 1){ // Id 
+										if(termsDB[i].id.toString().indexOf(SplitText[j]) == -1){
 											found *=0;
 										}
-									break;
 									}
 								}
-								if(found == 1){
+								if(found){
 									searchResults.push(termsDB[i]);
 								}
 							}
-						break;
-						default: break;
+						}
 					}
 					callback(searchResults, null);
 					return;
@@ -132,6 +131,7 @@ app.factory('Server', function($rootScope){
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","There was an error in search in server", Toast.LONG, Toast.ERROR);
                 console.error("search: ", e);
+                callback(null,{"message":e.message,"code":e.code});
 			}
 		},
 
@@ -192,6 +192,7 @@ app.factory('Server', function($rootScope){
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","There was an error in saving element", Toast.LONG, Toast.ERROR);
                 console.error("saveElement: ", e);
+                callback(null,{"message":e.message,"code":e.code});
 			}
 		},
 
@@ -252,6 +253,7 @@ app.factory('Server', function($rootScope){
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","There was an error in getting element", Toast.LONG, Toast.ERROR);
                 console.error("getElementByID: ", e);
+                callback(null,{"message":e.message,"code":e.code});
 			}
 		},
 
@@ -315,6 +317,7 @@ app.factory('Server', function($rootScope){
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","There was an error in deleting element", Toast.LONG, Toast.ERROR);
                 console.error("deleteElementByID: ", e);
+                callback(null,{"message":e.message,"code":e.code});
 			}
 		},
 
@@ -325,7 +328,11 @@ app.factory('Server', function($rootScope){
 		 * @return {object}            the object version we need
 		 */
 		getVersionsByID: function(objID, callback){
-			callback(null, null);
+			try{
+				callback(null, null);
+			}catch(e){
+				callback(null, {"message":e.message,"code":e.code});
+			}
 		},
 
 		/**
@@ -335,7 +342,11 @@ app.factory('Server', function($rootScope){
 		 * @return {list}              the object versions.
 		 */
 		getVersionList: function(objID, callback){
-			callback(null, null);
+			try{
+				callback(null, null);
+			}catch(e){
+				callback(null,{"message":e.message,"code":e.code});
+			}
 		},
 
 		/**
@@ -360,6 +371,7 @@ app.factory('Server', function($rootScope){
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","There was an error in getting steps from server", Toast.LONG, Toast.ERROR);
                 console.error("getSteps: ", e);
+                callback(null,{"message":e.message,"code":e.code});
 			}
 		},
 
@@ -386,9 +398,10 @@ app.factory('Server', function($rootScope){
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","There was an error in getting settings from server", Toast.LONG, Toast.ERROR);
                 console.error("getSettings: ", e);
+                callback(null,{"message":e.message,"code":e.code});
 			}
 		}
 	}
 	return Server;
-});
+}]);
 

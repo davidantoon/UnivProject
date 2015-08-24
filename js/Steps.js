@@ -102,6 +102,7 @@ app.factory('Steps', ["$rootScope", "Workflow", "Workspace", "Server", function(
 	        }catch(e){
 	        	$rootScope.currentScope.Toast.show("Error!","There was an error in Undo function", Toast.LONG, Toast.ERROR);
                 console.error("canUndo: ", e);
+                return false;
 	        }
 		},
 
@@ -125,6 +126,7 @@ app.factory('Steps', ["$rootScope", "Workflow", "Workspace", "Server", function(
 	        }catch(e){
 	        	$rootScope.currentScope.Toast.show("Error!","There was an error in redo function", Toast.LONG, Toast.ERROR);
                 console.error("canRedo: ", e);
+                return false;
 	        }
 		},
 
@@ -187,6 +189,7 @@ app.factory('Steps', ["$rootScope", "Workflow", "Workspace", "Server", function(
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","there was an error in undo function", Toast.LONG, Toast.ERROR);
                 console.error("undoWorkflow: ", e);
+                callback(false);
 			}
 		},
 
@@ -249,6 +252,7 @@ app.factory('Steps', ["$rootScope", "Workflow", "Workspace", "Server", function(
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","there was an error in redo function", Toast.LONG, Toast.ERROR);
                 console.error("redoWorkflow: ", e);
+                callback(false);
 			}
 		},
 
@@ -355,6 +359,7 @@ app.factory('Steps', ["$rootScope", "Workflow", "Workspace", "Server", function(
 	        }catch(e){
 		        $rootScope.currentScope.Toast.show("Error!","there was an error in restoring steps", Toast.LONG, Toast.ERROR);
                 console.error("restoreStep: ", e);
+                callback();
             }
 		},
 		/**
@@ -401,6 +406,7 @@ app.factory('Steps', ["$rootScope", "Workflow", "Workspace", "Server", function(
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","there was an error in saving steps", Toast.LONG, Toast.ERROR);
                 console.error("commitSteps: ", e);
+                callback(null, {"message": e.message, "code":e.code});
 			}
 		},
 
@@ -411,11 +417,17 @@ app.factory('Steps', ["$rootScope", "Workflow", "Workspace", "Server", function(
          * @return {Object} Json object
          */
 		toJson: function(){
-			return {
-				"last20Steps": this.last20Steps,
-				"currentUndoOrder": this.currentUndoOrder,
-				"lastModified": +(new Date()),
-				"lastFocusedWorkflow": this.lastFocusedWorkflow
+			try{
+				return {
+					"last20Steps": this.last20Steps,
+					"currentUndoOrder": this.currentUndoOrder,
+					"lastModified": +(new Date()),
+					"lastFocusedWorkflow": this.lastFocusedWorkflow
+				}
+			}catch(e){
+				$rootScope.currentScope.Toast.show("Error!","there was an error converting to JSON", Toast.LONG, Toast.ERROR);
+                console.error("toJson: ", e);
+				return null;
 			}
 		}
 

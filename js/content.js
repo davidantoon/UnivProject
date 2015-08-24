@@ -18,6 +18,7 @@ app.factory('Content', ['Globals', function(Globals){
 		}catch(e){
 			$scope.Toast.show("Error!","There was an error in creating new Content", Toast.LONG, Toast.ERROR);
             console.error("Content: ", e);
+            return null;
 		}
 	}
 
@@ -69,6 +70,7 @@ app.factory('Content', ['Globals', function(Globals){
 			}catch(e){
 				$scope.Toast.show("Error!","There was an error in saving Content", Toast.LONG, Toast.ERROR);
             	console.error("save: ", e);
+            	callback(null,{"message":e.message,"code":e.code});
             }
 		},
 
@@ -138,6 +140,7 @@ app.factory('Content', ['Globals', function(Globals){
 			}catch(e){
 				$scope.Toast.show("Error!","There was an error in checking equal content", Toast.LONG, Toast.ERROR);
            		console.error("equal: ", e);
+           		return false;
 			}
 		},
 
@@ -152,6 +155,7 @@ app.factory('Content', ['Globals', function(Globals){
 			}catch(e){
 				$scope.Toast.show("Error!","There was an error in dublicating content", Toast.LONG, Toast.ERROR);
            		console.error("dublicate: ", e);
+           		return null;
 			}
 		},
 
@@ -160,23 +164,35 @@ app.factory('Content', ['Globals', function(Globals){
 		 * @return {String} return json stringify
 		 */
 		toString: function(){
-			return JSON.stringify(this.toJson());
+			try{	
+				return JSON.stringify(this.toJson());
+			}catch(e){
+				$scope.Toast.show("Error!","There was an error in converting to string", Toast.LONG, Toast.ERROR);
+           		console.error("toString: ", e);
+           		return null;
+			}
 		},
 		toJson: function(){
-			return {
-				"id": this.id,
-				"name": this.name,
-				"kBitsNeeded": this.kBitsNeeded,
-				"kBitProvided": this.kBitProvided,
-				"terms": this.terms,
-				"description": this.description,
-				"url": this.url,
-				"locked": this.locked,
-				"lastModified": this.lastModified,
-				"inProgress": this.inProgress,
-				"type": this.type,
-				"objectType": this.objectType
-				// "connectToDataBase": this.connectToDataBase 
+			try{
+				return {
+					"id": this.id,
+					"name": this.name,
+					"kBitsNeeded": this.kBitsNeeded,
+					"kBitProvided": this.kBitProvided,
+					"terms": this.terms,
+					"description": this.description,
+					"url": this.url,
+					"locked": this.locked,
+					"lastModified": this.lastModified,
+					"inProgress": this.inProgress,
+					"type": this.type,
+					"objectType": this.objectType
+					// "connectToDataBase": this.connectToDataBase 
+				}
+			}catch(e){
+				$scope.Toast.show("Error!","There was an error in converting to JSON", Toast.LONG, Toast.ERROR);
+           		console.error("toJson: ", e);
+           		return null;
 			}
 		}
 

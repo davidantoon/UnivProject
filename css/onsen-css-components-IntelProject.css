@@ -6435,7 +6435,7 @@ div.vertical {
   min-width: 100px;
 }
 .WorkFlowTab.ActiveTab > .closeTabButton{
-  opacity: 0.5;
+  opacity: 0.1;
   display: block;
 }
 
@@ -6444,7 +6444,7 @@ div.vertical {
   display: block;
 }
 .WorkFlowTab.ActiveTab > .optionTabButton{
-  opacity: 0.5;
+  opacity: 0.1;
   display: block;
 }
 
@@ -6739,6 +6739,37 @@ div.vertical {
 .ToastContainer.BOTTOM{
   bottom: 20px;
 }
+
+
+.SidebarDisplay::-webkit-scrollbar{
+  display: block;
+  -webkit-appearance: block;
+  height: 8px;
+  width: 8px;
+}
+
+
+
+.searchTypeTab{
+  margin: 30px;
+}
+.ReturnToSearchButton{
+  position: absolute;
+  top: 36px;
+  padding: 5px 14px;
+  color: #0860A8;
+  background-color: whitesmoke;
+  left: 0;
+  font-weight: 400;
+  cursor: pointer;
+}
+.ReturnToSearchButton .ons-icon{
+  vertical-align: -14%;
+}
+
+
+
+
 
 
 

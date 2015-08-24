@@ -358,11 +358,27 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
         $scope.closeTab = function(workflow){
             try{
                 var parentTabToDelete = workflow.selectedTab.dataHolding.parentTab;
+                var childTabToDelete = workflow.selectedTab.dataHolding.childTab;
                 if(parentTabToDelete != null && parentTabToDelete.workflowId != null && parentTabToDelete.tabId != null)
-                    $scope.workSpaces.deleteChildTabIds(workflow.selectedTab.dataHolding.parentTab);
+                {
+                    $scope.workSpaces.deleteChildTabIds(workflow.selectedTab.dataHolding.parentTab, false);
+                }
+                if(childTabToDelete != null && childTabToDelete.workflowId != null && childTabToDelete.tabId != null)
+                {
+                    $scope.workSpaces.deleteChildTabIds(workflow.selectedTab.dataHolding.childTab, true);
+                }
                 workflow.tabs.splice($scope.getSelectedTabIndex(workflow),1);
                 if(workflow.tabs.length > 0){
-                    workflow.selectedTab = workflow.tabs[0];
+                    if(parentTabToDelete != null && parentTabToDelete.workflowId != null && parentTabToDelete.tabId != null){
+                        for(var i=0; i<workflow.tabs.length; i++){
+                            if(workflow.tabs[i].ID == parentTabToDelete.tabId){
+                                workflow.selectedTab = workflow.tabs[i];
+                                break;
+                            }
+                        }
+                    }
+                    else
+                        workflow.selectedTab = workflow.tabs[0];
                 }else{
                     for(var i=0; i<$scope.Workflow.length; i++){
                         if($scope.Workflow[i].ID == workflow.ID){
@@ -399,6 +415,28 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
 
         }
 
+        /**
+         * Go back to parent tab
+         * @param  {object} dataHolding holding the data of parent tab
+         */
+        $scope.back = function(dataHolding){
+            try{
+                if(dataHolding != null && dataHolding != undefined ){
+                    if(dataHolding.parentTab.workflowId == null){
+                        $scope.Toast.show("Note","Parent tab is not found.", Toast.SHORT, Toast.NORMAL);        
+                    }else{
+                        $scope.workSpaces.selectTabAfterSearch(dataHolding.parentTab);
+                        setTimeout(function(){
+                            $scope.Steps.lastFocusedWorkflow = dataHolding.parentTab.workflowId;
+                            $scope.refocusLastWorkflow();
+                        },300);
+                    }
+                }
+            }catch(e){
+                $scope.Toast.show("Error!","There was an error on going back to parent tab", Toast.LONG, Toast.ERROR);
+                console.error("$scope.back: ", e);
+            }
+        }
 
         /*********************************************************************************
          *                                                                                *
@@ -625,15 +663,27 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
 
 
         $scope.prepareForSearch = function(wFlow){
+            debugger;
             try{
                 var dataHolding = wFlow.selectedTab.dataHolding;
                 var holdingRequestTab = wFlow.selectedTab;
-                if(dataHolding.searchText && dataHolding.searchText != "" && dataHolding.elementsToSearch != null && dataHolding.searchBy != null){
+                if(dataHolding.searchText && dataHolding.searchText != "" && dataHolding.elementsToSearch != null && dataHolding.searchBy != null  && 
+                    (!(wFlow.selectedTab.dataHolding.searchBy[0] == 0 && wFlow.selectedTab.dataHolding.searchBy[1] == 0 && wFlow.selectedTab.dataHolding.searchBy[2] == 0)) &&
+                    (!(wFlow.selectedTab.dataHolding.elementsToSearch[0] == 0 && wFlow.selectedTab.dataHolding.elementsToSearch[1] == 0 && wFlow.selectedTab.dataHolding.elementsToSearch[2] == 0))){
+                  
                     var dataToSearch = {
                         "text":dataHolding.searchText,
-                        "dataType": ((dataHolding.elementsToSearch == 0)?'Kbits':((dataHolding.elementsToSearch == 1)?'Deliveries':'Terms')),
-                        "searchBy": ((dataHolding.searchBy == 0)?'Name':((dataHolding.searchBy == 1)?'Description':'ID'))
-                    }
+                        "dataType": [
+                            dataHolding.elementsToSearch[0], //  Kbits
+                            dataHolding.elementsToSearch[1], //  Deliveries
+                            dataHolding.elementsToSearch[2]  //  Terms
+                        ],
+                        "searchBy": [
+                            dataHolding.searchBy[0], //  Name
+                            dataHolding.searchBy[1], //  Description
+                            dataHolding.searchBy[2]  //  ID
+                        ]
+                    } 
                     // check if there is old child tab search
                     if(holdingRequestTab.dataHolding.childTab.workflowId == null || holdingRequestTab.dataHolding.childTab.tabId == null){
                         if($scope.Settings.autoOpenTabs == true){
@@ -654,7 +704,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                                     $scope.displayNewWorkflowButtons = false;
                                 }else{
                                     $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, null);
-                                    var svr = new Server(dataToSearch.dataType);
+                                    var svr = new Server("SearchTab");
                                     svr.search(dataToSearch, function(result, error){
                                         if(error || !result){
                                             $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, []);
@@ -674,7 +724,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                     }else{
                         $scope.workSpaces.selectTabAfterSearch(holdingRequestTab.dataHolding.childTab);
                         $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, null);
-                        var svr = new Server(dataToSearch.dataType);
+                        var svr = new Server("SearchTab");
                         svr.search(dataToSearch, function(result, error){
                             if(error || !result){
                                 $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, []);
@@ -698,7 +748,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                         },300);
                     }
                 }else{
-                    $scope.Toast.show("Wrong Input", "Most be at least one Element.Most be at least one Element, one Search By and Search.", Toast.LONG, Toast.ERROR);
+                    $scope.Toast.show("Wrong Input", "Must be at least one <b>Element</b>, one <b>Search By</b> and <b>Search Text</b>.", Toast.LONG, Toast.ERROR);
                 }
             }catch(e){
                 $scope.Toast.show("Error!","Could'nt complete search", Toast.LONG, Toast.ERROR);
@@ -741,6 +791,66 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             },100);
         }
 
+
+        $scope.getCurrentWorkflows = function(){
+
+            // default colors, no color filter selected
+            if($scope.workSpaces.selectedColors.length == 0)
+                    return $scope.workSpaces.workflows;
+            else{
+                //loop in colors the are selected to filter
+                for(var i=0; i< $scope.workSpaces.selectedColors.length; i++){
+                    //loop on all workflows searching for selected colors
+                    for(var j=0; j<$scope.workSpaces.workflows; j++){
+                        //loop in all tabs in specific workflow to check if colors exists
+                        for(var k=0; k<$scope.workSpaces.workflows[j].tabs.length; k++){
+                            if($scope.workSpaces.selectedColors[i] == $scope.workSpaces.workflows[j].tabs[k].color){
+                                var holdingWorkflowColored = null;
+                                // loop in coloredWorkflows to check if exist
+                                for(var m=0; m<$scope.workSpaces.coloredWorkflows.length;m++){
+                                    if($scope.workSpaces.coloredWorkflows[m].ID == $scope.workSpaces.workflows[j].ID){
+                                        holdingWorkflowColored = $scope.workSpaces.workflows[j];
+                                        break;
+                                    }
+                                }
+
+                                // if not exist
+                                if(holdingWorkflowColored == null){
+                                    holdingWorkflowColored = new Workflow($scope.workSpaces.workflows[j], null,null,null,null, true);
+                                    $scope.workSpaces.coloredWorkflows.push(holdingWorkflowColored);   
+                                }
+                                // add tab referece
+                                holdingWorkflowColored.tabs.push($scope.workSpaces.workflows[j].tabs[k]);
+                                holdingWorkflowColored.selectedTab = holdingWorkflowColored.tabs[0];
+                            }
+
+                        }
+
+                    }
+                }
+                return $scope.workSpaces.coloredWorkflows;
+            }
+        }
+
+        $scope.selectColorFilter = function(color){
+            // check if default color selected
+                // empty selectedColors array from workspace
+            // Else
+                // check if checked 
+                    // remove from selectedColors
+                // Else
+                    // add
+            // refresh data (update matrix)
+                
+        }
+
+        $scope.colorIsChecked = function(color){
+            // flag = 0 
+            // loop in selectedColors
+                // if exist
+                    // flag = 1;
+            // return flag == 1
+        }
 
         /************************************************************************************************************************
          *                                                                                                                       *
@@ -934,11 +1044,13 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
 
 
 
-        $scope.EnableScroll = function(a){
+        $scope.EnableScroll = function(a, wflwId){
             if($scope.Settings.removeScrollOnMouseOver == true){
                 if(a==1){
+                    $('#'+wflwId+' .SelectedTabContent').removeClass('SidebarDisplay');
                     $('#BodyRow').css('overflow','scroll');
                 }else{
+                    $('#'+wflwId+' .SelectedTabContent').addClass('SidebarDisplay');
                     $('#BodyRow').css('overflow','hidden');
                 }
             }else{

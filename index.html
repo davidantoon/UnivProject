@@ -23,7 +23,7 @@
       <div class="AppPage" ng-switch-when="2" style="">  
         <ons-page>
           <ons-tabbar position="top" class="" style="height: 50px;">
-            <ons-row>
+            <ons-row style="max-height: 49px;overflow: visible;">
               <ons-col width="220px" class="Logo rtl">
                 <!-- <img src="img/IntelIcon.png" style="height: 100%;margin: auto;"> -->
               </ons-col>
@@ -32,6 +32,21 @@
               </ons-col>
               <ons-col id="NotificationsButton2" ng-click="openNewWorkflow();" width="150px" style="width:150px; position:relative;" class="">
                 <div class="TopTabbarButton clickable hoverOp">New Workflow</div>
+              </ons-col>
+              <ons-col id="ColorFilterDiv" width="40px" style="width:40px; position:relative;" class="">
+                <ons-row>
+                  <ons-col></ons-col> 
+                  <ons-col>
+                    <div class="ColorCheckStatus">
+                      <ons-icon icon="ion-checkmark-round" width="20px"></ons-icon>
+                    </div>
+                  </ons-col>
+                </ons-row>
+                <div class="TopTabbarButton clickable hoverOp" ng-click="selectColorFilter(0);">
+                  
+                </div>
+                <div class=""
+
               </ons-col>
               <ons-col>
               </ons-col>
@@ -107,7 +122,7 @@
               <div id="pointToZoom"></div>
               
               <!-- <div ng-mouseenter="EnableScroll(2);" ng-mouseleave="EnableScroll(1);" -->
-              <div ng-mouseenter="((wFlow.selectedTab.Type == 4)?EnableScroll(2):return);" ng-mouseleave="EnableScroll(1);" ng-repeat="wFlow in Workflow" id="{{'Workflow'+wFlow.ID}}" class="WorkFlowBlock Available" ng-click="Steps.lastFocusedWorkflow = wFlow.ID" fx="{{wFlow.fx}}" fy="{{wFlow.fy}}" tx="{{wFlow.tx}}" ty="{{wFlow.ty}}">
+              <div ng-mouseenter="((wFlow.selectedTab.Type == 4)?EnableScroll(2,'Workflow'+wFlow.ID):return);" ng-mouseleave="EnableScroll(1,'Workflow'+wFlow.ID);" ng-repeat="wFlow in getCurrentWorkflows()" id="{{'Workflow'+wFlow.ID}}" class="WorkFlowBlock Available" ng-click="Steps.lastFocusedWorkflow = wFlow.ID" fx="{{wFlow.fx}}" fy="{{wFlow.fy}}" tx="{{wFlow.tx}}" ty="{{wFlow.ty}}">
                 <div ng-click="focusThisWorkflow(wFlow);" class="{{'MaximizeButton clickable '+((clickToMaximize == true)?'':'hidden')}}">
                   <div>
                     <ons-icon icon="ion-ios-search-strong" size="100px"></ons-icon>
@@ -167,17 +182,18 @@
                           Elements to search:
                         </ons-row>
                         <ons-row>
-                          <ons-col ng-click="wFlow.selectedTab.dataHolding.elementsToSearch = 0; InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.elementsToSearch == 0)?'checked':'')}}">Kbits</ons-col>
-                          <ons-col ng-click="wFlow.selectedTab.dataHolding.elementsToSearch = 1; InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.elementsToSearch == 1)?'checked':'')}}">Deliveries</ons-col>
-                          <ons-col ng-click="wFlow.selectedTab.dataHolding.elementsToSearch = 2; InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.elementsToSearch == 2)?'checked':'')}}">Terms</ons-col>
+                          <ons-col 
+                          ng-click="((wFlow.selectedTab.dataHolding.elementsToSearch[0] == 1)?wFlow.selectedTab.dataHolding.elementsToSearch[0] = 0:wFlow.selectedTab.dataHolding.elementsToSearch[0] = 1); InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.elementsToSearch[0] == 1)?'checked':'')}}">Kbits</ons-col>
+                          <ons-col ng-click="((wFlow.selectedTab.dataHolding.elementsToSearch[1] == 1)?wFlow.selectedTab.dataHolding.elementsToSearch[1] = 0:wFlow.selectedTab.dataHolding.elementsToSearch[1] = 1); InsertStepToLast10Steps();"  class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.elementsToSearch[1] == 1)?'checked':'')}}">Deliveries</ons-col>
+                          <ons-col ng-click="((wFlow.selectedTab.dataHolding.elementsToSearch[2] == 1)?wFlow.selectedTab.dataHolding.elementsToSearch[2] = 0:wFlow.selectedTab.dataHolding.elementsToSearch[2] = 1); InsertStepToLast10Steps();"  class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.elementsToSearch[2] == 1)?'checked':'')}}">Terms</ons-col>
                         </ons-row>
                         <ons-row class="LabelOfOptionsButtons">
                           Search By:
                         </ons-row>
                         <ons-row>
-                          <ons-col ng-click="wFlow.selectedTab.dataHolding.searchBy = 0; InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.searchBy == 0)?'checked':'')}}">Name</ons-col>
-                          <ons-col ng-click="wFlow.selectedTab.dataHolding.searchBy = 1; InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.searchBy == 1)?'checked':'')}}">Description</ons-col>
-                          <ons-col ng-click="wFlow.selectedTab.dataHolding.searchBy = 2; InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.searchBy == 2)?'checked':'')}}">ID</ons-col>
+                          <ons-col ng-click="((wFlow.selectedTab.dataHolding.searchBy[0] == 1)?wFlow.selectedTab.dataHolding.searchBy[0] = 0:wFlow.selectedTab.dataHolding.searchBy[0] = 1); InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.searchBy[0] == 1)?'checked':'')}}">Name</ons-col>
+                          <ons-col ng-click="((wFlow.selectedTab.dataHolding.searchBy[1] == 1)?wFlow.selectedTab.dataHolding.searchBy[1] = 0:wFlow.selectedTab.dataHolding.searchBy[1] = 1); InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.searchBy[1] == 1)?'checked':'')}}">Description</ons-col>
+                          <ons-col ng-click="((wFlow.selectedTab.dataHolding.searchBy[2] == 1)?wFlow.selectedTab.dataHolding.searchBy[2] = 0:wFlow.selectedTab.dataHolding.searchBy[2] = 1); InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.searchBy[2] == 1)?'checked':'')}}">ID</ons-col>
                         </ons-row>
                         <ons-row>
                           <ons-col></ons-col>
@@ -199,8 +215,10 @@
                     <div class="{{((getSelectedTabType(wFlow) == 3)?'':'hidden')}}">
                       edit
                     </div>
-                    <div class="{{((getSelectedTabType(wFlow) == 4)?'':'hidden')}}">
-                      <!-- check if null => loader , length=0 => no content -->
+                    <div class="{{'searchTypeTab '+((getSelectedTabType(wFlow) == 4)?'':'hidden')}}">
+                      <div ng-click="back(wFlow.selectedTab.dataHolding);" class="ReturnToSearchButton">
+                        <ons-icon icon="ion-chevron-left" size="18px"></ons-icon> Back
+                      </div>
                       <pre>{{(((wFlow.selectedTab.dataHolding.results == null)?{"result":"Loading..."}:((wFlow.selectedTab.dataHolding.resultsCount == 0)?{"result":"No Content"}:wFlow.selectedTab.dataHolding.results)) | json)}}</pre>
                     </div>
                 </div>

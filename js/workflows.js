@@ -1,6 +1,6 @@
 app.factory('Workflow', ["$rootScope", 'Tab', 'TypeOf', function($rootScope, Tab, TypeOf){
 
-    function Workflow(tempJson, id, fx, fy, tx, ty){
+    function Workflow(tempJson, id, fx, fy, tx, ty, colored){
         try{
             if(tempJson != null || (id != null && fx != null && fy != null && tx != null && ty != null)){
                 if (tempJson == null) {
@@ -24,6 +24,7 @@ app.factory('Workflow', ["$rootScope", 'Tab', 'TypeOf', function($rootScope, Tab
                     this.selectedTab = null;
                     this.name = "New Workflow";
                 }else {
+
                     this.ID = tempJson.ID;
                     this.fx = tempJson.fx;
                     this.fy = tempJson.fy;
@@ -33,38 +34,39 @@ app.factory('Workflow', ["$rootScope", 'Tab', 'TypeOf', function($rootScope, Tab
                     this.tabsIds = tempJson.tabsIds;
                     this.tabs = [];
 
-                    if(tempJson.requestFrom == "restoreStep"){
-                        loopTabs(0, this, tempJson);
-                        function tabReturn(newTab, index, passThis, passTempJson){
-                            passThis.tabs.push(newTab);
-                            if(passTempJson.selectedTab.ID == passTempJson.tabs[index-1].ID){
-                                passThis.selectedTab = newTab;
+                    if(colored != null && colored == false){
+                        if(tempJson.requestFrom == "restoreStep"){
+                            loopTabs(0, this, tempJson);
+                            function tabReturn(newTab, index, passThis, passTempJson){
+                                passThis.tabs.push(newTab);
+                                if(passTempJson.selectedTab.ID == passTempJson.tabs[index-1].ID){
+                                    passThis.selectedTab = newTab;
+                                }
+                                loopTabs(index, passThis, passTempJson);
                             }
-                            loopTabs(index, passThis, passTempJson);
-                        }
-                        function loopTabs(index, passThis, passTempJson){
-                            if(index < passTempJson.tabs.length){
-                                passTempJson.tabs[index].requestFrom = passTempJson.requestFrom;
-                                passTempJson.tabs[index].callback = tabReturn;
-                                passTempJson.tabs[index].passThis = passThis;
-                                passTempJson.tabs[index].passindex = index+1;
-                                passTempJson.tabs[index].passTempJson = passTempJson;
-                                var tempTab = new Tab(null, passThis, passTempJson.tabs[index], passTempJson);
-                            }else{
-                                passTempJson.callback(passThis, passTempJson.passindex, passTempJson.passWorkspace, passTempJson.workflowsToBuild);
+                            function loopTabs(index, passThis, passTempJson){
+                                if(index < passTempJson.tabs.length){
+                                    passTempJson.tabs[index].requestFrom = passTempJson.requestFrom;
+                                    passTempJson.tabs[index].callback = tabReturn;
+                                    passTempJson.tabs[index].passThis = passThis;
+                                    passTempJson.tabs[index].passindex = index+1;
+                                    passTempJson.tabs[index].passTempJson = passTempJson;
+                                    var tempTab = new Tab(null, passThis, passTempJson.tabs[index], passTempJson);
+                                }else{
+                                    passTempJson.callback(passThis, passTempJson.passindex, passTempJson.passWorkspace, passTempJson.workflowsToBuild);
+                                }
                             }
-                        }
-                    }else{
-                        for (var i = 0; i < tempJson.tabs.length; i++) {
-                            tempJson.tabs[i].requestFrom = tempJson.requestFrom;
-                            var tempTab = new Tab(null, this, tempJson.tabs[i]);
-                            this.tabs.push(tempTab);
-                            if(tempJson.selectedTab.ID == tempJson.tabs[i].ID){
-                                this.selectedTab = tempTab;
+                        }else{
+                            for (var i = 0; i < tempJson.tabs.length; i++) {
+                                tempJson.tabs[i].requestFrom = tempJson.requestFrom;
+                                var tempTab = new Tab(null, this, tempJson.tabs[i]);
+                                this.tabs.push(tempTab);
+                                if(tempJson.selectedTab.ID == tempJson.tabs[i].ID){
+                                    this.selectedTab = tempTab;
+                                }
                             }
                         }
                     }
-
                 }
             }else{
                 throw "Id or parentWorkflow not specified!";
@@ -73,6 +75,7 @@ app.factory('Workflow', ["$rootScope", 'Tab', 'TypeOf', function($rootScope, Tab
         }catch(e){
             $rootScope.currentScope.Toast.show("Error!","There was an error in creating workflow", Toast.LONG, Toast.ERROR);
             console.error("Workflow: ", e);
+            return null;
          }        
     }
 
@@ -117,6 +120,7 @@ app.factory('Workflow', ["$rootScope", 'Tab', 'TypeOf', function($rootScope, Tab
             }catch(e){
                 $rootScope.currentScope.Toast.show("Error!","There was an error in compating two worflows", Toast.LONG, Toast.ERROR);
                 console.error("equals: ", e);
+                return false;
             }        
         },
 
@@ -133,6 +137,7 @@ app.factory('Workflow', ["$rootScope", 'Tab', 'TypeOf', function($rootScope, Tab
             }catch(e){
                 $rootScope.currentScope.Toast.show("Error!","There was an error in adding tab to workflow", Toast.LONG, Toast.ERROR);
                 console.error("addTab: ", e);
+                return null;
             }
         },
 
@@ -172,6 +177,7 @@ app.factory('Workflow', ["$rootScope", 'Tab', 'TypeOf', function($rootScope, Tab
             }catch(e){
                 $rootScope.currentScope.Toast.show("Error!","There was an error in getting position of workflow", Toast.LONG, Toast.ERROR);
                 console.error("getPosition: ", e);
+                return null;
             }
         },
 
@@ -180,7 +186,13 @@ app.factory('Workflow', ["$rootScope", 'Tab', 'TypeOf', function($rootScope, Tab
          * @return {String} Json stringify string
          */
         toString: function(){
-            return JSON.stringify(this.toJson());
+            try{
+                return JSON.stringify(this.toJson());
+            }catch(e){
+                $rootScope.currentScope.Toast.show("Error!","There was an error in converting to string", Toast.LONG, Toast.ERROR);
+                console.error("toString: ", e);
+                return null;
+            }
         },
 
         /**
@@ -188,23 +200,29 @@ app.factory('Workflow', ["$rootScope", 'Tab', 'TypeOf', function($rootScope, Tab
          * @return {Object} Json object
          */
         toJson:function(){
-            var tempJson = {
-                "ID": this.ID,
-                "fx": this.fx,
-                "fy": this.fy,
-                "tx": this.tx,
-                "ty": this.ty,
-                "name": this.name,
-                "tabsIds": this.tabsIds,
-                "tabs": []
+            try{
+                var tempJson = {
+                    "ID": this.ID,
+                    "fx": this.fx,
+                    "fy": this.fy,
+                    "tx": this.tx,
+                    "ty": this.ty,
+                    "name": this.name,
+                    "tabsIds": this.tabsIds,
+                    "tabs": []
+                }
+                tempJson.selectedTab = {
+                    "ID": this.selectedTab.ID
+                };
+                for (var i = 0; i < this.tabs.length; i++) {
+                    tempJson.tabs.push(JSON.parse(this.tabs[i].toString()));
+                }
+                return tempJson;
+            }catch(e){
+                $rootScope.currentScope.Toast.show("Error!","There was an error in converting to JSON", Toast.LONG, Toast.ERROR);
+                console.error("toJson: ", e);
+                return null;
             }
-            tempJson.selectedTab = {
-                "ID": this.selectedTab.ID
-            };
-            for (var i = 0; i < this.tabs.length; i++) {
-                tempJson.tabs.push(JSON.parse(this.tabs[i].toString()));
-            }
-            return tempJson;
         }
     };
 
