@@ -57,13 +57,13 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
         // INIT Dummy Data
         function dummyData(){
             console.warn("Dummy Data Init");
-            $.getJSON('./ServerDummyContent/KbitDB.json', function(json, textStatus) {
+            $.getJSON('https://raw.githubusercontent.com/davidantoon/mopdqwompoaskdqomdiasjdiowqe/master/ServerDummyContent/KbitDB.json', function(json, textStatus) {
                 localStorage.setItem("com.intel.Server.Kbits",JSON.stringify(json)); 
             });
-            $.getJSON('./ServerDummyContent/deliveryDB.json',{}, function(json, textStatus) {
+            $.getJSON('https://raw.githubusercontent.com/davidantoon/mopdqwompoaskdqomdiasjdiowqe/master/ServerDummyContent/deliveryDB.json',{}, function(json, textStatus) {
                 localStorage.setItem("com.intel.Server.delivery",JSON.stringify(json)); 
             });
-            $.getJSON('./ServerDummyContent/termsDB.json',{}, function(json, textStatus) {
+            $.getJSON('https://raw.githubusercontent.com/davidantoon/mopdqwompoaskdqomdiasjdiowqe/master/ServerDummyContent/termsDB.json',{}, function(json, textStatus) {
                 localStorage.setItem("com.intel.Server.terms",JSON.stringify(json)); 
             });
         }
@@ -262,6 +262,13 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
 
 
 
+
+
+
+
+
+
+
         /*******************************************************
          *                                                      *
          *  00000000000      000      000000000       00000     *
@@ -448,6 +455,14 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             }
         }
 
+
+
+
+
+
+
+
+
         /*********************************************************************************
          *                                                                                *
          *  000     000      000      00000000000  000000000    00000000000  000     000  *
@@ -490,6 +505,15 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             }
         }
         
+
+
+
+
+
+
+
+
+
 
         /***************************************************************************************************************************
         *                                                                                                                          *
@@ -693,102 +717,6 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
 
         }
 
-        /**
-         * Prepare the display for search and opening new tab or workflow
-         * @param  {object} wFlow the workflow that contains our search elemnts
-         */
-        $scope.prepareForSearch = function(wFlow){
-            try{
-                var dataHolding = wFlow.selectedTab.dataHolding;
-                var holdingRequestTab = wFlow.selectedTab;
-                if(dataHolding.searchText && dataHolding.searchText != "" && dataHolding.elementsToSearch != null && dataHolding.searchBy != null  && 
-                    (!(wFlow.selectedTab.dataHolding.searchBy[0] == 0 && wFlow.selectedTab.dataHolding.searchBy[1] == 0 && wFlow.selectedTab.dataHolding.searchBy[2] == 0)) &&
-                    (!(wFlow.selectedTab.dataHolding.elementsToSearch[0] == 0 && wFlow.selectedTab.dataHolding.elementsToSearch[1] == 0 && wFlow.selectedTab.dataHolding.elementsToSearch[2] == 0))){
-                  
-                    var dataToSearch = {
-                        "text":dataHolding.searchText,
-                        "dataType": [
-                            dataHolding.elementsToSearch[0], //  Kbits
-                            dataHolding.elementsToSearch[1], //  Deliveries
-                            dataHolding.elementsToSearch[2]  //  Terms
-                        ],
-                        "searchBy": [
-                            dataHolding.searchBy[0], //  Name
-                            dataHolding.searchBy[1], //  Description
-                            dataHolding.searchBy[2]  //  ID
-                        ]
-                    } 
-                    // check if there is old child tab search
-                    if(holdingRequestTab.dataHolding.childTab.workflowId == null || holdingRequestTab.dataHolding.childTab.tabId == null){
-                        if($scope.Settings.autoOpenTabs == true){
-                            // open in tab
-                            $scope.holdingNewWorkflowData = {"selectedTab":holdingRequestTab, "Action":"Search"};
-                            $scope.addNewTabToWorkflow(holdingRequestTab.parentWF);
-                        }else{
-                            // give the ability to choose where to open new workflow (display newWorkflowButtons)
-                            $scope.holdingNewWorkflowData = {"selectedTab":holdingRequestTab, "Action":"Search"};
-                            $scope.displayNewWorkflowButtons = true;
-                        }
-                        var waitForUserResponse = $interval(function(){
-                            if($scope.displayNewWorkflowButtons == false){
-                                $interval.cancel(waitForUserResponse);
-                                if(holdingRequestTab.dataHolding.childTab.workflowId == null || holdingRequestTab.dataHolding.childTab.tabId == null){
-                                    // new workflow canceled
-                                    $scope.holdingNewWorkflowData = null;
-                                    $scope.displayNewWorkflowButtons = false;
-                                }else{
-                                    $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, null);
-                                    var svr = new Server("SearchTab");
-                                    svr.search(dataToSearch, function(result, error){
-                                        if(error || !result){
-                                            $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, []);
-                                            $scope.InsertStepToLast10Steps();
-                                            $scope.Toast.show("Server Error", error.message, Toast.LONG, Toast.ERROR);
-                                            $scope.InsertStepToLast10Steps();
-                                        }else{
-                                            setTimeout(function(){
-                                                $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, result);
-                                                $scope.InsertStepToLast10Steps();
-                                            },1500);
-                                        }
-                                    });
-                                }
-                            }
-                        },100);
-                    }else{
-                        $scope.workSpaces.selectTabAfterSearch(holdingRequestTab.dataHolding.childTab);
-                        $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, null);
-                        var svr = new Server("SearchTab");
-                        svr.search(dataToSearch, function(result, error){
-                            if(error || !result){
-                                $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, []);
-                                $scope.InsertStepToLast10Steps();
-                                $scope.Toast.show("Server Error", error.message, Toast.LONG, Toast.ERROR);
-                                $scope.InsertStepToLast10Steps();
-                            }else{
-                                setTimeout(function(){
-                                    $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, result);
-                                    $scope.InsertStepToLast10Steps();
-                                },1500);
-                            }
-                        });
-                        setTimeout(function(){
-                            $scope.Steps.lastFocusedWorkflow = holdingRequestTab.dataHolding.childTab.workflowId;
-                            $scope.refocusLastWorkflow();
-                            setTimeout(function(){
-                                $scope.Steps.lastFocusedWorkflow = holdingRequestTab.parentWF.ID;
-                                $scope.focusingLastWorkflow = false;
-                            },600);
-                        },300);
-                    }
-                }else{
-                    $scope.Toast.show("Wrong Input", "Must be at least one <b>Element</b>, one <b>Search By</b> and <b>Search Text</b>.", Toast.LONG, Toast.ERROR);
-                }
-            }catch(e){
-                $scope.Toast.show("Error!","Could'nt complete search", Toast.LONG, Toast.ERROR);
-                console.error("prepareForSearch: ", e);
-            }
-        }
 
         /**
          * Cancel the creation of new workflow
@@ -820,6 +748,26 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             }
         }
 
+
+
+
+
+
+
+
+
+
+        /*********************************************************************************
+        *                                                                                *
+        *     00000        00000     000             00000     000000000       00000     *
+        *   000   000    000   000   000           000   000   000      00   000   000   *
+        *  000          000     000  000          000     000  000      00   00          *
+        *  00           00       00  000          00       00  000000000      0000000    *
+        *  000          000     000  000          000     000  000 000              00   *
+        *   000   000    000   000   000           000   000   000   000     000   000   *
+        *     00000        00000     0000000000      00000     000     000     00000     *
+        *                                                                                *
+        *********************************************************************************/
         /**
          * Let the use to choose color for workflow or tab
          * @param {Function} callback callback function
@@ -933,6 +881,178 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
         $scope.getColors = function(){
             return Object.keys($scope.workSpaces.colors);
         }
+
+
+
+
+
+
+
+
+        /*********************************************************************************
+        *                                                                                *
+        *     00000     00000000000      000      000000000       00000     000     000  *
+        *   000   000   000            000 000    000      00   000   000   000     000  *
+        *   00          000           000   000   000      00  000          000     000  *
+        *    0000000    00000000000  000     000  000000000    00           00000000000  *
+        *          00   000          00000000000  000 000      000          000     000  *
+        *   000   000   000          000     000  000   000     000   000   000     000  *
+        *     00000     00000000000  000     000  000     000     00000     000     000  *
+        *                                                                                *
+        *********************************************************************************/
+
+        /**
+         * Prepare the display for search and opening new tab or workflow
+         * @param  {object} wFlow the workflow that contains our search elemnts
+         */
+        $scope.prepareForSearch = function(wFlow){
+            try{
+                var dataHolding = wFlow.selectedTab.dataHolding;
+                var holdingRequestTab = wFlow.selectedTab;
+                if(dataHolding.searchText && dataHolding.searchText != "" && dataHolding.elementsToSearch != null && dataHolding.searchBy != null  && 
+                    (!(wFlow.selectedTab.dataHolding.searchBy[0] == 0 && wFlow.selectedTab.dataHolding.searchBy[1] == 0 && wFlow.selectedTab.dataHolding.searchBy[2] == 0)) &&
+                    (!(wFlow.selectedTab.dataHolding.elementsToSearch[0] == 0 && wFlow.selectedTab.dataHolding.elementsToSearch[1] == 0 && wFlow.selectedTab.dataHolding.elementsToSearch[2] == 0))){
+                  
+                    var dataToSearch = {
+                        "text":dataHolding.searchText,
+                        "dataType": [
+                            dataHolding.elementsToSearch[0], //  Kbits
+                            dataHolding.elementsToSearch[1], //  Deliveries
+                            dataHolding.elementsToSearch[2]  //  Terms
+                        ],
+                        "searchBy": [
+                            dataHolding.searchBy[0], //  Name
+                            dataHolding.searchBy[1], //  Description
+                            dataHolding.searchBy[2]  //  ID
+                        ]
+                    } 
+                    // check if there is old child tab search
+                    if(holdingRequestTab.dataHolding.childTab.workflowId == null || holdingRequestTab.dataHolding.childTab.tabId == null){
+                        if($scope.Settings.autoOpenTabs == true){
+                            // open in tab
+                            $scope.holdingNewWorkflowData = {"selectedTab":holdingRequestTab, "Action":"Search"};
+                            $scope.addNewTabToWorkflow(holdingRequestTab.parentWF);
+                        }else{
+                            // give the ability to choose where to open new workflow (display newWorkflowButtons)
+                            $scope.holdingNewWorkflowData = {"selectedTab":holdingRequestTab, "Action":"Search"};
+                            $scope.displayNewWorkflowButtons = true;
+                        }
+                        var waitForUserResponse = $interval(function(){
+                            if($scope.displayNewWorkflowButtons == false){
+                                $interval.cancel(waitForUserResponse);
+                                if(holdingRequestTab.dataHolding.childTab.workflowId == null || holdingRequestTab.dataHolding.childTab.tabId == null){
+                                    // new workflow canceled
+                                    $scope.holdingNewWorkflowData = null;
+                                    $scope.displayNewWorkflowButtons = false;
+                                }else{
+                                    $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, null);
+                                    var svr = new Server("SearchTab");
+                                    svr.search(dataToSearch, function(result, error){
+                                        if(error || !result){
+                                            $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, []);
+                                            $scope.InsertStepToLast10Steps();
+                                            $scope.Toast.show("Server Error", error.message, Toast.LONG, Toast.ERROR);
+                                            $scope.InsertStepToLast10Steps();
+                                        }else{
+                                            setTimeout(function(){
+                                                $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, result);
+                                                $scope.InsertStepToLast10Steps();
+                                            },1500);
+                                        }
+                                    });
+                                }
+                            }
+                        },100);
+                    }else{
+                        $scope.workSpaces.selectTabAfterSearch(holdingRequestTab.dataHolding.childTab);
+                        $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, null);
+                        var svr = new Server("SearchTab");
+                        svr.search(dataToSearch, function(result, error){
+                            if(error || !result){
+                                $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, []);
+                                $scope.InsertStepToLast10Steps();
+                                $scope.Toast.show("Server Error", error.message, Toast.LONG, Toast.ERROR);
+                                $scope.InsertStepToLast10Steps();
+                            }else{
+                                setTimeout(function(){
+                                    $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, result);
+                                    $scope.InsertStepToLast10Steps();
+                                },1500);
+                            }
+                        });
+                        setTimeout(function(){
+                            $scope.Steps.lastFocusedWorkflow = holdingRequestTab.dataHolding.childTab.workflowId;
+                            $scope.refocusLastWorkflow();
+                            setTimeout(function(){
+                                $scope.Steps.lastFocusedWorkflow = holdingRequestTab.parentWF.ID;
+                                $scope.focusingLastWorkflow = false;
+                            },600);
+                        },300);
+                    }
+                }else{
+                    $scope.Toast.show("Wrong Input", "Must be at least one <b>Element</b>, one <b>Search By</b> and <b>Search Text</b>.", Toast.LONG, Toast.ERROR);
+                }
+            }catch(e){
+                $scope.Toast.show("Error!","Could'nt complete search", Toast.LONG, Toast.ERROR);
+                console.error("prepareForSearch: ", e);
+            }
+        }
+
+        
+        $scope.FilterResults = function(objects, type){
+
+        }
+
+
+
+
+
+
+
+
+
+        /*********************************************************************************
+        *                                                                                *
+        *     00000     000000000    00000000000      000      00000000000  00000000000  *
+        *   000   000   000      00  000            000 000        000      000          *
+        *  000          000      00  000           000   000       000      000          *
+        *  00           000000000    00000000000  000     000      000      00000000000  *
+        *  000          000 000      000          00000000000      000      000          *
+        *   000   000   000   000    000          000     000      000      000          *
+        *     00000     000     000  00000000000  000     000      000      00000000000  *
+        *                                                                                *
+        *********************************************************************************/
+
+
+
+
+
+
+
+
+
+
+
+        /*******************************************************
+        *                                                      *
+        *  00000000000  000000000    00000000000  00000000000  *
+        *  000          000     000      000          000      *
+        *  000          000     000      000          000      *
+        *  00000000000  000     000      000          000      *
+        *  000          000     000      000          000      *
+        *  000          000     000      000          000      *
+        *  00000000000  000000000    00000000000      000      *
+        *                                                      *
+        *******************************************************/
+
+
+
+
+
+
+
+
+
 
         /************************************************************************************************************************
          *                                                                                                                       *

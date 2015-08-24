@@ -6768,7 +6768,7 @@ div.vertical {
 
 
 .searchTypeTab{
-  margin: 30px;
+  margin: 0px 5px 30px 5px;
 }
 .ReturnToSearchButton{
   position: absolute;
@@ -6860,6 +6860,30 @@ div.vertical {
 .hidden{
   display: none;
 }
+
+.SearchResultsRows{
+
+}
+.noResultsMessage{
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

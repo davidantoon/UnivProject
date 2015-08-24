@@ -234,7 +234,36 @@
                           <ons-icon icon="ion-load-c" spin="true" size="50px"></ons-icon>
                         </div>
                       </div>
-                      <pre>{{(((wFlow.selectedTab.dataHolding.results == null)?'':((wFlow.selectedTab.dataHolding.resultsCount == 0)?{"result":"No Content"}:wFlow.selectedTab.dataHolding.results)) | json)}}</pre>
+                      <div class="SearchResultsRows">
+                        <p class="noResultsMessage" style="{{((wFlow.selectedTab.dataHolding.resultsCount == 0)?'':'display:none')}}">
+                          No Results!
+                        </p>
+                        <ons-row ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Delivery')">
+                          <ons-col>
+                            OPS1
+                          </ons-col>
+                          <ons-col>
+                            OPS2
+                          </ons-col>
+                        </ons-row>
+                        <ons-row ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Kbit')">
+                          <ons-col>
+                            OPS1
+                          </ons-col>
+                          <ons-col>
+                            OPS2
+                          </ons-col>
+                        </ons-row>
+                        <ons-row ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Term')">
+                          <ons-col>
+                            OPS1
+                          </ons-col>
+                          <ons-col>
+                            OPS2
+                          </ons-col>
+                        </ons-row>
+                      </div>
+                      <!-- <pre>{{(((wFlow.selectedTab.dataHolding.results == null)?'':((wFlow.selectedTab.dataHolding.resultsCount == 0)?{"result":"No Content"}:wFlow.selectedTab.dataHolding.results)) | json)}}</pre> -->
                     </div>
                 </div>
               </div>

@@ -1,17 +1,21 @@
 [{
 	"id" : 1,
 	"name" : "dummy name 1",
+	"type":"Delivery",
 	"kBitsNeeded" : [{
 		"id":2,
 		"name":"kbit 2",
 		"description":"description 2",
+		"type":"Kbit",
 		"terms": [{
 			"id": 2,
 			"description": "description 2",
+			"type":"Term",
 			"name": "term2"
 		},{
 			"id": 3,
 			"description": "description 3",
+			"type":"Term",
 			"name": "term3"
 		}]	
 	}],
@@ -19,23 +23,28 @@
 		"id":1,
 		"name":"kbit 1",
 		"description":"description 1",
+		"type":"Kbit",
 		"terms": [{
 			"id": 1,
 			"description": "description 1",
+			"type":"Term",
 			"name": "term 1"
 		},{
 			"id": 2,
 			"description": "description 2",
+			"type":"Term",
 			"name": "term2"
 		},{
 			"id": 7,
 			"description": "description 7",
+			"type":"Term",
 			"name": "term7"
 		}]
 	}],
 	"terms" : [{
 			"id": 2,
 			"description": "description 2",
+			"type":"Term",
 			"name": "term2"
 	}],
 	"description" : "dummy description 1",
@@ -46,25 +55,31 @@
 },{
 	"id" : 2,
 	"name" : "dummy name 2",
+	"type":"Delivery",
 	"kBitsNeeded" : [{
 		"id":3,
 		"name":"kbit 3",
 		"description":"description 3",
+		"type":"Kbit",
 		"terms": [{
 			"id": 1,
 			"description": "description 1",
+			"type":"Term",
 			"name": "term 1"
 		},{
 			"id": 2,
 			"description": "description 2",
+			"type":"Term",
 			"name": "term2"
 		},{
 			"id": 4,
 			"description": "description 4",
+			"type":"Term",
 			"name": "term4"
 		},{
 			"id": 7,
 			"description": "description 7",
+			"type":"Term",
 			"name": "term7"
 		}]	
 	}],
@@ -72,40 +87,49 @@
 		"id":2,
 		"name":"kbit 2",
 		"description":"description 2",
+		"type":"Kbit",
 		"terms": [{
 			"id": 2,
 			"description": "description 2",
+			"type":"Term",
 			"name": "term2"
 		},{
 			"id": 3,
 			"description": "description 3",
+			"type":"Term",
 			"name": "term3"
 		}]	
 	},{
 		"id":4,
 		"name":"kbit 4",
 		"description":"description 4",
+		"type":"Kbit",
 		"terms": [{
 			"id": 1,
 			"description": "description 1",
+			"type":"Term",
 			"name": "term 1"
 		},{
 			"id": 3,
 			"description": "description 3",
+			"type":"Term",
 			"name": "term3"
 		},{
 			"id": 5,
 			"description": "description 5",
+			"type":"Term",
 			"name": "term5"
 		}]	
 	}],
 	"terms" : [{
 		"id": 3,
 		"description": "description 3",
+		"type":"Term",
 		"name": "term3"
 	},{
 		"id": 4,
 		"description": "description 4",
+		"type":"Term",
 		"name": "term4"
 	}],
 	"description" : "dummy description 2",
@@ -116,26 +140,32 @@
 },{
 	"id" : 3,
 	"name" : "dummy name 3",
+	"type":"Delivery",
 	"kBitsNeeded" : [{
 		"id":2,
 		"name":"kbit 2",
 		"description":"description 2",
+		"type":"Kbit",
 		"terms": [{
 			"id": 2,
 			"description": "description 2",
+			"type":"Term",
 			"name": "term2"
 		},{
 			"id": 3,
 			"description": "description 3",
+			"type":"Term",
 			"name": "term3"
 		}]	
 	},{
 		"id":5,
 		"name":"kbit 5",
 		"description":"description 5",
+		"type":"Kbit",
 		"terms": [{
 			"id": 3,
 			"description": "description 3",
+			"type":"Term",
 			"name": "term3"	
 		}]	
 	}],
@@ -143,27 +173,33 @@
 		"id":1,
 		"name":"kbit 1",
 		"description":"description 1",
+		"type":"Kbit",
 		"terms": [{
 			"id": 1,
 			"description": "description 1",
+			"type":"Term",
 			"name": "term 1"
 		},{
 			"id": 2,
 			"description": "description 2",
+			"type":"Term",
 			"name": "term2"
 		},{
 			"id": 7,
 			"description": "description 7",
+			"type":"Term",
 			"name": "term7"
 		}]
 	}],
 	"terms" : [{
 		"id": 1,
 		"description": "description 1",
+		"type":"Term",
 		"name": "term1"
 	},{
 		"id": 3,
 		"description": "description 3",
+		"type":"Term",
 		"name": "term3"
 	}],
 	"description" : "dummy description 3",
@@ -174,21 +210,26 @@
 },{
 	"id" : 4,
 	"name" : "dummy name 4",
+	"type":"Delivery",
 	"kBitsNeeded" : [{
 		"id":1,
 		"name":"kbit 1",
 		"description":"description 1",
+		"type":"Kbit",
 		"terms": [{
 			"id": 1,
 			"description": "description 1",
+			"type":"Term",
 			"name": "term 1"
 		},{
 			"id": 2,
 			"description": "description 2",
+			"type":"Term",
 			"name": "term2"
 		},{
 			"id": 7,
 			"description": "description 7",
+			"type":"Term",
 			"name": "term7"
 		}]
 	}],
@@ -196,35 +237,43 @@
 		"id":3,
 		"name":"kbit 3",
 		"description":"description 3",
+		"type":"Kbit",
 		"terms": [{
 			"id": 1,
 			"description": "description 1",
+			"type":"Term",
 			"name": "term 1"
 		},{
 			"id": 2,
 			"description": "description 2",
+			"type":"Term",
 			"name": "term2"
 		},{
 			"id": 4,
 			"description": "description 4",
+			"type":"Term",
 			"name": "term4"
 		},{
 			"id": 7,
 			"description": "description 7",
+			"type":"Term",
 			"name": "term7"
 		}]	
 	}],
 	"terms" : [{
 		"id": 1,
 		"description": "description 1",
+		"type":"Term",
 		"name": "term1"
 	},{
 		"id": 2,
 		"description": "description 2",
+		"type":"Term",
 		"name": "term2"
 	},{
 		"id": 7,
 		"description": "description 7",
+		"type":"Term",
 		"name": "term7"
 	}],
 	"description" : "dummy description 4",
@@ -235,34 +284,42 @@
 },{
 	"id" : 5,
 	"name" : "dummy name 5",
+	"type":"Delivery",
 	"kBitsNeeded" : [{
 		"id":2,
 		"name":"kbit 2",
 		"description":"description 2",
+		"type":"Kbit",
 		"terms": [{
 			"id": 2,
 			"description": "description 2",
+			"type":"Term",
 			"name": "term2"
 		},{
 			"id": 3,
 			"description": "description 3",
+			"type":"Term",
 			"name": "term3"
 		}]	
 	},{
 		"id":4,
 		"name":"kbit 4",
 		"description":"description 4",
+		"type":"Kbit",
 		"terms": [{
 			"id": 1,
 			"description": "description 1",
+			"type":"Term",
 			"name": "term 1"
 		},{
 			"id": 3,
 			"description": "description 3",
+			"type":"Term",
 			"name": "term3"
 		},{
 			"id": 5,
 			"description": "description 5",
+			"type":"Term",
 			"name": "term5"
 		}]	
 	}],
@@ -270,52 +327,64 @@
 		"id":1,
 		"name":"kbit 1",
 		"description":"description 1",
+		"type":"Kbit",
 		"terms": [{
 			"id": 1,
 			"description": "description 1",
+			"type":"Term",
 			"name": "term 1"
 		},{
 			"id": 2,
 			"description": "description 2",
+			"type":"Term",
 			"name": "term2"
 		},{
 			"id": 7,
 			"description": "description 7",
+			"type":"Term",
 			"name": "term7"
 		}]
 	},{
 		"id":3,
 		"name":"kbit 3",
 		"description":"description 3",
+		"type":"Kbit",
 		"terms": [{
 			"id": 1,
 			"description": "description 1",
+			"type":"Term",
 			"name": "term 1"
 		},{
 			"id": 2,
 			"description": "description 2",
+			"type":"Term",
 			"name": "term2"
 		},{
 			"id": 4,
 			"description": "description 4",
+			"type":"Term",
 			"name": "term4"
 		},{
 			"id": 7,
 			"description": "description 7",
+			"type":"Term",
 			"name": "term7"
 		}]	
 	}],
 	"terms" : [{
 		"id": 2,
 		"description": "description 2",
+		"type":"Term",
 		"name": "term2"
 	},{
 		"id": 5,
 		"description": "description 5",
+		"type":"Term",
 		"name": "term5"
 	},{
 		"id": 6,
 		"description": "description 6",
+		"type":"Term",
 		"name": "term6"
 	}],
 	"description" : "dummy description 5",
