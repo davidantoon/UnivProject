@@ -174,6 +174,10 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
         // 	},3000);
         // }
         
+        /**
+         * Loads the dama from the server
+         * @param  {Function} callbackFunction callback function
+         */
         $scope.loadDataFromSRV = function(callbackFunction) {
             callbackFunction(true);
             $scope.currentUser = {
@@ -217,8 +221,12 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
          *                                                                                                                   *
          ********************************************************************************************************************/
 
+         /**
+          * undo a move
+          */
         $scope.UndoWorkflow = function() {
             try{
+                // call for undo in Steps, define the callback funtion to update the layouts and names
                 $scope.Steps.undoWorkflow($scope.workSpaces, function(){
                     $scope.counterBeforeSave = 0;
                     $scope.updateAllTabName();
@@ -233,26 +241,37 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                 console.error("UndoWorkflow: ", e);
             }
         }
+
+        /**
+         * Redo a move
+         */
         $scope.RedoWorkflow = function() {
             try{
+                // call for redo in Steps, define the callback funtion to update the layouts and names
                 $scope.Steps.redoWorkflow($scope.workSpaces, function(){
-                $scope.counterBeforeSave = 0;
-                $scope.updateAllTabName();
-                $scope.updateMatrixLayout();
-                $scope.workSpaces.updateNewWorkflowButtons();
-                $timeout(function(){
-                    $scope.workSpaces.checkUserColorsInWorkspace();
-                },200);
+                    $scope.counterBeforeSave = 0;
+                    $scope.updateAllTabName();
+                    $scope.updateMatrixLayout();
+                    $scope.workSpaces.updateNewWorkflowButtons();
+                    $timeout(function(){
+                        $scope.workSpaces.checkUserColorsInWorkspace();
+                    },200);
                 });
             }catch(e){
                 $scope.Toast.show("Error!","Could'nt redo step", Toast.LONG, Toast.ERROR);
                 console.error("RedoWorkflow: ", e);
             }
         }
+
+        /**
+         * Insert the last step to last steps array for undo and redo
+         */
         $scope.InsertStepToLast10Steps = function() {
             try{
                 $scope.counterBeforeSave = 0;
+                //insert to last steps it the current workspace
                 $scope.Steps.InsertStepToLastSteps($scope.workSpaces);
+                //updates the colors (if a color is now available or not)
                 $scope.workSpaces.checkUserColorsInWorkspace();
             }catch(e){
                 $scope.Toast.show("Error!","Could'nt insert last step", Toast.LONG, Toast.ERROR);
@@ -281,6 +300,12 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
          *                                                      *
          *******************************************************/
 
+         /**
+          * Updates the tab name
+          * @param  {Number} workflowId the workflow Id that contains the tab
+          * @param  {Number} tabId      the tab Id we want to update its name
+          * @param  {Number} inputId    the input Id where we get the new name
+          */
         $scope.updateTabName = function(workflowId, tabId, inputId) {
             try{
                 $('#' + inputId).attr('readonly', 'readonly');
@@ -312,6 +337,12 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             $('#' + inputId).removeAttr('readonly');
             $('#' + inputId).select();
         }
+
+        /**
+         * Selects specific tab in workflow
+         * @param  {Object} workflow the workflow we want to update
+         * @param  {Object} tab      the tab we want to select
+         */
         $scope.selectTab = function(workflow, tab) {
             $scope.holdDoubleClickOnTab = true;
             $timeout(function() {
@@ -327,13 +358,29 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                 $scope.refocusLastWorkflow();
             },100);
         }
+
+        /**
+         * Gets the selected tab type
+         * @param  {Object} workflow the workflow we want to get the type of its selected tabs
+         * @return {string}          the type of the selected tab
+         */
         $scope.getSelectedTabType = function(workflow){
             return workflow.selectedTab.Type;
         }
         
+        /**
+         * check if selected tab is equal to tabId
+         * @param  {object} workflow the workflow that contains the tabs
+         * @param  {number} tabId    tab id
+         * @return {Boolean}         true if the selected tab is tabId
+         */
         $scope.getSelectedTab = function(workflow, tabId) {
             return (workflow.selectedTab.ID == tabId);
         }
+
+        /**
+         * Updates all tabs name
+         */
         $scope.updateAllTabName = function() {
             for (var i = 0; i < $scope.Workflow.length; i++) {
                 for (var j = 0; j < $scope.Workflow[i].tabs.length; j++) {
@@ -344,7 +391,11 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
 
 
 
-
+        /**
+         * Gets the index of selected tab
+         * @param  {object} workflow the workflow that contain the tabs
+         * @return {number}          index of the tab
+         */
         $scope.getSelectedTabIndex = function(workflow){
             for(var i=0; i<workflow.tabs.length; i++){
                 if(workflow.tabs[i].ID == workflow.selectedTab.ID){
@@ -370,19 +421,22 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
          */
         $scope.closeTab = function(workflow){
             try{
+                //update the parent tab and child tab after closing certan tab
                 var parentTabToDelete = workflow.selectedTab.dataHolding.parentTab;
                 var childTabToDelete = workflow.selectedTab.dataHolding.childTab;
-                if(parentTabToDelete != null && parentTabToDelete.workflowId != null && parentTabToDelete.tabId != null)
-                {
+                //update parent tab that it no longer has a child
+                if(parentTabToDelete != null && parentTabToDelete.workflowId != null && parentTabToDelete.tabId != null){
                     $scope.workSpaces.deleteChildTabIds(workflow.selectedTab.dataHolding.parentTab, false);
                 }
-                if(childTabToDelete != null && childTabToDelete.workflowId != null && childTabToDelete.tabId != null)
-                {
+                // update child tab that it no longer has a parent
+                if(childTabToDelete != null && childTabToDelete.workflowId != null && childTabToDelete.tabId != null){
                     $scope.workSpaces.deleteChildTabIds(workflow.selectedTab.dataHolding.childTab, true);
                 }
                 workflow.tabs.splice($scope.getSelectedTabIndex(workflow),1);
+                //if there is still tab in specific workflow
                 if(workflow.tabs.length > 0){
                     if(parentTabToDelete != null && parentTabToDelete.workflowId != null && parentTabToDelete.tabId != null){
+                        // look for parent tab ( if exists ) and focus it, make it selected tab
                         for(var i=0; i<workflow.tabs.length; i++){
                             if(workflow.tabs[i].ID == parentTabToDelete.tabId){
                                 workflow.selectedTab = workflow.tabs[i];
@@ -393,18 +447,21 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                     else
                         workflow.selectedTab = workflow.tabs[0];
                 }else{
+                    //if we are closing last tab in workflow, we need to delete it
                     for(var i=0; i<$scope.Workflow.length; i++){
                         if($scope.Workflow[i].ID == workflow.ID){
                             $scope.Workflow.splice(i,1);
                             break;
                         }
                     }
+                    // we are closing the only workflow we have ( which has only one tab), create new workflow after closing
                     if($scope.Workflow.length == 0){
                         $scope.Workflow.push(new Workflow(null, 0, 12, 12, 13, 13));
                         $scope.workSpaces.selectedWorkflow = $scope.Workflow[0];
                     }
                     $scope.EnableScroll(1);
                 }
+                //updates
                 $scope.updateMatrixLayout();
                 $scope.workSpaces.updateNewWorkflowButtons();
                 $scope.InsertStepToLast10Steps();
@@ -439,6 +496,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
         $scope.back = function(dataHolding){
             try{
                 if(dataHolding != null && dataHolding != undefined ){
+                    // checks if there is a tab to go back to
                     if(dataHolding.parentTab.workflowId == null){
                         $scope.Toast.show("Note","Parent tab is not found.", Toast.SHORT, Toast.NORMAL);        
                     }else{
@@ -612,6 +670,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                     }
                     $scope.holdingNewWorkflowData = null;
                 }
+                //updates
                 $scope.displayNewWorkflowButtons = false;
                 $scope.updateAllTabName();
                 $scope.updateMatrixLayout();
@@ -668,10 +727,12 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                     }
                     $scope.holdingNewWorkflowData = null;
                 }
+                //updates
                 $scope.displayNewWorkflowButtons = false;
                 $scope.updateAllTabName();
                 $scope.updateMatrixLayout();
                 $scope.workSpaces.updateNewWorkflowButtons();
+
                 setTimeout(function(){
                     $scope.Steps.lastFocusedWorkflow = newWorkflow.ID;
                     $scope.refocusLastWorkflow();
@@ -926,7 +987,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                             dataHolding.searchBy[2]  //  ID
                         ]
                     } 
-                    // check if there is old child tab search
+                    // check if there is no old child tab search
                     if(holdingRequestTab.dataHolding.childTab.workflowId == null || holdingRequestTab.dataHolding.childTab.tabId == null){
                         if($scope.Settings.autoOpenTabs == true){
                             // open in tab
@@ -963,7 +1024,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                                 }
                             }
                         },100);
-                    }else{
+                    }else{ // there is old child tab search
                         $scope.workSpaces.selectTabAfterSearch(holdingRequestTab.dataHolding.childTab);
                         $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, null);
                         var svr = new Server("SearchTab");
@@ -1002,6 +1063,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
          * Filter the search results by type
          * @param {object} results results we want to filter
          * @param {string} type    the type we want
+         * @return {array} returns new array with the results we need by type
          */
         $scope.FilterResults = function(results, type){
             try{
@@ -1012,6 +1074,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                     return [];
                 }
                 var newResults = [];
+                // loop on each result check if the type is equal add them to new holding data
                 for(var i=0; i<results.length; i++){
                     if(results[i].type == type){
                         newResults.push(results[i]);
@@ -1185,10 +1248,15 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             }
         }, 20);
 
-    
+        /**
+         * 
+         * Interval checks if autosave is enable and saves the data
+         *
+         */
         $interval(function(){
             // check login user
             if($scope.Settings.autoSave == true){
+                // if the steps are not already saved in server and there is no redo to apply -> autosaves
                 if($scope.Steps.savedInServer == false && $scope.Steps.canRedo() == false){
                     $scope.counterBeforeSave++;
                     if($scope.counterBeforeSave > 7){
@@ -1253,9 +1321,12 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             console.log(wFlow.selectedTab.dataHolding);
         }
 
-
+        /**
+         * Clears local storags
+         */
         $scope.clearLocalStorage = function () {
             try{
+                // create new storage
                 var str = new Storage();
                 str.clear(null,null,function(){
                     alert("Cleard");
@@ -1267,7 +1338,11 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
         }
 
 
-
+        /**
+         * Enable scroll in specific places
+         * @param {flag} a      if the layout is tab or workspace
+         * @param {Number} wflwId the workflow Id we want to enable or disable scroll
+         */
         $scope.EnableScroll = function(a, wflwId){
             if($scope.Settings.removeScrollOnMouseOver == true){
                 if(a==1){
