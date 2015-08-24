@@ -791,6 +791,44 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             },100);
         }
 
+
+        $scope.getCurrentWorkflows = function(){
+
+            // check if selected all colors
+                return $scope.workSpaces.workflows;
+            // else
+                // loop in colors
+                    // check if color checked
+                        // loop in workflows 
+                            // loop in tabs
+                                // check if colored same
+                                    // check if workflow not added to tempWorkspace
+                                        // add workflow reference to tempWorkspace
+                                    // add tab reference to workflow
+                // return $scope.workSpaces.coloredWorkflows;
+            
+        }
+
+        $scope.selectColorFilter = function(color){
+            // check if default color selected
+                // empty selectedColors array from workspace
+            // Else
+                // check if checked 
+                    // remove from selectedColors
+                // Else
+                    // add
+            // refresh data (update matrix)
+                
+        }
+
+        $scope.colorIsChecked = function(color){
+            // flag = 0 
+            // loop in selectedColors
+                // if exist
+                    // flag = 1;
+            // return flag == 1
+        }
+
         /************************************************************************************************************************
          *                                                                                                                       *
          *  00000000000  000      00  00000000000  00000000000  000000000   00         00     000      000             00000     *

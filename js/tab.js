@@ -179,6 +179,10 @@ app.factory('Tab', ["$rootScope", 'Content','Globals','Storage', function($rootS
             }
             return JSON.stringify(strToReturn);
 		}
+
+
+
+		
 	}
 
 

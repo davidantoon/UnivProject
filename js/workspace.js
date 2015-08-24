@@ -3,6 +3,7 @@ app.factory('Workspace', ['$rootScope', 'Workflow', function($rootScope, Workflo
 		try{
 			var firstWorkflow = new Workflow(null, 0, 12, 12, 13, 13);
 			this.workflows = [firstWorkflow];
+			this.coloredWorkflows = [];
 			this.lastWorkflowId = 0;
 			this.newWorkflowButtons = this.getNewWorkflowButtons(null);
 			this.selectedWorkflow = firstWorkflow;
@@ -20,6 +21,7 @@ app.factory('Workspace', ['$rootScope', 'Workflow', function($rootScope, Workflo
 				"#808080" : false,
 				"#000" : false
 			};
+			this.selectedColors = [];
 		}catch(e){
 			$rootScope.currentScope.Toast.show("Error!","There was an error in creating workspace", Toast.LONG, Toast.ERROR);
            	console.error("canUndo: ", e);
