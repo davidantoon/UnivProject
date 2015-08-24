@@ -428,7 +428,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                         setTimeout(function(){
                             $scope.Steps.lastFocusedWorkflow = dataHolding.parentTab.workflowId;
                             $scope.refocusLastWorkflow();
-                        },300);
+                        },100);
                     }
                 }
             }catch(e){
@@ -794,12 +794,27 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
            
             // default colors, no color filter selected
             if($scope.workSpaces.selectedColors.length == 0)
-                    return $scope.workSpaces.workflows;
+                return $scope.workSpaces.workflows;
             else{
+                return $scope.workSpaces.coloredWorkflows;
+            }
+        }
+
+        $scope.selectColorFilter = function(color){
+            if(color == 0){
+                $scope.workSpaces.coloredWorkflows = [];
+                $scope.workSpaces.selectedColors = [];
+            }else{
+                if(colorIsChecked(color))
+                    $scope.removeColorFromColorFilter(color);
+                else
+                    $scope.workSpaces.selectedColors.push(color);
+                
+                $scope.workSpaces.coloredWorkflows = [];
                 //loop in colors the are selected to filter
                 for(var i=0; i< $scope.workSpaces.selectedColors.length; i++){
                     //loop on all workflows searching for selected colors
-                    for(var j=0; j<$scope.workSpaces.workflows; j++){
+                    for(var j=0; j<$scope.workSpaces.workflows.length; j++){
                         //loop in all tabs in specific workflow to check if colors exists
                         for(var k=0; k<$scope.workSpaces.workflows[j].tabs.length; k++){
                             if($scope.workSpaces.selectedColors[i] == $scope.workSpaces.workflows[j].tabs[k].color){
@@ -807,16 +822,17 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                                 // loop in coloredWorkflows to check if exist
                                 for(var m=0; m<$scope.workSpaces.coloredWorkflows.length;m++){
                                     if($scope.workSpaces.coloredWorkflows[m].ID == $scope.workSpaces.workflows[j].ID){
-                                        holdingWorkflowColored = $scope.workSpaces.workflows[j];
+                                        holdingWorkflowColored = $scope.workSpaces.coloredWorkflows[m];
                                         break;
                                     }
                                 }
 
                                 // if not exist
                                 if(holdingWorkflowColored == null){
-                                    holdingWorkflowColored = new Workflow($scope.workSpaces.workflows[j], null,null,null,null, true);
+                                    holdingWorkflowColored = new Workflow($scope.workSpaces.workflows[j], null,null,null,null,null, true);
                                     $scope.workSpaces.coloredWorkflows.push(holdingWorkflowColored);   
                                 }
+
                                 // add tab referece
                                 holdingWorkflowColored.tabs.push($scope.workSpaces.workflows[j].tabs[k]);
                                 holdingWorkflowColored.selectedTab = holdingWorkflowColored.tabs[0];
@@ -826,28 +842,23 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
 
                     }
                 }
-                return $scope.workSpaces.coloredWorkflows;
-            }
-        }
 
-        $scope.selectColorFilter = function(color){
-            // check if default color selected
-                // empty selectedColors array from workspace
-            // Else
-                // check if checked 
-                    // remove from selectedColors
-                // Else
-                    // add
-            // refresh data (update matrix)
-                
+            }
+            $scope.updateAllTabName();
+            $scope.updateMatrixLayout();
         }
 
         $scope.colorIsChecked = function(color){
+            
             // flag = 0 
             // loop in selectedColors
                 // if exist
                     // flag = 1;
             // return flag == 1
+        }
+
+        $scope.removeColorFromColorFilter = function(color){
+
         }
 
         /************************************************************************************************************************
