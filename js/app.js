@@ -353,7 +353,10 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             });
         }
 
-        
+        /**
+         * Closes specific tab
+         * @param  {Object} workflow the workflow that contains the tab we want to close
+         */
         $scope.closeTab = function(workflow){
             try{
                 var parentTabToDelete = workflow.selectedTab.dataHolding.parentTab;
@@ -401,7 +404,11 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             }
         }
         
-
+        /**
+         * Checks if color is used
+         * @param  {String}  color the color we want to look for
+         * @return {Boolean}       true if the color is used
+         */
         $scope.isColorUsed = function(color){
             if($scope.workSpaces != undefined && $scope.workSpaces != null && $scope.workSpaces.colors != undefined &&  $scope.workSpaces.colors != null)
                 return $scope.workSpaces.colors[color];
@@ -449,7 +456,9 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
          *                                                                                *
          *********************************************************************************/
 
-
+        /**
+         * Updates the matrix layout
+         */
         $scope.updateMatrixLayout = function() {
             try{
                 var w_Width = $(window).width();
@@ -504,7 +513,12 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             $scope.InsertStepToLast10Steps();
         }
     
-
+        /**
+         * Resizes the block
+         * @param  {[type]} direction  [description]
+         * @param  {[type]} workflowId [description]
+         * @return {[type]}            [description]
+         */
         $scope.resizeBlock = function(direction, workflowId) {
             try{
                 for(var i=0; i<$scope.workSpaces.workflows.length; i++){
@@ -535,7 +549,10 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             }
         }
 
-
+        /**
+         * Adds new tab to workflow
+         * @param {Object} workflow the workflow we want to add to
+         */
         $scope.addNewTabToWorkflow = function(workflow){
             try{
                 if($scope.holdingNewWorkflowData == null){
@@ -582,6 +599,11 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                 console.error("addNewTabToWorkflow: ", e);
             }
         }
+
+        /**
+         * Creates new workflow with the action needed to display 
+         * @param  {object} newWorkflow the new workflow
+         */
         $scope.convertToWorkflow = function(newWorkflow){
             try{
                 if($scope.holdingNewWorkflowData == null){
@@ -632,12 +654,20 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             }
         }
 
+        /**
+         * Focus on last workflow
+         */
         $scope.refocusLastWorkflow = function(){
             $scope.workSpaces.scrollToLastWorkflow($scope.Steps);
             setTimeout(function(){
                 $scope.focusingLastWorkflow = true;
             },500);
         }
+
+        /**
+         * Focus on specific workflow
+         * @param  {object} workflow the workflow we want to focus 
+         */
         $scope.focusThisWorkflow = function(workflow){
             var lastFocusedWorkflow = $scope.Steps.lastFocusedWorkflow+1-1;
             $scope.Steps.lastFocusedWorkflow = workflow.ID;
@@ -659,8 +689,10 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
 
         }
 
-
-
+        /**
+         * Prepare the display for search and opening new tab or workflow
+         * @param  {object} wFlow the workflow that contains our search elemnts
+         */
         $scope.prepareForSearch = function(wFlow){
             try{
                 var dataHolding = wFlow.selectedTab.dataHolding;
@@ -754,7 +786,9 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             }
         }
 
-
+        /**
+         * Cancel the creation of new workflow
+         */
         $scope.CancelNewWorkflow = function(wFlow){
             $scope.displayNewWorkflowButtons = false;
             $scope.holdingNewWorkflowData = null;
@@ -762,7 +796,9 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             $scope.handlePickColor = false;
         }
 
-
+        /**
+         * Creates new workflow
+         */
         $scope.openNewWorkflow = function(){
             try{
                 $scope.blurAllWindow = true;
@@ -780,6 +816,10 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             }
         }
 
+        /**
+         * Let the use to choose color for workflow or tab
+         * @param {Function} callback callback function
+         */
         $scope.Pickcolor = function(callback){
             var waitForUserResponse = $interval(function(){
                 if($scope.colorPicked != null){
@@ -789,7 +829,10 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             },100);
         }
 
-
+        /**
+         * Gets current workflow depends on color selection
+         * @return {object} the workflow we are going to display
+         */
         $scope.getCurrentWorkflows = function(){
            
             // default colors, no color filter selected
@@ -800,11 +843,17 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             }
         }
 
+        /**
+         * Updates the workspace to show specific colors
+         * @param  {string} color color we want to select
+         */
         $scope.selectColorFilter = function(color){
+            // if choose default colors to be shown
             if(color == 0){
                 $scope.workSpaces.coloredWorkflows = [];
                 $scope.workSpaces.selectedColors = [];
             }else{
+                // if color already checked, remove it
                 if(colorIsChecked(color))
                     $scope.removeColorFromColorFilter(color);
                 else
@@ -844,21 +893,36 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                 }
 
             }
+            // updates the layout
             $scope.updateAllTabName();
             $scope.updateMatrixLayout();
         }
 
+        /**
+         * Checks if color is selected
+         * @param  {string} color the color we want to check
+         * @return {boolean}       returns true if color exist
+         */
         $scope.colorIsChecked = function(color){
-
-            // flag = 0 
-            // loop in selectedColors
-                // if exist
-                    // flag = 1;
-            // return flag == 1
+            // loop on selected colors to check if color exists
+            for(var i=0; i<$scope.workSpaces.selectedColors.length; i++)
+                if(color == $scope.workSpaces.selectedColors[i])
+                    return true;
+            return false;
         }
 
+        /**
+         * Removes color from the selected colors array
+         * @param  {string} color the color we want to remove
+         */
         $scope.removeColorFromColorFilter = function(color){
-
+           
+            //loop on colors to remove it
+            for(var i=0; i<$scope.workSpaces.selectedColors.length; i++){
+                if(color == $scope.workSpaces.selectedColors[i])){
+                    workSpaces.selectedColors[i].splice(i,1);
+                }
+            }
         }
 
         $scope.getColors = function(){
