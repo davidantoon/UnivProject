@@ -39,7 +39,8 @@ app.factory('Tab', ["$rootScope", 'Content','Globals','Storage', function($rootS
 			if(tempJson.requestFrom == "restoreStep"){
 					if(tempJson.content != null && tempJson.content != null){
 						var passThis = this;
-						Storage.getElementById(JSON.parse(tempJson.content).id, tempJson.content, /* force last modefied */ true, /* force server pull */ false, function(dataFromStorage){
+						var stor = new Storage();
+						stor.getElementById(tempJson.content, /* force last modefied */ true, /* force server pull */ false, function(dataFromStorage){
 							passThis.content = dataFromStorage;
 							tempJson.callback(passThis, tempJson.passindex, tempJson.passThis, tempJson.passTempJson);
 						});
@@ -115,7 +116,7 @@ app.factory('Tab', ["$rootScope", 'Content','Globals','Storage', function($rootS
 					this.addData({
 						"parentTab":{"workflowId":null,"tabId":null}
 					});
-					this.addContent(content);
+					this.addContent(content, true);
 				break;
 				default:
 				break;
@@ -137,17 +138,17 @@ app.factory('Tab', ["$rootScope", 'Content','Globals','Storage', function($rootS
 		 * @param {Content || String} contentObj if the type of passed parameter is Content then will link to this tab.
 		 *                    					 if the type is String, will check global cached contents, or get from server.
 		 */
-		addContent: function(contentObj){
+		addContent: function(contentObj, forceServerPull){
 			// pass content to storage function to check if already in cache or add it and return new content
 			if(contentObj == null || contentObj == undefined){
 				console.error("addContet: conten obj is null or undefined");
+			}else{
+				var passThis = this;
+				var stor = new Storage();
+				stor.getElementById(contentObj, /* force last modefied */ true, forceServerPull, function(dataFromStorage){
+					passThis.content = dataFromStorage;
+				});
 			}
-			var str = new Storage();
-			// check if content exists in storage
-			if(str.checkContent(contentObj)){
-				this.content = contentObj;
-			}else // create new content
-			this.content = new Content(contentObj);
 		},
 
 		addResults: function(contentObj){

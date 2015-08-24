@@ -117,9 +117,10 @@ app.factory('Storage', ["$rootScope", "Globals", "TypeOf", function($rootScope, 
 						break;
 						case "Content":
 							var tempData = Globals.get(JSON.parse(obj.data).id);
-							if(tempData == null)
+							if(tempData == null){
 								console.warn("you should check server !!!!");
 								obj.data = new Content(JSON.parse(obj.data));
+							}
 							else
 								obj.data = tempData;
 						break;
@@ -227,36 +228,22 @@ app.factory('Storage', ["$rootScope", "Globals", "TypeOf", function($rootScope, 
 		 * @param  {boolean}  forceServerPull   true if force pull from server
 		 * @param  {Function} callback          callback function
 		 */
-		getElementById: function(elemId, jsonObject, forceLastmodefied, forceServerPull, callback){
-			callback(null);
+		getElementById: function(jsonObject, forceLastmodefied, forceServerPull, callback){
+			elemId = jsonObject.id;
 			if( elemId != undefined && elemId != null && elemId != ""){
 				if(forceServerPull == true){
-					var cashedObject = Globals.get(jsonObject.id);
+					var cashedObject = Globals.get(elemId);
 					if(cashedObject == null){
 						cashedObject = new Content(jsonObject);
 					}else{
-						if(jsonObject.lastModified != cashedObject.lastmodified){
+						if(jsonObject.lastModified != cashedObject.lastmodified)
 							cashedObject = new Content(jsonObject);
 					}
 					callback(cashedObject);
 					return;
 				}
 			}else{
-
-			}
-		},
-
-		/**
-		 * checks is content is in storage
-		 * @param  {object} contentObj content object to check
-		 * @return {Boolean}           true if contetn exists
-		 */
-		checkContent: function(contentObj){
-			var cashedObject = Globals.get(contentObj.id);
-			if(cashedObject == null || cashedObject == undefined){
-				return false; // content does not exist
-			}else{
-				return true;
+				callback(null);
 			}
 		}
 	};
