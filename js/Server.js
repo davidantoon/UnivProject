@@ -12,7 +12,7 @@ app.factory('Server', ["$rootScope", function($rootScope){
             console.error("server: ", e);
 		}
 	}
-
+ 
 	Server.prototype = {
 
 		/**
