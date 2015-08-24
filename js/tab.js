@@ -139,7 +139,15 @@ app.factory('Tab', ["$rootScope", 'Content','Globals','Storage', function($rootS
 		 */
 		addContent: function(contentObj){
 			// pass content to storage function to check if already in cache or add it and return new content
-			this.content = contentObj;
+			if(contentObj == null || contentObj == undefined){
+				console.error("addContet: conten obj is null or undefined");
+			}
+			var str = new Storage();
+			// check if content exists in storage
+			if(str.checkContent(contentObj)){
+				this.content = contentObj;
+			}else // create new content
+			this.content = new Content(contentObj);
 		},
 
 		addResults: function(contentObj){

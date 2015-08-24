@@ -280,10 +280,24 @@ app.factory('Workspace', ['$rootScope', 'Workflow', function($rootScope, Workflo
 			}
 		},
 
-
+		/**
+		 * Replaces the contet data in specific child
+		 * @param  {object} childHoldingData child data holding
+		 * @param  {ibject} content          contect we want to change
+		 */
 		replaceSearchChildContent: function(childHoldingData, content){
-			// locate on workflows and tabs
-				// locatedTab.addContent(content);
+			//loop over workflows to locate specific workflow
+			for(var i=0; i<this.workflows.length; i++){
+				if(childHoldingData.workflowId == this.workflows[i].ID){
+					//loop over tabs to locate specific tab
+					for(var j=0; j<this.workflows[i].tabs.length; j++){
+						if(childHoldingData.tabId == this.workflows[i].tabs[j].ID){
+							this.workflows[i].tabs[j].addContent(content);
+							return;
+						}
+					}
+				}
+			}
 		}
 	}
 

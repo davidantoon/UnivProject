@@ -118,6 +118,7 @@ app.factory('Storage', ["$rootScope", "Globals", "TypeOf", function($rootScope, 
 						case "Content":
 							var tempData = Globals.get(JSON.parse(obj.data).id);
 							if(tempData == null)
+								console.warn("you should check server !!!!");
 								obj.data = new Content(JSON.parse(obj.data));
 							else
 								obj.data = tempData;
@@ -218,24 +219,46 @@ app.factory('Storage', ["$rootScope", "Globals", "TypeOf", function($rootScope, 
 			}
 		},
 
-
-		getElementById: function(elemId, jsonType, forceLastmodefied, forceServerPull, callback){
+		/**
+		 * Gets elemtent or creates new onw if it doesnt exist
+		 * @param  {number}   elemId            element id
+		 * @param  {object}   jsonObject        content object
+		 * @param  {boolean}  forceLastmodefied true if force last modified change
+		 * @param  {boolean}  forceServerPull   true if force pull from server
+		 * @param  {Function} callback          callback function
+		 */
+		getElementById: function(elemId, jsonObject, forceLastmodefied, forceServerPull, callback){
 			callback(null);
 			if( elemId != undefined && elemId != null && elemId != ""){
 				if(forceServerPull == true){
-					// check if lastmodified is same in cashe globals
-						// return from chashe
-					// else
-						// create new content and store in in cashe then return reference
+					var cashedObject = Globals.get(jsonObject.id);
+					if(cashedObject == null){
+						cashedObject = new Content(jsonObject);
+					}else{
+						if(jsonObject.lastModified != cashedObject.lastmodified){
+							cashedObject = new Content(jsonObject);
+					}
+					callback(cashedObject);
+					return;
 				}
 			}else{
 
 			}
+		},
+
+		/**
+		 * checks is content is in storage
+		 * @param  {object} contentObj content object to check
+		 * @return {Boolean}           true if contetn exists
+		 */
+		checkContent: function(contentObj){
+			var cashedObject = Globals.get(contentObj.id);
+			if(cashedObject == null || cashedObject == undefined){
+				return false; // content does not exist
+			}else{
+				return true;
+			}
 		}
-
-
-
-
 	};
 
 	return Storage;
