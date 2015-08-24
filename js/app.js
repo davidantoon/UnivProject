@@ -57,13 +57,13 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
         // INIT Dummy Data
         function dummyData(){
             console.warn("Dummy Data Init");
-            $.getJSON('./ServerDummyContent/KbitDB.json', function(json, textStatus) {
+            $.getJSON('https://raw.githubusercontent.com/davidantoon/mopdqwompoaskdqomdiasjdiowqe/master/ServerDummyContent/KbitDB.json', function(json, textStatus) {
                 localStorage.setItem("com.intel.Server.Kbits",JSON.stringify(json)); 
             });
-            $.getJSON('./ServerDummyContent/deliveryDB.json',{}, function(json, textStatus) {
+            $.getJSON('https://raw.githubusercontent.com/davidantoon/mopdqwompoaskdqomdiasjdiowqe/master/ServerDummyContent/deliveryDB.json',{}, function(json, textStatus) {
                 localStorage.setItem("com.intel.Server.delivery",JSON.stringify(json)); 
             });
-            $.getJSON('./ServerDummyContent/termsDB.json',{}, function(json, textStatus) {
+            $.getJSON('https://raw.githubusercontent.com/davidantoon/mopdqwompoaskdqomdiasjdiowqe/master/ServerDummyContent/termsDB.json',{}, function(json, textStatus) {
                 localStorage.setItem("com.intel.Server.terms",JSON.stringify(json)); 
             });
         }
@@ -179,9 +179,8 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             $scope.currentUser = {
                 'firstName': 'David',
                 'lastName': 'Antoon',
-                'profilePicture': 'https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/v/t1.0-1/p320x320/988960_632550293533974_2658667833563570113_n.jpg?oh=c62dc24dba7545a6d06915cd01c11a3f&oe=55A4011C&__gda__=1436053802_e6b13ee76d8aa131e270234503c16cc8'
+                'profilePicture': 'https://graph.facebook.com/100003370268591/picture'
             };
-
 
             // init worksace
             $rootScope.currentScope = $scope;
@@ -263,6 +262,13 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
 
 
 
+
+
+
+
+
+
+
         /*******************************************************
          *                                                      *
          *  00000000000      000      000000000       00000     *
@@ -316,6 +322,10 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                     }
                 }
             }, 200);
+            setTimeout(function(){
+                $scope.Steps.lastFocusedWorkflow = workflow.ID;
+                $scope.refocusLastWorkflow();
+            },100);
         }
         $scope.getSelectedTabType = function(workflow){
             return workflow.selectedTab.Type;
@@ -354,7 +364,10 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             });
         }
 
-        
+        /**
+         * Closes specific tab
+         * @param  {Object} workflow the workflow that contains the tab we want to close
+         */
         $scope.closeTab = function(workflow){
             try{
                 var parentTabToDelete = workflow.selectedTab.dataHolding.parentTab;
@@ -402,7 +415,11 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             }
         }
         
-
+        /**
+         * Checks if color is used
+         * @param  {String}  color the color we want to look for
+         * @return {Boolean}       true if the color is used
+         */
         $scope.isColorUsed = function(color){
             if($scope.workSpaces != undefined && $scope.workSpaces != null && $scope.workSpaces.colors != undefined &&  $scope.workSpaces.colors != null)
                 return $scope.workSpaces.colors[color];
@@ -429,7 +446,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                         setTimeout(function(){
                             $scope.Steps.lastFocusedWorkflow = dataHolding.parentTab.workflowId;
                             $scope.refocusLastWorkflow();
-                        },300);
+                        },100);
                     }
                 }
             }catch(e){
@@ -437,6 +454,14 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                 console.error("$scope.back: ", e);
             }
         }
+
+
+
+
+
+
+
+
 
         /*********************************************************************************
          *                                                                                *
@@ -450,7 +475,9 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
          *                                                                                *
          *********************************************************************************/
 
-
+        /**
+         * Updates the matrix layout
+         */
         $scope.updateMatrixLayout = function() {
             try{
                 var w_Width = $(window).width();
@@ -479,6 +506,15 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
         }
         
 
+
+
+
+
+
+
+
+
+
         /***************************************************************************************************************************
         *                                                                                                                          *
         * 00         00 00000000000         000         00000     00000000000  00000000000     00000     000      00     00000     *
@@ -505,7 +541,12 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             $scope.InsertStepToLast10Steps();
         }
     
-
+        /**
+         * Resizes the block
+         * @param  {[type]} direction  [description]
+         * @param  {[type]} workflowId [description]
+         * @return {[type]}            [description]
+         */
         $scope.resizeBlock = function(direction, workflowId) {
             try{
                 for(var i=0; i<$scope.workSpaces.workflows.length; i++){
@@ -536,7 +577,10 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             }
         }
 
-
+        /**
+         * Adds new tab to workflow
+         * @param {Object} workflow the workflow we want to add to
+         */
         $scope.addNewTabToWorkflow = function(workflow){
             try{
                 if($scope.holdingNewWorkflowData == null){
@@ -575,14 +619,19 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                 $scope.workSpaces.checkUserColorsInWorkspace();
                 
                 setTimeout(function(){
-                    $scope.Steps.lastFocusedWorkflow = newWorkflow.ID;
+                    $scope.Steps.lastFocusedWorkflow = workflow.ID;
                     $scope.refocusLastWorkflow();
-                },300);
+                },200);
             }catch(e){
                 $scope.Toast.show("Error!","Could'nt add new workflow or tab", Toast.LONG, Toast.ERROR);
                 console.error("addNewTabToWorkflow: ", e);
             }
         }
+
+        /**
+         * Creates new workflow with the action needed to display 
+         * @param  {object} newWorkflow the new workflow
+         */
         $scope.convertToWorkflow = function(newWorkflow){
             try{
                 if($scope.holdingNewWorkflowData == null){
@@ -633,12 +682,20 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             }
         }
 
+        /**
+         * Focus on last workflow
+         */
         $scope.refocusLastWorkflow = function(){
             $scope.workSpaces.scrollToLastWorkflow($scope.Steps);
             setTimeout(function(){
                 $scope.focusingLastWorkflow = true;
             },500);
         }
+
+        /**
+         * Focus on specific workflow
+         * @param  {object} workflow the workflow we want to focus 
+         */
         $scope.focusThisWorkflow = function(workflow){
             var lastFocusedWorkflow = $scope.Steps.lastFocusedWorkflow+1-1;
             $scope.Steps.lastFocusedWorkflow = workflow.ID;
@@ -661,9 +718,194 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
         }
 
 
+        /**
+         * Cancel the creation of new workflow
+         */
+        $scope.CancelNewWorkflow = function(wFlow){
+            $scope.displayNewWorkflowButtons = false;
+            $scope.holdingNewWorkflowData = null;
+            $scope.blurAllWindow = false;
+            $scope.handlePickColor = false;
+        }
 
+        /**
+         * Creates new workflow
+         */
+        $scope.openNewWorkflow = function(){
+            try{
+                $scope.blurAllWindow = true;
+                $scope.handlePickColor = true;
+                $scope.colorPicked = null;
+                $scope.Pickcolor(function(){
+                    $scope.blurAllWindow = false;
+                    $scope.handlePickColor = false;
+                    $scope.displayNewWorkflowButtons = true;
+                    $scope.holdingNewWorkflowData = null;
+                });
+            }catch(e){
+                $scope.Toast.show("Error!","Could'nt open new work flow", Toast.LONG, Toast.ERROR);
+                console.error("openNewWorkflow: ", e);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+        /*********************************************************************************
+        *                                                                                *
+        *     00000        00000     000             00000     000000000       00000     *
+        *   000   000    000   000   000           000   000   000      00   000   000   *
+        *  000          000     000  000          000     000  000      00   00          *
+        *  00           00       00  000          00       00  000000000      0000000    *
+        *  000          000     000  000          000     000  000 000              00   *
+        *   000   000    000   000   000           000   000   000   000     000   000   *
+        *     00000        00000     0000000000      00000     000     000     00000     *
+        *                                                                                *
+        *********************************************************************************/
+        /**
+         * Let the use to choose color for workflow or tab
+         * @param {Function} callback callback function
+         */
+        $scope.Pickcolor = function(callback){
+            var waitForUserResponse = $interval(function(){
+                if($scope.colorPicked != null){
+                    callback();
+                    $interval.cancel(waitForUserResponse);
+                }
+            },100);
+        }
+
+        /**
+         * Gets current workflow depends on color selection
+         * @return {object} the workflow we are going to display
+         */
+        $scope.getCurrentWorkflows = function(){
+           
+            // default colors, no color filter selected
+            if($scope.workSpaces.selectedColors.length == 0)
+                return $scope.workSpaces.workflows;
+            else{
+                return $scope.workSpaces.coloredWorkflows;
+            }
+        }
+
+        /**
+         * Updates the workspace to show specific colors
+         * @param  {string} color color we want to select
+         */
+        $scope.selectColorFilter = function(color){
+            // if choose default colors to be shown
+            if(color == 0){
+                $scope.workSpaces.coloredWorkflows = [];
+                $scope.workSpaces.selectedColors = [];
+            }else{
+                // if color already checked, remove it
+                if($scope.colorIsChecked(color))
+                    $scope.removeColorFromColorFilter(color);
+                else
+                    $scope.workSpaces.selectedColors.push(color);
+                
+                $scope.workSpaces.coloredWorkflows = [];
+                
+                //loop in colors the are selected to filter
+                for(var i=0; i< $scope.workSpaces.selectedColors.length; i++){
+                    //loop on all workflows searching for selected colors
+                    for(var j=0; j<$scope.workSpaces.workflows.length; j++){
+                        //loop in all tabs in specific workflow to check if colors exists
+                        for(var k=0; k<$scope.workSpaces.workflows[j].tabs.length; k++){
+                            if($scope.workSpaces.selectedColors[i] == $scope.workSpaces.workflows[j].tabs[k].color){
+                                var holdingWorkflowColored = null;
+                                // loop in coloredWorkflows to check if exist
+                                for(var m=0; m<$scope.workSpaces.coloredWorkflows.length;m++){
+                                    if($scope.workSpaces.coloredWorkflows[m].ID == $scope.workSpaces.workflows[j].ID){
+                                        holdingWorkflowColored = $scope.workSpaces.coloredWorkflows[m];
+                                        break;
+                                    }
+                                }
+
+                                // if not exist
+                                if(holdingWorkflowColored == null){
+                                    holdingWorkflowColored = new Workflow($scope.workSpaces.workflows[j], null,null,null,null,null, true);
+                                    $scope.workSpaces.coloredWorkflows.push(holdingWorkflowColored);   
+                                }
+
+                                // add tab referece
+                                holdingWorkflowColored.tabs.push($scope.workSpaces.workflows[j].tabs[k]);
+                                holdingWorkflowColored.selectedTab = holdingWorkflowColored.tabs[0];
+                            }
+                        }
+
+                    }
+                }
+
+            }
+            // updates the layout
+            $scope.updateAllTabName();
+            $scope.updateMatrixLayout();
+        }
+
+        /**
+         * Checks if color is selected
+         * @param  {string} color the color we want to check
+         * @return {boolean}       returns true if color exist
+         */
+        $scope.colorIsChecked = function(color){
+            // loop on selected colors to check if color exists
+            for(var i=0; i<$scope.workSpaces.selectedColors.length; i++)
+                if(color == $scope.workSpaces.selectedColors[i])
+                    return true;
+            return false;
+        }
+
+        /**
+         * Removes color from the selected colors array
+         * @param  {string} color the color we want to remove
+         */
+        $scope.removeColorFromColorFilter = function(color){
+           
+            //loop on colors to remove it
+            for(var i=0; i<$scope.workSpaces.selectedColors.length; i++){
+                if(color == $scope.workSpaces.selectedColors[i]){
+                    $scope.workSpaces.selectedColors.splice(i,1);
+                    break;
+                }
+            }
+        }
+
+        $scope.getColors = function(){
+            return Object.keys($scope.workSpaces.colors);
+        }
+
+
+
+
+
+
+
+
+        /*********************************************************************************
+        *                                                                                *
+        *     00000     00000000000      000      000000000       00000     000     000  *
+        *   000   000   000            000 000    000      00   000   000   000     000  *
+        *   00          000           000   000   000      00  000          000     000  *
+        *    0000000    00000000000  000     000  000000000    00           00000000000  *
+        *          00   000          00000000000  000 000      000          000     000  *
+        *   000   000   000          000     000  000   000     000   000   000     000  *
+        *     00000     00000000000  000     000  000     000     00000     000     000  *
+        *                                                                                *
+        *********************************************************************************/
+
+        /**
+         * Prepare the display for search and opening new tab or workflow
+         * @param  {object} wFlow the workflow that contains our search elemnts
+         */
         $scope.prepareForSearch = function(wFlow){
-            debugger;
             try{
                 var dataHolding = wFlow.selectedTab.dataHolding;
                 var holdingRequestTab = wFlow.selectedTab;
@@ -756,101 +998,61 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             }
         }
 
+        
+        $scope.FilterResults = function(objects, type){
 
-        $scope.CancelNewWorkflow = function(wFlow){
-            $scope.displayNewWorkflowButtons = false;
-            $scope.holdingNewWorkflowData = null;
-            $scope.blurAllWindow = false;
-            $scope.handlePickColor = false;
         }
 
 
-        $scope.openNewWorkflow = function(){
-            try{
-                $scope.blurAllWindow = true;
-                $scope.handlePickColor = true;
-                $scope.colorPicked = null;
-                $scope.Pickcolor(function(){
-                    $scope.blurAllWindow = false;
-                    $scope.handlePickColor = false;
-                    $scope.displayNewWorkflowButtons = true;
-                    $scope.holdingNewWorkflowData = null;
-                });
-            }catch(e){
-                $scope.Toast.show("Error!","Could'nt open new work flow", Toast.LONG, Toast.ERROR);
-                console.error("openNewWorkflow: ", e);
-            }
-        }
-
-        $scope.Pickcolor = function(callback){
-            var waitForUserResponse = $interval(function(){
-                if($scope.colorPicked != null){
-                    callback();
-                    $interval.cancel(waitForUserResponse);
-                }
-            },100);
-        }
 
 
-        $scope.getCurrentWorkflows = function(){
 
-            // default colors, no color filter selected
-            if($scope.workSpaces.selectedColors.length == 0)
-                    return $scope.workSpaces.workflows;
-            else{
-                //loop in colors the are selected to filter
-                for(var i=0; i< $scope.workSpaces.selectedColors.length; i++){
-                    //loop on all workflows searching for selected colors
-                    for(var j=0; j<$scope.workSpaces.workflows; j++){
-                        //loop in all tabs in specific workflow to check if colors exists
-                        for(var k=0; k<$scope.workSpaces.workflows[j].tabs.length; k++){
-                            if($scope.workSpaces.selectedColors[i] == $scope.workSpaces.workflows[j].tabs[k].color){
-                                var holdingWorkflowColored = null;
-                                // loop in coloredWorkflows to check if exist
-                                for(var m=0; m<$scope.workSpaces.coloredWorkflows.length;m++){
-                                    if($scope.workSpaces.coloredWorkflows[m].ID == $scope.workSpaces.workflows[j].ID){
-                                        holdingWorkflowColored = $scope.workSpaces.workflows[j];
-                                        break;
-                                    }
-                                }
 
-                                // if not exist
-                                if(holdingWorkflowColored == null){
-                                    holdingWorkflowColored = new Workflow($scope.workSpaces.workflows[j], null,null,null,null, true);
-                                    $scope.workSpaces.coloredWorkflows.push(holdingWorkflowColored);   
-                                }
-                                // add tab referece
-                                holdingWorkflowColored.tabs.push($scope.workSpaces.workflows[j].tabs[k]);
-                                holdingWorkflowColored.selectedTab = holdingWorkflowColored.tabs[0];
-                            }
 
-                        }
 
-                    }
-                }
-                return $scope.workSpaces.coloredWorkflows;
-            }
-        }
 
-        $scope.selectColorFilter = function(color){
-            // check if default color selected
-                // empty selectedColors array from workspace
-            // Else
-                // check if checked 
-                    // remove from selectedColors
-                // Else
-                    // add
-            // refresh data (update matrix)
-                
-        }
+        /*********************************************************************************
+        *                                                                                *
+        *     00000     000000000    00000000000      000      00000000000  00000000000  *
+        *   000   000   000      00  000            000 000        000      000          *
+        *  000          000      00  000           000   000       000      000          *
+        *  00           000000000    00000000000  000     000      000      00000000000  *
+        *  000          000 000      000          00000000000      000      000          *
+        *   000   000   000   000    000          000     000      000      000          *
+        *     00000     000     000  00000000000  000     000      000      00000000000  *
+        *                                                                                *
+        *********************************************************************************/
 
-        $scope.colorIsChecked = function(color){
-            // flag = 0 
-            // loop in selectedColors
-                // if exist
-                    // flag = 1;
-            // return flag == 1
-        }
+
+
+
+
+
+
+
+
+
+
+        /*******************************************************
+        *                                                      *
+        *  00000000000  000000000    00000000000  00000000000  *
+        *  000          000     000      000          000      *
+        *  000          000     000      000          000      *
+        *  00000000000  000     000      000          000      *
+        *  000          000     000      000          000      *
+        *  000          000     000      000          000      *
+        *  00000000000  000000000    00000000000      000      *
+        *                                                      *
+        *******************************************************/
+
+
+
+
+
+
+
+
+
 
         /************************************************************************************************************************
          *                                                                                                                       *

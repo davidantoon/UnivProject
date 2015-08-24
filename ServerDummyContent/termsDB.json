@@ -1,37 +1,46 @@
 [{
 	"id": 1,
 	"description": "description 1",
+	"type":"Term",
 	"name": "term 1"
 },{
 	"id": 2,
 	"description": "description 2",
+	"type":"Term",
 	"name": "term2"
 },{
 	"id": 3,
 	"description": "description 3",
+	"type":"Term",
 	"name": "term3"
 },{
 	"id": 4,
 	"description": "description 4",
+	"type":"Term",
 	"name": "term4"
 },{
 	"id": 5,
 	"description": "description 5",
+	"type":"Term",
 	"name": "term5"
 },{
 	"id": 6,
 	"description": "description 6",
+	"type":"Term",
 	"name": "term6"
 },{
 	"id": 7,
 	"description": "description 7",
+	"type":"Term",
 	"name": "term7"
 },{
 	"id": 8,
 	"description": "description 8",
+	"type":"Term",
 	"name": "term8"
 },{
 	"id": 9,
 	"description": "fefo",
+	"type":"Term",
 	"name": "7bebte"
 }]

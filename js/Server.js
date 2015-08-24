@@ -45,7 +45,7 @@ app.factory('Server', ["$rootScope", function($rootScope){
 										}
 									}
 									if(dataToSearch.searchBy[2] == 1){ // Id 
-										if(KbitsDB[i].id.toString().indexOf(SplitText[j]) == -1){
+										if(Number(KbitsDB[i].id) !=  Number(SplitText[j])){
 											found *=0;
 										}
 									}
@@ -56,7 +56,6 @@ app.factory('Server', ["$rootScope", function($rootScope){
 							}
 						}
 						if(dataToSearch.dataType[1] == 1){ // Deliveries
-
 							var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
 							for (var i = deliveryDB.length - 1; i >= 0; i--) {
 								var found = 1;
@@ -73,7 +72,7 @@ app.factory('Server', ["$rootScope", function($rootScope){
 										}
 									}
 									if(dataToSearch.searchBy[2] == 1){ // Id 
-										if(deliveryDB[i].id.toString().indexOf(SplitText[j]) == -1){
+										if(Number(deliveryDB[i].id) != Number(SplitText[j])){
 											found *=0;
 										}
 									}
@@ -83,8 +82,7 @@ app.factory('Server', ["$rootScope", function($rootScope){
 								}
 							}
 						}
-						if(dataToSearch.dataType[1] == 1){ // Terms
-
+						if(dataToSearch.dataType[2] == 1){ // Terms
 							var termsDB = JSON.parse(localStorage.getItem("com.intel.Server.terms"));
 							for (var i = termsDB.length - 1; i >= 0; i--) {
 								var found = 1;
@@ -101,7 +99,7 @@ app.factory('Server', ["$rootScope", function($rootScope){
 										}
 									}
 									if(dataToSearch.searchBy[2] == 1){ // Id 
-										if(termsDB[i].id.toString().indexOf(SplitText[j]) == -1){
+										if(Number(termsDB[i].id) !=  Number(SplitText[j])){
 											found *=0;
 										}
 									}

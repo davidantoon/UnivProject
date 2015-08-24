@@ -25,7 +25,8 @@
           <ons-tabbar position="top" class="" style="height: 50px;">
             <ons-row style="max-height: 49px;overflow: visible;">
               <ons-col width="220px" class="Logo rtl">
-                <!-- <img src="img/IntelIcon.png" style="height: 100%;margin: auto;"> -->
+                <img ng-src="{{currentUser.profilePicture}}">
+                <p>{{currentUser.firstName+" "+currentUser.lastName}}</p>
               </ons-col>
               <ons-col id="NotificationsButton1" ng-click="workSpaces.checkUserColorsInWorkspace();" width="100px" style="width:100px; position:relative;" class="">
                 <div class="TopTabbarButton clickable hoverOp">Settings</div>
@@ -33,20 +34,29 @@
               <ons-col id="NotificationsButton2" ng-click="openNewWorkflow();" width="150px" style="width:150px; position:relative;" class="">
                 <div class="TopTabbarButton clickable hoverOp">New Workflow</div>
               </ons-col>
-              <ons-col id="ColorFilterDiv" width="40px" style="width:40px; position:relative;" class="">
-                <ons-row>
-                  <ons-col></ons-col> 
-                  <ons-col>
-                    <div class="ColorCheckStatus">
-                      <ons-icon icon="ion-checkmark-round" width="20px"></ons-icon>
-                    </div>
-                  </ons-col>
-                </ons-row>
-                <div class="TopTabbarButton clickable hoverOp" ng-click="selectColorFilter(0);">
-                  
+              <ons-col id="ColorFilterDiv" width="80px" style="width:80px; position:relative; height: 54px;" class="optionTabberDiv">
+                <div ng-click="selectColorFilter(0);" class="TopTabbarButton clickable hoverOp" style=" padding:0 5px;">
+                  <ons-row >
+                    <ons-col width="40px" style="line-height: 49px;">ALL</ons-col> 
+                    <ons-col>
+                      <div class="{{'ColorCheckStatusA ' + ((workSpaces.selectedColors.length == 0)?'':'hidden')}}" >
+                        <ons-icon icon="ion-checkmark-round" width="20px"></ons-icon>
+                      </div>
+                    </ons-col>
+                  </ons-row>
                 </div>
-                <div class=""
-
+                <div class="TopTabbarOptions">
+                  <ons-row ng-repeat="color in getColors();" class="clickable" ng-click="selectColorFilter(color);">
+                    <ons-col width="40px">
+                      <div style="{{'color:'+color}}" class="{{'ColorCheckStatus '+ ((colorIsChecked(color)==1)?'hidden':'')}}">
+                        <ons-icon icon="ion-ios-circle-filled" width="20px"></ons-icon>
+                      </div>
+                      <div style="{{'color:'+color}}" class="{{'ColorCheckStatus '+ ((colorIsChecked(color)==1)?'':'hidden')}}">
+                        <ons-icon icon="ion-checkmark-circled" width="16px"></ons-icon>
+                      </div>
+                    </ons-col> 
+                  </ons-row>
+                </div>
               </ons-col>
               <ons-col>
               </ons-col>
@@ -216,10 +226,44 @@
                       edit
                     </div>
                     <div class="{{'searchTypeTab '+((getSelectedTabType(wFlow) == 4)?'':'hidden')}}">
-                      <div ng-click="back(wFlow.selectedTab.dataHolding);" class="ReturnToSearchButton">
+                      <div ng-click="back(wFlow.selectedTab.dataHolding);" style="{{'border-top: 2px solid '+wFlow.selectedTab.color+'; border-right: 3px solid '+wFlow.selectedTab.color+';'}}" class="ReturnToSearchButton">
                         <ons-icon icon="ion-chevron-left" size="18px"></ons-icon> Back
                       </div>
-                      <pre>{{(((wFlow.selectedTab.dataHolding.results == null)?{"result":"Loading..."}:((wFlow.selectedTab.dataHolding.resultsCount == 0)?{"result":"No Content"}:wFlow.selectedTab.dataHolding.results)) | json)}}</pre>
+                      <div class="{{'searchResultSpinner '+((wFlow.selectedTab.dataHolding.results == null)?'':'hidden')}}">
+                        <div class="centerMeInDiv " style="color: #0860A8;width:50px; height:50px">
+                          <ons-icon icon="ion-load-c" spin="true" size="50px"></ons-icon>
+                        </div>
+                      </div>
+                      <div class="SearchResultsRows">
+                        <p class="noResultsMessage" style="{{((wFlow.selectedTab.dataHolding.resultsCount == 0)?'':'display:none')}}">
+                          No Results!
+                        </p>
+                        <ons-row ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Delivery')">
+                          <ons-col>
+                            OPS1
+                          </ons-col>
+                          <ons-col>
+                            OPS2
+                          </ons-col>
+                        </ons-row>
+                        <ons-row ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Kbit')">
+                          <ons-col>
+                            OPS1
+                          </ons-col>
+                          <ons-col>
+                            OPS2
+                          </ons-col>
+                        </ons-row>
+                        <ons-row ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Term')">
+                          <ons-col>
+                            OPS1
+                          </ons-col>
+                          <ons-col>
+                            OPS2
+                          </ons-col>
+                        </ons-row>
+                      </div>
+                      <!-- <pre>{{(((wFlow.selectedTab.dataHolding.results == null)?'':((wFlow.selectedTab.dataHolding.resultsCount == 0)?{"result":"No Content"}:wFlow.selectedTab.dataHolding.results)) | json)}}</pre> -->
                     </div>
                 </div>
               </div>
