@@ -35,5 +35,11 @@ class debugLog {
 			echo "<hr style='border-color:". $color ."'>";
 		}
 	}
+
+	public  static function po($object, $message) {
+
+		debugLog::log('<b><u>'. $message .'</u></b>: '. dbAPI::print_json_s($object, 0));
+		
+	}
 }
 ?>

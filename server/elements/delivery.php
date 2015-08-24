@@ -49,6 +49,14 @@ class Delivery {
 	 */
 	public static function add_new_edit_for_Delivery($UID, $title, $desc, $user, $front) {
 
+		// check if Kbit is locked by user
+		if(Lock::is_locked_by_user($UID, 'DELIVERY_BASE', $user) == false) {
+			debugLog::log("<i>[delivery.php:add_new_edit_for_Delivery]</i>The Delivery (". $UID .") is not locked by user (". $user .")");
+			return null;
+		}
+
+		$dbObj = new dbAPI();
+
 		// get front type
 		if($front == null) {
 			debugLog::log("<i>[delivery.php:add_new_edit_for_Delivery]</i> FRONT Delivery of (". $title .") is missing!");
@@ -67,6 +75,9 @@ class Delivery {
 		$query = "INSERT INTO DELIVERY_BASE (UID, REVISION, TITLE, DESCRIPTION, ENABLED, USER_ID, CREATION_DATE, FRONT_TYPE) VALUES (".
 			$UID . ", 1, '" . $title ."', '" . $desc ."', 1, ". $user .",'". date("Y-m-d H:i:s") ."','". $front_type ."')";
 		$dbObj->run_query($dbObj->db_get_usersDB(), $query);
+		$query = "INSERT INTO DELIVERY_BASE (UID, REVISION, TITLE, DESCRIPTION, ENABLED, USER_ID, CREATION_DATE, FRONT_TYPE) VALUES (".
+			$UID . ", 1, '" . $title ."', '" . $desc ."', 0, ". $user .",'". date("Y-m-d H:i:s") ."','". $front_type ."')";
+		$dbObj->run_query('content', $query);
 		// entity of recently added Delivery
 		$recent_Delivery = Delivery::get_base_Delivery($UID, 'user');
 		
@@ -103,6 +114,7 @@ class Delivery {
 		$dbObj = new dbAPI();
 
 		$front_type = $front["FRONT_TYPE"];
+		
 		if($front_type == null) {
 			debugLog::log("<i>[delivery.php:add_new_front]</i> FRONT Delivery type of (". $UID .") is missing!");
 			
@@ -147,7 +159,7 @@ class Delivery {
 			$UID . ", 1, '" . $front["PATH"] ."', 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
 		$dbObj->run_query('user', $query);
 
-		return Delivery::get_front_Delivery($UID, $tableName);
+		return Delivery::get_front_Delivery($UID, $tableName, 'user');
 	}
 
 
@@ -213,7 +225,6 @@ class Delivery {
 
 		// determines the database name which the {Delivery} should be imported from
 		$database_source = dbAPI::get_db_name($source);
-
 		// database query
 		$query = "SELECT * FROM ". $tableName ." where UID = '" . $UID . "' AND ENABLED = '1'";
 		$results = $dbObj->db_select_query($database_source, $query);
@@ -414,6 +425,10 @@ class Delivery {
 				$dbObj->run_query($dbObj->db_get_contentDB(), $query);
 			}
 		}
+
+		// remove copies from user database
+		Delivery::disable_all_Delivery_info($UID, 'user');
+		
 		// release lock off the Delivery
 		if(Lock::release_lock($UID, 'DELIVERY_BASE', $user) == false) {
 			debugLog::log("<i>[delivery.php:publish_changes]</i> Could not release lock off Delivery (". $UID .")");
@@ -447,14 +462,12 @@ class Delivery {
 
 		$dbObj = new dbAPI();
 
-		$database_source = dbAPI::get_db_name($source);
-
+		$destination = dbAPI::get_db_name($destination);		
 		// disable old records
 		$dbObj->disable_revision('', $destination .".DELIVERY_BASE ", ' UID = '. $UID . ' ');	
 
-
 		// disable old front record
-		$links_tables_names = array('DELIVERY_BASE');
+		$links_tables_names = array('DELIVERY_FRONT');
 		for($i = 0; $i < count($links_tables_names); $i++) {
 			// disable old links records
 			$dbObj->disable_revision('', $destination .".". $links_tables_names[$i] . " ", ' UID = '. $UID . ' ');
@@ -529,11 +542,27 @@ class Delivery {
 
 
 
-	public static function add_D2D_relation($first_UID, $second_UID, $user) {
+	public static function add_D2D_relation($first_UID, $second_UID, $is_hier, $user) {
+
+		// check if delivery is locked by user
+		if(Lock::is_locked_by_user($first_UID, 'DELIVERY_BASE', $user) == false && Lock::is_locked_by_user($second_UID, 'DELIVERY_BASE', $user) == false) {
+			debugLog::log("<i>[delivery.php:add_D2D_relation]</i> Non of the deliveries (". $first_UID .", ". $second_UID .") are locked by user (". $user .")");
+			return null;
+		}
+		// check soft lock
+		$locking_user = Lock::get_locking_user($first_UID, 'DELIVERY_BASE');
+		if($locking_user != null && $locking_user["UID"] != $user) {
+			debugLog::log("<i>[delivery.php:add_D2D_relation]</i> one of the deliveries (". $first_UID .") is locked by other user(". $locking_user["UID"] .")");
+			return null;
+		}
+		$locking_user = Lock::get_locking_user($second_UID, 'DELIVERY_BASE');
+		if($locking_user != null && $locking_user["UID"] != $user) {
+			debugLog::log("<i>[delivery.php:add_D2D_relation]</i> one of the deliveries (". $first_UID .") is locked by other user(". $locking_user["UID"] .")");
+			return null;
+		}
 
 		if(refRelation::add_relation_to_object($first_UID, $second_UID, $is_hier, $user, 'R_LD2D', 'user') == null) {
 			debugLog::log("<i>[delivery.php:add_D2D_relation]</i> parent Delivery (". $first_UID .") and child (". $second_UID .") Delivery cannot be the same");
-			
 			return null;
 		}
 		// return recently created relation
@@ -541,6 +570,28 @@ class Delivery {
 	}
 
 	public static function remove_D2D_relation($first_UID, $second_UID) {
+
+		// check if delivery is locked by user
+		if(Lock::is_locked_by_user($first_UID, 'DELIVERY_BASE', $user) == false && Lock::is_locked_by_user($second_UID, 'DELIVERY_BASE', $user) == false) {
+			debugLog::log("<i>[delivery.php:add_D2D_relation]</i> Non of the deliveries (". $first_UID .", ". $second_UID .") are locked by user (". $user .")");
+			return null;
+		}
+		// check soft lock
+		$locking_user = Lock::get_locking_user($first_UID, 'DELIVERY_BASE');
+		if($locking_user != null && $locking_user["UID"] != $user) {
+			debugLog::log("<i>[delivery.php:add_D2D_relation]</i> one of the deliveries (". $first_UID .") is locked by other user(". $locking_user["UID"] .")");
+			return null;
+		}
+		$locking_user = Lock::get_locking_user($second_UID, 'DELIVERY_BASE');
+		if($locking_user != null && $locking_user["UID"] != $user) {
+			debugLog::log("<i>[delivery.php:add_D2D_relation]</i> one of the deliveries (". $first_UID .") is locked by other user(". $locking_user["UID"] .")");
+			return null;
+		}
+
+		if(refRelation::add_relation_to_object($first_UID, $second_UID, $is_hier, $user, 'R_LD2D', 'user') == null) {
+			debugLog::log("<i>[delivery.php:add_D2D_relation]</i> parent Delivery (". $first_UID .") and child (". $second_UID .") Delivery cannot be the same");
+			return null;
+		}
 
 		refRelation::remove_relation($first_UID, $second_UID, 'R_LD2D', 'user');
 	}
@@ -560,7 +611,7 @@ class Delivery {
 			debugLog::log("<i>[delivery.php:add_D2T_relation]</i> Delivery (". $Delivery_UID .") is not locked by the user (". $user .")");
 			return null;
 		}
-		return O2TRelation::add_O2T_relation($Delivery_UID, $term_UID, $link_type, $user, 'R_LD2T', 'user');
+		return O2TRelation::add_O2T_relation(array("column_name"=>'DELIVERY_BASE_ID', "value"=>$Delivery_UID), $term_UID, $link_type, $user, 'R_LD2T', 'user');
 	}
 
 	public static function get_terms_of_Delivery($Delivery_UID, $user = '', $lang = '') {
@@ -570,17 +621,17 @@ class Delivery {
 		else
 			$database_name = 'content';
 
-		return O2TRelation::get_terms_of_object($Delivery_UID, $database_name, 'R_LD2T', $lang);
+		return O2TRelation::get_terms_of_object(array("column_name"=>'DELIVERY_BASE_ID', "value"=>$Delivery_UID), $database_name, 'R_LD2T', $lang);
 	}
 
 	public static function remove_term_from_Delivery($Delivery_UID, $term_UID, $link_type, $user) {
 
 		if(Lock::is_locked_by_user($Delivery_UID, 'DELIVERY_BASE', $user) == false) {
 			debugLog::log("<i>[delivery.php:remove_term_from_Delivery]</i> Delivery (". $Delivery_UID .") is not locked by the user (". $user .")");
-			return null;
+			return false;
 		}
 
-		O2TRelation::remove_O2T_relation($Delivery_UID, $term_UID, $link_type, 'R_LD2T', 'user');
+		O2TRelation::remove_O2T_relation(array("column_name"=>'DELIVERY_BASE_ID', "value"=>$Delivery_UID), $term_UID, $link_type, 'R_LD2T', 'user');
 		return true;
 	}
 
@@ -600,7 +651,7 @@ class Delivery {
 			return null;
 		}
 
-		return D2KRelation::add_D2K_relation($Kbit_UID, $delivery_UID, $link_type, $link_weight, $user, 'user');
+		return D2KRelation::add_D2K_relation($Kbit_UID, $Delivery_UID, $link_type, $link_weight, $user, 'user');
 	}
 
 
@@ -616,7 +667,7 @@ class Delivery {
 			return null;
 		}
 
-		return D2KRelation::remove_D2K_relation($Kbit_UID, $delivery_UID, $link_type, 'user');
+		return D2KRelation::remove_D2K_relation($Kbit_UID, $Delivery_UID, $link_type, 'user');
 	}
 
 
