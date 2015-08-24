@@ -214,17 +214,31 @@ app.factory('Workspace', ['$rootScope', 'Workflow', function($rootScope, Workflo
 		 * Delets the childs id of specific tab in workflow
 		 * @param  {object} tabHoldingData the workflow id and the tab id which we want to delete its childs
 		 */
-		deleteChildTabIds: function(tabHoldingData){
+		deleteChildTabIds: function(tabHoldingData, deleteParent){
 			try{
-				for(var i=0; i<this.workflows.length; i++){
-					if(this.workflows[i].ID == tabHoldingData.workflowId){
-						for(var j=0; j<this.workflows[i].tabs.length; j++){
-							if(this.workflows[i].tabs[j].ID == tabHoldingData.tabId){
-								this.workflows[i].tabs[j].dataHolding.childTab = {"workflowId":null,"tabId":null};
-								break;
+				if(deleteParent){}
+					for(var i=0; i<this.workflows.length; i++){
+						if(this.workflows[i].ID == tabHoldingData.workflowId){
+							for(var j=0; j<this.workflows[i].tabs.length; j++){
+								if(this.workflows[i].tabs[j].ID == tabHoldingData.tabId){
+									this.workflows[i].tabs[j].dataHolding.parentTab = {"workflowId":null,"tabId":null};
+									break;
+								}
 							}
+							break;
 						}
-						break;
+					}
+				}else{
+					for(var i=0; i<this.workflows.length; i++){
+						if(this.workflows[i].ID == tabHoldingData.workflowId){
+							for(var j=0; j<this.workflows[i].tabs.length; j++){
+								if(this.workflows[i].tabs[j].ID == tabHoldingData.tabId){
+									this.workflows[i].tabs[j].dataHolding.childTab = {"workflowId":null,"tabId":null};
+									break;
+								}
+							}
+							break;
+						}
 					}
 				}
 			}catch(e){

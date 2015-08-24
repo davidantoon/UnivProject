@@ -358,9 +358,14 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
         $scope.closeTab = function(workflow){
             try{
                 var parentTabToDelete = workflow.selectedTab.dataHolding.parentTab;
+                var childTabToDelete = workflow.selectedTab.dataHolding.childTab;
                 if(parentTabToDelete != null && parentTabToDelete.workflowId != null && parentTabToDelete.tabId != null)
                 {
-                    $scope.workSpaces.deleteChildTabIds(workflow.selectedTab.dataHolding.parentTab);
+                    $scope.workSpaces.deleteChildTabIds(workflow.selectedTab.dataHolding.parentTab, false);
+                }
+                if(childTabToDelete != null && childTabToDelete.workflowId != null && childTabToDelete.tabId != null)
+                {
+                    $scope.workSpaces.deleteChildTabIds(workflow.selectedTab.dataHolding.childTab, true);
                 }
                 workflow.tabs.splice($scope.getSelectedTabIndex(workflow),1);
                 if(workflow.tabs.length > 0){
@@ -417,7 +422,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
        $scope.back = function(dataHolding){
             try{
                 if(dataHolding != null && dataHolding != undefined){
-                    $scope.Workspace.selectTabAfterSearch(dataHolding);
+                    $scope.workSpaces.selectTabAfterSearch(dataHolding);
                 }
             }catch(e){
                 $scope.Toast.show("Error!","There was an error on going back to parent tab", Toast.LONG, Toast.ERROR);
