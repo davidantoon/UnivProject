@@ -40,6 +40,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
         $scope.counterBeforeSave = 0;
         $scope.blurAllWindow = false;
         $scope.handlePickColor = false;
+        $scope.holdDoubleClickOnObject = null;
 
 
         // $scope.$on('$destroy', function() {
@@ -421,7 +422,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
          */
         $scope.closeTab = function(workflow){
             try{
-                
+
                 if($scope.workSpaces.selectedColors.length > 0){
                     for(var i=0; i<$scope.workSpaces.workflows.length; i++){
                         if($scope.workSpaces.workflows[i].ID == workflow.ID){
@@ -1112,9 +1113,16 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
         }
 
 
+        $scope.displayContent = function(result){
+            
+            console.log(false);
+            console.log(result);
+        }
 
-
-
+        $scope.displayContentNewTab = function(result){
+            console.log(true);
+            console.log(result);
+        }
 
 
 
@@ -1396,6 +1404,17 @@ app.directive('ngEnter', function() {
         });
     };
 });
+app.directive('ngRclick', function() {
+    return function($scope, $element, $attrs) {
+        $element.bind("contextmenu", function(event) {
+            $scope.$eval($attrs.ngRclick, {
+                'event': event
+            });
+            event.preventDefault();
+        });
+    };
+});
+
 
 
 // Format date
