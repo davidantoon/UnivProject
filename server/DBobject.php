@@ -41,7 +41,7 @@ class dbAPI {
 		}
 		return $conn;
     }
-
+    
     public function run_query($database_name, $sql) {
 		$database_name = dbAPI::get_db_name($database_name);
 		$conn = $this->db_get_connection($database_name);

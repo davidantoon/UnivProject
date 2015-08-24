@@ -4340,9 +4340,7 @@ div.vertical {
   top: 45px;
 }
 
-.hidden{
-  display: none;
-}
+
 .tableTitle{
   background: rgb(230,230,230);
   padding: 5px 0;
@@ -4670,7 +4668,26 @@ div.vertical {
   cursor: pointer;
   height: 49px;
   font-size: 21px;
-    background: rgb(8,96,168);
+  background: rgb(8,96,168);
+}
+.Logo img{
+  height: 35px;
+  width: 35px;
+  position: absolute;
+  left: 7px;
+  top: 7px;
+  border-radius: 22px;
+  border: 1px solid whitesmoke;
+  box-shadow: 0px 0px 4px -1px whitesmoke;
+}
+.Logo p{
+  margin: 8px 0 0 20%;
+  width: 87%;
+  float: left;
+  font-size: 18px;
+  color: whitesmoke;
+  text-align: left;
+  font-weight: 400;
 }
 
 .TopTabbarButton{
@@ -6107,6 +6124,8 @@ div.vertical {
   font-size: 14px;
 }
 .WorkFlowTab{
+  position: relative;
+  max-height: 33px;
   cursor: pointer;
   min-width: 5px;
   padding: 3px 3px;
@@ -6125,10 +6144,7 @@ div.vertical {
   -o-transition-timing-function: ease-out;
   transition-timing-function: ease-out;
 }
-.WorkFlowTab.ActiveTab{
-  background: rgb(8,96,168);
-  min-width: 100px;
-}
+
 .WorkFlowTab:hover{
   min-width: 100px;
   background: rgba(255,255,255,.4);
@@ -6162,7 +6178,7 @@ div.vertical {
   margin: 1px;
   border: 7px solid rgb(249, 249, 249);
   overflow: hidden;
-  -webkit-transition-property: all;
+  /*-webkit-transition-property: all;
   -moz-transition-property: all;
   -o-transition-property: all;
   transition-property: all;
@@ -6173,7 +6189,7 @@ div.vertical {
   -webkit-transition-timing-function: ease-out;
   -moz-transition-timing-function: ease-out;
   -o-transition-timing-function: ease-out;
-  transition-timing-function: ease-out;
+  transition-timing-function: ease-out;*/
   
 }
 .SelectedTabContent{
@@ -6383,15 +6399,75 @@ div.vertical {
   color: white;
   cursor: pointer;
 }
-.closeTabButton{
+
+.optionTabButton{
   position: absolute;
-  width: 40px;
-  height: 40px;
-  bottom: 0;
-  background: rgb(207,50,50);
-  left: 80px;
+  width: 24px;
+  height: 22px;
   color: white;
   cursor: pointer;
+  top: 9px;
+  left: 0;
+  opacity: 0;
+  display: none;
+  -webkit-transition-property: all;
+  -moz-transition-property: all;
+  -o-transition-property: all;
+  transition-property: all;
+  -webkit-transition-duration: 0.15s;
+  -moz-transition-duration: 0.15s;
+  -o-transition-duration: 0.15s;
+  transition-duration: 0.15s;
+  -webkit-transition-timing-function: ease-out;
+  -moz-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.closeTabButton{
+  position: absolute;
+  width: 24px;
+  height: 22px;
+  color: white;
+  cursor: pointer;
+  top: 9px;
+  right: 0;
+  opacity: 0;
+  display: none;
+  -webkit-transition-property: all;
+  -moz-transition-property: all;
+  -o-transition-property: all;
+  transition-property: all;
+  -webkit-transition-duration: 0.15s;
+  -moz-transition-duration: 0.15s;
+  -o-transition-duration: 0.15s;
+  transition-duration: 0.15s;
+  -webkit-transition-timing-function: ease-out;
+  -moz-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+
+.WorkFlowTab.ActiveTab{
+  background: rgb(8,96,168);
+  min-width: 100px;
+}
+.WorkFlowTab.ActiveTab > .closeTabButton{
+  opacity: 0.1;
+  display: block;
+}
+
+.WorkFlowTab.ActiveTab > .closeTabButton:hover{
+  opacity: 1;
+  display: block;
+}
+.WorkFlowTab.ActiveTab > .optionTabButton{
+  opacity: 0.1;
+  display: block;
+}
+
+.WorkFlowTab.ActiveTab > .optionTabButton:hover{
+  opacity: 1;
+  display: block;
 }
 
 .newWorkflowTab{
@@ -6479,6 +6555,7 @@ div.vertical {
 }
 
 .MaximizeButton{
+  cursor: -webkit-zoom-in;
   position: absolute;
   width: 100%;
   height: 100%;
@@ -6638,6 +6715,176 @@ div.vertical {
     padding: 10px;
     cursor: default;
 }
+
+.ToastContainer{
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+  width: 380px;
+  background-color: rgb(80,80,80);
+  z-index: 10000;
+  color: lightgrey;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 0px 9px -2px black;
+  padding: 5px;
+  text-align: center;
+  font-size: 13px;
+  display: none;
+}
+.ToastTitle{
+  font-size: 16px;
+  font-weight: 700;
+}
+.ToastTitle.ERROR{
+  color: rgba(255,50,50,1.7);
+}
+.ToastTitle.NORMAL{
+  color: lightgrey;
+}
+.ToastTitle.SUCCESS{
+  color: rgba(50,255,50,1.7);
+}
+.ToastContainer.CENTER{
+  bottom: 0;
+  top: 0;
+}
+.ToastContainer.TOP{
+  top: 55px;
+}
+.ToastContainer.BOTTOM{
+  bottom: 20px;
+}
+
+
+.SidebarDisplay::-webkit-scrollbar{
+  display: block;
+  -webkit-appearance: block;
+  height: 8px;
+  width: 8px;
+}
+
+
+
+.searchTypeTab{
+  margin: 0px 5px 30px 5px;
+}
+.ReturnToSearchButton{
+  position: absolute;
+  bottom: 1px;
+  padding: 5px 14px;
+  color: whitesmoke;
+  left: 1px;
+  font-weight: 400;
+  cursor: pointer;
+  border-radius: 0px 28px 0 0px;
+  background-color: #0860A8;
+}
+.ReturnToSearchButton .ons-icon{
+  vertical-align: -14%;
+}
+
+.TopTabbarOptions{
+  text-align: center;
+  padding: 5px;
+  border: 1px solid #0860A8;
+  background-color: whitesmoke;
+  box-shadow: 0px 3px 21px -6px rgba(0,0,0,.7);
+  width: 39px;
+  margin: 0 14px;
+  border-top: 0;
+  border-radius: 0 0 5px 5px;
+  overflow: hidden;
+  position: absolute;
+  top: -200px;
+  z-index: -1;
+  -webkit-transition-property: all;
+  -moz-transition-property: all;
+  -o-transition-property: all;
+  transition-property: all;
+  -webkit-transition-duration: .15s;
+  -moz-transition-duration: .15s;
+  -o-transition-duration: .15s;
+  transition-duration: .15s;
+  -webkit-transition-timing-function: ease-out;
+  -moz-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+
+.TopTabbarOptions ons-row{
+  border-bottom: 1px solid rgba(0,0,0,.1);
+}
+.TopTabbarOptions ons-row:last-child{
+  border-bottom: 0px 
+}
+.ColorCheckStatus{
+  font-size: 14px;
+  line-height: 20px;
+}
+.ColorCheckStatusA{
+  font-size: 16px;
+  line-height: 45px;
+}
+
+.optionTabberDiv:hover .TopTabbarOptions{
+   top: 46px;
+}
+
+.ColorFilterDiv{
+  height: 73px;
+}
+
+.searchResultSpinner{
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  height: 100%;
+  display: block;
+}
+.centerMeInDiv{
+  margin: auto;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  position: absolute;
+}
+.roundMeWithFog{
+
+}
+
+.hidden{
+  display: none;
+}
+
+.SearchResultsRows{
+
+}
+.noResultsMessage{
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

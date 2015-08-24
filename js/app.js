@@ -1,6 +1,6 @@
 var app = angular.module('IntelLearner', ['onsen', 'firebase']);
-app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings",
-    function($scope, $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings) {
+app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast",
+    function($rootScope,$scope, $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast) {
 
 
         // PRIM COLOR = rgb(8,96,168)
@@ -21,7 +21,6 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
          *********************************************************************************/
         $scope.AppStatus = 0;
         $scope.currentUser = {};
-        $scope.settings = {}
         $scope.Workflow = [];
         $scope.lastZoomIn = $('#ZoomRange').val();
         $scope.holdDoubleClickOnTab = false;
@@ -34,6 +33,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
 
         // new implementaion for steps
         $scope.Steps;
+        $scope.Toast;
         $scope.focusingLastWorkflow = true;
         $scope.holdingNewWorkflowData = null;
         $scope.Settings;
@@ -57,13 +57,13 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
         // INIT Dummy Data
         function dummyData(){
             console.warn("Dummy Data Init");
-            $.getJSON('./ServerDummyContent/KbitDB.json', function(json, textStatus) {
+            $.getJSON('https://raw.githubusercontent.com/davidantoon/mopdqwompoaskdqomdiasjdiowqe/master/ServerDummyContent/KbitDB.json', function(json, textStatus) {
                 localStorage.setItem("com.intel.Server.Kbits",JSON.stringify(json)); 
             });
-            $.getJSON('./ServerDummyContent/deliveryDB.json',{}, function(json, textStatus) {
+            $.getJSON('https://raw.githubusercontent.com/davidantoon/mopdqwompoaskdqomdiasjdiowqe/master/ServerDummyContent/deliveryDB.json',{}, function(json, textStatus) {
                 localStorage.setItem("com.intel.Server.delivery",JSON.stringify(json)); 
             });
-            $.getJSON('./ServerDummyContent/termsDB.json',{}, function(json, textStatus) {
+            $.getJSON('https://raw.githubusercontent.com/davidantoon/mopdqwompoaskdqomdiasjdiowqe/master/ServerDummyContent/termsDB.json',{}, function(json, textStatus) {
                 localStorage.setItem("com.intel.Server.terms",JSON.stringify(json)); 
             });
         }
@@ -173,28 +173,27 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
         // 		callbackFunction(true);
         // 	},3000);
         // }
+        
         $scope.loadDataFromSRV = function(callbackFunction) {
             callbackFunction(true);
             $scope.currentUser = {
                 'firstName': 'David',
                 'lastName': 'Antoon',
-                'profilePicture': 'https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/v/t1.0-1/p320x320/988960_632550293533974_2658667833563570113_n.jpg?oh=c62dc24dba7545a6d06915cd01c11a3f&oe=55A4011C&__gda__=1436053802_e6b13ee76d8aa131e270234503c16cc8'
+                'profilePicture': 'https://graph.facebook.com/100003370268591/picture'
             };
-            $scope.settings = {
-                'defaultOpenTabs': 'splite', // over, Splite
-                'autoScroll': false
-
-            }
-
 
             // init worksace
+            $rootScope.currentScope = $scope;
+            $scope.Toast = new Toast();
             $scope.workSpaces = new Workspace();
             $scope.Settings = new Settings();
             $scope.Steps = new Steps($scope.workSpaces);
             $scope.Workflow = $scope.workSpaces.workflows;
+
             $scope.updateAllTabName();
             $scope.updateMatrixLayout();
-            console.log($scope.Workflow);
+            $scope.workSpaces.checkUserColorsInWorkspace();
+            
             
 
             $('#WorkFlowMatrix').css('min-width', "10000px").css('min-height', "10000px").css('width', "10000px").css('height', "10000px");
@@ -219,26 +218,54 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
          ********************************************************************************************************************/
 
         $scope.UndoWorkflow = function() {
-
-            $scope.Steps.undoWorkflow($scope.workSpaces, function(){
-                $scope.counterBeforeSave = 0;
-                $scope.updateAllTabName();
-                $scope.updateMatrixLayout();
-                $scope.workSpaces.updateNewWorkflowButtons();
-            });
+            try{
+                $scope.Steps.undoWorkflow($scope.workSpaces, function(){
+                    $scope.counterBeforeSave = 0;
+                    $scope.updateAllTabName();
+                    $scope.updateMatrixLayout();
+                    $scope.workSpaces.updateNewWorkflowButtons();
+                    $timeout(function(){
+                        $scope.workSpaces.checkUserColorsInWorkspace();
+                    },200);
+                });
+            }catch(e){
+                $scope.Toast.show("Error!","Could'nt undo step", Toast.LONG, Toast.ERROR);
+                console.error("UndoWorkflow: ", e);
+            }
         }
         $scope.RedoWorkflow = function() {
-            $scope.Steps.redoWorkflow($scope.workSpaces, function(){
+            try{
+                $scope.Steps.redoWorkflow($scope.workSpaces, function(){
                 $scope.counterBeforeSave = 0;
                 $scope.updateAllTabName();
                 $scope.updateMatrixLayout();
                 $scope.workSpaces.updateNewWorkflowButtons();
-            });
+                $timeout(function(){
+                    $scope.workSpaces.checkUserColorsInWorkspace();
+                },200);
+                });
+            }catch(e){
+                $scope.Toast.show("Error!","Could'nt redo step", Toast.LONG, Toast.ERROR);
+                console.error("RedoWorkflow: ", e);
+            }
         }
         $scope.InsertStepToLast10Steps = function() {
-            $scope.counterBeforeSave = 0;
-            $scope.Steps.InsertStepToLastSteps($scope.workSpaces);
+            try{
+                $scope.counterBeforeSave = 0;
+                $scope.Steps.InsertStepToLastSteps($scope.workSpaces);
+                $scope.workSpaces.checkUserColorsInWorkspace();
+            }catch(e){
+                $scope.Toast.show("Error!","Could'nt insert last step", Toast.LONG, Toast.ERROR);
+                console.error("InsertStepToLast10Steps: ", e);
+            }
         }
+
+
+
+
+
+
+
 
 
 
@@ -255,19 +282,23 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
          *******************************************************/
 
         $scope.updateTabName = function(workflowId, tabId, inputId) {
-
-            $('#' + inputId).attr('readonly', 'readonly');
-            for (var i = 0; i < $scope.Workflow.length; i++) {
-                if ($scope.Workflow[i].ID == workflowId) {
-                    for (var j = 0; j < $scope.Workflow[i].tabs.length; j++) {
-                        if ($scope.Workflow[i].tabs[j].ID == tabId) {
-                            $scope.Workflow[i].tabs[j].title = $('#' + inputId).val();
-                            $scope.InsertStepToLast10Steps();
-                            break;
+            try{
+                $('#' + inputId).attr('readonly', 'readonly');
+                for (var i = 0; i < $scope.Workflow.length; i++) {
+                    if ($scope.Workflow[i].ID == workflowId) {
+                        for (var j = 0; j < $scope.Workflow[i].tabs.length; j++) {
+                            if ($scope.Workflow[i].tabs[j].ID == tabId) {
+                                $scope.Workflow[i].tabs[j].title = $('#' + inputId).val();
+                                $scope.InsertStepToLast10Steps();
+                                break;
+                            }
                         }
+                        break;
                     }
-                    break;
                 }
+            }catch(e){
+                $scope.Toast.show("Error!","Could'nt update tab name", Toast.LONG, Toast.ERROR);
+                console.error("updateTabName: ", e);
             }
         }
         $scope.blurThis = function(inputId) {
@@ -291,6 +322,10 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                     }
                 }
             }, 200);
+            setTimeout(function(){
+                $scope.Steps.lastFocusedWorkflow = workflow.ID;
+                $scope.refocusLastWorkflow();
+            },100);
         }
         $scope.getSelectedTabType = function(workflow){
             return workflow.selectedTab.Type;
@@ -329,38 +364,103 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             });
         }
 
-        $scope.editTabSettings = function(index){
-            console.log("Edit");
-        }
+        /**
+         * Closes specific tab
+         * @param  {Object} workflow the workflow that contains the tab we want to close
+         */
         $scope.closeTab = function(workflow){
-            var parentTabToDelete = workflow.selectedTab.dataHolding.parentTab;
-            if(parentTabToDelete != null && parentTabToDelete.workflowId != null && parentTabToDelete.tabId != null)
-                $scope.workSpaces.deleteChildTabIds(workflow.selectedTab.dataHolding.parentTab);
-            workflow.tabs.splice($scope.getSelectedTabIndex(workflow),1);
-            if(workflow.tabs.length > 0){
-                workflow.selectedTab = workflow.tabs[0];
-            }else{
-                for(var i=0; i<$scope.Workflow.length; i++){
-                    if($scope.Workflow[i].ID == workflow.ID){
-                        $scope.Workflow.splice(i,1);
-                        break;
+            try{
+                var parentTabToDelete = workflow.selectedTab.dataHolding.parentTab;
+                var childTabToDelete = workflow.selectedTab.dataHolding.childTab;
+                if(parentTabToDelete != null && parentTabToDelete.workflowId != null && parentTabToDelete.tabId != null)
+                {
+                    $scope.workSpaces.deleteChildTabIds(workflow.selectedTab.dataHolding.parentTab, false);
+                }
+                if(childTabToDelete != null && childTabToDelete.workflowId != null && childTabToDelete.tabId != null)
+                {
+                    $scope.workSpaces.deleteChildTabIds(workflow.selectedTab.dataHolding.childTab, true);
+                }
+                workflow.tabs.splice($scope.getSelectedTabIndex(workflow),1);
+                if(workflow.tabs.length > 0){
+                    if(parentTabToDelete != null && parentTabToDelete.workflowId != null && parentTabToDelete.tabId != null){
+                        for(var i=0; i<workflow.tabs.length; i++){
+                            if(workflow.tabs[i].ID == parentTabToDelete.tabId){
+                                workflow.selectedTab = workflow.tabs[i];
+                                break;
+                            }
+                        }
                     }
+                    else
+                        workflow.selectedTab = workflow.tabs[0];
+                }else{
+                    for(var i=0; i<$scope.Workflow.length; i++){
+                        if($scope.Workflow[i].ID == workflow.ID){
+                            $scope.Workflow.splice(i,1);
+                            break;
+                        }
+                    }
+                    if($scope.Workflow.length == 0){
+                        $scope.Workflow.push(new Workflow(null, 0, 12, 12, 13, 13));
+                        $scope.workSpaces.selectedWorkflow = $scope.Workflow[0];
+                    }
+                    $scope.EnableScroll(1);
                 }
-                if($scope.Workflow.length == 0){
-                    $scope.Workflow.push(new Workflow(null, 0, 12, 12, 13, 13));
-                    $scope.workSpaces.selectedWorkflow = $scope.Workflow[0];
-                }
-                $scope.EnableScroll(1);
+                $scope.updateMatrixLayout();
+                $scope.workSpaces.updateNewWorkflowButtons();
+                $scope.InsertStepToLast10Steps();
+                $scope.workSpaces.checkUserColorsInWorkspace();
+            }catch(e){
+                $scope.Toast.show("Error!","Could'nt close tab", Toast.LONG, Toast.ERROR);
+                console.error("closeTab: ", e);
             }
-            $scope.updateMatrixLayout();
-            $scope.workSpaces.updateNewWorkflowButtons();
-            $scope.InsertStepToLast10Steps();
         }
         
-
+        /**
+         * Checks if color is used
+         * @param  {String}  color the color we want to look for
+         * @return {Boolean}       true if the color is used
+         */
         $scope.isColorUsed = function(color){
-            return (color == '#ED143D' || color == '#0860A8' || color == '#FF8C00');
+            if($scope.workSpaces != undefined && $scope.workSpaces != null && $scope.workSpaces.colors != undefined &&  $scope.workSpaces.colors != null)
+                return $scope.workSpaces.colors[color];
+            else
+                return true;
         }
+
+
+        $scope.openTabOptions = function(wFlow){
+
+        }
+
+        /**
+         * Go back to parent tab
+         * @param  {object} dataHolding holding the data of parent tab
+         */
+        $scope.back = function(dataHolding){
+            try{
+                if(dataHolding != null && dataHolding != undefined ){
+                    if(dataHolding.parentTab.workflowId == null){
+                        $scope.Toast.show("Note","Parent tab is not found.", Toast.SHORT, Toast.NORMAL);        
+                    }else{
+                        $scope.workSpaces.selectTabAfterSearch(dataHolding.parentTab);
+                        setTimeout(function(){
+                            $scope.Steps.lastFocusedWorkflow = dataHolding.parentTab.workflowId;
+                            $scope.refocusLastWorkflow();
+                        },100);
+                    }
+                }
+            }catch(e){
+                $scope.Toast.show("Error!","There was an error on going back to parent tab", Toast.LONG, Toast.ERROR);
+                console.error("$scope.back: ", e);
+            }
+        }
+
+
+
+
+
+
+
 
 
         /*********************************************************************************
@@ -375,30 +475,45 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
          *                                                                                *
          *********************************************************************************/
 
-
+        /**
+         * Updates the matrix layout
+         */
         $scope.updateMatrixLayout = function() {
-            var w_Width = $(window).width();
-            var w_Height = $(window).height();
-            var blockDims = 400;
-            for (var i = 0; i < $('#WorkFlowMatrix > .WorkFlowBlock').length; i++) {
+            try{
+                var w_Width = $(window).width();
+                var w_Height = $(window).height();
+                var blockDims = 400;
+                for (var i = 0; i < $('#WorkFlowMatrix > .WorkFlowBlock').length; i++) {
 
-                var fromX = $($('#WorkFlowMatrix > .WorkFlowBlock')[i]).attr('fx');
-                var fromY = $($('#WorkFlowMatrix > .WorkFlowBlock')[i]).attr('fy');
-                var toX = $($('#WorkFlowMatrix > .WorkFlowBlock')[i]).attr('tx');
-                var toY = $($('#WorkFlowMatrix > .WorkFlowBlock')[i]).attr('ty');
-                var tempBlockWidth = ((toX - fromX) * blockDims - 7);
-                var tempBlockHeight = ((toY - fromY) * blockDims - 7);
-                var tempBlockLeft = ((fromX * blockDims));
-                var tempBlockTop = ((fromY * blockDims));
-                $($('#WorkFlowMatrix > .WorkFlowBlock')[i]).css('height', tempBlockHeight + "px").css('width', tempBlockWidth + "px");
-                $($('#WorkFlowMatrix > .WorkFlowBlock')[i]).css('left', tempBlockLeft + "px").css('top', tempBlockTop + "px");
-                $($('#WorkFlowMatrix > .WorkFlowBlock')[i]).find('.SelectedTabContent').css('height', (tempBlockHeight-73) + "px");
+                    var fromX = $($('#WorkFlowMatrix > .WorkFlowBlock')[i]).attr('fx');
+                    var fromY = $($('#WorkFlowMatrix > .WorkFlowBlock')[i]).attr('fy');
+                    var toX = $($('#WorkFlowMatrix > .WorkFlowBlock')[i]).attr('tx');
+                    var toY = $($('#WorkFlowMatrix > .WorkFlowBlock')[i]).attr('ty');
+                    var tempBlockWidth = ((toX - fromX) * blockDims - 7);
+                    var tempBlockHeight = ((toY - fromY) * blockDims - 7);
+                    var tempBlockLeft = ((fromX * blockDims));
+                    var tempBlockTop = ((fromY * blockDims));
+                    $($('#WorkFlowMatrix > .WorkFlowBlock')[i]).css('height', tempBlockHeight + "px").css('width', tempBlockWidth + "px");
+                    $($('#WorkFlowMatrix > .WorkFlowBlock')[i]).css('left', tempBlockLeft + "px").css('top', tempBlockTop + "px");
+                    $($('#WorkFlowMatrix > .WorkFlowBlock')[i]).find('.SelectedTabContent').css('height', (tempBlockHeight-33) + "px");
+                }
+                // if($scope.workSpaces != null)
+                    // $scope.workSpaces.updateNewWorkflowButtons();
+            }catch(e){
+                $scope.Toast.show("Error!","Could'nt update matrix layout", Toast.LONG, Toast.ERROR);
+                console.error("updateMatrixLayout: ", e);
             }
-            // if($scope.workSpaces != null)
-                // $scope.workSpaces.updateNewWorkflowButtons();
-
         }
         
+
+
+
+
+
+
+
+
+
 
         /***************************************************************************************************************************
         *                                                                                                                          *
@@ -426,115 +541,161 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             $scope.InsertStepToLast10Steps();
         }
     
-
+        /**
+         * Resizes the block
+         * @param  {[type]} direction  [description]
+         * @param  {[type]} workflowId [description]
+         * @return {[type]}            [description]
+         */
         $scope.resizeBlock = function(direction, workflowId) {
+            try{
+                for(var i=0; i<$scope.workSpaces.workflows.length; i++){
 
-            for(var i=0; i<$scope.workSpaces.workflows.length; i++){
 
+                    switch (direction) {
+                        case 1:
+                            // Direction of Resize Block{}
+                        break;
+                        case 2:
 
-                switch (direction) {
-                    case 1:
-                        // Direction of Resize Block{}
-                    break;
-                    case 2:
+                        break;
+                        case 3:
 
-                    break;
-                    case 3:
+                        break;
+                        case 4:
 
-                    break;
-                    case 4:
-
-                    break;
-                    default:
-                    break;
+                        break;
+                        default:
+                        break;
+                    }
                 }
+                // workflowId.ty = workflowId.fy+2;
+                // $scope.workSpaces.updateNewWorkflowButtons();
+            }catch(e){
+                $scope.Toast.show("Error!","Could'nt resize block", Toast.LONG, Toast.ERROR);
+                console.error("resizeBlock: ", e);
             }
-            // workflowId.ty = workflowId.fy+2;
-            // $scope.workSpaces.updateNewWorkflowButtons();
         }
 
+        /**
+         * Adds new tab to workflow
+         * @param {Object} workflow the workflow we want to add to
+         */
         $scope.addNewTabToWorkflow = function(workflow){
-            if($scope.holdingNewWorkflowData == null){
-                // display color picker to open new workflow
-                workflow.selectedTab = workflow.addTab();
-                workflow.selectedTab.color = $scope.colorPicked;
-                $scope.colorPicked = null;
-                $scope.InsertStepToLast10Steps();
-            }else{
-                // update workflow content related to action property
-                switch($scope.holdingNewWorkflowData.Action){
-                    case "Search":
-                        // initialize new tab
-                        workflow.selectedTab = workflow.addTab();
-                        workflow.selectedTab.type = 4;
-                        workflow.selectedTab.title = $scope.holdingNewWorkflowData.selectedTab.title+" | Search";
-                        workflow.selectedTab.color = $scope.holdingNewWorkflowData.selectedTab.color;
-                        workflow.selectedTab.changeType(workflow.selectedTab.type);
-                        workflow.selectedTab.dataHolding.parentTab.workflowId = $scope.holdingNewWorkflowData.selectedTab.parentWF.ID;
-                        workflow.selectedTab.dataHolding.parentTab.tabId = $scope.holdingNewWorkflowData.selectedTab.ID;
+            try{
+                if($scope.holdingNewWorkflowData == null){
+                    // display color picker to open new workflow
+                    workflow.selectedTab = workflow.addTab();
+                    workflow.selectedTab.color = $scope.colorPicked;
+                    $scope.colorPicked = null;
+                    $scope.InsertStepToLast10Steps();
+                }else{
+                    // update workflow content related to action property
+                    switch($scope.holdingNewWorkflowData.Action){
+                        case "Search":
+                            // initialize new tab
+                            workflow.selectedTab = workflow.addTab();
+                            workflow.selectedTab.type = 4;
+                            workflow.selectedTab.title = $scope.holdingNewWorkflowData.selectedTab.title+" | Search";
+                            workflow.selectedTab.color = $scope.holdingNewWorkflowData.selectedTab.color;
+                            workflow.selectedTab.changeType(workflow.selectedTab.type);
+                            workflow.selectedTab.dataHolding.parentTab.workflowId = $scope.holdingNewWorkflowData.selectedTab.parentWF.ID;
+                            workflow.selectedTab.dataHolding.parentTab.tabId = $scope.holdingNewWorkflowData.selectedTab.ID;
 
-                        // modify parent tab
-                        $scope.holdingNewWorkflowData.selectedTab.dataHolding.childTab.workflowId = workflow.ID;
-                        $scope.holdingNewWorkflowData.selectedTab.dataHolding.childTab.tabId = workflow.selectedTab.ID;
+                            // modify parent tab
+                            $scope.holdingNewWorkflowData.selectedTab.dataHolding.childTab.workflowId = workflow.ID;
+                            $scope.holdingNewWorkflowData.selectedTab.dataHolding.childTab.tabId = workflow.selectedTab.ID;
 
 
-                    break;
-                    default:break;
+                        break;
+                        default:break;
+                    }
+                    $scope.holdingNewWorkflowData = null;
                 }
-                $scope.holdingNewWorkflowData = null;
-            }
-            $scope.displayNewWorkflowButtons = false;
-            $scope.updateAllTabName();
-            $scope.updateMatrixLayout();
-            $scope.workSpaces.updateNewWorkflowButtons();
-        }
-        $scope.convertToWorkflow = function(newWorkflow){
-            if($scope.holdingNewWorkflowData == null){
-                // display color picker to open new workflow
-                
-                newWorkflow = $scope.workSpaces.addNewWorkflow(newWorkflow);
-                newWorkflow.selectedTab.color = $scope.colorPicked;
-                $scope.colorPicked = null;
+                $scope.displayNewWorkflowButtons = false;
+                $scope.updateAllTabName();
+                $scope.updateMatrixLayout();
                 $scope.workSpaces.updateNewWorkflowButtons();
-                $scope.InsertStepToLast10Steps();
-            }else{
-                // update workflow content related to action property
-                switch($scope.holdingNewWorkflowData.Action){
-                    case "Search":
-                        // initialize new tab
-                        $scope.workSpaces.updateLastId();
-                        newWorkflow.ID = $scope.workSpaces.lastWorkflowId;
-                        $scope.workSpaces.updateLastId();
-                        newWorkflow.selectedTab = newWorkflow.addTab();
-                        newWorkflow.selectedTab.type = 4;
-                        newWorkflow.selectedTab.title = $scope.holdingNewWorkflowData.selectedTab.title+" | Search";
-                        newWorkflow.selectedTab.color = $scope.holdingNewWorkflowData.selectedTab.color;
-                        newWorkflow.selectedTab.changeType(newWorkflow.selectedTab.type);
-                        newWorkflow.selectedTab.dataHolding.parentTab.workflowId = $scope.holdingNewWorkflowData.selectedTab.parentWF.ID;
-                        newWorkflow.selectedTab.dataHolding.parentTab.tabId = $scope.holdingNewWorkflowData.selectedTab.ID;
-
-                        // modify parent tab
-                        $scope.holdingNewWorkflowData.selectedTab.dataHolding.childTab.workflowId = newWorkflow.ID;
-                        $scope.holdingNewWorkflowData.selectedTab.dataHolding.childTab.tabId = newWorkflow.selectedTab.ID;
-
-                        $scope.workSpaces.workflows.push(newWorkflow);
-                    break;
-                    default:break;
-                }
-                $scope.holdingNewWorkflowData = null;
+                $scope.workSpaces.checkUserColorsInWorkspace();
+                
+                setTimeout(function(){
+                    $scope.Steps.lastFocusedWorkflow = workflow.ID;
+                    $scope.refocusLastWorkflow();
+                },200);
+            }catch(e){
+                $scope.Toast.show("Error!","Could'nt add new workflow or tab", Toast.LONG, Toast.ERROR);
+                console.error("addNewTabToWorkflow: ", e);
             }
-            $scope.displayNewWorkflowButtons = false;
-            $scope.updateAllTabName();
-            $scope.updateMatrixLayout();
-            $scope.workSpaces.updateNewWorkflowButtons();
         }
 
+        /**
+         * Creates new workflow with the action needed to display 
+         * @param  {object} newWorkflow the new workflow
+         */
+        $scope.convertToWorkflow = function(newWorkflow){
+            try{
+                if($scope.holdingNewWorkflowData == null){
+                    // display color picker to open new workflow
+                    
+                    newWorkflow = $scope.workSpaces.addNewWorkflow(newWorkflow);
+                    newWorkflow.selectedTab.color = $scope.colorPicked;
+                    $scope.colorPicked = null;
+                    $scope.workSpaces.updateNewWorkflowButtons();
+                    $scope.InsertStepToLast10Steps();
+                }else{
+                    // update workflow content related to action property
+                    switch($scope.holdingNewWorkflowData.Action){
+                        case "Search":
+                            // initialize new tab
+                            $scope.workSpaces.updateLastId();
+                            newWorkflow.ID = $scope.workSpaces.lastWorkflowId;
+                            $scope.workSpaces.updateLastId();
+                            newWorkflow.selectedTab = newWorkflow.addTab();
+                            newWorkflow.selectedTab.type = 4;
+                            newWorkflow.selectedTab.title = $scope.holdingNewWorkflowData.selectedTab.title+" | Search";
+                            newWorkflow.selectedTab.color = $scope.holdingNewWorkflowData.selectedTab.color;
+                            newWorkflow.selectedTab.changeType(newWorkflow.selectedTab.type);
+                            newWorkflow.selectedTab.dataHolding.parentTab.workflowId = $scope.holdingNewWorkflowData.selectedTab.parentWF.ID;
+                            newWorkflow.selectedTab.dataHolding.parentTab.tabId = $scope.holdingNewWorkflowData.selectedTab.ID;
+
+                            // modify parent tab
+                            $scope.holdingNewWorkflowData.selectedTab.dataHolding.childTab.workflowId = newWorkflow.ID;
+                            $scope.holdingNewWorkflowData.selectedTab.dataHolding.childTab.tabId = newWorkflow.selectedTab.ID;
+
+                            $scope.workSpaces.workflows.push(newWorkflow);
+                        break;
+                        default:break;
+                    }
+                    $scope.holdingNewWorkflowData = null;
+                }
+                $scope.displayNewWorkflowButtons = false;
+                $scope.updateAllTabName();
+                $scope.updateMatrixLayout();
+                $scope.workSpaces.updateNewWorkflowButtons();
+                setTimeout(function(){
+                    $scope.Steps.lastFocusedWorkflow = newWorkflow.ID;
+                    $scope.refocusLastWorkflow();
+                },300);
+            }catch(e){
+                $scope.Toast.show("Error!","Could'nt convert to workflow", Toast.LONG, Toast.ERROR);
+                console.error("convertToWorkflow: ", e);
+            }
+        }
+
+        /**
+         * Focus on last workflow
+         */
         $scope.refocusLastWorkflow = function(){
             $scope.workSpaces.scrollToLastWorkflow($scope.Steps);
             setTimeout(function(){
                 $scope.focusingLastWorkflow = true;
             },500);
         }
+
+        /**
+         * Focus on specific workflow
+         * @param  {object} workflow the workflow we want to focus 
+         */
         $scope.focusThisWorkflow = function(workflow){
             var lastFocusedWorkflow = $scope.Steps.lastFocusedWorkflow+1-1;
             $scope.Steps.lastFocusedWorkflow = workflow.ID;
@@ -557,80 +718,9 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
         }
 
 
-
-        $scope.prepareForSearch = function(wFlow){
-
-            var dataHolding = wFlow.selectedTab.dataHolding;
-            var holdingRequestTab = wFlow.selectedTab;
-            if(dataHolding.searchText && dataHolding.searchText != "" && dataHolding.elementsToSearch != null && dataHolding.searchBy != null){
-                var dataToSearch = {
-                    "text":dataHolding.searchText,
-                    "dataType": ((dataHolding.elementsToSearch == 0)?'Kbits':((dataHolding.elementsToSearch == 1)?'Deliveries':'Terms')),
-                    "searchBy": ((dataHolding.searchBy == 0)?'Name':((dataHolding.searchBy == 1)?'Description':'ID'))
-                }
-                // check if there is old child tab search
-                if(holdingRequestTab.dataHolding.childTab.workflowId == null || holdingRequestTab.dataHolding.childTab.tabId == null){
-                    if($scope.Settings.autoOpenTabs == true){
-                        // open in tab
-                        $scope.holdingNewWorkflowData = {"selectedTab":holdingRequestTab, "Action":"Search"};
-                        $scope.addNewTabToWorkflow(holdingRequestTab.parentWF);
-                    }else{
-                        // give the ability to choose where to open new workflow (display newWorkflowButtons)
-                        $scope.holdingNewWorkflowData = {"selectedTab":holdingRequestTab, "Action":"Search"};
-                        $scope.displayNewWorkflowButtons = true;
-                    }
-                    var waitForUserResponse = $interval(function(){
-                        if($scope.displayNewWorkflowButtons == false){
-                            $interval.cancel(waitForUserResponse);
-                            if(holdingRequestTab.dataHolding.childTab.workflowId == null || holdingRequestTab.dataHolding.childTab.tabId == null){
-                                // new workflow canceled
-                                $scope.holdingNewWorkflowData = null;
-                                $scope.displayNewWorkflowButtons = false;
-                            }else{
-                                $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, null);
-                                var svr = new Server(dataToSearch.dataType);
-                                svr.search(dataToSearch, function(result, error){
-                                    if(error || !result){
-                                        // Remove new workflow and display error message
-                                        $scope.alert("OPPSS");
-                                        $scope.InsertStepToLast10Steps();
-                                    }else{
-                                        setTimeout(function(){
-                                            $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, result);
-                                            $scope.InsertStepToLast10Steps();
-                                        },1500);
-                                    }
-                                });
-                            }
-                        }
-                    },100);
-                }else{
-                    // if(holdingRequestTab.parentWF.ID == holdingRequestTab.dataHolding.childTab.workflowId){
-                    //     // select Tab
-                    // }
-                    $scope.workSpaces.selectTabAfterSearch(holdingRequestTab.dataHolding.childTab);
-                    $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, null);
-                    var svr = new Server(dataToSearch.dataType);
-                    svr.search(dataToSearch, function(result, error){
-                        if(error || !result){
-                            // Remove new workflow and display error message
-                            $scope.alert("OPPSS");
-                            $scope.InsertStepToLast10Steps();
-                        }else{
-                            setTimeout(function(){
-                                $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, result);
-                                $scope.InsertStepToLast10Steps();
-                            },1500);
-                        }
-                    });
-                }
-            }else{
-                // HANDLE ERROR FILL INPUTS
-                $scope.alert("OPPSS");
-            }
-        }
-
-
+        /**
+         * Cancel the creation of new workflow
+         */
         $scope.CancelNewWorkflow = function(wFlow){
             $scope.displayNewWorkflowButtons = false;
             $scope.holdingNewWorkflowData = null;
@@ -638,19 +728,50 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
             $scope.handlePickColor = false;
         }
 
-
+        /**
+         * Creates new workflow
+         */
         $scope.openNewWorkflow = function(){
-            $scope.blurAllWindow = true;
-            $scope.handlePickColor = true;
-            $scope.colorPicked = null;
-            $scope.Pickcolor(function(){
-                $scope.blurAllWindow = false;
-                $scope.handlePickColor = false;
-                $scope.displayNewWorkflowButtons = true;
-                $scope.holdingNewWorkflowData = null;
-            });
+            try{
+                $scope.blurAllWindow = true;
+                $scope.handlePickColor = true;
+                $scope.colorPicked = null;
+                $scope.Pickcolor(function(){
+                    $scope.blurAllWindow = false;
+                    $scope.handlePickColor = false;
+                    $scope.displayNewWorkflowButtons = true;
+                    $scope.holdingNewWorkflowData = null;
+                });
+            }catch(e){
+                $scope.Toast.show("Error!","Could'nt open new work flow", Toast.LONG, Toast.ERROR);
+                console.error("openNewWorkflow: ", e);
+            }
         }
 
+
+
+
+
+
+
+
+
+
+        /*********************************************************************************
+        *                                                                                *
+        *     00000        00000     000             00000     000000000       00000     *
+        *   000   000    000   000   000           000   000   000      00   000   000   *
+        *  000          000     000  000          000     000  000      00   00          *
+        *  00           00       00  000          00       00  000000000      0000000    *
+        *  000          000     000  000          000     000  000 000              00   *
+        *   000   000    000   000   000           000   000   000   000     000   000   *
+        *     00000        00000     0000000000      00000     000     000     00000     *
+        *                                                                                *
+        *********************************************************************************/
+        /**
+         * Let the use to choose color for workflow or tab
+         * @param {Function} callback callback function
+         */
         $scope.Pickcolor = function(callback){
             var waitForUserResponse = $interval(function(){
                 if($scope.colorPicked != null){
@@ -659,6 +780,278 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
                 }
             },100);
         }
+
+        /**
+         * Gets current workflow depends on color selection
+         * @return {object} the workflow we are going to display
+         */
+        $scope.getCurrentWorkflows = function(){
+           
+            // default colors, no color filter selected
+            if($scope.workSpaces.selectedColors.length == 0)
+                return $scope.workSpaces.workflows;
+            else{
+                return $scope.workSpaces.coloredWorkflows;
+            }
+        }
+
+        /**
+         * Updates the workspace to show specific colors
+         * @param  {string} color color we want to select
+         */
+        $scope.selectColorFilter = function(color){
+            // if choose default colors to be shown
+            if(color == 0){
+                $scope.workSpaces.coloredWorkflows = [];
+                $scope.workSpaces.selectedColors = [];
+            }else{
+                // if color already checked, remove it
+                if($scope.colorIsChecked(color))
+                    $scope.removeColorFromColorFilter(color);
+                else
+                    $scope.workSpaces.selectedColors.push(color);
+                
+                $scope.workSpaces.coloredWorkflows = [];
+                
+                //loop in colors the are selected to filter
+                for(var i=0; i< $scope.workSpaces.selectedColors.length; i++){
+                    //loop on all workflows searching for selected colors
+                    for(var j=0; j<$scope.workSpaces.workflows.length; j++){
+                        //loop in all tabs in specific workflow to check if colors exists
+                        for(var k=0; k<$scope.workSpaces.workflows[j].tabs.length; k++){
+                            if($scope.workSpaces.selectedColors[i] == $scope.workSpaces.workflows[j].tabs[k].color){
+                                var holdingWorkflowColored = null;
+                                // loop in coloredWorkflows to check if exist
+                                for(var m=0; m<$scope.workSpaces.coloredWorkflows.length;m++){
+                                    if($scope.workSpaces.coloredWorkflows[m].ID == $scope.workSpaces.workflows[j].ID){
+                                        holdingWorkflowColored = $scope.workSpaces.coloredWorkflows[m];
+                                        break;
+                                    }
+                                }
+
+                                // if not exist
+                                if(holdingWorkflowColored == null){
+                                    holdingWorkflowColored = new Workflow($scope.workSpaces.workflows[j], null,null,null,null,null, true);
+                                    $scope.workSpaces.coloredWorkflows.push(holdingWorkflowColored);   
+                                }
+
+                                // add tab referece
+                                holdingWorkflowColored.tabs.push($scope.workSpaces.workflows[j].tabs[k]);
+                                holdingWorkflowColored.selectedTab = holdingWorkflowColored.tabs[0];
+                            }
+                        }
+
+                    }
+                }
+
+            }
+            // updates the layout
+            $scope.updateAllTabName();
+            $scope.updateMatrixLayout();
+        }
+
+        /**
+         * Checks if color is selected
+         * @param  {string} color the color we want to check
+         * @return {boolean}       returns true if color exist
+         */
+        $scope.colorIsChecked = function(color){
+            // loop on selected colors to check if color exists
+            for(var i=0; i<$scope.workSpaces.selectedColors.length; i++)
+                if(color == $scope.workSpaces.selectedColors[i])
+                    return true;
+            return false;
+        }
+
+        /**
+         * Removes color from the selected colors array
+         * @param  {string} color the color we want to remove
+         */
+        $scope.removeColorFromColorFilter = function(color){
+           
+            //loop on colors to remove it
+            for(var i=0; i<$scope.workSpaces.selectedColors.length; i++){
+                if(color == $scope.workSpaces.selectedColors[i]){
+                    $scope.workSpaces.selectedColors.splice(i,1);
+                    break;
+                }
+            }
+        }
+
+        $scope.getColors = function(){
+            return Object.keys($scope.workSpaces.colors);
+        }
+
+
+
+
+
+
+
+
+        /*********************************************************************************
+        *                                                                                *
+        *     00000     00000000000      000      000000000       00000     000     000  *
+        *   000   000   000            000 000    000      00   000   000   000     000  *
+        *   00          000           000   000   000      00  000          000     000  *
+        *    0000000    00000000000  000     000  000000000    00           00000000000  *
+        *          00   000          00000000000  000 000      000          000     000  *
+        *   000   000   000          000     000  000   000     000   000   000     000  *
+        *     00000     00000000000  000     000  000     000     00000     000     000  *
+        *                                                                                *
+        *********************************************************************************/
+
+        /**
+         * Prepare the display for search and opening new tab or workflow
+         * @param  {object} wFlow the workflow that contains our search elemnts
+         */
+        $scope.prepareForSearch = function(wFlow){
+            try{
+                var dataHolding = wFlow.selectedTab.dataHolding;
+                var holdingRequestTab = wFlow.selectedTab;
+                if(dataHolding.searchText && dataHolding.searchText != "" && dataHolding.elementsToSearch != null && dataHolding.searchBy != null  && 
+                    (!(wFlow.selectedTab.dataHolding.searchBy[0] == 0 && wFlow.selectedTab.dataHolding.searchBy[1] == 0 && wFlow.selectedTab.dataHolding.searchBy[2] == 0)) &&
+                    (!(wFlow.selectedTab.dataHolding.elementsToSearch[0] == 0 && wFlow.selectedTab.dataHolding.elementsToSearch[1] == 0 && wFlow.selectedTab.dataHolding.elementsToSearch[2] == 0))){
+                  
+                    var dataToSearch = {
+                        "text":dataHolding.searchText,
+                        "dataType": [
+                            dataHolding.elementsToSearch[0], //  Kbits
+                            dataHolding.elementsToSearch[1], //  Deliveries
+                            dataHolding.elementsToSearch[2]  //  Terms
+                        ],
+                        "searchBy": [
+                            dataHolding.searchBy[0], //  Name
+                            dataHolding.searchBy[1], //  Description
+                            dataHolding.searchBy[2]  //  ID
+                        ]
+                    } 
+                    // check if there is old child tab search
+                    if(holdingRequestTab.dataHolding.childTab.workflowId == null || holdingRequestTab.dataHolding.childTab.tabId == null){
+                        if($scope.Settings.autoOpenTabs == true){
+                            // open in tab
+                            $scope.holdingNewWorkflowData = {"selectedTab":holdingRequestTab, "Action":"Search"};
+                            $scope.addNewTabToWorkflow(holdingRequestTab.parentWF);
+                        }else{
+                            // give the ability to choose where to open new workflow (display newWorkflowButtons)
+                            $scope.holdingNewWorkflowData = {"selectedTab":holdingRequestTab, "Action":"Search"};
+                            $scope.displayNewWorkflowButtons = true;
+                        }
+                        var waitForUserResponse = $interval(function(){
+                            if($scope.displayNewWorkflowButtons == false){
+                                $interval.cancel(waitForUserResponse);
+                                if(holdingRequestTab.dataHolding.childTab.workflowId == null || holdingRequestTab.dataHolding.childTab.tabId == null){
+                                    // new workflow canceled
+                                    $scope.holdingNewWorkflowData = null;
+                                    $scope.displayNewWorkflowButtons = false;
+                                }else{
+                                    $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, null);
+                                    var svr = new Server("SearchTab");
+                                    svr.search(dataToSearch, function(result, error){
+                                        if(error || !result){
+                                            $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, []);
+                                            $scope.InsertStepToLast10Steps();
+                                            $scope.Toast.show("Server Error", error.message, Toast.LONG, Toast.ERROR);
+                                            $scope.InsertStepToLast10Steps();
+                                        }else{
+                                            setTimeout(function(){
+                                                $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, result);
+                                                $scope.InsertStepToLast10Steps();
+                                            },1500);
+                                        }
+                                    });
+                                }
+                            }
+                        },100);
+                    }else{
+                        $scope.workSpaces.selectTabAfterSearch(holdingRequestTab.dataHolding.childTab);
+                        $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, null);
+                        var svr = new Server("SearchTab");
+                        svr.search(dataToSearch, function(result, error){
+                            if(error || !result){
+                                $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, []);
+                                $scope.InsertStepToLast10Steps();
+                                $scope.Toast.show("Server Error", error.message, Toast.LONG, Toast.ERROR);
+                                $scope.InsertStepToLast10Steps();
+                            }else{
+                                setTimeout(function(){
+                                    $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, result);
+                                    $scope.InsertStepToLast10Steps();
+                                },1500);
+                            }
+                        });
+                        setTimeout(function(){
+                            $scope.Steps.lastFocusedWorkflow = holdingRequestTab.dataHolding.childTab.workflowId;
+                            $scope.refocusLastWorkflow();
+                            setTimeout(function(){
+                                $scope.Steps.lastFocusedWorkflow = holdingRequestTab.parentWF.ID;
+                                $scope.focusingLastWorkflow = false;
+                            },600);
+                        },300);
+                    }
+                }else{
+                    $scope.Toast.show("Wrong Input", "Must be at least one <b>Element</b>, one <b>Search By</b> and <b>Search Text</b>.", Toast.LONG, Toast.ERROR);
+                }
+            }catch(e){
+                $scope.Toast.show("Error!","Could'nt complete search", Toast.LONG, Toast.ERROR);
+                console.error("prepareForSearch: ", e);
+            }
+        }
+
+        
+        $scope.FilterResults = function(objects, type){
+
+        }
+
+
+
+
+
+
+
+
+
+        /*********************************************************************************
+        *                                                                                *
+        *     00000     000000000    00000000000      000      00000000000  00000000000  *
+        *   000   000   000      00  000            000 000        000      000          *
+        *  000          000      00  000           000   000       000      000          *
+        *  00           000000000    00000000000  000     000      000      00000000000  *
+        *  000          000 000      000          00000000000      000      000          *
+        *   000   000   000   000    000          000     000      000      000          *
+        *     00000     000     000  00000000000  000     000      000      00000000000  *
+        *                                                                                *
+        *********************************************************************************/
+
+
+
+
+
+
+
+
+
+
+
+        /*******************************************************
+        *                                                      *
+        *  00000000000  000000000    00000000000  00000000000  *
+        *  000          000     000      000          000      *
+        *  000          000     000      000          000      *
+        *  00000000000  000     000      000          000      *
+        *  000          000     000      000          000      *
+        *  000          000     000      000          000      *
+        *  00000000000  000000000    00000000000      000      *
+        *                                                      *
+        *******************************************************/
+
+
+
+
+
+
+
+
 
 
         /************************************************************************************************************************
@@ -746,7 +1139,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
         }, 200);
 
         $interval(function() {
-            if ($scope.settings.autoScroll && $scope.settings.autoScroll == true) {
+            if ($scope.Settings != undefined && $scope.Settings.autoScroll && $scope.Settings.autoScroll == true) {
                 if (mouse.y > 50) {
                     if (mouse.x < 60) {
                         var leftScroll = (60 - mouse.x) / 5;
@@ -774,15 +1167,16 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
         $interval(function(){
             // check login user
             if($scope.Settings.autoSave == true){
-                $scope.counterBeforeSave++;
-                if($scope.counterBeforeSave > 7){
-                    if($scope.Steps.savedInServer == false){
+                if($scope.Steps.savedInServer == false && $scope.Steps.canRedo() == false){
+                    $scope.counterBeforeSave++;
+                    if($scope.counterBeforeSave > 7){
                         $scope.Steps.commitSteps();
+                        $scope.counterBeforeSave = 0;
                     }
-                    $scope.counterBeforeSave = 0;
                 }
             }
         },1000);
+        
 
 
 
@@ -815,8 +1209,7 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
 
 
 
-        $scope.testFun = function() {
-
+        $scope.testFunc = function() {
             // $scope.workSpaces.updateNewWorkflowButtons();
             // $scope.Workflow[0].addTab();
             // $scope.InsertStepToLast10Steps();
@@ -840,22 +1233,30 @@ app.controller('MainCtrl', ["$scope", "$http", "$timeout", "$interval", "$filter
 
 
         $scope.clearLocalStorage = function () {
-            debugger;
-            var str = new Storage();
-            str.clear(null,null,function(){
-                alert("Cleard");
-            });
+            try{
+                var str = new Storage();
+                str.clear(null,null,function(){
+                    alert("Cleard");
+                });
+            }catch(e){
+                $scope.Toast.show("Error!","Could'nt clear local storage", Toast.LONG, Toast.ERROR);
+                console.error("clearLocalStorage: ", e);
+            }
         }
 
 
 
-
-
-        $scope.EnableScroll = function(a){
-            if(a==1){
-                $('#BodyRow').css('overflow','scroll');
+        $scope.EnableScroll = function(a, wflwId){
+            if($scope.Settings.removeScrollOnMouseOver == true){
+                if(a==1){
+                    $('#'+wflwId+' .SelectedTabContent').removeClass('SidebarDisplay');
+                    $('#BodyRow').css('overflow','scroll');
+                }else{
+                    $('#'+wflwId+' .SelectedTabContent').addClass('SidebarDisplay');
+                    $('#BodyRow').css('overflow','hidden');
+                }
             }else{
-                $('#BodyRow').css('overflow','hidden');
+                $('#BodyRow').css('overflow','scroll');
             }
         }
 

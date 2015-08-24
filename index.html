@@ -21,17 +21,42 @@
 
     <div id="MainDiv" class="{{((blurAllWindow == true)?'blured':'')}}" ng-switch="AppStatus" style="display:none">
       <div class="AppPage" ng-switch-when="2" style="">  
-      <ons-page>
+        <ons-page>
           <ons-tabbar position="top" class="" style="height: 50px;">
-            <ons-row>
+            <ons-row style="max-height: 49px;overflow: visible;">
               <ons-col width="220px" class="Logo rtl">
-                <img src="img/IntelIcon.png" style="height: 100%;margin: auto;">
+                <img ng-src="{{currentUser.profilePicture}}">
+                <p>{{currentUser.firstName+" "+currentUser.lastName}}</p>
               </ons-col>
-              <ons-col id="NotificationsButton1" ng-click="" width="100px" style="width:100px; position:relative;" class="">
+              <ons-col id="NotificationsButton1" ng-click="workSpaces.checkUserColorsInWorkspace();" width="100px" style="width:100px; position:relative;" class="">
                 <div class="TopTabbarButton clickable hoverOp">Settings</div>
               </ons-col>
               <ons-col id="NotificationsButton2" ng-click="openNewWorkflow();" width="150px" style="width:150px; position:relative;" class="">
                 <div class="TopTabbarButton clickable hoverOp">New Workflow</div>
+              </ons-col>
+              <ons-col id="ColorFilterDiv" width="80px" style="width:80px; position:relative; height: 54px;" class="optionTabberDiv">
+                <div ng-click="selectColorFilter(0);" class="TopTabbarButton clickable hoverOp" style=" padding:0 5px;">
+                  <ons-row >
+                    <ons-col width="40px" style="line-height: 49px;">ALL</ons-col> 
+                    <ons-col>
+                      <div class="{{'ColorCheckStatusA ' + ((workSpaces.selectedColors.length == 0)?'':'hidden')}}" >
+                        <ons-icon icon="ion-checkmark-round" width="20px"></ons-icon>
+                      </div>
+                    </ons-col>
+                  </ons-row>
+                </div>
+                <div class="TopTabbarOptions">
+                  <ons-row ng-repeat="color in getColors();" class="clickable" ng-click="selectColorFilter(color);">
+                    <ons-col width="40px">
+                      <div style="{{'color:'+color}}" class="{{'ColorCheckStatus '+ ((colorIsChecked(color)==1)?'hidden':'')}}">
+                        <ons-icon icon="ion-ios-circle-filled" width="20px"></ons-icon>
+                      </div>
+                      <div style="{{'color:'+color}}" class="{{'ColorCheckStatus '+ ((colorIsChecked(color)==1)?'':'hidden')}}">
+                        <ons-icon icon="ion-checkmark-circled" width="16px"></ons-icon>
+                      </div>
+                    </ons-col> 
+                  </ons-row>
+                </div>
               </ons-col>
               <ons-col>
               </ons-col>
@@ -43,7 +68,7 @@
               <ons-col id="NotificationsButton3" ng-click="Steps.commitSteps();" width="85px" style="width:50px; position:relative;" class="{{'col ons-col-inner '+((Steps.savedInServer == false)?'clickable hoverOp':'opacityLow')}}">
                 <div class="TopTabbarButton" style="border-right:0;font-size: 13px;">
                   <ons-icon icon="ion-upload" size="25px"></ons-icon>
-                  Save <!-- {{((Settings.autoSave == true)?((Steps.savedInServer == false)?'('+(5-(7-counterBeforeSave))+')':''):'')}} -->
+                  Save
                 </div>
                 <div class="backgroundSaveButton" style="{{((Settings.autoSave == true)?((Steps.savedInServer == false && counterBeforeSave > 2)?'height:'+ ((5-(7-counterBeforeSave))*20)+'%':'hidden'):'hidden')}}"></div>
               </ons-col>
@@ -87,34 +112,6 @@
               </ons-col> -->
             </ons-row>
           </ons-tabbar>
-          <div id="FullScreenDiv">
-            <div class="resizeDiv resizeWidthLeftDiv hoverOp clickable">
-              <ons-icon icon="ion-arrow-left-b" size="20px"></ons-icon>
-            </div>
-            <div class="resizeDiv resizeWidthRightDiv hoverOp clickable">
-              <ons-icon icon="ion-arrow-right-b" size="20px"></ons-icon>
-            </div>
-            <div class="resizeDiv resizeHeightTopDiv hoverOp clickable">
-              <ons-icon icon="ion-arrow-up-b" size="20px"></ons-icon>
-            </div>
-            <div class="resizeDiv resizeHeightBottomDiv hoverOp clickable">
-              <ons-icon icon="ion-arrow-down-b" size="20px"></ons-icon>
-            </div>
-
-            <ons-row>
-              <ons-col ng-click="closeFullScreen();" class="ExitFullScreenButton" width="200px">
-                Exit Fullscreen
-              </ons-col>
-              <ons-col></ons-col>
-            </ons-row>
-            <ons-row class="row ons-row-inner WorkFlowTabs">
-              <ons-col ng-repeat="tab in Workflow[selectedWorkflow].tabs" ng-click="selectTab(Workflow[selectedWorkflow], tab);" class="{{'col ons-col-inner WorkFlowTab '+((getSelectedTab(Workflow[selectedWorkflow], tab.ID))?'ActiveTab':'')}}">
-                <input id="{{'FWorkflowI'+Workflow[selectedWorkflow].ID+'Tab'+tab.ID}}" readonly="readonly" placeholder="Tab name" ng-enter="updateTabName(Workflow[selectedWorkflow].ID, tab.ID, 'FWorkflowI'+Workflow[selectedWorkflow].ID+'Tab'+tab.ID);" ng-dblclick="ConvertTextBos('FWorkflowI'+Workflow[selectedWorkflow].ID+'Tab'+tab.ID);"
-                value="{{tab.title}}" />
-              </ons-col>
-
-            </ons-row>
-          </div>
           <ons-row id="BodyRow" style="margin-top: 50px;  overflow: scroll;">
 
             <!-- <ons-col width="32%" class="col ons-col-inner leftCol WorkFlowDiv">
@@ -135,7 +132,7 @@
               <div id="pointToZoom"></div>
               
               <!-- <div ng-mouseenter="EnableScroll(2);" ng-mouseleave="EnableScroll(1);" -->
-              <div ng-mouseenter="((wFlow.selectedTab.Type == 4)?EnableScroll(2):return);" ng-mouseleave="EnableScroll(1);" ng-repeat="wFlow in Workflow" id="{{'Workflow'+wFlow.ID}}" class="WorkFlowBlock Available" ng-click="Steps.lastFocusedWorkflow = wFlow.ID" fx="{{wFlow.fx}}" fy="{{wFlow.fy}}" tx="{{wFlow.tx}}" ty="{{wFlow.ty}}">
+              <div ng-mouseenter="((wFlow.selectedTab.Type == 4)?EnableScroll(2,'Workflow'+wFlow.ID):return);" ng-mouseleave="EnableScroll(1,'Workflow'+wFlow.ID);" ng-repeat="wFlow in getCurrentWorkflows()" id="{{'Workflow'+wFlow.ID}}" class="WorkFlowBlock Available" ng-click="Steps.lastFocusedWorkflow = wFlow.ID" fx="{{wFlow.fx}}" fy="{{wFlow.fy}}" tx="{{wFlow.tx}}" ty="{{wFlow.ty}}">
                 <div ng-click="focusThisWorkflow(wFlow);" class="{{'MaximizeButton clickable '+((clickToMaximize == true)?'':'hidden')}}">
                   <div>
                     <ons-icon icon="ion-ios-search-strong" size="100px"></ons-icon>
@@ -167,6 +164,8 @@
                     <input id="{{'WorkflowI'+wFlow.ID+'Tab'+tab.ID}}" readonly="readonly" placeholder="Tab name" ng-enter="updateTabName(wFlow.ID, tab.ID, 'WorkflowI'+wFlow.ID+'Tab'+tab.ID);" 
                     ng-dblclick="((displayNewWorkflowButtons == true)?return:ConvertTextBos('WorkflowI'+wFlow.ID+'Tab'+tab.ID));"
                     value="{{tab.title}}" />
+                    <ons-icon ng-click="closeTab(wFlow);" class="closeTabButton" icon="ion-ios-close" size="18px"></ons-icon>
+                    <ons-icon ng-click="openTabOptions(wFlow);" class="optionTabButton" icon="ion-navicon-round" size="18px"></ons-icon>
                   </ons-col>
                   <ons-col ng-click="addNewTabToWorkflow(wFlow);" class="{{'col ons-col-inner newWorkflowTab ' + ((displayNewWorkflowButtons == true)?'':'hidden')}}">
                     +
@@ -193,17 +192,18 @@
                           Elements to search:
                         </ons-row>
                         <ons-row>
-                          <ons-col ng-click="wFlow.selectedTab.dataHolding.elementsToSearch = 0; InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.elementsToSearch == 0)?'checked':'')}}">Kbits</ons-col>
-                          <ons-col ng-click="wFlow.selectedTab.dataHolding.elementsToSearch = 1; InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.elementsToSearch == 1)?'checked':'')}}">Deliveries</ons-col>
-                          <ons-col ng-click="wFlow.selectedTab.dataHolding.elementsToSearch = 2; InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.elementsToSearch == 2)?'checked':'')}}">Terms</ons-col>
+                          <ons-col 
+                          ng-click="((wFlow.selectedTab.dataHolding.elementsToSearch[0] == 1)?wFlow.selectedTab.dataHolding.elementsToSearch[0] = 0:wFlow.selectedTab.dataHolding.elementsToSearch[0] = 1); InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.elementsToSearch[0] == 1)?'checked':'')}}">Kbits</ons-col>
+                          <ons-col ng-click="((wFlow.selectedTab.dataHolding.elementsToSearch[1] == 1)?wFlow.selectedTab.dataHolding.elementsToSearch[1] = 0:wFlow.selectedTab.dataHolding.elementsToSearch[1] = 1); InsertStepToLast10Steps();"  class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.elementsToSearch[1] == 1)?'checked':'')}}">Deliveries</ons-col>
+                          <ons-col ng-click="((wFlow.selectedTab.dataHolding.elementsToSearch[2] == 1)?wFlow.selectedTab.dataHolding.elementsToSearch[2] = 0:wFlow.selectedTab.dataHolding.elementsToSearch[2] = 1); InsertStepToLast10Steps();"  class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.elementsToSearch[2] == 1)?'checked':'')}}">Terms</ons-col>
                         </ons-row>
                         <ons-row class="LabelOfOptionsButtons">
                           Search By:
                         </ons-row>
                         <ons-row>
-                          <ons-col ng-click="wFlow.selectedTab.dataHolding.searchBy = 0; InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.searchBy == 0)?'checked':'')}}">Name</ons-col>
-                          <ons-col ng-click="wFlow.selectedTab.dataHolding.searchBy = 1; InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.searchBy == 1)?'checked':'')}}">Description</ons-col>
-                          <ons-col ng-click="wFlow.selectedTab.dataHolding.searchBy = 2; InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.searchBy == 2)?'checked':'')}}">ID</ons-col>
+                          <ons-col ng-click="((wFlow.selectedTab.dataHolding.searchBy[0] == 1)?wFlow.selectedTab.dataHolding.searchBy[0] = 0:wFlow.selectedTab.dataHolding.searchBy[0] = 1); InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.searchBy[0] == 1)?'checked':'')}}">Name</ons-col>
+                          <ons-col ng-click="((wFlow.selectedTab.dataHolding.searchBy[1] == 1)?wFlow.selectedTab.dataHolding.searchBy[1] = 0:wFlow.selectedTab.dataHolding.searchBy[1] = 1); InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.searchBy[1] == 1)?'checked':'')}}">Description</ons-col>
+                          <ons-col ng-click="((wFlow.selectedTab.dataHolding.searchBy[2] == 1)?wFlow.selectedTab.dataHolding.searchBy[2] = 0:wFlow.selectedTab.dataHolding.searchBy[2] = 1); InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.searchBy[2] == 1)?'checked':'')}}">ID</ons-col>
                         </ons-row>
                         <ons-row>
                           <ons-col></ons-col>
@@ -225,21 +225,47 @@
                     <div class="{{((getSelectedTabType(wFlow) == 3)?'':'hidden')}}">
                       edit
                     </div>
-                    <div class="{{((getSelectedTabType(wFlow) == 4)?'':'hidden')}}">
-                      <!-- check if null => loader , length=0 => no content -->
-                      <pre>{{(((wFlow.selectedTab.dataHolding.results == null)?{"result":"Loading..."}:((wFlow.selectedTab.dataHolding.resultsCount == 0)?{"result":"No Content"}:wFlow.selectedTab.dataHolding.results)) | json)}}</pre>
+                    <div class="{{'searchTypeTab '+((getSelectedTabType(wFlow) == 4)?'':'hidden')}}">
+                      <div ng-click="back(wFlow.selectedTab.dataHolding);" style="{{'border-top: 2px solid '+wFlow.selectedTab.color+'; border-right: 3px solid '+wFlow.selectedTab.color+';'}}" class="ReturnToSearchButton">
+                        <ons-icon icon="ion-chevron-left" size="18px"></ons-icon> Back
+                      </div>
+                      <div class="{{'searchResultSpinner '+((wFlow.selectedTab.dataHolding.results == null)?'':'hidden')}}">
+                        <div class="centerMeInDiv " style="color: #0860A8;width:50px; height:50px">
+                          <ons-icon icon="ion-load-c" spin="true" size="50px"></ons-icon>
+                        </div>
+                      </div>
+                      <div class="SearchResultsRows">
+                        <p class="noResultsMessage" style="{{((wFlow.selectedTab.dataHolding.resultsCount == 0)?'':'display:none')}}">
+                          No Results!
+                        </p>
+                        <ons-row ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Delivery')">
+                          <ons-col>
+                            OPS1
+                          </ons-col>
+                          <ons-col>
+                            OPS2
+                          </ons-col>
+                        </ons-row>
+                        <ons-row ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Kbit')">
+                          <ons-col>
+                            OPS1
+                          </ons-col>
+                          <ons-col>
+                            OPS2
+                          </ons-col>
+                        </ons-row>
+                        <ons-row ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Term')">
+                          <ons-col>
+                            OPS1
+                          </ons-col>
+                          <ons-col>
+                            OPS2
+                          </ons-col>
+                        </ons-row>
+                      </div>
+                      <!-- <pre>{{(((wFlow.selectedTab.dataHolding.results == null)?'':((wFlow.selectedTab.dataHolding.resultsCount == 0)?{"result":"No Content"}:wFlow.selectedTab.dataHolding.results)) | json)}}</pre> -->
                     </div>
                 </div>
-                <div class="openFullScreenButton" ng-click="openFullScreen($index);">
-                  <ons-icon size="35px" icon="ion-arrow-expand" class="ons-icon ons-icon--ion ion-arrow-expand" style="line-height: 45px;width: 40px;text-align: center;height: 40px;"></ons-icon>
-                </div>
-                <div class="editTabSettingsButton" ng-click="editTabSettings($index);">
-                  <ons-icon size="35px" icon="ion-gear-a" class="ons-icon ons-icon--ion ion-gear-a" style="line-height: 45px;width: 40px;text-align: center;height: 40px;"></ons-icon>
-                </div>
-                <div class="closeTabButton" ng-click="closeTab(wFlow);">
-                  <ons-icon size="35px" icon="ion-close" class="ons-icon ons-icon--ion ion-close" style="line-height: 45px;width: 40px;text-align: center;height: 40px;"></ons-icon>
-                </div>
-                <!-- <div class="{{'holdNoClicks ' + ((displayNewWorkflowButtons == true || displayNewWorkflowTabButtons == true)?'':'hidden')}}"></div> -->
               </div>
 
               <div ng-repeat="newButtons in workSpaces.newWorkflowButtons" id="{{'newWorkflowButton'+newButtons.ID}}" class="{{'newWorkflowButtonDiv WorkFlowBlock ' + ((displayNewWorkflowButtons == true)?'':'hidden')}}" fx="{{newButtons.fx}}" fy="{{newButtons.fy}}" tx="{{newButtons.tx}}" ty="{{newButtons.ty}}" >
@@ -260,12 +286,12 @@
           <img class="blurBackground" src="img/loginbg1.jpg" />
           <div class="holdLoginDiv">
             <div class="LoginHeader">
-              <img src="img/IntelIcon.png" />
+              <!-- <img src="img/IntelIcon.png" /> -->
             </div>
             <div class="LoginBody">
               <form autocomplete="off">
-                <input ng-enter="LoginWithUsernameAndPassrod();" id="username" type="text" placeholder="מספר נהג">
-                <input ng-enter="LoginWithUsernameAndPassrod();" id="password" type="password" placeholder="סיסמה">
+                <input ng-enter="LoginWithUsernameAndPassrod();" id="username" type="text" placeholder="username">
+                <input ng-enter="LoginWithUsernameAndPassrod();" id="password" type="password" placeholder="password">
               </form>
             </div>
             <div class="LoginFooter" ng-click="LoginWithUsernameAndPassrod();">
@@ -273,7 +299,7 @@
                 <ons-icon spin="true" icon="ion-load-d" size="30px"></ons-icon>
               </div>
               <div class="LoginButton">
-                התחבר
+                Login
               </div>
             </div>
           </div>
@@ -317,15 +343,20 @@
         <ons-col><div ng-click="((isColorUsed('#808080') == true)?return:colorPicked='#808080')" class="{{'grayColor colorPick '+((isColorUsed('#808080') == false)?'clickable hoverOp':'')}}">
           <div class="{{'colorUsed '+((isColorUsed('#808080') == true)?'':'hidden')}}">Used</div>
         </div></ons-col>
-        <ons-col><div ng-clic((isColorUsed('#000') == true)?return:k="colorPice )= '#000'" class="{{'blackColor colorPick '+((isColorUsed('#000') == false)?'clickable hoverOp':'')}}">
+        <ons-col><div ng-click="((isColorUsed('#000') == true)?return:colorPicked='#000')" class="{{'blackColor colorPick '+((isColorUsed('#000') == false)?'clickable hoverOp':'')}}">
           <div class="{{'colorUsed '+((isColorUsed('#000') == true)?'':'hidden')}}">Used</div>
         </div></ons-col>
       </ons-row>
     </div>
+    <div id="ToastMessage" class="ToastContainer BOTTOM">
+      <div class="ToastTitle"></div>
+      <div class="ToastBody"></div>
+    </div>
+    <!-- $('#ToastMessage').fadeIn(500).delay(2000).fadeOut(500); // add before show title and body and porsition -->
 
     <div id="LoadingScreen" style="z-index: 100000;display:block;position: fixed;width: 100%;height: 100%;background: rgb(8,96,168);">
-      <img src="img/IntelIcon.png" style="width: 200px;position: absolute;top: 0;bottom: 0;left: 0;right: 0;margin: auto;opacity: .85;z-index: 3;">
-      <img src="img/IntelIcon.png" class="animatedLogo" style="width: 200px;position: absolute;top: 0;bottom: 0;left: 0;right: 0;margin: auto;">
+      <!-- <img src="img/IntelIcon.png" style="width: 200px;position: absolute;top: 0;bottom: 0;left: 0;right: 0;margin: auto;opacity: .85;z-index: 3;"> -->
+      <!-- <img src="img/IntelIcon.png" class="animatedLogo" style="width: 200px;position: absolute;top: 0;bottom: 0;left: 0;right: 0;margin: auto;"> -->
       <div class="statusBarLoading">
         <div class="StatusBarPerc"></div>
       </div>
@@ -343,6 +374,7 @@
   <script type="text/javascript" src="js/angularfire.min.js"></script>
   <script type="text/javascript" src="js/visible.js"></script>
 
+  <script type="text/javascript" src="js/Toast.js"></script>
   <script type="text/javascript" src="js/app.js"></script>
   <script type="text/javascript" src="js/globals.js"></script>
   <script type="text/javascript" src="js/Storage.js"></script>
@@ -353,6 +385,7 @@
   <script type="text/javascript" src="js/tab.js"></script>
   <script type="text/javascript" src="js/workflows.js"></script>
   <script type="text/javascript" src="js/workspace.js"></script>
+
   
 
   </body>

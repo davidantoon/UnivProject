@@ -1,4 +1,4 @@
-app.factory('Settings', ["Storage", "Server", function(Storage, Server){
+app.factory('Settings', ["$rootScope", "Storage", "Server", function($rootScope, Storage, Server){
 
 
 	function Settings(){
@@ -6,6 +6,9 @@ app.factory('Settings', ["Storage", "Server", function(Storage, Server){
 		this.autoColor = false;
 		this.autoSave = true;
 		this.autoOpenTabs = false;
+		this.defaultToastPosition = "BOTTOM";
+		this.removeScrollOnMouseOver = true;
+
 		
 	}
 
