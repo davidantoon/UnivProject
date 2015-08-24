@@ -156,7 +156,7 @@ class O2TRelation {
 		
 		$database_name = dbAPI::get_db_name($database_name);	
 		// disable old relation
-		O2TRelation::remove_O2T_relation($object_UID, $term_UID, $link_type, $database_name);
+		O2TRelation::remove_O2T_relation($object_UID, $term_UID, $link_type, $tableName, $database_name);
 		// get latest revision number
 		$dbObj = new dbAPI();
 		// where statement
@@ -170,12 +170,12 @@ class O2TRelation {
 		$where_sttmnt = " (". $object_column_name ." = " . $object_UID_value .
 			" AND TERM_ID = " . $term_UID . " AND LINK_TYPE = '". $link_type ."')";
 
-		$old_rev = $dbObj->get_latest_Rivision_ID($database_name, $tableName, $where_sttmnt);
+		$old_rev = $dbObj->get_latest_Rivision_ID($database_name, $database_name.'.'.$tableName, $where_sttmnt);
 		if($old_rev == null)
 			$old_rev = 0;
 
 		// add new relation
-		$query = "INSERT INTO ". $tableName ." (REVISION, ". $object_column_name .", TERM_ID, LINK_TYPE, ENABLED, USER_ID, CREATION_DATE) VALUES (". ($old_rev + 1) . ", ". $object_UID_value . ", " . $term_UID .", " . $link_type .", 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
+		$query = "INSERT INTO ". $tableName ." (REVISION, ". $object_column_name .", TERM_ID, LINK_TYPE, ENABLED, USER_ID, CREATION_DATE) VALUES (". ($old_rev + 1) . ", ". $object_UID_value . ", " . $term_UID .", '" . $link_type ."', 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
 		$dbObj->run_query($database_name, $query);
 
 		// return recently created relation
@@ -281,7 +281,7 @@ class O2TRelation {
 		for($i=0;$i<count($results);$i++) {
 			$curr_term = term::get_term_by_UID($results[$i]["TERM_ID"], $lang);
 			// copy LINK_TYPE to term object
-			$curr_term["LINK_TYPE"] = $results["LINK_TYPE"];
+			$curr_term["LINK_TYPE"] = $results[$i]["LINK_TYPE"];
 			array_push($terms, $curr_term);
 		}
 		return $terms;
@@ -317,18 +317,19 @@ class D2KRelation {
 	 */
 	public static function add_D2K_relation($Kbit_UID, $delivery_UID, $link_type, $link_weight, $user, $database_name) {
 		
+		
 		$database_name = dbAPI::get_db_name($database_name);
 		// disable old relation
 		D2KRelation::remove_D2K_relation($Kbit_UID, $delivery_UID, $link_type, $database_name);
 		// get latest revision number
 		$dbObj = new dbAPI();
-		$where_sttmnt = " KBIT_BASE_UID = ". $Kbit_UID .", DELIVERY_BASE_ID = ". $delivery_UID .", LINK_TYPE = '". $link_type ."' AND ENABLED = 1 ";
-		$old_rev = $dbObj->get_latest_Rivision_ID($database_name, $tableName, $where_sttmnt);
+		$where_sttmnt = " KBIT_BASE_ID = ". $Kbit_UID ." AND DELIVERY_BASE_ID = ". $delivery_UID ." AND LINK_TYPE = '". $link_type ."' AND ENABLED = 1 ";
+		$old_rev = $dbObj->get_latest_Rivision_ID($database_name, 'R_LD2K', $where_sttmnt);
 		if($old_rev == null)
 			$old_rev = 0;
 
 		// add new relation
-		$query = "INSERT INTO R_LD2K (REVISION, KBIT_BASE_UID, DELIVERY_BASE_ID, LINK_TYPE, LINK_WEIGHT, ENABLED, USER_ID, CREATION_DATE) VALUES (". ($old_rev + 1) . ", ". $Kbit_UID . ", " . $delivery_UID .", " . $link_type ."," . $link_weight .", 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
+		$query = "INSERT INTO R_LD2K (REVISION, KBIT_BASE_ID, DELIVERY_BASE_ID, LINK_TYPE, LINK_WEIGHT, ENABLED, USER_ID, CREATION_DATE) VALUES (". ($old_rev + 1) . ", ". $Kbit_UID . ", " . $delivery_UID .", '" . $link_type ."'," . $link_weight .", 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
 		$dbObj->run_query($database_name, $query);
 
 		// return recently created relation
@@ -354,7 +355,7 @@ class D2KRelation {
 		$dbObj = new dbAPI();
 		
 		// where statement
-		$where_sttmnt = " KBIT_BASE_UID = ". $Kbit_UID .", DELIVERY_BASE_ID = ". $delivery_UID .", LINK_TYPE = '". $link_type ."' AND ENABLED = 1 ";
+		$where_sttmnt = " KBIT_BASE_ID = ". $Kbit_UID ." AND DELIVERY_BASE_ID = ". $delivery_UID ." AND LINK_TYPE = '". $link_type ."' AND ENABLED = 1 ";
 		$dbObj->disable_revision($database_name, 'R_LD2K', $where_sttmnt);
 	}
 
@@ -374,7 +375,7 @@ class D2KRelation {
 
 		$dbObj = new dbAPI();
 		// where statement
-		$where_sttmnt = " KBIT_BASE_UID = ". $Kbit_UID .", DELIVERY_BASE_ID = ". $delivery_UID .", LINK_TYPE = '". $link_type ."' AND ENABLED = 1 ";
+		$where_sttmnt = " KBIT_BASE_ID = ". $Kbit_UID ." AND DELIVERY_BASE_ID = ". $delivery_UID ." AND LINK_TYPE = '". $link_type ."' AND ENABLED = 1 ";
 		$query = "SELECT * FROM R_LD2K where " . $where_sttmnt;
 	
 		$results = $dbObj->db_select_query($database_name, $query);
@@ -401,7 +402,7 @@ class D2KRelation {
 		$OTHERS = array();
 
 		// get database name
-		if(Lock::is_locked_by_user($UID, 'KBIT_BASE', $user) == true)
+		if(Lock::is_locked_by_user($Delivery_UID, 'DELIVERY_BASE', $user) == true)
 			$database_name = dbAPI::get_db_name('user');
 		else
 			$database_name = dbAPI::get_db_name('content');
@@ -414,12 +415,12 @@ class D2KRelation {
 
 
 		for($i=0;$i<count($results);$i++) {
-			$curr_Kbit = Kbit::get_Kbit_details($results[$i]["KBIT_BASE_UID"], $user);
-			if($curr_Kbit["LINK_TYPE"] == 'NEEDED') {
+			$curr_Kbit = Kbit::get_Kbit_details($results[$i]["KBIT_BASE_ID"], $user);
+			if($results[$i]["LINK_TYPE"] == 'NEEDED') {
 				array_push($NEEDED, $curr_Kbit);
 			}
 			else { 
-				if($curr_Kbit["LINK_TYPE"] == 'PROVIDED')
+				if($results[$i]["LINK_TYPE"] == 'PROVIDED')
 				array_push($PROVIDED, $curr_Kbit);
 				else
 					array_push($OTHERS, $curr_Kbit);

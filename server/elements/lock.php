@@ -81,8 +81,11 @@ class Lock {
 		$dbObj = new dbAPI();
 		$query = "SELECT usr.* FROM ". dbAPI::get_db_name('content') .".CONTENT_LOCK AS lk INNER JOIN ". dbAPI::get_db_name('user') .".USERS AS usr ON (usr.UID = lk.USER_ID) where lk.LOCKED_UID = '" . $UID . "' AND lk.ENTITY_TYPE = '" . $entity_type . "' AND lk.LOCK_STATUS = 'LOCKED' AND lk.ENABLED = 1 ";
 		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
-		if(count($results) > 0)
-			return $results[0];
+		if(count($results) > 0) {
+			$usr = $results[0];
+			$usr["PASSWORD"] = '********';
+			return $usr;
+		}
 		return null;
 	}
 }
