@@ -216,7 +216,7 @@ app.factory('Workspace', ['$rootScope', 'Workflow', function($rootScope, Workflo
 		 */
 		deleteChildTabIds: function(tabHoldingData, deleteParent){
 			try{
-				if(deleteParent){}
+				if(deleteParent){
 					for(var i=0; i<this.workflows.length; i++){
 						if(this.workflows[i].ID == tabHoldingData.workflowId){
 							for(var j=0; j<this.workflows[i].tabs.length; j++){
