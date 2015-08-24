@@ -358,9 +358,15 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
         $scope.closeTab = function(workflow){
             try{
                 var parentTabToDelete = workflow.selectedTab.dataHolding.parentTab;
+                var childTabToDelete = workflow.selectedTab.dataHolding.childTab;
                 if(parentTabToDelete != null && parentTabToDelete.workflowId != null && parentTabToDelete.tabId != null)
                 {
                     $scope.workSpaces.deleteChildTabIds(workflow.selectedTab.dataHolding.parentTab);
+                }
+
+                if(childTabToDelete != null && childTabToDelete.workflowId != null && childTabToDelete.tabId != null)
+                {
+                    $scope.workSpaces.deleteAllChildsParentTab(workflow.selectedTab.dataHolding.childTab);
                 }
                 workflow.tabs.splice($scope.getSelectedTabIndex(workflow),1);
                 if(workflow.tabs.length > 0){
@@ -409,6 +415,26 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
         $scope.openTabOptions = function(wFlow){
 
         }
+
+        /**
+         * Go back to parent tab
+         * @param  {object} dataHolding holding the data of parent tab
+         */
+        $scope.back = function(dataHolding){
+            try{
+                if(dataHolding != null && dataHolding != undefined ){
+                    if(dataHolding.parentTab.workflowId == null){
+                        $scope.Toast.show("Note","Parent tab is not found.", Toast.LONG, Toast.NORMAL);        
+                    }else{
+                        $scope.workSpaces.selectTabAfterSearch(dataHolding.parentTab);
+                    }
+                }
+            }catch(e){
+                $scope.Toast.show("Error!","There was an error on going back to parent tab", Toast.LONG, Toast.ERROR);
+                console.error("$scope.back: ", e);
+            }
+        }
+
 
 
         /*********************************************************************************
@@ -636,6 +662,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
 
 
         $scope.prepareForSearch = function(wFlow){
+            debugger;
             try{
                 var dataHolding = wFlow.selectedTab.dataHolding;
                 var holdingRequestTab = wFlow.selectedTab;
@@ -763,21 +790,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             },100);
         }
 
-        /**
-         * Go back to parent tab
-         * @param  {object} dataHolding holding the data of parent tab
-         */
-       $scope.back = function(dataHolding){
-            try{
-                if(dataHolding != null && dataHolding != undefined){
-                    $scope.Workspace.selectTabAfterSearch(dataHolding);
-                }
-            }catch(e){
-                $scope.Toast.show("Error!","There was an error on going back to parent tab", Toast.LONG, Toast.ERROR);
-                console.error("$scope.back: ", e);
-            }
-        }
-
+        
 
         /************************************************************************************************************************
          *                                                                                                                       *
