@@ -235,10 +235,10 @@
                         </div>
                       </div>
                       <div class="SearchResultsRows">
-                        <p class="noResultsMessage" style="{{((wFlow.selectedTab.dataHolding.resultsCount == 0)?'':'display:none')}}">
+                        <p class="{{'noResultsMessage '+((wFlow.selectedTab.dataHolding.resultsCount == 0)?'':'hidden')}}">
                           No Results!
                         </p>
-                        <ons-row ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Delivery')">
+                        <ons-row class="SearchResultsRow" ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Delivery')">
                           <ons-col>
                             OPS1
                           </ons-col>
@@ -246,7 +246,7 @@
                             OPS2
                           </ons-col>
                         </ons-row>
-                        <ons-row ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Kbit')">
+                        <ons-row class="SearchResultsRow" ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Kbit')">
                           <ons-col>
                             OPS1
                           </ons-col>
@@ -254,7 +254,7 @@
                             OPS2
                           </ons-col>
                         </ons-row>
-                        <ons-row ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Term')">
+                        <ons-row class="SearchResultsRow" ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Term')">
                           <ons-col>
                             OPS1
                           </ons-col>

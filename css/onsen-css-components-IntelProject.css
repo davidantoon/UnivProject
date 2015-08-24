@@ -6860,12 +6860,22 @@ div.vertical {
 .hidden{
   display: none;
 }
-
+.SearchResultsRow{
+  padding: 5px 10px;
+  margin-bottom: 5px;
+  border-bottom: 1px solid rgba(0,0,0,.1);
+}
 .SearchResultsRows{
-
+  margin-top: 10px;
 }
 .noResultsMessage{
-
+  text-align: center;
+  margin: 100px 0;
+  font-size: 30px;
+  color: rgb(200,200,200);
+  font-weight: 500;
+  text-shadow: 0px 0px 1px rgba(60,60,60,.2);
+  cursor: default;
 }
 
 
