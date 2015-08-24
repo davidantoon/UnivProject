@@ -182,7 +182,7 @@ app.factory('Tab', ["$rootScope", 'Content','Globals','Storage', function($rootS
                 "color": this.color
             }
             return JSON.stringify(strToReturn);
-		}
+		},
 
 		addChildToSearch: function(childData){
 			// add childData to dataHolding.childTab
