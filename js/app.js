@@ -179,7 +179,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             $scope.currentUser = {
                 'firstName': 'David',
                 'lastName': 'Antoon',
-                'profilePicture': 'https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/v/t1.0-1/p320x320/988960_632550293533974_2658667833563570113_n.jpg?oh=c62dc24dba7545a6d06915cd01c11a3f&oe=55A4011C&__gda__=1436053802_e6b13ee76d8aa131e270234503c16cc8'
+                'profilePicture': 'https://graph.facebook.com/100003370268591/picture'
             };
 
             // init worksace
@@ -315,6 +315,10 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                     }
                 }
             }, 200);
+            setTimeout(function(){
+                $scope.Steps.lastFocusedWorkflow = workflow.ID;
+                $scope.refocusLastWorkflow();
+            },100);
         }
         $scope.getSelectedTabType = function(workflow){
             return workflow.selectedTab.Type;
@@ -591,9 +595,9 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                 $scope.workSpaces.checkUserColorsInWorkspace();
                 
                 setTimeout(function(){
-                    $scope.Steps.lastFocusedWorkflow = newWorkflow.ID;
+                    $scope.Steps.lastFocusedWorkflow = workflow.ID;
                     $scope.refocusLastWorkflow();
-                },300);
+                },200);
             }catch(e){
                 $scope.Toast.show("Error!","Could'nt add new workflow or tab", Toast.LONG, Toast.ERROR);
                 console.error("addNewTabToWorkflow: ", e);
@@ -860,6 +864,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                     $scope.workSpaces.selectedColors.push(color);
                 
                 $scope.workSpaces.coloredWorkflows = [];
+                
                 //loop in colors the are selected to filter
                 for(var i=0; i< $scope.workSpaces.selectedColors.length; i++){
                     //loop on all workflows searching for selected colors
@@ -886,7 +891,6 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                                 holdingWorkflowColored.tabs.push($scope.workSpaces.workflows[j].tabs[k]);
                                 holdingWorkflowColored.selectedTab = holdingWorkflowColored.tabs[0];
                             }
-
                         }
 
                     }
