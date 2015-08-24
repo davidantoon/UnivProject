@@ -367,11 +367,6 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                 {
                     $scope.workSpaces.deleteChildTabIds(workflow.selectedTab.dataHolding.childTab, true);
                 }
-
-                if(childTabToDelete != null && childTabToDelete.workflowId != null && childTabToDelete.tabId != null)
-                {
-                    $scope.workSpaces.deleteAllChildsParentTab(workflow.selectedTab.dataHolding.childTab);
-                }
                 workflow.tabs.splice($scope.getSelectedTabIndex(workflow),1);
                 if(workflow.tabs.length > 0){
                     if(parentTabToDelete != null && parentTabToDelete.workflowId != null && parentTabToDelete.tabId != null){
@@ -428,9 +423,13 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             try{
                 if(dataHolding != null && dataHolding != undefined ){
                     if(dataHolding.parentTab.workflowId == null){
-                        $scope.Toast.show("Note","Parent tab is not found.", Toast.LONG, Toast.NORMAL);        
+                        $scope.Toast.show("Note","Parent tab is not found.", Toast.SHORT, Toast.NORMAL);        
                     }else{
                         $scope.workSpaces.selectTabAfterSearch(dataHolding.parentTab);
+                        setTimeout(function(){
+                            $scope.Steps.lastFocusedWorkflow = dataHolding.parentTab.workflowId;
+                            $scope.refocusLastWorkflow();
+                        },300);
                     }
                 }
             }catch(e){
