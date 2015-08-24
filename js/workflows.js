@@ -34,7 +34,8 @@ app.factory('Workflow', ["$rootScope", 'Tab', 'TypeOf', function($rootScope, Tab
                     this.tabsIds = tempJson.tabsIds;
                     this.tabs = [];
 
-                    if(colored != null && colored == false){
+                    if(colored != null && colored == true){
+                    }else{
                         if(tempJson.requestFrom == "restoreStep"){
                             loopTabs(0, this, tempJson);
                             function tabReturn(newTab, index, passThis, passTempJson){

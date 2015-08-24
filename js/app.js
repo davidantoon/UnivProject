@@ -182,7 +182,6 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                 'profilePicture': 'https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/v/t1.0-1/p320x320/988960_632550293533974_2658667833563570113_n.jpg?oh=c62dc24dba7545a6d06915cd01c11a3f&oe=55A4011C&__gda__=1436053802_e6b13ee76d8aa131e270234503c16cc8'
             };
 
-
             // init worksace
             $rootScope.currentScope = $scope;
             $scope.Toast = new Toast();
@@ -663,7 +662,6 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
 
 
         $scope.prepareForSearch = function(wFlow){
-            debugger;
             try{
                 var dataHolding = wFlow.selectedTab.dataHolding;
                 var holdingRequestTab = wFlow.selectedTab;
