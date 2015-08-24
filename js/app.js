@@ -794,19 +794,42 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
 
         $scope.getCurrentWorkflows = function(){
 
-            // check if selected all colors
-                return $scope.workSpaces.workflows;
-            // else
-                // loop in colors
-                    // check if color checked
-                        // loop in workflows 
-                            // loop in tabs
-                                // check if colored same
-                                    // check if workflow not added to tempWorkspace
-                                        // add workflow reference to tempWorkspace
-                                    // add tab reference to workflow
-                // return $scope.workSpaces.coloredWorkflows;
-            
+            // default colors, no color filter selected
+            if($scope.workSpaces.selectedColors.length == 0)
+                    return $scope.workSpaces.workflows;
+            else{
+                //loop in colors the are selected to filter
+                for(var i=0; i< $scope.workSpaces.selectedColors.length; i++){
+                    //loop on all workflows searching for selected colors
+                    for(var j=0; j<$scope.workSpaces.workflows; j++){
+                        //loop in all tabs in specific workflow to check if colors exists
+                        for(var k=0; k<$scope.workSpaces.workflows[j].tabs.length; k++){
+                            if($scope.workSpaces.selectedColors[i] == $scope.workSpaces.workflows[j].tabs[k].color){
+                                var holdingWorkflowColored = null;
+                                // loop in coloredWorkflows to check if exist
+                                for(var m=0; m<$scope.workSpaces.coloredWorkflows.length;m++){
+                                    if($scope.workSpaces.coloredWorkflows[m].ID == $scope.workSpaces.workflows[j].ID){
+                                        holdingWorkflowColored = $scope.workSpaces.workflows[j];
+                                        break;
+                                    }
+                                }
+
+                                // if not exist
+                                if(holdingWorkflowColored == null){
+                                    holdingWorkflowColored = new Workflow($scope.workSpaces.workflows[j], null,null,null,null, true);
+                                    $scope.workSpaces.coloredWorkflows.push(holdingWorkflowColored);   
+                                }
+                                // add tab referece
+                                holdingWorkflowColored.tabs.push($scope.workSpaces.workflows[j].tabs[k]);
+                                holdingWorkflowColored.selectedTab = holdingWorkflowColored.tabs[0];
+                            }
+
+                        }
+
+                    }
+                }
+                return $scope.workSpaces.coloredWorkflows;
+            }
         }
 
         $scope.selectColorFilter = function(color){
