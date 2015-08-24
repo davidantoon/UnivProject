@@ -22,8 +22,7 @@ class dbAPI {
 	}
 	public static function get_db_name($source) {
 		$dbObj = new dbAPI();
-		if(strpos($source,'content') !== false || strpos($source, "CMSdb") != false)
-		// if($source == 'content')
+		if($source == 'content' || $source == "CMSdb")
 			return $dbObj->db_get_contentDB();
 		else
 			return $dbObj->db_get_usersDB();
@@ -44,10 +43,7 @@ class dbAPI {
     }
     
     public function run_query($database_name, $sql) {
-    	
-    	if($database_name != '')
-    		$database_name = dbAPI::get_db_name($database_name);
-
+		$database_name = dbAPI::get_db_name($database_name);
 		$conn = $this->db_get_connection($database_name);
 		$result = $conn->query($sql);
 		
@@ -138,6 +134,7 @@ class dbAPI {
     public function disable_revision($database_name, $table_name, $whereSttmnt) {
 
 		$query = "UPDATE ". $table_name ." SET ENABLED = 0 WHERE ". $whereSttmnt . " ";
+		
 		$results = $this->run_query($database_name, $query);
 		if($results) {
 			// on success
@@ -190,6 +187,14 @@ class dbAPI {
     	if($prnt == 1)
 	    	echo $jsons;
     	return $jsons;
+    }
+
+
+    public static function delete_all($dbArr) {
+    	$dbObj = new dbAPI();
+		// $dbArr = array( $u.'.KBIT_BASE', $u.'.KBIT_FRONT', $c.'.KBIT_BASE', $c.'.KBIT_FRONT', $c.'.CONTENT_LOCK');
+		for($k = 0; $k < count($dbArr); $k++)
+			$dbObj->run_query($dbObj->db_get_usersDB(), "DELETE FROM " . $dbArr[$k]);
     }
 }
 

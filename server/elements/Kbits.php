@@ -49,12 +49,19 @@ class Kbit {
 	 */
 	public static function add_new_edit_for_kbit($UID, $title, $desc, $user, $front) {
 
+		// check if Kbit is locked by user
+		if(Lock::is_locked_by_user($UID, 'KBIT_BASE', $user) == false) {
+			debugLog::log("<i>[Kbits.php:add_new_edit_for_kbit]</i>The kbit (". $UID .") is not locked by user (". $user .")");
+			return null;
+		}
+
+		$dbObj = new dbAPI();
 		// get front type
 		if($front == null) {
 			debugLog::log("<i>[Kbits.php:add_new_edit_for_kbit]</i> FRONT Kbit of (". $title .") is missing!");
 			
 			return null;
-		}
+		}		
 		if($front["FRONT_TYPE"] == null) {
 			debugLog::log("<i>[Kbits.php:add_new_edit_for_kbit]</i> FRONT Kbit type of (". $title .") is missing!");
 			
@@ -64,11 +71,14 @@ class Kbit {
 		// disable all kbit information
 		Kbit::disable_all_kbit_info($UID, 'content');
 
-		$front_type = $front["FRONT_TYPE"]; 
+		$front_type = $front["FRONT_TYPE"];
 		// add record to database
 		$query = "INSERT INTO KBIT_BASE (UID, REVISION, TITLE, DESCRIPTION, ENABLED, USER_ID, CREATION_DATE, FRONT_TYPE) VALUES (".
 			$UID . ", 1, '" . $title ."', '" . $desc ."', 1, ". $user .",'". date("Y-m-d H:i:s") ."','". $front_type ."')";
 		$dbObj->run_query($dbObj->db_get_usersDB(), $query);
+		$query = "INSERT INTO KBIT_BASE (UID, REVISION, TITLE, DESCRIPTION, ENABLED, USER_ID, CREATION_DATE, FRONT_TYPE) VALUES (".
+			$UID . ", 1, '" . $title ."', '" . $desc ."', 0, ". $user .",'". date("Y-m-d H:i:s") ."','". $front_type ."')";
+		$dbObj->run_query('content', $query);
 		// entity of recently added kbit
 		$recent_kbit = Kbit::get_base_Kbit($UID, 'user');
 		
@@ -174,6 +184,7 @@ class Kbit {
 		// prepare where statement
 		$where_sttmnt = " ( UID = ". $UID ." ) ";
 		// remove old instances of the specific front
+		
 		$dbObj->disable_revision($database_source, $tableName, $where_sttmnt);
 		// get a new revision number for front kbit
 		$latest_revision = $dbObj->get_latest_Rivision_ID($database_source, $tableName, $where_sttmnt);
@@ -221,7 +232,7 @@ class Kbit {
 
 		// determines the database name which the {Kbit} should be imported from
 		$database_source = dbAPI::get_db_name($source);
-
+		
 		// database query
 		$query = "SELECT * FROM ". $tableName ." where UID = '" . $UID . "' AND ENABLED = '1'";
 		$results = $dbObj->db_select_query($database_source, $query);
@@ -230,7 +241,9 @@ class Kbit {
 			
 			return null;
 		}
-		return $results[0];
+		$temp = $results[0];
+		$temp["FRONT_TYPE"] = $tableName;
+		return $temp;
 	}
 
 
@@ -424,10 +437,13 @@ class Kbit {
 				$dbObj->run_query($dbObj->db_get_contentDB(), $query);
 			}
 		}
+
+		// remove copies from user database
+		Kbit::disable_all_kbit_info($UID, 'user');
+
 		// release lock off the Kbit
 		if(Lock::release_lock($UID, 'KBIT_BASE', $user) == false) {
 			debugLog::log("<i>[Kbits.php:publish_changes]</i> Could not release lock off kbit (". $UID .")");
-			
 			return false;
 		}
 
@@ -456,8 +472,8 @@ class Kbit {
 	public static function disable_all_kbit_info($UID, $destination = 'user') {
 
 		$dbObj = new dbAPI();
-
-		$database_source = dbAPI::get_db_name($source);
+		
+		$destination = dbAPI::get_db_name($destination);
 
 		// disable old records
 		$dbObj->disable_revision('', $destination .".KBIT_BASE ", ' UID = '. $UID . ' ');	
@@ -482,6 +498,7 @@ class Kbit {
 			// disable old links records
 			$dbObj->disable_revision('', $destination .".". $links_tables_names[$i] . " ", $where_sttmnt);
 		}
+		
 		return true;
 	}
 
@@ -539,7 +556,24 @@ class Kbit {
 
 
 
-	public static function add_K2K_relation($first_UID, $second_UID, $user) {
+	public static function add_K2K_relation($first_UID, $second_UID, $is_hier, $user) {
+
+		// check if Kbits is locked by user
+		if(Lock::is_locked_by_user($first_UID, 'KBIT_BASE', $user) == false && Lock::is_locked_by_user($second_UID, 'KBIT_BASE', $user) == false) {
+			debugLog::log("<i>[Kbits.php:add_K2K_relation]</i> Non of the Kbits (". $first_UID .", ". $second_UID .") are locked by user (". $user .")");
+			return null;
+		}
+		// check soft lock
+		$locking_user = Lock::get_locking_user($first_UID, 'KBIT_BASE');
+		if($locking_user != null && $locking_user["UID"] != $user) {
+			debugLog::log("<i>[Kbits.php:add_K2K_relation]</i> one of the Kbits (". $first_UID .") is locked by other user(". $locking_user["UID"] .")");
+			return null;
+		}
+		$locking_user = Lock::get_locking_user($second_UID, 'KBIT_BASE');
+		if($locking_user != null && $locking_user["UID"] != $user) {
+			debugLog::log("<i>[Kbits.php:add_K2K_relation]</i> one of the Kbits (". $first_UID .") is locked by other user(". $locking_user["UID"] .")");
+			return null;
+		}
 
 		if(refRelation::add_relation_to_object($first_UID, $second_UID, $is_hier, $user, 'R_LK2K', 'user') == null) {
 			debugLog::log("<i>[Kbits.php:add_K2K_relation]</i> parent Kbit (". $first_UID .") and child (". $second_UID .") Kbit cannot be the same");
@@ -551,6 +585,23 @@ class Kbit {
 	}
 
 	public static function remove_K2K_relation($first_UID, $second_UID) {
+
+		// check if Kbits is locked by user
+		if(Lock::is_locked_by_user($first_UID, 'KBIT_BASE', $user) == false && Lock::is_locked_by_user($second_UID, 'KBIT_BASE', $user) == false) {
+			debugLog::log("<i>[Kbits.php:add_K2K_relation]</i> Non of the Kbits (". $first_UID .", ". $second_UID .") are locked by user (". $user .")");
+			return null;
+		}
+		// check soft lock
+		$locking_user = Lock::get_locking_user($first_UID, 'KBIT_BASE');
+		if($locking_user != null && $locking_user["UID"] != $user) {
+			debugLog::log("<i>[Kbits.php:add_K2K_relation]</i> one of the Kbits (". $first_UID .") is locked by other user(". $locking_user["UID"] .")");
+			return null;
+		}
+		$locking_user = Lock::get_locking_user($second_UID, 'KBIT_BASE');
+		if($locking_user != null && $locking_user["UID"] != $user) {
+			debugLog::log("<i>[Kbits.php:add_K2K_relation]</i> one of the Kbits (". $first_UID .") is locked by other user(". $locking_user["UID"] .")");
+			return null;
+		}
 
 		refRelation::remove_relation($first_UID, $second_UID, 'R_LK2K', 'user');
 	}
@@ -570,7 +621,7 @@ class Kbit {
 			debugLog::log("<i>[Kbits.php:add_K2T_relation]</i> Kbit (". $Kbit_UID .") is not locked by the user (". $user .")");
 			return null;
 		}
-		return O2TRelation::add_O2T_relation($Kbit_UID, $term_UID, $link_type, $user, 'R_LK2T', 'user');
+		return O2TRelation::add_O2T_relation(array("column_name"=>'KBIT_BASE_ID', "value"=>$Kbit_UID), $term_UID, $link_type, $user, 'R_LK2T', 'user');
 	}
 
 	public static function get_terms_of_Kbit($Kbit_UID, $user = '', $lang = '') {
@@ -580,17 +631,17 @@ class Kbit {
 		else
 			$database_name = 'content';
 
-		return O2TRelation::get_terms_of_object($Kbit_UID, $database_name, 'R_LK2T', $lang);
+		return O2TRelation::get_terms_of_object(array("column_name"=>'KBIT_BASE_ID', "value"=>$Kbit_UID), $database_name, 'R_LK2T', $lang);
 	}
 
 	public static function remove_term_from_Kbit($Kbit_UID, $term_UID, $link_type, $user) {
 
 		if(Lock::is_locked_by_user($Kbit_UID, 'KBIT_BASE', $user) == false) {
 			debugLog::log("<i>[Kbits.php:remove_term_from_Kbit]</i> Kbit (". $Kbit_UID .") is not locked by the user (". $user .")");
-			return null;
+			return false;
 		}
 
-		O2TRelation::remove_O2T_relation($Kbit_UID, $term_UID, $link_type, 'R_LK2T', 'user');
+		O2TRelation::remove_O2T_relation(array("column_name"=>'KBIT_BASE_ID', "value"=>$Kbit_UID), $term_UID, $link_type, 'R_LK2T', 'user');
 		return true;
 	}
 
