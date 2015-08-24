@@ -423,7 +423,16 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             try{
 
                 debugger;
-
+                
+                if($scope.workSpaces.selectedColors.length > 0){
+                    for(var i=0; i<$scope.workSpaces.workflows.length; i++){
+                        if($scope.workSpaces.workflows[i].ID == workflow.ID){
+                            $scope.workSpaces.workflows[i].selectedTab = workflow.selectedTab;
+                            workflow = $scope.workSpaces.workflows[i];
+                            break;
+                        }
+                    }
+                }
                 // check if filter color == true
                     // replace coloredWorkflows with original workflow
                 
