@@ -854,7 +854,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                 $scope.workSpaces.selectedColors = [];
             }else{
                 // if color already checked, remove it
-                if(colorIsChecked(color))
+                if($scope.colorIsChecked(color))
                     $scope.removeColorFromColorFilter(color);
                 else
                     $scope.workSpaces.selectedColors.push(color);
@@ -919,8 +919,9 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
            
             //loop on colors to remove it
             for(var i=0; i<$scope.workSpaces.selectedColors.length; i++){
-                if(color == $scope.workSpaces.selectedColors[i])){
-                    workSpaces.selectedColors[i].splice(i,1);
+                if(color == $scope.workSpaces.selectedColors[i]){
+                    $scope.workSpaces.selectedColors.splice(i,1);
+                    break;
                 }
             }
         }

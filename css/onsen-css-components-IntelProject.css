@@ -6767,7 +6767,6 @@ div.vertical {
   vertical-align: -14%;
 }
 
-
 .TopTabbarOptions{
   text-align: center;
   padding: 5px;
@@ -6778,6 +6777,22 @@ div.vertical {
   margin: 0 14px;
   border-top: 0;
   border-radius: 0 0 5px 5px;
+  overflow: hidden;
+  position: absolute;
+  top: -200px;
+  z-index: -1;
+  -webkit-transition-property: all;
+  -moz-transition-property: all;
+  -o-transition-property: all;
+  transition-property: all;
+  -webkit-transition-duration: .15s;
+  -moz-transition-duration: .15s;
+  -o-transition-duration: .15s;
+  transition-duration: .15s;
+  -webkit-transition-timing-function: ease-out;
+  -moz-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
 }
 
 .TopTabbarOptions ons-row{
@@ -6795,8 +6810,13 @@ div.vertical {
   line-height: 45px;
 }
 
+.optionTabberDiv:hover .TopTabbarOptions{
+   top: 46px;
+}
 
-
+.ColorFilterDiv{
+  height: 73px;
+}
 
 
 
