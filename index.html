@@ -23,7 +23,7 @@
       <div class="AppPage" ng-switch-when="2" style="">  
         <ons-page>
           <ons-tabbar position="top" class="" style="height: 50px;">
-            <ons-row>
+            <ons-row style="max-height: 49px;overflow: visible;">
               <ons-col width="220px" class="Logo rtl">
                 <!-- <img src="img/IntelIcon.png" style="height: 100%;margin: auto;"> -->
               </ons-col>
@@ -32,6 +32,21 @@
               </ons-col>
               <ons-col id="NotificationsButton2" ng-click="openNewWorkflow();" width="150px" style="width:150px; position:relative;" class="">
                 <div class="TopTabbarButton clickable hoverOp">New Workflow</div>
+              </ons-col>
+              <ons-col id="ColorFilterDiv" width="40px" style="width:40px; position:relative;" class="">
+                <ons-row>
+                  <ons-col></ons-col> 
+                  <ons-col>
+                    <div class="ColorCheckStatus">
+                      <ons-icon icon="ion-checkmark-round" width="20px"></ons-icon>
+                    </div>
+                  </ons-col>
+                </ons-row>
+                <div class="TopTabbarButton clickable hoverOp" ng-click="selectColorFilter(0);">
+                  
+                </div>
+                <div class=""
+
               </ons-col>
               <ons-col>
               </ons-col>
