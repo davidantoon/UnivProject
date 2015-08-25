@@ -191,8 +191,8 @@
 	debugLog::important_log("<i>[hello.php:testing]</i> editing 4 deliveries");
 	debugLog::log("<i>[hello.php:testing edit delivery1]</i> result: ". var_dump(Delivery::begin_editing_Delivery($delivery1["UID"], 1)));
 	debugLog::log("<i>[hello.php:testing edit delivery2]</i> result: ". var_dump(Delivery::begin_editing_Delivery($delivery2["UID"], 2)));
-	// debugLog::log("<i>[hello.php:testing edit delivery3]</i> result: ". var_dump(Delivery::begin_editing_Delivery($delivery3["UID"], 1)));
-	// debugLog::log("<i>[hello.php:testing edit delivery4]</i> result: ". var_dump(Delivery::begin_editing_Delivery($delivery4["UID"], 1)));
+	debugLog::log("<i>[hello.php:testing edit delivery3]</i> result: ". var_dump(Delivery::begin_editing_Delivery($delivery3["UID"], 1)));
+	debugLog::log("<i>[hello.php:testing edit delivery4]</i> result: ". var_dump(Delivery::begin_editing_Delivery($delivery4["UID"], 1)));
 	
 
 	debugLog::important_log("<i>[hello.php:testing]</i> testing delivery relations D2D");
@@ -222,14 +222,14 @@
 	debugLog::log("<i>[hello.php:function]</i> Added kbit: " . dbAPI::print_json_s($kbit3 = Kbit::add_new_Kbit_in_edit_mode('Kbit 3', 'description 3', 1, $kbitfront3), 0));
 	debugLog::log("<i>[hello.php:function]</i> Added kbit: " . dbAPI::print_json_s($kbit4 = Kbit::add_new_Kbit_in_edit_mode('Kbit 4', 'description 4', 1, $kbitfront4), 0));
 	
-	if($kbit1 == null){
-		debugLog::important_log("<i>[hello.php:testing adding kbits]</i> error adding kbits");
-		return;
-	}
+	// if($kbit1 == null){
+	// 	debugLog::important_log("<i>[hello.php:testing adding kbits]</i> error adding kbits");
+	// 	return;
+	// }
 
 	debugLog::important_log("<i>[hello.php:testing]</i> publishing 4 recently added kbits");
 
-	debugLog::log("<i>[hello.php:testing publish kbit1]</i> result: ". dbAPI::print_json_s(Kbit::publish_changes($kbit1["UID"], 2), 0));
+	// debugLog::log("<i>[hello.php:testing publish kbit1]</i> result: ". dbAPI::print_json_s(Kbit::publish_changes($kbit1["UID"], 2), 0));
 	debugLog::log("<i>[hello.php:testing publish kbit1]</i> result: ". dbAPI::print_json_s(Kbit::publish_changes($kbit1["UID"], 1), 0));
 	debugLog::log("<i>[hello.php:testing publish kbit2]</i> result: ". dbAPI::print_json_s(Kbit::publish_changes($kbit2["UID"], 1), 0));
 	debugLog::log("<i>[hello.php:testing publish kbit3]</i> result: ". dbAPI::print_json_s(Kbit::publish_changes($kbit3["UID"], 1), 0));
@@ -239,9 +239,9 @@
 
 	debugLog::important_log("<i>[hello.php:testing]</i> editing 4 kbits");
 	debugLog::log("<i>[hello.php:testing edit kbit1]</i> result: ". var_dump(Kbit::begin_editing_kbit($kbit1["UID"], 1)));
-	// debugLog::log("<i>[hello.php:testing edit kbit2]</i> result: ". var_dump(Kbit::begin_editing_kbit($kbit2["UID"], 1)));
+	debugLog::log("<i>[hello.php:testing edit kbit2]</i> result: ". var_dump(Kbit::begin_editing_kbit($kbit2["UID"], 1)));
 	debugLog::log("<i>[hello.php:testing edit kbit3]</i> result: ". var_dump(Kbit::begin_editing_kbit($kbit3["UID"], 2)));
-	// debugLog::log("<i>[hello.php:testing edit kbit4]</i> result: ". var_dump(Kbit::begin_editing_kbit($kbit4["UID"], 1)));
+	debugLog::log("<i>[hello.php:testing edit kbit4]</i> result: ". var_dump(Kbit::begin_editing_kbit($kbit4["UID"], 1)));
 	
 
 
@@ -299,6 +299,8 @@
 	debugLog::important_log("");
 	debugLog::log("<i>[hello.php:testing publish kbit1]</i> result: ". dbAPI::print_json_s(Kbit::publish_changes($kbit1["UID"], 1), 0));
 	debugLog::log("<i>[hello.php:testing publish kbit3]</i> result: ". dbAPI::print_json_s(Kbit::publish_changes($kbit3["UID"], 2), 0));
+	
+
 	debugLog::important_log("<i>[hello.php:PUBLISHING DELIVERIES]</i> PUBLISHING DELIVERIES");
 	debugLog::important_log("");
 	debugLog::log("<i>[hello.php:testing publish delivery1]</i> result: ". dbAPI::print_json_s(Delivery::publish_changes($delivery1["UID"], 1), 0));
@@ -321,15 +323,14 @@
 	debugLog::log("<i>[hello.php:testing updateing kbit1]</i> result: ". dbAPI::print_json_s(Kbit::add_new_edit_for_kbit($kbit1["UID"], 'new title for kbit 1', 'new description for kbit1', 1, $kbit1["FRONT_KBIT"]), 0));
 	debugLog::log("<i>[hello.php:testing updateing kbit2]</i> result: ". dbAPI::print_json_s(Kbit::add_new_edit_for_kbit($kbit2["UID"], 'new title for kbit 2', 'new description for kbit2', 1, $kbit2["FRONT_KBIT"]), 0));
 	// publish kbit1
-	// debugLog::log("<i>[hello.php:testing publish kbit1]</i> result: ". dbAPI::print_json_s(Kbit::publish_changes($kbit1["UID"], 1), 0));
-	// debugLog::log("<i>[hello.php:testing publish kbit1]</i> result: ". dbAPI::print_json_s(Kbit::publish_changes($kbit2["UID"], 1), 0));
+	debugLog::log("<i>[hello.php:testing publish kbit1]</i> result: ". dbAPI::print_json_s(Kbit::publish_changes($kbit1["UID"], 1), 0));
+	debugLog::log("<i>[hello.php:testing publish kbit1]</i> result: ". dbAPI::print_json_s(Kbit::publish_changes($kbit2["UID"], 1), 0));
 	
 	// get kbits of delivery
 	debugLog::log("<i>[hello.php:testing get kbits of delivery]</i> result: ". dbAPI::print_json_s(Delivery::get_Kbit_of_delivery($delivery1["UID"], 1), 0));
 
 	debugLog::important_log("DONE");
 
-	debugLog::important_log("<BR><b> - FIX REVISION <br>  - ONLY THE LAST TO BE PUBLISHED UPDATES THE RELATION RECORD</b>");
 	
 ?>
 

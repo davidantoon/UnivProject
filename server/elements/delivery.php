@@ -62,28 +62,43 @@ class Delivery {
 			debugLog::log("<i>[delivery.php:add_new_edit_for_Delivery]</i> FRONT Delivery of (". $title .") is missing!");
 			return null;
 		}
+		debugLog::log("<i>[Kbits.php:add_new_edit_for_kbit]</i> fronttt: ". $front["FRONT_TYPE"]);
 		if($front["FRONT_TYPE"] == null) {
 			debugLog::log("<i>[delivery.php:add_new_edit_for_Delivery]</i> FRONT Delivery type of (". $title .") is missing!");
 			return null;
 		}
 
-		// disable all Delivery information
-		Delivery::disable_all_Delivery_info($UID, 'content');
+		// disable kbit information
+		Delivery::disable_base_and_front($UID);
+
+		// get new revision
+		$where_sttmnt = " UID = " . $UID . " ";
+		$new_rev = $dbObj->get_latest_Rivision_ID($dbObj->db_get_usersDB(), 'DELIVERY_BASE', $where_sttmnt);
+		if($new_rev == null)
+			$new_rev = 0;
+		$new_rev++;		
 
 		$front_type = $front["FRONT_TYPE"]; 
 		// add record to database
 		$query = "INSERT INTO DELIVERY_BASE (UID, REVISION, TITLE, DESCRIPTION, ENABLED, USER_ID, CREATION_DATE, FRONT_TYPE) VALUES (".
-			$UID . ", 1, '" . $title ."', '" . $desc ."', 1, ". $user .",'". date("Y-m-d H:i:s") ."','". $front_type ."')";
+			$UID . ", ". $new_rev .", '" . $title ."', '" . $desc ."', 1, ". $user .",'". date("Y-m-d H:i:s") ."','". $front_type ."')";
 		$dbObj->run_query($dbObj->db_get_usersDB(), $query);
-		$query = "INSERT INTO DELIVERY_BASE (UID, REVISION, TITLE, DESCRIPTION, ENABLED, USER_ID, CREATION_DATE, FRONT_TYPE) VALUES (".
-			$UID . ", 1, '" . $title ."', '" . $desc ."', 0, ". $user .",'". date("Y-m-d H:i:s") ."','". $front_type ."')";
-		$dbObj->run_query('content', $query);
+		
+		if(Delivery::get_Delivery_by_UID($UID) == null) {
+			
+			// disable all Delivery information
+			Delivery::disable_all_Delivery_info($UID, 'content');
+
+			$query = "INSERT INTO DELIVERY_BASE (UID, REVISION, TITLE, DESCRIPTION, ENABLED, USER_ID, CREATION_DATE, FRONT_TYPE) VALUES (".
+				$UID . ", ". $new_rev .", '-----" . $title ."', '" . $desc ."', 0, ". $user .",'". date("Y-m-d H:i:s") ."','". $front_type ."')";
+			$dbObj->run_query('content', $query);
+		}
 		// entity of recently added Delivery
 		$recent_Delivery = Delivery::get_base_Delivery($UID, 'user');
 		
 
 		if($front != null) {
-			// add front data to database
+			// add front data to database			
 			$front_Delivery = Delivery::add_new_front($UID, $front, $user);
 			// check if the front was created successfully
 			if($front_Delivery == null) {
@@ -233,7 +248,9 @@ class Delivery {
 			
 			return null;
 		}
-		return $results[0];
+		$temp = $results[0];
+		$temp["FRONT_TYPE"] = $tableName;
+		return $temp;
 	}
 
 
@@ -456,6 +473,23 @@ class Delivery {
 		}
 		// disable all records in user database
 		Delivery::disable_all_Delivery_info($UID, 'user');
+	}
+
+	private static function disable_base_and_front($UID) {
+
+		$dbObj = new dbAPI();
+		
+		$destination = dbAPI::get_db_name('user');
+
+		// disable old records
+		$dbObj->disable_revision('', $destination .".DELIVERY_BASE ", ' UID = '. $UID . ' ');	
+		
+		// disable old front record
+		$links_tables_names = array('DELIVERY_FRONT');
+		for($i = 0; $i < count($links_tables_names); $i++) {
+			// disable old links records
+			$dbObj->disable_revision('', $destination .".". $links_tables_names[$i] . " ", ' UID = '. $UID . ' ');
+		}
 	}
 
 	public static function disable_all_Delivery_info($UID, $destination = 'user') {
