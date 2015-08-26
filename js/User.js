@@ -38,7 +38,7 @@ app.factory('User', ['$rootScope', 'Server', function($rootScope, Server){
 	 * @param {String} Password password
 	 * @return {User} return null if wrong info, else User Object
 	 */
-	User.login = function(userName, Password){
+	User.login = function(userName, Password, callback){
 		try{
 
 			return new User();
@@ -53,30 +53,7 @@ app.factory('User', ['$rootScope', 'Server', function($rootScope, Server){
 		 * Changes the password for the use
 		 * @param  {String} newPassword new password
 		 */
-		changePassword: function(newPassword){
-			try{
-
-			}catch(e){
-				
-			}
-		},
-
-		/**
-		 * Saves new default setting for the specific user
-		 * @param  {Object} newSettings new settings
-		 */
-		saveSettings: function(newSettings){
-			try{
-
-			}catch(e){
-				
-			}
-		},
-
-		/**
-		 * Gets the default settings from server
-		 */
-		getSettings: function(){
+		changePassword: function(newPassword, callback){
 			try{
 
 			}catch(e){
@@ -88,7 +65,7 @@ app.factory('User', ['$rootScope', 'Server', function($rootScope, Server){
 		 * Changes the email
 		 * @return {[type]} [description]
 		 */
-		changeEmail: function(){
+		changeEmail: function(callback){
 			try{
 
 			}catch(e){
@@ -97,10 +74,22 @@ app.factory('User', ['$rootScope', 'Server', function($rootScope, Server){
 		},
 
 		/**
-		 * Gets the user's workspace from server 
+		 * Gets the user's workspace from server (include settings and steps)
 		 * @return {[type]} [description]
 		 */
-		getMyWorkspace: function(){
+		getMyWorkspace: function(callback){
+			try{
+
+			}catch(e){
+				
+			}
+		},
+
+		/**
+		 * Save user's workspace in server (include settings and steps)
+		 * @return {[type]} [description]
+		 */
+		setMyWorkspace: function(callback){
 			try{
 
 			}catch(e){
@@ -112,7 +101,7 @@ app.factory('User', ['$rootScope', 'Server', function($rootScope, Server){
 		 * Changes role
 		 * @param  {string} newRole new role
 		 */
-		changeRole: function(newRole){
+		changeRole: function(newRole, callback){
 			try{
 				this.role = newRole;
 				// update server server
@@ -125,7 +114,7 @@ app.factory('User', ['$rootScope', 'Server', function($rootScope, Server){
 		 * Change profile picture
 		 * @param  {String} newPicture New profile picture
 		 */
-		changeProfilePicture: function(newPicture){
+		changeProfilePicture: function(newPicture, callback){
 			try{
 				this.profilePicture = newPicture;
 				//update server

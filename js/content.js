@@ -5,9 +5,19 @@ app.factory('Content', ["$rootScope", 'Globals', "Toast", "Server", function($ro
 		try{
 			this.id = ((conData != undefined)?conData.id:'');
 			this.name = ((conData != undefined)?conData.name:'');
-			this.kBitsNeeded = ((conData && conData.kBitsNeeded) || []);
+			if(conData != undefined){
+				if(conData.kBitsNeeded != undefined && conData.kBitsNeeded.length > 0){
+					// loop in kbits 
+					// getelementbyid
+				}else{
+					this.kBitsNeeded = [];		
+				}
+			}
+
 			this.kBitProvided = ((conData && conData.kBitProvided) || []);
 			this.terms = ((conData && conData.terms) || []);
+			
+			
 			this.description = ((conData && conData.description) || "");
 			this.url = ((conData && conData.url) || "");
 			this.locked = ((conData && conData.locked) || null);
