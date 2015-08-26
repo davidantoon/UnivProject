@@ -1071,6 +1071,7 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                                             stor.getElementById(originalData[index], holdingRequestTab.dataHolding.forceLastModifed, holdingRequestTab.dataHolding.forceServerPull, function(resultO){
                                                 if(resultO != undefined)
                                                     resultData.push(resultO);
+                                                loopResults(Number(index)+1, originalData, resultData);
                                             });    
                                         }else{
                                             $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, resultData);

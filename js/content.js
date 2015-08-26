@@ -1,10 +1,10 @@
 // app.factory('Content', ['Globals', 'Server', function(Globals, Server){
-app.factory('Content', ['Globals', function(Globals){
+app.factory('Content', ["$rootScope", 'Globals', "Toast", "Server", function($rootScope, Globals, Toast, Server){
 	
 	function Content(conData){
 		try{
-			this.id = ((conData && conData.id != null) || ""); 
-			this.name = ((conData && conData.name) || ""); 
+			this.id = ((conData != undefined)?conData.id:'');
+			this.name = ((conData != undefined)?conData.name:'');
 			this.kBitsNeeded = ((conData && conData.kBitsNeeded) || []);
 			this.kBitProvided = ((conData && conData.kBitProvided) || []);
 			this.terms = ((conData && conData.terms) || []);
@@ -16,7 +16,7 @@ app.factory('Content', ['Globals', function(Globals){
 			this.type = ((conData && conData.type) || "");
 			this.connectToDataBase = ((this.type && new Server(this.type)) || null);
 		}catch(e){
-			$scope.Toast.show("Error!","There was an error in creating new Content", Toast.LONG, Toast.ERROR);
+			$rootScope.currentScope.Toast.show("Error!","There was an error in creating new Content", Toast.LONG, Toast.ERROR);
             console.error("Content: ", e);
             return null;
 		}
@@ -33,7 +33,7 @@ app.factory('Content', ['Globals', function(Globals){
 			try{
 
 			}catch(e){
-				$scope.Toast.show("Error!","There was an error in locking content", Toast.LONG, Toast.ERROR);
+				$rootScope.currentScope.Toast.show("Error!","There was an error in locking content", Toast.LONG, Toast.ERROR);
            		console.error("lock: ", e);
 			}
 		},
@@ -46,7 +46,7 @@ app.factory('Content', ['Globals', function(Globals){
 			try{
 
 			}catch(e){
-				$scope.Toast.show("Error!","There was an error in unlocking content", Toast.LONG, Toast.ERROR);
+				$rootScope.currentScope.Toast.show("Error!","There was an error in unlocking content", Toast.LONG, Toast.ERROR);
            		console.error("unlock: ", e);
 			}
 		},
@@ -68,7 +68,7 @@ app.factory('Content', ['Globals', function(Globals){
 						callback(false);
 				});
 			}catch(e){
-				$scope.Toast.show("Error!","There was an error in saving Content", Toast.LONG, Toast.ERROR);
+				$rootScope.currentScope.Toast.show("Error!","There was an error in saving Content", Toast.LONG, Toast.ERROR);
             	console.error("save: ", e);
             	callback(null,{"message":e.message,"code":e.code});
             }
@@ -83,7 +83,7 @@ app.factory('Content', ['Globals', function(Globals){
 			try{
 
 			}catch(e){
-				$scope.Toast.show("Error!","There was an error in releasing content", Toast.LONG, Toast.ERROR);
+				$rootScope.currentScope.Toast.show("Error!","There was an error in releasing content", Toast.LONG, Toast.ERROR);
            		console.error("release: ", e);
 			}
 		},
@@ -97,7 +97,7 @@ app.factory('Content', ['Globals', function(Globals){
 			try{
 
 			}catch(e){
-				$scope.Toast.show("Error!","There was an error in removing content", Toast.LONG, Toast.ERROR);
+				$rootScope.currentScope.Toast.show("Error!","There was an error in removing content", Toast.LONG, Toast.ERROR);
            		console.error("remove: ", e);
 			}
 		},
@@ -111,7 +111,7 @@ app.factory('Content', ['Globals', function(Globals){
 			try{
 
 			}catch(e){
-				$scope.Toast.show("Error!","There was an error in restoring content", Toast.LONG, Toast.ERROR);
+				$rootScope.currentScope.Toast.show("Error!","There was an error in restoring content", Toast.LONG, Toast.ERROR);
            		console.error("reversion: ", e);
 			}
 		},
@@ -124,7 +124,7 @@ app.factory('Content', ['Globals', function(Globals){
 			try{
 
 			}catch(e){
-				$scope.Toast.show("Error!","There was an error in getting previous versions", Toast.LONG, Toast.ERROR);
+				$rootScope.currentScope.Toast.show("Error!","There was an error in getting previous versions", Toast.LONG, Toast.ERROR);
            		console.error("getVersions: ", e);
 			}
 		},
@@ -138,7 +138,7 @@ app.factory('Content', ['Globals', function(Globals){
 			try{
 				return (this.id == contentObj.id);
 			}catch(e){
-				$scope.Toast.show("Error!","There was an error in checking equal content", Toast.LONG, Toast.ERROR);
+				$rootScope.currentScope.Toast.show("Error!","There was an error in checking equal content", Toast.LONG, Toast.ERROR);
            		console.error("equal: ", e);
            		return false;
 			}
@@ -153,7 +153,7 @@ app.factory('Content', ['Globals', function(Globals){
 			try{
 				return new Content(contentObj);
 			}catch(e){
-				$scope.Toast.show("Error!","There was an error in dublicating content", Toast.LONG, Toast.ERROR);
+				$rootScope.currentScope.Toast.show("Error!","There was an error in dublicating content", Toast.LONG, Toast.ERROR);
            		console.error("dublicate: ", e);
            		return null;
 			}
@@ -167,7 +167,7 @@ app.factory('Content', ['Globals', function(Globals){
 			try{	
 				return JSON.stringify(this.toJson());
 			}catch(e){
-				$scope.Toast.show("Error!","There was an error in converting to string", Toast.LONG, Toast.ERROR);
+				$rootScope.currentScope.Toast.show("Error!","There was an error in converting to string", Toast.LONG, Toast.ERROR);
            		console.error("toString: ", e);
            		return null;
 			}
@@ -190,7 +190,7 @@ app.factory('Content', ['Globals', function(Globals){
 					// "connectToDataBase": this.connectToDataBase 
 				}
 			}catch(e){
-				$scope.Toast.show("Error!","There was an error in converting to JSON", Toast.LONG, Toast.ERROR);
+				$rootScope.currentScope.Toast.show("Error!","There was an error in converting to JSON", Toast.LONG, Toast.ERROR);
            		console.error("toJson: ", e);
            		return null;
 			}

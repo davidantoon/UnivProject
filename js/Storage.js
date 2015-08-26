@@ -1,4 +1,4 @@
-app.factory('Storage', ["$rootScope", "Globals", "TypeOf", function($rootScope, Globals, TypeOf){
+app.factory('Storage', ["$rootScope", "Globals", "TypeOf", "Content", function($rootScope, Globals, TypeOf, Content){
 
 
 	/**
@@ -229,9 +229,10 @@ app.factory('Storage', ["$rootScope", "Globals", "TypeOf", function($rootScope, 
 		 * @param  {Function} callback          callback function
 		 */
 		getElementById: function(jsonObject, forceLastmodefied, forceServerPull, callback){
-			elemId = jsonObject.id;
+			var elemId = jsonObject.id;
+			var elemType = jsonObject.type;
 			if( elemId != undefined && elemId != null && elemId != ""){
-				var cashedObject = Globals.get(elemId);
+				var cashedObject = Globals.get(elemId, elemType);
 				if(forceServerPull == true){
 					if(cashedObject == null){
 						createObjects(jsonObject, callback);
@@ -242,8 +243,10 @@ app.factory('Storage', ["$rootScope", "Globals", "TypeOf", function($rootScope, 
 					if(cashedObject == null)
 						createObjects(jsonObject, callback);
 					else{
-						if(jsonObject.lastModified > cashedObject.lastmodified)
+						if(jsonObject.lastModified > cashedObject.lastmodified){
+							Globals.pop(cashedObject.id, cashedObject.type);							
 							createObjects(jsonObject, callback);
+						}
 						else
 							callback(cashedObject);
 					}
@@ -262,8 +265,6 @@ app.factory('Storage', ["$rootScope", "Globals", "TypeOf", function($rootScope, 
 						Globals.set(newObject);
 						passCallback(newObject);
 					}
-
-					passCallback();
 				}
 			}else{
 				callback(null);
