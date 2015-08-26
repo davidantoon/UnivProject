@@ -330,6 +330,12 @@
 
 		return Workspace;
 	}]);
-});
+})(window.angular);
+
+
+
+
+
+
 
 

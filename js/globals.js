@@ -38,4 +38,4 @@
 		}
 	})
 	.value('ServerReq', "Not initialized");
-});
+})(window.angular);

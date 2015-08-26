@@ -263,6 +263,20 @@
 						if(objectToAdd == null || objectToAdd == undefined)
 							passCallback(null);
 						else{
+							// check object type
+							
+							// is delivery
+								// loop getElementid (terms)
+								// loop getElementid(kbitsNeeded | kbitsProvided)
+								// create new delivery
+
+							// is kbits
+								// loop getTemeeltid (terms)
+								// create new kbit
+							
+							// is terms
+								// create new term
+
 							var newObject = new Content(objectToAdd);
 							Globals.set(newObject);
 							passCallback(newObject);
@@ -276,4 +290,10 @@
 
 		return Storage;
 	}]);
-});
+})(window.angular);
+
+
+
+
+
+

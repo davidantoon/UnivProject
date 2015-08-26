@@ -31,4 +31,4 @@
 
 		return Settings;
 	}]);
-});
+})(window.angular);

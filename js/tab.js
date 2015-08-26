@@ -208,4 +208,9 @@
 
 		return Tab;
 	}]);
-});
+})(window.angular);
+
+
+
+
+

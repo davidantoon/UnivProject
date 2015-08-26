@@ -439,7 +439,7 @@
 
 		return Steps;
 	}]);
-});
+})(window.angular);
 
 
 

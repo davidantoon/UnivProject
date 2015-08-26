@@ -404,4 +404,11 @@
 		}
 		return Server;
 	}]);
-});
+})(window.angular);
+
+
+
+
+
+
+

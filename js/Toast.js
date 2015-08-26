@@ -68,5 +68,9 @@
 		};
 		return Toast;
 	});
-});
+})(window.angular);
+
+
+
+
 
