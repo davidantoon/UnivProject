@@ -255,8 +255,14 @@ app.factory('Storage', ["$rootScope", "Globals", "TypeOf", function($rootScope, 
 				}
 
 				function createObjects(objectToAdd, passCallback){
+					if(objectToAdd == null || objectToAdd == undefined)
+						passCallback(null);
+					else{
+						var newObject = new Content(objectToAdd);
+						Globals.set(newObject);
+						passCallback(newObject);
+					}
 
-					
 					passCallback();
 				}
 			}else{
