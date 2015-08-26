@@ -4674,7 +4674,7 @@ div.vertical {
   height: 35px;
   width: 35px;
   position: absolute;
-  left: 7px;
+  left: 57px;
   top: 7px;
   border-radius: 22px;
   border: 1px solid whitesmoke;
@@ -4746,6 +4746,9 @@ div.vertical {
   font-size: 13px;
   line-height: 49px;
   text-align: center;
+  -webkit-transform: rotate(180deg);  /* Chrome, Opera 15+, Safari 3.1+ */
+  -ms-transform: rotate(180deg);  /* IE 9 */
+  transform: rotate(180deg);  /* Firefox 16+, IE 10+, Opera */
 }
 
 .LogoutIcon{
@@ -6323,14 +6326,14 @@ div.vertical {
 }
 
 .newWorkFlow{
-  width: 200px;
   height: 200px;
   border: 3px solid rgb(210,210,210);
   border-radius: 40px;
   text-align: center;
-  margin: 85px;
+  margin: 85px auto;
   cursor: pointer;
   background: white;
+  width: 60%;
 }
 
 
@@ -6874,7 +6877,7 @@ div.vertical {
   padding: 5px 10px;
   margin-bottom: 5px;
   border-bottom: 1px solid rgba(0,0,0,.1);
-  height: 65px;
+  height: 67px;
   position: relative;
   z-index: 1;
   overflow: hidden;
@@ -6937,7 +6940,7 @@ div.vertical {
 
 .inProgressMessage, .lockedMessage, .lastModifiedMessage{
   margin: 0;
-  font-size: 13px;
+  font-size: 11px;
 }
 .inProgressMessage{
   color: orange;
