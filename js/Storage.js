@@ -237,49 +237,108 @@
 					var cashedObject = Globals.get(elemId, elemType);
 					if(forceServerPull == true){
 						if(cashedObject == null){
-							createObjects(jsonObject, callback);
+							createObjects(jsonObject, callback, this);
 						}else{
 							callback(cashedObject);
 						}
 					}else if(forceLastmodefied == true){
 						if(cashedObject == null)
-							createObjects(jsonObject, callback);
+							createObjects(jsonObject, callback, this);
 						else{
 							if(jsonObject.lastModified > cashedObject.lastmodified){
 								Globals.pop(cashedObject.id, cashedObject.type);							
-								createObjects(jsonObject, callback);
+								createObjects(jsonObject, callback, this);
 							}
 							else
 								callback(cashedObject);
 						}
 					}else{
 						if(cashedObject == null){
-							createObjects(jsonObject, callback);
+							createObjects(jsonObject, callback, this);
 						}else
 							callback(cashedObject);
 					}
 
-					function createObjects(objectToAdd, passCallback){
+					function createObjects(objectToAdd, passCallback, passThis){
 						if(objectToAdd == null || objectToAdd == undefined)
 							passCallback(null);
 						else{
-							// check object type
-							
-							// is delivery
-								// loop getElementid (terms)
-								// loop getElementid(kbitsNeeded | kbitsProvided)
-								// create new delivery
-
-							// is kbits
-								// loop getTemeeltid (terms)
-								// create new kbit
-							
-							// is terms
-								// create new term
-
-							var newObject = new Content(objectToAdd);
-							Globals.set(newObject);
-							passCallback(newObject);
+							switch(typeof objectToAdd){
+								case "delivery":
+									// loop over terms and add them to object to add terms
+									if(objectToAdd != undefined && objectToAdd.length >0){
+										loopTerms(0, objectToAdd.terms,[]);
+										function loopTerms(index, termsArray, termResults){
+											if(index < termsArray.length){
+												passThis.getElementById(termsArray[index],objectToAdd.forceLastmodefied,objectToAdd.forceServerPull,function(resultTerm){
+													if(resultTerm != undefined && resultTerm != null){
+														termResults.push(resultTerm);
+														loopTerms(Number(index)+1,termsArray,termResults);
+													}
+												});
+											}else{
+												// loop over kbits needed and add them to object
+												objectToAdd.terms = termResults;
+												loopKbitsNeeded(0, objectToAdd.kbitsNeeded,[]);
+												function loopKbitsNeeded(index, kbitsNeededArray, kbitsNeededResults){
+													if(index < kbitsNeededArray.length){
+														passThis.getElementById(kbitsNeededArray[index], objectToAdd.forceLastmodefied, objectToAdd.forceServerPull,function(kbitsResults){
+															if(kbitsResults != undefined && kbitsResults != null){
+																kbitsNeededResults.push(kbitsResults);
+																loopKbitsNeeded(Number(index)+1, kbitsNeededArray,kbitsNeededResults);
+															}
+														});
+													}else{
+														// loop over kbits provided and add them to object
+														objectToAdd.kbitsNeeded = kbitsNeededResults;
+														loopKbitsProvided(0, objectToAdd.kbitsProvided, []);
+														function loopKbitsProvided(index, kbitsProvidedArray, KbitsProvidedResutls){
+															if(index < kbitsProvidedArray.length){
+																passThis.getElementById(kbitsProvidedArray[index], objectToAdd.forceLastmodefied, objectToAdd.forceServerPull, function(kbitsResult){
+																	if(kbitsResult != undefined && kbitsResult != null){
+																		KbitsProvidedResutls.push(kbitsResult);
+																		loopKbitsProvided(Number(index)+1, kbitsProvidedArray, KbitsProvidedResutls);
+																	}
+																});
+															}
+														}else{
+															objectToAdd.kbitsProvided = KbitsProvidedResutls;
+															var newObject = new content(objectToAdd);
+															Globals.set(newObject);
+															passCallback(newObject);
+														}
+													}
+												}
+											}
+										}
+									}
+								break;
+								case "kbit":
+									if(objectToAdd != undefined && objectToAdd.length >0){
+										loopTerms2(0, objectToAdd, []);
+										function loopTerms2(index, termsArray, termResults){
+											if(index < termsArray.length){
+												passThis.getElementById(termsArray[index], objectToAdd.forceLastmodefied, objectToAdd.forceServerPull, function(resultTerm){
+													if(resultTerm != undefined && resultTerm != null){
+														termsArray.push(resultTerm);
+														loopTerms2(Number(index)+1, termsArray, termResults);
+													}
+												});
+											}else{
+												objectToAdd.terms =	termResults;
+												var newObject = new content(objectToAdd);
+												Globals.set(newObject);
+												passCallback(newObject);
+											}
+										}
+									}
+								break;
+								case "term":
+									var newObject = new content(objectToAdd);
+									Globals.set(newObject);
+									passCallback(newObject);
+								break;
+							}
 						}
 					}
 				}else{
