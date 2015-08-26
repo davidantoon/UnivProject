@@ -205,6 +205,13 @@
                           <ons-col ng-click="((wFlow.selectedTab.dataHolding.searchBy[1] == 1)?wFlow.selectedTab.dataHolding.searchBy[1] = 0:wFlow.selectedTab.dataHolding.searchBy[1] = 1); InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.searchBy[1] == 1)?'checked':'')}}">Description</ons-col>
                           <ons-col ng-click="((wFlow.selectedTab.dataHolding.searchBy[2] == 1)?wFlow.selectedTab.dataHolding.searchBy[2] = 0:wFlow.selectedTab.dataHolding.searchBy[2] = 1); InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.searchBy[2] == 1)?'checked':'')}}">ID</ons-col>
                         </ons-row>
+                        <ons-row class="LabelOfOptionsButtons">
+                          Additional options:
+                        </ons-row>
+                        <ons-row>
+                          <ons-col ng-click="((wFlow.selectedTab.dataHolding.forceLastModifed == true)?toggleForceSearchOption(wFlow.selectedTab, 1):toggleForceSearchOption(wFlow.selectedTab, 0)); InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.forceLastModifed == true)?'checked':'')}}">Last modified</ons-col>
+                          <ons-col ng-click="((wFlow.selectedTab.dataHolding.forceServerPull == true)?toggleForceSearchOption(wFlow.selectedTab, 0):toggleForceSearchOption(wFlow.selectedTab, 1)); InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.forceServerPull == true)?'checked':'')}}">Published content</ons-col>
+                        </ons-row>
                         <ons-row>
                           <ons-col></ons-col>
                           <ons-col>

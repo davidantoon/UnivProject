@@ -1138,6 +1138,15 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
         }
 
 
+        $scope.toggleForceSearchOption = function(tab, toggleState){
+            if(toggleState == 1){
+                tab.dataHolding.forceLastModifed = false;
+                tab.dataHolding.forceServerPull = true;
+            }else{
+                tab.dataHolding.forceLastModifed = true;
+                tab.dataHolding.forceServerPull = false;
+            }
+        }
 
 
         /*********************************************************************************
