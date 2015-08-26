@@ -1,23 +1,50 @@
 // app.factory('Content', ['Globals', 'Server', function(Globals, Server){
-app.factory('Content', ["$rootScope", 'Globals', "Toast", "Server", function($rootScope, Globals, Toast, Server){
+app.factory('Content', ["$rootScope", 'Globals', "Toast", "Server", 'Storage', function($rootScope, Globals, Toast, Server, Storage){
 	
-	function Content(conData){
+	function Content(conData, forceLastmodefied, forceServerPull){
 		try{
 			this.id = ((conData != undefined)?conData.id:'');
 			this.name = ((conData != undefined)?conData.name:'');
+			this.kBitsNeeded = [];
+			this.kBitProvided = [];
+			this.terms = [];
 			if(conData != undefined){
 				if(conData.kBitsNeeded != undefined && conData.kBitsNeeded.length > 0){
-					// loop in kbits 
-					// getelementbyid
-				}else{
-					this.kBitsNeeded = [];		
+					loopKbitsNeeded(0, conData.kBitsNeeded, this.kBitsNeeded);
+	                function loopKbitsNeeded(index, originalData, resultData){
+	                	if(index < originalData.length){
+	                    	var stor = new Storage();
+	                        stor.getElementById(originalData[index],forceLastmodefied, forceServerPull, function(result){
+	                            if(result != undefined && result !=null)
+	                                resultData.push(result);
+	                            loopKbitsNeeded(Number(index)+1, originalData, resultData);
+	                        });    
+						}
+					}
+				}
+				if(conData.kBitProvided != undefined && conData.kBitProvided.length > 0){
+					loopKbitsProvided(0, conData.kBitProvided, this.kBitProvided);
+					function loopKbitsProvided(index, originalData, resultData){
+						var stor = new Storage();
+						stor.getElementById(originalData[index], forceLastmodefied, forceServerPull, function(result){
+							if(result != undefined && result != null)
+								resultData.push(result);
+							loopKbitsProvided(Number(index)+1, originalData, resultData);
+						});
+					}
+				}
+				if(conData.terms != undefined && conData.terms.length >0){
+					loopTerms(0, conData.terms, this.terms);
+					function loopTerms(index, originalData, resultData){
+						var stor = new Storage();
+						stor.getElementById(originalData[index], forceLastmodefied, forceServerPull, function(result){
+							if(result != undefined && result != null)
+								resultData.push(result);
+							loopTerms(Number(index)+1, originalData, resultData);
+						});
+					}
 				}
 			}
-
-			this.kBitProvided = ((conData && conData.kBitProvided) || []);
-			this.terms = ((conData && conData.terms) || []);
-			
-			
 			this.description = ((conData && conData.description) || "");
 			this.url = ((conData && conData.url) || "");
 			this.locked = ((conData && conData.locked) || null);
