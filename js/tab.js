@@ -88,7 +88,7 @@ app.factory('Tab', ["$rootScope", 'Content','Globals','Storage', function($rootS
 						"searchText": "",
 						"elementsToSearch": [0,0,0],
 						"searchBy": [0,0,0],
-						"childTab":{"workflowId":null,"tabId":null}
+						"childTab":{"workflowId":null,"tabId":null, "forceLastModifed":null,"forceServerPull":null}
 					});
 				break;
 				case Tab.CREATE_TAB:
