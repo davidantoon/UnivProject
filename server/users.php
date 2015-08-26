@@ -23,8 +23,11 @@ class users {
 	// add new user
 	public static function add_new_user($first_name, $last_name, $username, $password, $email, $profile_picture, $role) {
 
-		if(!users::is_username_available($username))
+		if(!users::is_username_available($username)) {
+			debugLog::log("<i>[users.php:add_new_user]</i> User already exists");
+			
 			return false;
+		}
 		$dbObj = new dbAPI();
 
 		$UID = $dbObj->get_latest_UID($dbObj->db_get_usersDB(), 'users');

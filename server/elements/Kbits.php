@@ -47,7 +47,7 @@ class Kbit {
 	 * @param {frontKbit} $front array of key value pair in FRONT format
 	 * @return {Kbit}
 	 */
-	public static function add_new_edit_for_kbit($UID, $title, $desc, $user, $front, $aaa= '') {
+	public static function add_new_edit_for_kbit($UID, $title, $desc, $user, $front) {
 
 		// check if Kbit is locked by user
 		if(Lock::is_locked_by_user($UID, 'KBIT_BASE', $user) == false) {
@@ -483,6 +483,7 @@ class Kbit {
 		}
 		// disable all records in user database
 		Kbit::disable_all_kbit_info($UID, 'user');
+		return true;
 	}
 
 
@@ -617,7 +618,7 @@ class Kbit {
 		return refRelation::get_objects_relation($first_UID, $second_UID, 'R_LK2K', 'user');
 	}
 
-	public static function remove_K2K_relation($first_UID, $second_UID) {
+	public static function remove_K2K_relation($first_UID, $second_UID, $user) {
 
 		// check if Kbits is locked by user
 		if(Lock::is_locked_by_user($first_UID, 'KBIT_BASE', $user) == false && Lock::is_locked_by_user($second_UID, 'KBIT_BASE', $user) == false) {

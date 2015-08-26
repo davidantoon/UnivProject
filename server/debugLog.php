@@ -9,6 +9,9 @@ class debugLog {
 		if(debugLog::debug_mode() == true) {
 			echo "<br><b>" . date("d-m-y h:i:s") . ": </b>" . $message;
 		}
+		else {
+			throw new Exception($message);
+		}
 	}
 
 	public static function log($message) {

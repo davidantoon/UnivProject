@@ -254,10 +254,12 @@ class term {
 		if($lang != '')
 			return $selected_term;
 
+		$selected_term["OBJECT_TYPE"] = 'TERM_STRING';
 		// get term's other languages
 		$other_langs = term::get_term_by_UID_in_all_languages($UID);
 		if(count($other_langs) > 1) {
 			for($i=0; $i<count($other_langs); $i++) {
+				$other_langs[$i]["OBJECT_TYPE"] = 'TERM_STRING';
 				if($other_langs[$i] == $selected_term) {
 					unset($other_langs[$i]);
 				}
