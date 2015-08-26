@@ -2,7 +2,7 @@
 
 class debugLog {
 	private static function debug_mode() {
-		return true; // debug mode
+		return false; // debug mode
 	}
 
 	public static function debug_log($message) {

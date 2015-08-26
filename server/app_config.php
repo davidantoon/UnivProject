@@ -11,4 +11,14 @@
 	include 'elements/Kbits.php';
 	include 'elements/Lock.php';
 	include 'elements/delivery.php';
+
+	class Configurator {
+	
+		public static function get_webservice_URI() {
+			$webservice_URI = 'http://localhost:8888/mopdqwompoaskdqomdiasjdiowqe/server/';
+			return $webservice_URI;
+		}
+	}
+	
+	
 ?>
