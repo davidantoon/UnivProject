@@ -1434,16 +1434,12 @@
              * @param {Number} wflwId the workflow Id we want to enable or disable scroll
              */
             $scope.EnableScroll = function(a, wflwId){
-                if($scope.Settings.removeScrollOnMouseOver == true){
-                    if(a==1){
-                        $('#'+wflwId+' .SelectedTabContent').removeClass('SidebarDisplay');
-                        $('#BodyRow').css('overflow','scroll');
-                    }else{
-                        $('#'+wflwId+' .SelectedTabContent').addClass('SidebarDisplay');
-                        $('#BodyRow').css('overflow','hidden');
-                    }
-                }else{
+                if(a==1){
+                    $('#'+wflwId+' .SelectedTabContent').removeClass('SidebarDisplay');
                     $('#BodyRow').css('overflow','scroll');
+                }else{
+                    $('#'+wflwId+' .SelectedTabContent').addClass('SidebarDisplay');
+                    $('#BodyRow').css('overflow','hidden');
                 }
             }
 

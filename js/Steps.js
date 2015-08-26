@@ -1,6 +1,6 @@
 (function(angular) {
     'use strict';
-	angular.module('IntelLearner').factory('Steps', ["$rootScope", "Workflow", "Workspace", "Server", function($rootScope, Workflow, Workspace, Server){
+	angular.module('IntelLearner').factory('Steps', ["$rootScope", "Workflow", "Workspace", "Server", "Toast", function($rootScope, Workflow, Workspace, Server, Toast){
 
 		function Steps(workspace, scope){
 
@@ -159,7 +159,7 @@
 
 						// get json object of previous step
 						var tempJsonWorkflows =  JSON.parse(this.last20Steps[IOPS].allWorkFlowContents);
-						var DiffObjects = getDiffArrays(workspace.workflows,tempJsonWorkflows);
+						var DiffObjects = Workflow.getDiffArrays(workspace.workflows,tempJsonWorkflows);
 
 						// check deleted workflows
 						for(var j1=0; j1<DiffObjects.deleted.length; j1++){
@@ -222,7 +222,7 @@
 
 						// get json object of previous step
 						var tempJsonWorkflows =  JSON.parse(this.last20Steps[IONS].allWorkFlowContents);
-						var DiffObjects = getDiffArrays(workspace.workflows,tempJsonWorkflows);
+						var DiffObjects = Workflow.getDiffArrays(workspace.workflows,tempJsonWorkflows);
 
 						// check deleted workflows
 						for(var j1=0; j1<DiffObjects.deleted.length; j1++){
@@ -332,7 +332,7 @@
 						workspace.newWorkflowButtons = [];
 						workspace.selectedWorkflow = null;
 
-						var DiffObjects = getDiffArrays(workspace.workflows,tempJsonWorkflows);
+						var DiffObjects = Workflow.getDiffArrays(workspace.workflows,tempJsonWorkflows);
 
 			        	// check inserted workflows
 			        	loopDiffObjects(0, DiffObjects.inserted);

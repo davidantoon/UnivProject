@@ -9,7 +9,7 @@
 			this.autoSave = true;
 			this.autoOpenTabs = false;
 			this.defaultToastPosition = "BOTTOM";
-
+			this.removeScrollOnMouseOver = false;
 			
 		}
 

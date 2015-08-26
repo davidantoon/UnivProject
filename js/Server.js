@@ -1,6 +1,6 @@
 (function(angular) {
     'use strict';
-	angular.module('IntelLearner').factory('Server', ["$rootScope", function($rootScope){
+	angular.module('IntelLearner').factory('Server', ["$rootScope", "Toast", function($rootScope, Toast){
 	
 		function Server(connectionType, scope){
 			try{

@@ -97,6 +97,29 @@
                 return null;
              }        
         }
+        Workflow.getDiffArrays = function(before,after) {
+        
+            return {
+                "deleted":(before.filter(function(a) {
+                    var found = false;
+                    for(var i=0; i<after.length ;i++){
+                        if(after[i].ID == a.ID){
+                            found = true;
+                        }
+                    }
+                    return (!found);
+                })),
+                "inserted":(after.filter(function(a) {
+                    var found = false;
+                    for(var i=0; i<before.length ;i++){
+                        if(before[i].ID == a.ID){
+                            found = true;
+                        }
+                    }
+                    return (!found);
+                }))
+            }
+        }
 
         Workflow.prototype = {
 
@@ -247,31 +270,6 @@
 
         return Workflow;
     }]);
-
-
-    function getDiffArrays (before,after) {
-        
-    	return {
-    		"deleted":(before.filter(function(a) {
-    	    	var found = false;
-    	    	for(var i=0; i<after.length ;i++){
-    	    		if(after[i].ID == a.ID){
-    	    			found = true;
-    	    		}
-    	    	}
-    			return (!found);
-    		})),
-    		"inserted":(after.filter(function(a) {
-    	    	var found = false;
-    	    	for(var i=0; i<before.length ;i++){
-    	    		if(before[i].ID == a.ID){
-    	    			found = true;
-    	    		}
-    	    	}
-    			return (!found);
-    		}))
-    	}
-    }
 })(window.angular);
 
 
