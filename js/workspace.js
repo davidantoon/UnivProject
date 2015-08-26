@@ -151,15 +151,27 @@ app.factory('Workspace', ['$rootScope', 'Workflow', function($rootScope, Workflo
 		scrollToLastWorkflow: function(Steps){
 			try{
 				var indexOfScroll = 0;
-				// loop of ID to locate last focused workflow
-	            for(var i=0; i< this.workflows.length; i++){
-	                if(this.workflows[i].ID == Steps.lastFocusedWorkflow){
-	                    indexOfScroll = i;
-	                    break;
-	                }
-	            }
-	            // scrolls to the workflow we located
-	            this.workflows[indexOfScroll].scrollTo();
+				if(this.selectedColors.length == 0){
+					// loop of ID to locate last focused workflow
+		            for(var i=0; i< this.workflows.length; i++){
+		                if(this.workflows[i].ID == Steps.lastFocusedWorkflow){
+		                    indexOfScroll = i;
+		                    break;
+		                }
+		            }
+		            // scrolls to the workflow we located
+		            this.workflows[indexOfScroll].scrollTo();
+		        }else{
+		        	// loop of ID to locate last focused workflow
+		            for(var i=0; i< this.coloredWorkflows.length; i++){
+		                if(this.coloredWorkflows[i].ID == Steps.lastFocusedWorkflow){
+		                    indexOfScroll = i;
+		                    break;
+		                }
+		            }
+		            // scrolls to the workflow we located
+		            this.coloredWorkflows[indexOfScroll].scrollTo();
+		        }
 	        }catch(e){
 	        	$scope.Toast.show("Error!","There was an error in scrolling to last workflow", Toast.LONG, Toast.ERROR);
            		console.error("scrollToLastWorkflow: ", e);
@@ -173,7 +185,6 @@ app.factory('Workspace', ['$rootScope', 'Workflow', function($rootScope, Workflo
 		 */
 		updateDataInTab: function(tabHoldingData, results){
 			try{
-				// tabHoldingData = {"workflowId":"111", "tabId":"1223"}
 				// loop over workflows and tabs to locate the specific tab and update its data
 				for(var i=0; i<this.workflows.length; i++){
 					if(this.workflows[i].ID == tabHoldingData.workflowId){
@@ -198,6 +209,20 @@ app.factory('Workspace', ['$rootScope', 'Workflow', function($rootScope, Workflo
 		 */
 		selectTabAfterSearch: function(tabHoldingData){
 			try{
+				if(this.selectedColors.length != 0){
+					// loop over workflows and tabs and locate selected tab
+					for(var i=0; i<this.coloredWorkflows.length; i++){
+						if(this.coloredWorkflows[i].ID == tabHoldingData.workflowId){
+							for(var j=0; j<this.coloredWorkflows[i].tabs.length; j++){
+								if(this.coloredWorkflows[i].tabs[j].ID == tabHoldingData.tabId){
+									this.coloredWorkflows[i].selectedTab = this.coloredWorkflows[i].tabs[j];
+									break;
+								}
+							}
+							break;
+						}
+					}
+				}
 				// loop over workflows and tabs and locate selected tab
 				for(var i=0; i<this.workflows.length; i++){
 					if(this.workflows[i].ID == tabHoldingData.workflowId){

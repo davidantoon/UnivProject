@@ -930,6 +930,11 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                             // add tab referece
                             holdingWorkflowColored.tabs.push($scope.workSpaces.workflows[j].tabs[k]);
                             holdingWorkflowColored.selectedTab = holdingWorkflowColored.tabs[0];
+                            for(var m=0; m<holdingWorkflowColored.tabs.length;m++){
+                                if(holdingWorkflowColored.tabs[m].ID == $scope.workSpaces.workflows[j].selectedTab.ID){
+                                    holdingWorkflowColored.selectedTab = holdingWorkflowColored.tabs[m];
+                                }
+                            }
                         }
                     }
 
@@ -1011,7 +1016,8 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                             dataHolding.searchBy[0], //  Name
                             dataHolding.searchBy[1], //  Description
                             dataHolding.searchBy[2]  //  ID
-                        ]
+                        ],
+                        "forceSearch": ((dataHolding.forceLastModifed == true)?'LastModifed':'ServerPull')
                     } 
                     // check if there is no old child tab search
                     if(holdingRequestTab.dataHolding.childTab.workflowId == null || holdingRequestTab.dataHolding.childTab.tabId == null){
@@ -1043,8 +1049,20 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                                             $scope.InsertStepToLast10Steps();
                                         }else{
                                             setTimeout(function(){
-                                                $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, result);
-                                                $scope.InsertStepToLast10Steps();
+                                                var stor = new Storage();
+                                                loopResults(0, result, []);
+                                                function loopResults(index, originalData, resultData){
+                                                    if(index < originalData.length){
+                                                        stor.getElementById(originalData[index], holdingRequestTab.dataHolding.forceLastModifed, holdingRequestTab.dataHolding.forceServerPull, function(resultO){
+                                                            if(resultO != undefined)
+                                                                resultData.push(resultO);
+                                                            loopResults(Number(index)+1, originalData, resultData);
+                                                        });    
+                                                    }else{
+                                                        $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, resultData);
+                                                        $scope.InsertStepToLast10Steps();
+                                                    }
+                                                }
                                             },1500);
                                         }
                                     });
@@ -1063,7 +1081,6 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                                 $scope.InsertStepToLast10Steps();
                             }else{
                                 setTimeout(function(){
-                                    debugger;
                                     var stor = new Storage();
                                     loopResults(0, result, []);
                                     function loopResults(index, originalData, resultData){
