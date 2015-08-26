@@ -231,16 +231,33 @@ app.factory('Storage', ["$rootScope", "Globals", "TypeOf", function($rootScope, 
 		getElementById: function(jsonObject, forceLastmodefied, forceServerPull, callback){
 			elemId = jsonObject.id;
 			if( elemId != undefined && elemId != null && elemId != ""){
+				var cashedObject = Globals.get(elemId);
 				if(forceServerPull == true){
-					var cashedObject = Globals.get(elemId);
 					if(cashedObject == null){
-						cashedObject = new Content(jsonObject);
+						createObjects(jsonObject, callback);
 					}else{
-						if(jsonObject.lastModified != cashedObject.lastmodified)
-							cashedObject = new Content(jsonObject);
+						callback(cashedObject);
 					}
-					callback(cashedObject);
-					return;
+				}else if(forceLastmodefied == true){
+					if(cashedObject == null)
+						createObjects(jsonObject, callback);
+					else{
+						if(jsonObject.lastModified > cashedObject.lastmodified)
+							createObjects(jsonObject, callback);
+						else
+							callback(cashedObject);
+					}
+				}else{
+					if(cashedObject == null){
+						createObjects(jsonObject, callback);
+					}else
+						callback(cashedObject);
+				}
+
+				function createObjects(objectToAdd, passCallback){
+
+					
+					passCallback();
 				}
 			}else{
 				callback(null);
