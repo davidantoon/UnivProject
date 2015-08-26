@@ -1,18 +1,32 @@
 app.factory('User', ['$rootScope', 'Server', function($rootScope, Server){
 	
-	function User(username, password, email, SQ, SA, tempJson){
+	function User(firstname, lastname, username, password, email, profilePicture, role, tempJson){
 		if(tempJson){
+			this.firstname = tempJson.firstname;
+			this.lastname = tempJson.lastname
 			this.username = tempJson.username;
 			this.password = tempJson.password;
 			this.email = tempJson.email;
-			this.SQ = tempJson.SQ;
-			this.SA =tempJson.SA;
+			this.creationDate = tempJson.creationDate;
+			this.profilePicture = tempJson.profilePicture;
+			this.role = tempJson.role;
+
 		}else{
+			var now = new Date();
+			var strDateTime = [[AddZero(now.getDate()), AddZero(now.getMonth() + 1), now.getFullYear()].join("-"), [AddZero(now.getHours()), AddZero(now.getMinutes()), AddZero(now.getSeconds())].join(":")].join(" ");
+
+			//add to the given value to the left with "0" if its < 10
+			function AddZero(num) {
+			    return (num >= 0 && num < 10) ? "0" + num : num + "";
+			}
+			this.firstname = firstname;
+			this.lastname = lastname
 			this.username = username;
 			this.password = password;
 			this.email = email;
-			this.SQ = SQ;
-			this.SA = SA;
+			this.creationDate = now;
+			this.profilePicture = profilePicture;
+			this.role = role;
 		}
 		// connet to server for registeration
 	}
@@ -23,7 +37,7 @@ app.factory('User', ['$rootScope', 'Server', function($rootScope, Server){
 	 * @param {String} userName username
 	 * @param {String} Password password
 	 */
-	function login(userName, Password){
+	User.login = function(username, Password){
 		try{
 
 		}catch(e){
@@ -93,27 +107,26 @@ app.factory('User', ['$rootScope', 'Server', function($rootScope, Server){
 		},
 
 		/**
-		 * Changes security question
-		 * @param  {String} newQA new security question
+		 * Changes role
+		 * @param  {string} newRole new role
 		 */
-		changeSQ: function(newSQ){
+		changeRole: function(newRole){
 			try{
-				this.QA = newQA;
-				// update server
+				this.role = newRole;
+				// update server server
 			}catch(e){
 
 			}
 		},
 
 		/**
-		 * Changes the security answer
-		 * @param  {String} newSA new security answer
-		 * @return {[type]}       [description]
+		 * Change profile picture
+		 * @param  {String} newPicture New profile picture
 		 */
-		changeSA: function(newSA){
+		changeProfilePicture: function(newPicture){
 			try{
-				this.SA = newSA;
-				// update server
+				this.profilePicture = newPicture;
+				//update server
 			}catch(e){
 
 			}
