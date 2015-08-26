@@ -320,7 +320,7 @@
 											if(index < termsArray.length){
 												passThis.getElementById(termsArray[index], objectToAdd.forceLastmodefied, objectToAdd.forceServerPull, function(resultTerm){
 													if(resultTerm != undefined && resultTerm != null){
-														termsArray.push(resultTerm);
+														termResults.push(resultTerm);
 														loopTerms2(Number(index)+1, termsArray, termResults);
 													}
 												});
