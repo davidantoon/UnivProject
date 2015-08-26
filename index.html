@@ -240,7 +240,7 @@
                         </p>
                         <div class="SearchResultsRowTitle" style="{{(((FilterResults(wFlow.selectedTab.dataHolding.results, 'Kbit')).length == 0)?'display:none':'')}}">Kbits</div>
                         <div>
-                          <ons-row ng-click="displayContent(result);" ng-rclick="displayContentNewTab(result);" class="SearchResultsRow1 SearchResultsRow  clickable hoverOp" ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Kbit')">
+                          <ons-row ng-click="displayContent(wFlow,result);" ng-rclick="displayContentNewTab(wFlow,result);" class="SearchResultsRow1 SearchResultsRow  clickable hoverOp" ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Kbit')">
                             <ons-col>
                               <ons-row>
                                 <ons-col>
@@ -257,7 +257,7 @@
                         </div>
                         <div class="SearchResultsRowTitle" style="{{(((FilterResults(wFlow.selectedTab.dataHolding.results, 'Delivery')).length == 0)?'display:none':'')}}">Deliveries</div>
                         <div>
-                          <ons-row ng-click="displayContent(result);" ng-rclick="displayContentNewTab(result);" class="SearchResultsRow2 SearchResultsRow clickable hoverOp" ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Delivery')">
+                          <ons-row ng-click="displayContent(wFlow,result);" ng-rclick="displayContentNewTab(wFlow,result);" class="SearchResultsRow2 SearchResultsRow clickable hoverOp" ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Delivery')">
                             <ons-col>
                               <ons-row>
                                 <ons-col>
@@ -274,7 +274,7 @@
                         </div>
                         <div class="SearchResultsRowTitle" style="{{(((FilterResults(wFlow.selectedTab.dataHolding.results, 'Term')).length == 0)?'display:none':'')}}">Terms</div>
                         <div>
-                          <ons-row ng-click="displayContent(result);" ng-rclick="displayContentNewTab(result);" class="SearchResultsRow3 SearchResultsRow clickable hoverOp" ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Term')">
+                          <ons-row ng-click="displayContent(wFlow,result);" ng-rclick="displayContentNewTab(wFlow,result);" class="SearchResultsRow3 SearchResultsRow clickable hoverOp" ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Term')">
                             <ons-col>
                               <ons-row>
                                 <ons-col>

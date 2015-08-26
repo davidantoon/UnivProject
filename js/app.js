@@ -1063,8 +1063,20 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
                                 $scope.InsertStepToLast10Steps();
                             }else{
                                 setTimeout(function(){
-                                    $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, result);
-                                    $scope.InsertStepToLast10Steps();
+                                    debugger;
+                                    var stor = new Storage();
+                                    loopResults(0, result, []);
+                                    function loopResults(index, originalData, resultData){
+                                        if(index < originalData.length){
+                                            stor.getElementById(originalData[index], holdingRequestTab.dataHolding.forceLastModifed, holdingRequestTab.dataHolding.forceServerPull, function(resultO){
+                                                if(resultO != undefined)
+                                                    resultData.push(resultO);
+                                            });    
+                                        }else{
+                                            $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, resultData);
+                                            $scope.InsertStepToLast10Steps();
+                                        }
+                                    }
                                 },1500);
                             }
                         });
@@ -1113,15 +1125,15 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
         }
 
 
-        $scope.displayContent = function(result){
+        $scope.displayContent = function(wFlow,result){
             
             console.log(false);
             console.log(result);
         }
 
-        $scope.displayContentNewTab = function(result){
-            console.log(true);
-            console.log(result);
+        $scope.displayContentNewTab = function(wFlow,result){
+            var holdingDisplayObjectData = result;
+            // console.log(wFlow.selectedTab.dataHolding);
         }
 
 
