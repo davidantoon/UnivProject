@@ -22,10 +22,12 @@ app.factory('User', ['$rootScope', 'Server', function($rootScope, Server){
 	 * Connets with server, check the entered username and password for login
 	 * @param {String} userName username
 	 * @param {String} Password password
+	 * @return {User} return null if wrong info, else User Object
 	 */
-	function login(userName, Password){
+	User.login = function(userName, Password){
 		try{
 
+			return new User();
 		}catch(e){
 				
 		}

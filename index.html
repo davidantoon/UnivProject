@@ -19,6 +19,9 @@
 </head>
 <body ng-controller="MainCtrl">
 
+    <!-- <div class="DebugMessage">
+      {{bodyScrolling}}
+    </div> -->
     <div id="MainDiv" class="{{((blurAllWindow == true)?'blured':'')}}" ng-switch="AppStatus" style="display:none">
       <div class="AppPage" ng-switch-when="2" style="">  
         <ons-page>
@@ -132,7 +135,7 @@
               <div id="pointToZoom"></div>
               
               <!-- <div ng-mouseenter="EnableScroll(2);" ng-mouseleave="EnableScroll(1);" -->
-              <div ng-mouseenter="((wFlow.selectedTab.Type == 4)?EnableScroll(2,'Workflow'+wFlow.ID):return);" ng-mouseleave="EnableScroll(1,'Workflow'+wFlow.ID);" ng-repeat="wFlow in getCurrentWorkflows()" id="{{'Workflow'+wFlow.ID}}" class="WorkFlowBlock Available" ng-click="Steps.lastFocusedWorkflow = wFlow.ID" fx="{{wFlow.fx}}" fy="{{wFlow.fy}}" tx="{{wFlow.tx}}" ty="{{wFlow.ty}}">
+              <div ng-mouseenter="" ng-mouseleave="EnableScroll(1,'Workflow'+wFlow.ID);" ng-repeat="wFlow in getCurrentWorkflows()" id="{{'Workflow'+wFlow.ID}}" class="WorkFlowBlock Available" ng-click="Steps.lastFocusedWorkflow = wFlow.ID;((wFlow.selectedTab.Type == 4)?EnableScroll(2,'Workflow'+wFlow.ID):return);" fx="{{wFlow.fx}}" fy="{{wFlow.fy}}" tx="{{wFlow.tx}}" ty="{{wFlow.ty}}">
                 <div ng-click="focusThisWorkflow(wFlow);" class="{{'MaximizeButton clickable '+((clickToMaximize == true)?'':'hidden')}}">
                   <div>
                     <ons-icon icon="ion-ios-search-strong" size="100px"></ons-icon>

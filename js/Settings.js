@@ -7,7 +7,6 @@ app.factory('Settings', ["$rootScope", "Storage", "Server", function($rootScope,
 		this.autoSave = true;
 		this.autoOpenTabs = false;
 		this.defaultToastPosition = "BOTTOM";
-		this.removeScrollOnMouseOver = true;
 
 		
 	}

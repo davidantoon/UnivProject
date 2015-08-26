@@ -6917,7 +6917,19 @@ div.vertical {
 }
 
 
-
+.DebugMessage{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 208px;
+  height: 34px;
+  background: rgba(0,0,0,.6);
+  color: white;
+  font-size: 25px;
+  z-index: 10000;
+  padding: 7px;
+  text-align: center;
+}
 
 
 

@@ -41,6 +41,8 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
         $scope.blurAllWindow = false;
         $scope.handlePickColor = false;
         $scope.holdDoubleClickOnObject = null;
+        $scope.bodyScrolling = false;
+        $scope.bodyScrollingTimeout = null;
 
 
         // $scope.$on('$destroy', function() {
@@ -99,6 +101,22 @@ app.controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$inter
             $(function() {
                 $(".TimePicker").mask('99:99');
                 $('.DatePicker').mask('99/99/9999');
+                // var waitPageLoad = $interval(function(){
+                //     if($('#BodyRow').length > 0){
+                //         $interval.cancel(waitPageLoad);
+                //         $('#BodyRow').on('scroll',function(){
+                //             $scope.$apply(function(){
+                //                 $scope.bodyScrolling = true;
+                //                 if($scope.bodyScrollingTimeout != null)
+                //                     $timeout.cancel($scope.bodyScrollingTimeout);
+                //                 $scope.bodyScrollingTimeout = $timeout(function(){
+                //                     $scope.bodyScrolling = false;
+                //                     $scope.bodyScrollingTimeout = null;
+                //                 },200);
+                //             });
+                //         });
+                //     }
+                // },100);
             });
         });
 
