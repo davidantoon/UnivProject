@@ -186,6 +186,7 @@
                         Edit Element
                       </div>
                     </div>
+                    <!-- SEARCH TAB HTML -->
                     <div class="{{((getSelectedTabType(wFlow) == 1)?'':'hidden')}}">
                       <div class="searchTextboxDiv">
                         <input class="searchTextbox" ng-enter="prepareForSearch(wFlow);" ng-change="InsertStepToLast10Steps(); " placeholder="Search Text" id="1" ng-model="wFlow.selectedTab.dataHolding.searchText">
@@ -229,12 +230,15 @@
                         {{wFlow.name}}
                       </div>
                     </div>
+                    <!-- CREATE TAB HTML -->
                     <div class="{{((getSelectedTabType(wFlow) == 2)?'':'hidden')}}">
                       create
                     </div>
+                    <!-- EDIT TAB HTML -->
                     <div class="{{((getSelectedTabType(wFlow) == 3)?'':'hidden')}}">
                       edit
                     </div>
+                    <!-- SEARCH RESULTS TAB HTML -->
                     <div class="{{'searchTypeTab '+((getSelectedTabType(wFlow) == 4)?'':'hidden')}}">
                       <div ng-click="back(wFlow.selectedTab.dataHolding);" style="{{'border-top: 2px solid '+wFlow.selectedTab.color+'; border-right: 3px solid '+wFlow.selectedTab.color+';'}}" class="ReturnToSearchButton">
                         <ons-icon icon="ion-chevron-left" size="18px"></ons-icon> Back
@@ -269,14 +273,25 @@
                         <div>
                           <ons-row ng-click="displayContent(wFlow,result);" ng-rclick="displayContentNewTab(wFlow,result);" class="SearchResultsRow2 SearchResultsRow clickable hoverOp" ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Delivery')">
                             <ons-col>
-                              <ons-row>
+                              <ons-row style="height: 25px;">
                                 <ons-col>
                                   <p class="searchResultName">{{result.name}}</p>
                                 </ons-col>
                               </ons-row>
-                              <ons-row>
+                              <ons-row style="height: 18px;">
                                 <ons-col>
                                   <p class="searchResultDescription">{{result.description}}</p>
+                                </ons-col>
+                              </ons-row>
+                              <ons-row class="resultInfo">
+                                <ons-col width="25%">
+                                  <p class="inProgressMessage">In progress</p>
+                                </ons-col>
+                                <ons-col width="25%">
+                                  <p class="lockedMessage">Locked</p>
+                                </ons-col>
+                                <ons-col width="50%">
+                                  <p class="lastModifiedMessage">15:00 20 August, 2015</p>
                                 </ons-col>
                               </ons-row>
                             </ons-col>
@@ -410,8 +425,8 @@
   <script type="text/javascript" src="js/angularfire.min.js"></script>
   <script type="text/javascript" src="js/visible.js"></script>
 
-  <script type="text/javascript" src="js/Toast.js"></script>
   <script type="text/javascript" src="js/app.js"></script>
+  <script type="text/javascript" src="js/Toast.js"></script>
   <script type="text/javascript" src="js/globals.js"></script>
   <script type="text/javascript" src="js/Storage.js"></script>
   <script type="text/javascript" src="js/Server.js"></script>

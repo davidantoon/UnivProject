@@ -6874,7 +6874,7 @@ div.vertical {
   padding: 5px 10px;
   margin-bottom: 5px;
   border-bottom: 1px solid rgba(0,0,0,.1);
-  height: 50px;
+  height: 65px;
   position: relative;
   z-index: 1;
   overflow: hidden;
@@ -6931,10 +6931,25 @@ div.vertical {
   text-align: center;
 }
 
+.resultInfo{
+  height: 15px;text-align: center;font-weight: 600;
+}
 
-
-
-
+.inProgressMessage, .lockedMessage, .lastModifiedMessage{
+  margin: 0;
+  font-size: 13px;
+}
+.inProgressMessage{
+  color: orange;
+  border-right: 1px solid rgba(0,0,0,.2);
+}
+.lockedMessage{
+  color: rgb(207,0,0);
+  border-right: 1px solid rgba(0,0,0,.2);
+}
+.lastModifiedMessage{
+  color: gray;
+}
 
 
 
