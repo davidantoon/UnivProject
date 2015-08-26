@@ -1,8 +1,138 @@
 (function(angular) {
     'use strict';
-	angular.module('IntelLearner').factory('Content', ["$rootScope", 'Globals', "Toast", "Server", function($rootScope, Globals, Toast, Server){
-		
-		function Content(conData){
+	angular.module('IntelLearner').factory('Content', ["$rootScope", 'Globals', "Toast", "Server", 'Storage', function($rootScope, Globals, Toast, Server, Storage){
+	
+	function Content(conData, forceLastmodefied, forceServerPull){
+		try{
+			this.id = ((conData != undefined)?conData.id:'');
+			this.name = ((conData != undefined)?conData.name:'');
+			this.kBitsNeeded = [];
+			this.kBitProvided = [];
+			this.terms = [];
+			if(conData != undefined){
+				if(conData.kBitsNeeded != undefined && conData.kBitsNeeded.length > 0){
+					loopKbitsNeeded(0, conData.kBitsNeeded, this.kBitsNeeded);
+	                function loopKbitsNeeded(index, originalData, resultData){
+	                	if(index < originalData.length){
+	                    	var stor = new Storage();
+	                        stor.getElementById(originalData[index],forceLastmodefied, forceServerPull, function(result){
+	                            if(result != undefined && result !=null)
+	                                resultData.push(result);
+	                            loopKbitsNeeded(Number(index)+1, originalData, resultData);
+	                        });    
+						}
+					}
+				}
+				if(conData.kBitProvided != undefined && conData.kBitProvided.length > 0){
+					loopKbitsProvided(0, conData.kBitProvided, this.kBitProvided);
+					function loopKbitsProvided(index, originalData, resultData){
+						var stor = new Storage();
+						stor.getElementById(originalData[index], forceLastmodefied, forceServerPull, function(result){
+							if(result != undefined && result != null)
+								resultData.push(result);
+							loopKbitsProvided(Number(index)+1, originalData, resultData);
+						});
+					}
+				}
+				if(conData.terms != undefined && conData.terms.length >0){
+					loopTerms(0, conData.terms, this.terms);
+					function loopTerms(index, originalData, resultData){
+						var stor = new Storage();
+						stor.getElementById(originalData[index], forceLastmodefied, forceServerPull, function(result){
+							if(result != undefined && result != null)
+								resultData.push(result);
+							loopTerms(Number(index)+1, originalData, resultData);
+						});
+					}
+				}
+			}
+			this.description = ((conData && conData.description) || "");
+			this.url = ((conData && conData.url) || "");
+			this.locked = ((conData && conData.locked) || null);
+			this.lastModified = ((conData && conData.lastModified) || null);
+			this.inProgress = ((conData && conData.inProgress) || null);
+			this.type = ((conData && conData.type) || "");
+			this.connectToDataBase = ((this.type && new Server(this.type)) || null);
+		}catch(e){
+			$rootScope.currentScope.Toast.show("Error!","There was an error in creating new Content", Toast.LONG, Toast.ERROR);
+            console.error("Content: ", e);
+            return null;
+		}
+	}
+
+	Content.prototype = {
+
+		objectType: "Content",
+		/**
+		 * Lock Object in the server to prevent others to edit (Readonly)
+		 * @param  {Function} callback Function called after execute object method. Return success/error result
+		 */
+		lock: function(callback){
+			try{
+
+			}catch(e){
+				$rootScope.currentScope.Toast.show("Error!","There was an error in locking content", Toast.LONG, Toast.ERROR);
+           		console.error("lock: ", e);
+			}
+		},
+
+		/**
+		 * Unlock Object in the server to enable others to edit
+		 * @param  {Function} callback Function called after execute object method. Return success/error result
+		 */
+		unlock: function(callback){
+			try{
+
+			}catch(e){
+				$rootScope.currentScope.Toast.show("Error!","There was an error in unlocking content", Toast.LONG, Toast.ERROR);
+           		console.error("unlock: ", e);
+			}
+		},
+
+		/**
+		 * Save Object to server as (DEBUG MODE)
+		 * @param  {String}   versionNotes Note about updated object
+		 * @param  {Function} callback Function called after execute object method. Return success/error result
+		 */
+		save: function(versionNotes, callback){
+			try{
+				var mThis = this;
+				this.connectToDataBase.Save(mThis, function(res){
+					if(res != "Error"){
+						mThis.lastModified = res.lastModified;
+						mThis.inProgress = false;
+						callback(true);
+					}else
+						callback(false);
+				});
+			}catch(e){
+				$rootScope.currentScope.Toast.show("Error!","There was an error in saving Content", Toast.LONG, Toast.ERROR);
+            	console.error("save: ", e);
+            	callback(null,{"message":e.message,"code":e.code});
+            }
+		},
+
+		/**
+		 * Save Object to server as (PRODUCT MODE) and Unlock it
+		 * @param  {String}   versionNotes Note about updated object
+		 * @param  {Function} callback     Function called after execute object method. Return success/error result
+		 */
+		release: function(versionNotes, callback){
+			try{
+
+			}catch(e){
+				$rootScope.currentScope.Toast.show("Error!","There was an error in releasing content", Toast.LONG, Toast.ERROR);
+           		console.error("release: ", e);
+			}
+		},
+
+		/**
+		 * Remove object from server database
+		 * @param  {Boolran}  includePreviousVersions TRUE to remove object and it's history versions (NOT RECOMMENDED)
+		 * @param  {Function} callback                Function called after execute object method. Return success/error result
+		 */
+		remove: function(includePreviousVersions, callback){
+>>>>>>> origin/Client-Side
 			try{
 				this.id = ((conData != undefined)?conData.id:'');
 				this.name = ((conData != undefined)?conData.name:'');
