@@ -1,8 +1,8 @@
 (function(angular) {
     'use strict';
-    angular.module('IntelLearner', ['onsen', 'firebase']);
-    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope", "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast",
-        function($rootScope,$scope, $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast) {
+    angular.module('IntelLearner', ['onsen', 'firebase', 'angularSoap']);
+    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope", "$soap", "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast",
+        function($rootScope, $scope, $soap, $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast) {
 
 
             // PRIM COLOR = rgb(8,96,168)
@@ -103,22 +103,6 @@
                 $(function() {
                     $(".TimePicker").mask('99:99');
                     $('.DatePicker').mask('99/99/9999');
-                    // var waitPageLoad = $interval(function(){
-                    //     if($('#BodyRow').length > 0){
-                    //         $interval.cancel(waitPageLoad);
-                    //         $('#BodyRow').on('scroll',function(){
-                    //             $scope.$apply(function(){
-                    //                 $scope.bodyScrolling = true;
-                    //                 if($scope.bodyScrollingTimeout != null)
-                    //                     $timeout.cancel($scope.bodyScrollingTimeout);
-                    //                 $scope.bodyScrollingTimeout = $timeout(function(){
-                    //                     $scope.bodyScrolling = false;
-                    //                     $scope.bodyScrollingTimeout = null;
-                    //                 },200);
-                    //             });
-                    //         });
-                    //     }
-                    // },100);
                 });
             });
 
@@ -1403,6 +1387,45 @@
                     $('#BodyRow').css('overflow','hidden');
                 }
             }
+
+
+
+
+
+
+
+
+
+
+
+
+            $scope.testFunctions = function(){
+                $soap.post('http://31.154.164.129:8888/mopdqwompoaskdqomdiasjdiowqe/server/services.php','action',params).then(function(response){
+                    console.log(response);
+                });
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         }
