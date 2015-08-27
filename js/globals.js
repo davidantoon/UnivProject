@@ -24,6 +24,18 @@
 			var tempObj = this.CashedObjects[type+id];
 			delete this.CashedObjects[type+id];
 			return tempObj;
+		},
+		getMinimized: function(callback){
+			var dataToRetrun = [];
+			var CashedObjectsKeys =  Object.keys(this.CashedObjects);
+			for(var i=0; i<CashedObjectsKeys.length; i++){
+				dataToRetrun.push({
+					"id": this.CashedObjects[CashedObjectsKeys[i]].id,
+					"type": this.CashedObjects[CashedObjectsKeys[i]].type,
+					"lastModified": this.CashedObjects[CashedObjectsKeys[i]].lastModified,
+				});
+			}
+			callback(dataToRetrun);
 		}
 	})
 	.value('TypeOf', {

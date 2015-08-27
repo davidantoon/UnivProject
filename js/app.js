@@ -1358,58 +1358,19 @@
             },1000);
             
 
+            /**
+             * Check if there is new content in the server
+             */
+            $interval(function(){
+                Globals.getMinimized(function(minimizedData){
+                    console.log(minimizedData);
+                });
+
+            },5000);
 
 
 
 
-
-
-
-
-
-
-            // var previousScrollTop = $('#BodyRow').scrollTop();
-            // var scrollLock = true;
-            // $('#BodyRow').scroll(function(e) {
-            // 	if(scrollLock == true) {
-            // 		$('#BodyRow').scrollTop(previousScrollTop); 
-            // 	}
-            // 	console.log(previousScrollTop);
-            // 	previousScrollTop = $('#BodyRow').scrollTop();
-            // });
-
-
-
-            
-
-
-
-
-
-
-
-
-            $scope.testFunc = function() {
-                // $scope.workSpaces.updateNewWorkflowButtons();
-                // $scope.Workflow[0].addTab();
-                // $scope.InsertStepToLast10Steps();
-            }
-
-            $scope.testFun2 = function() {
-                $scope.Workflow.push(new Workflow(null, 9, 13, 12, 14, 13, 0, 2));
-                $scope.updateMatrixLayout();
-                $scope.InsertStepToLast10Steps();
-            }
-
-            $scope.testFun3 = function(){
-            	$scope.Workflow.splice(2,1);
-            	$scope.updateMatrixLayout();
-                $scope.InsertStepToLast10Steps();
-            }
-
-            $scope.testFunction = function(wFlow){
-                console.log(wFlow.selectedTab.dataHolding);
-            }
 
             /**
              * Clears local storags
@@ -1472,44 +1433,7 @@
 
 
 
-    // Format date
-    function formatDay(d) {
-        var date = new Date(d);
-        var weekDay = 'ראשון שני שלישי רביעי חמישי שישי שבת'.split(' ')[date.getDay()];
-        var day = date.getDate();
-        var month = 'ינואר פבואר מרץ אפריל מאי יוני יולי אוגוסט ספטמבר אוקטובר נובמבר דצמבר'.split(' ')[date.getMonth()];
-        return weekDay + ', ' + month + ' ' + day;
-    }
 
-    function formatTime(d) {
-        var date = new Date(d);
-        var hours = date.getHours();
-        if (hours < 10) hours = '0' + hours;
-        var mins = date.getMinutes();
-        if (mins < 10) mins = '0' + mins;
-        return hours + ':' + mins;
-    }
-
-    function formatDate(d) {
-        var dateNow = new Date();
-        var selectedDate = new Date(d);
-
-        if (((dateNow - selectedDate) / 1000 / 60 / 60) < 48) {
-            if (dateNow.getDate() == selectedDate.getDate()) {
-                return 'היום, ' + formatTime(d);
-            } else if ((new Date(dateNow - 1000 * 60 * 60 * 24)).getDate() == selectedDate.getDate()) {
-                return 'אתמול, ' + formatTime(d);
-            } else {
-                return formatDay(d) + ', ' + formatTime(d) + '';
-            }
-        } else {
-            if (dateNow.getFullYear() > selectedDate.getFullYear()) {
-                return selectedDate.getFullYear() + ", " + formatDay(d);
-            } else {
-                return formatDay(d) + ', ' + formatTime(d) + '';
-            }
-        }
-    }
 
     var mouse = {
         x: 200,
@@ -1569,14 +1493,6 @@
         });
 
         setInterval(function() {
-            if (altDown && ctrlDown) {
-                checkCanvas();
-                $('#myCanvas').show();
-            } else {
-                $('#myCanvas').hide();
-            }
-        }, 100);
-        setInterval(function() {
             if (scrolling) {
                 var scrollingRate = (((($('#ZoomRange').val() / 100) * (2.0 - 0.3)) + 0.3) / 2);
                 var scrollLeftRate = (scrollingRate * (mouse.x - firstMousePos.x) / 50);
@@ -1595,96 +1511,6 @@
 
     });
 
-    updateCanvasLayout();
-
-    function updateCanvasLayout() {
-        var CanvasDims = (((($('#ZoomRange').val() / 100) * (2.0 - 0.3)) + 0.3) / 2) * 10000;
-        $('#myCanvas').attr('height', CanvasDims + "px").attr('width', CanvasDims + "px");
-    }
-
-    function checkCanvas() {
-        var c = $('#myCanvas')[0];
-        var ctx = c.getContext("2d");
-
-        // //Path 1
-        // ctx.beginPath();
-        // ctx.moveTo(2066, 2015);
-        // ctx.lineTo(2328, 2015);
-        // ctx.lineWidth = 5;
-        // var grad= ctx.createLinearGradient(2066, 2015, 2328, 2015);
-        // grad.addColorStop(0, "#660000");
-        // grad.addColorStop(1, "#b20000");
-        // ctx.strokeStyle = grad;
-        // ctx.lineJoin = 'round';
-        // ctx.lineCap = 'round';
-        // ctx.stroke();
-
-
-        // //Path 2
-        // ctx.beginPath();
-        // ctx.moveTo(2328, 2015);
-        // ctx.lineTo(2700, 2600);
-        // ctx.lineWidth = 5;
-        // var grad= ctx.createLinearGradient( 2328, 2015, 2700, 2600);
-        // grad.addColorStop(0, "#b20000");
-        // grad.addColorStop(1, "#ff0000");
-        // ctx.strokeStyle = grad;
-        // ctx.lineJoin = 'round';
-        // ctx.lineCap = 'round';
-        // 
-        // ctx.stroke();
-
-
-        // POINTS
-
-        ctx.beginPath();
-        ctx.arc((1080.450603885093 / Number($('#WorkFlowMatrix').css('zoom'))), (1010.9981815719973 / Number($('#WorkFlowMatrix').css('zoom'))), 8, 0, 2 * Math.PI, true);
-        ctx.strokeStyle = "#660000";
-        ctx.stroke();
-
-        // ctx.beginPath();
-        // ctx.arc(2328, 2015, 8, 0, 2 * Math.PI, true);
-        // ctx.strokeStyle = "#b20000";
-        // ctx.stroke();
-
-        // ctx.beginPath();
-        // ctx.arc(2700, 2600, 8, 0, 2 * Math.PI, true);
-        // ctx.strokeStyle = "#ff0000";
-        // ctx.stroke();
-
-
-
-
-
-        // //Path 3
-        // ctx.beginPath();
-        // ctx.moveTo(150, 150);
-        // ctx.lineTo(100, 50);
-        // ctx.lineWidth = 5;
-        // var grad= ctx.createLinearGradient(150, 150, 100, 50);
-        // grad.addColorStop(0, "#b20000");
-        // grad.addColorStop(1, "#e50000");
-        // ctx.strokeStyle = grad;
-        // ctx.lineJoin = 'round';
-        // ctx.lineCap = 'round';
-        // ctx.stroke();
-
-        // //Path 4
-        // ctx.beginPath();
-        // ctx.moveTo(150, 150);
-        // ctx.lineTo(100, 50);
-        // ctx.lineWidth = 5;
-        // var grad= ctx.createLinearGradient(150, 150, 100, 50);
-        // grad.addColorStop(0, "#b20000");
-        // grad.addColorStop(1, "#e50000");
-        // ctx.strokeStyle = grad;
-        // ctx.lineJoin = 'round';
-        // ctx.lineCap = 'round';
-        // ctx.stroke();
-
-
-
-    }
 
     $.cssNumber.zoom = true;
     if (!("zoom" in document.body.style)) {

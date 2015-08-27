@@ -59,6 +59,7 @@
 							}
 							if(dataToSearch.dataType[1] == 1){ // Deliveries
 								var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
+								
 								for (var i = deliveryDB.length - 1; i >= 0; i--) {
 									var found = 1;
 									for(var j = 0; j < SplitText.length; j++){

@@ -60,7 +60,7 @@
 					// update layout of workspace
 					passThis.restoreStep(workspace, function(){
 						if(passThis.lastFocusedWorkflow == null || passThis.lastFocusedWorkflow == undefined){
-							passThis.lastFocusedWorkflow = lastFocusedWorkflow = workspace.workflows[0].ID;
+							passThis.lastFocusedWorkflow = workspace.workflows[0].ID;
 						}else{
 							var indexOfScroll = 0;
 		                    for(var i=0; i< workspace.workflows.length; i++){
