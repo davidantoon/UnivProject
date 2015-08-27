@@ -22,6 +22,8 @@ class serverAPI {
 
 // search kbits, deliveries
 // build global interface
+// test API
+// publish to server
 
 
 // ====================================================================
