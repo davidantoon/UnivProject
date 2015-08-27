@@ -7,14 +7,14 @@
 				this.id = ((conData != undefined)?conData.id:'');
 				this.name = ((conData != undefined)?conData.name:'');
 				this.kBitsNeeded = ((conData != undefined)?conData.kBitsNeeded:[]);
-				this.kBitProvided = ((conData != undefined)?conData.kBitProvided:[]);
+				this.kBitsProvided = ((conData != undefined)?conData.kBitsProvided:[]);
 				this.terms = ((conData != undefined)?conData.terms:[]);
-				this.description = ((conData && conData.description) || "");
-				this.url = ((conData && conData.url) || "");
-				this.locked = ((conData && conData.locked) || null);
-				this.lastModified = ((conData && conData.lastModified) || null);
-				this.inProgress = ((conData && conData.inProgress) || null);
-				this.type = ((conData && conData.type) || "");
+				this.description = ((conData != undefined)?conData.description:'');
+				this.url = ((conData != undefined)?conData.url:'');
+				this.locked = ((conData != undefined)?conData.locked:false);
+				this.lastModified = ((conData != undefined)?conData.lastModified:null);
+				this.inProgress = ((conData != undefined)?conData.inProgress:false);
+				this.type = ((conData != undefined)?conData.type:null);
 				this.connectToDataBase = ((this.type && new Server(this.type)) || null);
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","There was an error in creating new Content", Toast.LONG, Toast.ERROR);
@@ -179,7 +179,7 @@
 						"id": this.id,
 						"name": this.name,
 						"kBitsNeeded": this.kBitsNeeded,
-						"kBitProvided": this.kBitProvided,
+						"kBitsProvided": this.kBitsProvided,
 						"terms": this.terms,
 						"description": this.description,
 						"url": this.url,

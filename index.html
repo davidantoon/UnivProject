@@ -260,13 +260,13 @@
                               </ons-row>
                               <ons-row class="resultInfo">
                                 <ons-col width="25%">
-                                  <p class="inProgressMessage">In progress</p>
+                                  <p class="{{'inProgressMessage '+((result.inProgress == true)?'':'hidden')}}" >In progress</p>
                                 </ons-col>
                                 <ons-col width="25%">
-                                  <p class="lockedMessage">Locked</p>
+                                  <p class="{{'lockedMessage '+((result.locked == true)?'':'hidden')}}">Locked</p>
                                 </ons-col>
                                 <ons-col width="50%">
-                                  <p class="lastModifiedMessage">15:00 20 August, 2015</p>
+                                  <p class="lastModifiedMessage">{{ result.lastModified| date:"MMM d, y h:mm:ss"}}</p>
                                 </ons-col>
                               </ons-row>
                             </ons-col>

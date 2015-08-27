@@ -19,7 +19,7 @@
 			"name": "term3"
 		}]	
 	}],
-	"kBitProvided" : [{
+	"kBitsProvided" : [{
 		"id":1,
 		"name":"kbit 1",
 		"description":"description 1",
@@ -49,7 +49,7 @@
 	}],
 	"description" : "dummy description 1 dummy description 1 dummy description 1 dummy description 1",
 	"url" : "dummy url 1",
-	"locked" : false,
+	"locked" : true,
 	"lastModified" : 1439567697991,
 	"inProgress" : false
 },{
@@ -83,7 +83,7 @@
 			"name": "term7"
 		}]	
 	}],
-	"kBitProvided" : [{
+	"kBitsProvided" : [{
 		"id":2,
 		"name":"kbit 2",
 		"description":"description 2",
@@ -169,7 +169,7 @@
 			"name": "term3"	
 		}]	
 	}],
-	"kBitProvided" : [{
+	"kBitsProvided" : [{
 		"id":1,
 		"name":"kbit 1",
 		"description":"description 1",
@@ -233,7 +233,7 @@
 			"name": "term7"
 		}]
 	}],
-	"kBitProvided" : [{
+	"kBitsProvided" : [{
 		"id":3,
 		"name":"kbit 3",
 		"description":"description 3",
@@ -323,7 +323,7 @@
 			"name": "term5"
 		}]	
 	}],
-	"kBitProvided" : [{
+	"kBitsProvided" : [{
 		"id":1,
 		"name":"kbit 1",
 		"description":"description 1",
