@@ -79,7 +79,7 @@
 			 * Changes the email
 			 * @return {[type]} [description]
 			 */
-			changeEmail: function(callback){
+			changeEmail: function(newEmail, callback){
 				try{
 
 				}catch(e){
