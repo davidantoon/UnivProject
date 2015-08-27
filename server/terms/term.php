@@ -254,10 +254,12 @@ class term {
 		if($lang != '')
 			return $selected_term;
 
+		$selected_term["OBJECT_TYPE"] = 'TERM_STRING';
 		// get term's other languages
 		$other_langs = term::get_term_by_UID_in_all_languages($UID);
 		if(count($other_langs) > 1) {
 			for($i=0; $i<count($other_langs); $i++) {
+				$other_langs[$i]["OBJECT_TYPE"] = 'TERM_STRING';
 				if($other_langs[$i] == $selected_term) {
 					unset($other_langs[$i]);
 				}
@@ -267,6 +269,26 @@ class term {
 		}
 		return $selected_term;
 	}
+
+	public static function get_all_term_strings($lang) {
+		
+		$dbObj = new dbAPI();
+		// validate user in database
+		$query = "SELECT DISTINCT UID FROM TERM_STRING where LANG = '" . $lang . "' AND ENABLED = '1'";
+		if($lang == '')
+			$query = "SELECT * FROM TERM_STRING where ENABLED = '1'";
+		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
+		if(count($results) == 0)
+			return array();
+
+		$tempArr = array();
+		for($i = 0; $i < count($results); $i++) {
+			array_push($tempArr, term::get_term_by_UID($results[$i], $lang));
+		}
+
+		return $tempArr;
+	}
+
 
 	// return term by UID in all languages language
 	private static function get_term_by_UID_in_all_languages($UID) {
@@ -366,8 +388,6 @@ class term {
 		return refRelation::get_objects_relation($parent_term_UID, $child_term_UID, 'R_Lt2t');
 	}
 
-
-
 	// remove relation
 	public static function remove_relation($parent_term_UID, $child_term_UID) {
 
@@ -377,8 +397,28 @@ class term {
 	// returns related terms
 	public static function get_relations_of_term($term_UID, $lang = '') {
 
-		return refRelation::get_relations_of_object($term_UID, 'R_Lt2t', 'term::get_term_by_UID', $lang);
+		return refRelation::get_relations_of_object($term_UID, 'R_Lt2t', 'term::get_full_term_by_UID', $lang);
 	}
+
+
+	public static function get_full_term_by_UID($UID, $lang = '') {
+
+		$connectRelation = term::get_connection_by_UID($UID);
+		$termString = term::get_term_by_UID($connectRelation["ID_TERM_STRING"], $lang = '');
+		$termMeaning = term::get_term_meaning_by_UID($connectRelation["ID_TERM_MEAN"], $lang = '');
+		$scope = scope::get_scope_by_UID($connectRelation["ID_SCOPE"]);
+
+		$termString["OBJECT_TYPE"] = 'TERM_STRING';
+		$termMeaning["OBJECT_TYPE"] = 'TERM_MEAN';
+		$scope["OBJECT_TYPE"] = 'SCOPE';
+
+		$connectRelation["TERM_STRING"] = $termString;
+		$connectRelation["TERM_MEAN"] = $termMeaning;
+		$connectRelation["SCOPE"] = $scope;
+
+		return $connectRelation;
+	}
+
 
 	// get related terms
 	public static function get_term_by_UID_with_relations($UID, $lang = '') {
