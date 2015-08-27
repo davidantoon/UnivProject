@@ -1,5 +1,6 @@
 <?php  
 
+require_once ('app_config.php');
 require_once ('lib/nusoap.php');  
 echo "1";
 //Give it value at parameter  
@@ -10,7 +11,7 @@ try{
 	$client = new soapclient('http://localhost:8888/mopdqwompoaskdqomdiasjdiowqe/server/server.php');      
 }
 catch(Exception $e) {
-  debugLog::important_log("<i>[client.php:function]</i> ERROR:  ". $e->getMessage(););
+  debugLog::important_log("<i>[client.php:function]</i> ERROR:  ". $e->getMessage());
 }
 echo "3";
 //Call a function at server and send parameters too  

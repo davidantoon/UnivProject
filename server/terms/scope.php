@@ -31,6 +31,21 @@ class scope {
 		return $results[0];	
 	}
 	
+
+	public static function get_scope_with_relations($Scope, $lang = '') {
+
+		// check if scope exists
+		if($Scope == null)
+			return null;
+
+		// add related scopes to scope object
+		$Scope["RELATED_SCOPES"] = scope::get_relations_of_scope($Scope["UID"]);
+
+		$Scope["TERMS"] = scope::get_terms_of_scope($Scope["UID"], $lang);
+		return $Scope;
+	}
+
+
 	public static function get_scope_by_UID_with_relations($UID, $lang = '') {
 
 		// check if scope exists
@@ -45,6 +60,27 @@ class scope {
 		return $Scope;
 	}
 
+
+	public static function serach_scopes($search_word, $search_fields, $lang = '') {
+
+		$dbObj = new dbAPI();
+
+		for($i=0; i<count($search_fields); $i++) {
+			$search_fields[$i] = "UPPER(" . $search_fields[$i] . ") LIKE UPPER('%" . $search_word . "%') "; 
+		}
+		$search_sttmnt = implode(" OR ", $search_fields);
+
+		$query = "SELECT * FROM scope where  ENABLED = '1' AND (". $search_sttmnt .")";
+		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
+		if(count($results) == 0)
+			return array();
+
+		for($i=0; $i<count($results); $i++) {
+			$results[$i] = scope::get_scope_with_relations($results[$i], $lang);
+		}
+		
+		return $results;	
+	}
 
 
 
