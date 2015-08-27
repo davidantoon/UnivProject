@@ -33,7 +33,7 @@ class refRelation {
 			" AND PARENT_ID = " . $child_UID . ")";
 		$old_rel = $dbObj->get_latest_Rivision_ID($database_name, $tableName, $where_sttmnt);
 		if($old_rel == null)
-			$old_rel = 0;
+			$old_rel = 1;
 
 		// add new relation
 		$query = "INSERT INTO ". $tableName ." (REVISION, HIER, PARENT_ID, CHILD_ID, ENABLED, USER_ID, CREATION_DATE) VALUES (".
