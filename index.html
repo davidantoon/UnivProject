@@ -19,11 +19,17 @@
 </head>
 <body ng-controller="MainCtrl">
 
+    <!-- <div class="DebugMessage">
+      {{bodyScrolling}}
+    </div> -->
     <div id="MainDiv" class="{{((blurAllWindow == true)?'blured':'')}}" ng-switch="AppStatus" style="display:none">
       <div class="AppPage" ng-switch-when="2" style="">  
         <ons-page>
           <ons-tabbar position="top" class="" style="height: 50px;">
             <ons-row style="max-height: 49px;overflow: visible;">
+              <ons-col  class="LogoutDivTabbar hoverOp clickable" ng-click="logout();" width="49px">
+                <ons-icon  size="25px" icon="ion-android-exit"></ons-icon>
+              </ons-col>
               <ons-col width="220px" class="Logo rtl">
                 <img ng-src="{{currentUser.profilePicture}}">
                 <p>{{currentUser.firstName+" "+currentUser.lastName}}</p>
@@ -97,42 +103,14 @@
                   </ons-col>
                 </ons-row>
               </ons-col>
-              <!-- <ons-col  width="230px" >
-                <div id="TabbarProfileButtonId" ng-click="openProfilePage();" class="TabbarProfileButton hoverOp clickable">
-                  <ons-col width="37px">
-                    <img class="TabbarProfileImg" ng-src="{{currentUser.profilePicture}}" src="" />
-                  </ons-col>
-                  <ons-col>
-                    <div class="TabbarProfileText">{{currentUser.firstName + " " + currentUser.lastName}}</div>
-                  </ons-col>
-                </div>
-              </ons-col>
-              <ons-col  class="LogoutDivTabbar hoverOp clickable" ng-click="logout();" width="49px">
-                <ons-icon  size="25px" icon="ion-android-exit"></ons-icon>
-              </ons-col> -->
             </ons-row>
           </ons-tabbar>
           <ons-row id="BodyRow" style="margin-top: 50px;  overflow: scroll;">
 
-            <!-- <ons-col width="32%" class="col ons-col-inner leftCol WorkFlowDiv">
-              <ons-row class="row ons-row-inner WorkFlowTabs">
-                <ons-col ng-click="selectTab(1,0);" class="{{'col ons-col-inner WorkFlowTab '+((getSelectedTab(1,0))?'ActiveTab':'')}}">
-                  <input id="WorkflowId1Tab1" ng-blur="updateTabName(1,1,'WorkflowId1Tab1');" readonly="readonly" ng-enter="blurThis('WorkflowId1Tab1');" ng-dblclick="ConvertTextBos('WorkflowId1Tab1');" value="Tab 1" placeholder="Tab name" />
-                </ons-col>
-                <ons-col ng-click="selectTab(1,1);" class="{{'col ons-col-inner WorkFlowTab '+((getSelectedTab(1,1))?'ActiveTab':'')}}">
-                  <input id="WorkflowId1Tab2" ng-blur="updateTabName(1,2,'WorkflowId1Tab2');" readonly="readonly" ng-enter="blurThis('WorkflowId1Tab2');" ng-dblclick="ConvertTextBos('WorkflowId1Tab2');" value="Tab 2" placeholder="Tab name" />
-                </ons-col>
-                <ons-col ng-click="selectTab(1,2);" class="{{'col ons-col-inner WorkFlowTab '+((getSelectedTab(1,2))?'ActiveTab':'')}}">
-                  <input id="WorkflowId1Tab3" ng-blur="updateTabName(1,3,'WorkflowId1Tab3');" readonly="readonly" ng-enter="blurThis('WorkflowId1Tab3');" ng-dblclick="ConvertTextBos('WorkflowId1Tab3');" value="Tab 3" placeholder="Tab name" />
-                </ons-col>
-                
-              </ons-row>
-            </ons-col> -->
             <div id="WorkFlowMatrix">
               <div id="pointToZoom"></div>
-              
-              <!-- <div ng-mouseenter="EnableScroll(2);" ng-mouseleave="EnableScroll(1);" -->
-              <div ng-mouseenter="((wFlow.selectedTab.Type == 4)?EnableScroll(2,'Workflow'+wFlow.ID):return);" ng-mouseleave="EnableScroll(1,'Workflow'+wFlow.ID);" ng-repeat="wFlow in getCurrentWorkflows()" id="{{'Workflow'+wFlow.ID}}" class="WorkFlowBlock Available" ng-click="Steps.lastFocusedWorkflow = wFlow.ID" fx="{{wFlow.fx}}" fy="{{wFlow.fy}}" tx="{{wFlow.tx}}" ty="{{wFlow.ty}}">
+            
+              <div ng-mouseenter="((Settings.removeScrollOnMouseOver == true)?EnableScroll(2,'Workflow'+wFlow.ID):return)" ng-mouseleave="EnableScroll(1,'Workflow'+wFlow.ID);" ng-repeat="wFlow in getCurrentWorkflows()" id="{{'Workflow'+wFlow.ID}}" class="WorkFlowBlock Available" ng-click="Steps.lastFocusedWorkflow = wFlow.ID;((wFlow.selectedTab.Type == 4)?EnableScroll(2,'Workflow'+wFlow.ID):return);" fx="{{wFlow.fx}}" fy="{{wFlow.fy}}" tx="{{wFlow.tx}}" ty="{{wFlow.ty}}">
                 <div ng-click="focusThisWorkflow(wFlow);" class="{{'MaximizeButton clickable '+((clickToMaximize == true)?'':'hidden')}}">
                   <div>
                     <ons-icon icon="ion-ios-search-strong" size="100px"></ons-icon>
@@ -183,6 +161,7 @@
                         Edit Element
                       </div>
                     </div>
+                    <!-- SEARCH TAB HTML -->
                     <div class="{{((getSelectedTabType(wFlow) == 1)?'':'hidden')}}">
                       <div class="searchTextboxDiv">
                         <input class="searchTextbox" ng-enter="prepareForSearch(wFlow);" ng-change="InsertStepToLast10Steps(); " placeholder="Search Text" id="1" ng-model="wFlow.selectedTab.dataHolding.searchText">
@@ -205,6 +184,13 @@
                           <ons-col ng-click="((wFlow.selectedTab.dataHolding.searchBy[1] == 1)?wFlow.selectedTab.dataHolding.searchBy[1] = 0:wFlow.selectedTab.dataHolding.searchBy[1] = 1); InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.searchBy[1] == 1)?'checked':'')}}">Description</ons-col>
                           <ons-col ng-click="((wFlow.selectedTab.dataHolding.searchBy[2] == 1)?wFlow.selectedTab.dataHolding.searchBy[2] = 0:wFlow.selectedTab.dataHolding.searchBy[2] = 1); InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.searchBy[2] == 1)?'checked':'')}}">ID</ons-col>
                         </ons-row>
+                        <ons-row class="LabelOfOptionsButtons">
+                          Additional options:
+                        </ons-row>
+                        <ons-row>
+                          <ons-col ng-click="((wFlow.selectedTab.dataHolding.forceLastModifed == true)?toggleForceSearchOption(wFlow.selectedTab, 1):toggleForceSearchOption(wFlow.selectedTab, 0)); InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.forceLastModifed == true)?'checked':'')}}">Last modified</ons-col>
+                          <ons-col ng-click="((wFlow.selectedTab.dataHolding.forceServerPull == true)?toggleForceSearchOption(wFlow.selectedTab, 0):toggleForceSearchOption(wFlow.selectedTab, 1)); InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.forceServerPull == true)?'checked':'')}}">Published content</ons-col>
+                        </ons-row>
                         <ons-row>
                           <ons-col></ons-col>
                           <ons-col>
@@ -219,12 +205,15 @@
                         {{wFlow.name}}
                       </div>
                     </div>
+                    <!-- CREATE TAB HTML -->
                     <div class="{{((getSelectedTabType(wFlow) == 2)?'':'hidden')}}">
                       create
                     </div>
+                    <!-- EDIT TAB HTML -->
                     <div class="{{((getSelectedTabType(wFlow) == 3)?'':'hidden')}}">
                       edit
                     </div>
+                    <!-- SEARCH RESULTS TAB HTML -->
                     <div class="{{'searchTypeTab '+((getSelectedTabType(wFlow) == 4)?'':'hidden')}}">
                       <div ng-click="back(wFlow.selectedTab.dataHolding);" style="{{'border-top: 2px solid '+wFlow.selectedTab.color+'; border-right: 3px solid '+wFlow.selectedTab.color+';'}}" class="ReturnToSearchButton">
                         <ons-icon icon="ion-chevron-left" size="18px"></ons-icon> Back
@@ -240,7 +229,7 @@
                         </p>
                         <div class="SearchResultsRowTitle" style="{{(((FilterResults(wFlow.selectedTab.dataHolding.results, 'Kbit')).length == 0)?'display:none':'')}}">Kbits</div>
                         <div>
-                          <ons-row ng-click="displayContent(result);" ng-rclick="displayContentNewTab(result);" class="SearchResultsRow1 SearchResultsRow  clickable hoverOp" ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Kbit')">
+                          <ons-row ng-click="displayContent(wFlow,result);" ng-rclick="displayContentNewTab(wFlow,result);" class="SearchResultsRow1 SearchResultsRow  clickable hoverOp" ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Kbit')">
                             <ons-col>
                               <ons-row>
                                 <ons-col>
@@ -257,16 +246,27 @@
                         </div>
                         <div class="SearchResultsRowTitle" style="{{(((FilterResults(wFlow.selectedTab.dataHolding.results, 'Delivery')).length == 0)?'display:none':'')}}">Deliveries</div>
                         <div>
-                          <ons-row ng-click="displayContent(result);" ng-rclick="displayContentNewTab(result);" class="SearchResultsRow2 SearchResultsRow clickable hoverOp" ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Delivery')">
+                          <ons-row ng-click="displayContent(wFlow,result);" ng-rclick="displayContentNewTab(wFlow,result);" class="SearchResultsRow2 SearchResultsRow clickable hoverOp" ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Delivery')">
                             <ons-col>
-                              <ons-row>
+                              <ons-row style="height: 25px;">
                                 <ons-col>
                                   <p class="searchResultName">{{result.name}}</p>
                                 </ons-col>
                               </ons-row>
-                              <ons-row>
+                              <ons-row style="height: 18px;">
                                 <ons-col>
                                   <p class="searchResultDescription">{{result.description}}</p>
+                                </ons-col>
+                              </ons-row>
+                              <ons-row class="resultInfo">
+                                <ons-col width="25%">
+                                  <p class="{{'inProgressMessage '+((result.inProgress == true)?'':'hidden')}}" >In progress</p>
+                                </ons-col>
+                                <ons-col width="25%">
+                                  <p class="{{'lockedMessage '+((result.locked == true)?'':'hidden')}}">Locked</p>
+                                </ons-col>
+                                <ons-col width="50%">
+                                  <p class="lastModifiedMessage">{{ result.lastModified| date:"MMM d, y h:mm:ss"}}</p>
                                 </ons-col>
                               </ons-row>
                             </ons-col>
@@ -274,7 +274,7 @@
                         </div>
                         <div class="SearchResultsRowTitle" style="{{(((FilterResults(wFlow.selectedTab.dataHolding.results, 'Term')).length == 0)?'display:none':'')}}">Terms</div>
                         <div>
-                          <ons-row ng-click="displayContent(result);" ng-rclick="displayContentNewTab(result);" class="SearchResultsRow3 SearchResultsRow clickable hoverOp" ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Term')">
+                          <ons-row ng-click="displayContent(wFlow,result);" ng-rclick="displayContentNewTab(wFlow,result);" class="SearchResultsRow3 SearchResultsRow clickable hoverOp" ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Term')">
                             <ons-col>
                               <ons-row>
                                 <ons-col>
@@ -400,8 +400,8 @@
   <script type="text/javascript" src="js/angularfire.min.js"></script>
   <script type="text/javascript" src="js/visible.js"></script>
 
-  <script type="text/javascript" src="js/Toast.js"></script>
   <script type="text/javascript" src="js/app.js"></script>
+  <script type="text/javascript" src="js/Toast.js"></script>
   <script type="text/javascript" src="js/globals.js"></script>
   <script type="text/javascript" src="js/Storage.js"></script>
   <script type="text/javascript" src="js/Server.js"></script>
