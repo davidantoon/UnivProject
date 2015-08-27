@@ -231,14 +231,25 @@
                         <div>
                           <ons-row ng-click="displayContent(wFlow,result);" ng-rclick="displayContentNewTab(wFlow,result);" class="SearchResultsRow1 SearchResultsRow  clickable hoverOp" ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Kbit')">
                             <ons-col>
-                              <ons-row>
+                              <ons-row style="height: 25px;">
                                 <ons-col>
                                   <p class="searchResultName">{{result.name}}</p>
                                 </ons-col>
                               </ons-row>
-                              <ons-row>
+                              <ons-row style="height: 18px;">
                                 <ons-col>
                                   <p class="searchResultDescription">{{result.description}}</p>
+                                </ons-col>
+                              </ons-row>
+                              <ons-row class="resultInfo">
+                                <ons-col width="25%">
+                                  <p class="{{'inProgressMessage '+((result.inProgress == true)?'':'hidden')}}" >In progress</p>
+                                </ons-col>
+                                <ons-col width="25%">
+                                  <p class="{{'lockedMessage '+((result.locked == true)?'':'hidden')}}">Locked</p>
+                                </ons-col>
+                                <ons-col width="50%">
+                                  <p class="lastModifiedMessage">{{ result.lastModified| date:"MMM d, y h:mm:ss"}}</p>
                                 </ons-col>
                               </ons-row>
                             </ons-col>
@@ -276,14 +287,25 @@
                         <div>
                           <ons-row ng-click="displayContent(wFlow,result);" ng-rclick="displayContentNewTab(wFlow,result);" class="SearchResultsRow3 SearchResultsRow clickable hoverOp" ng-repeat="result in FilterResults(wFlow.selectedTab.dataHolding.results, 'Term')">
                             <ons-col>
-                              <ons-row>
+                              <ons-row style="height: 25px;">
                                 <ons-col>
                                   <p class="searchResultName">{{result.name}}</p>
                                 </ons-col>
                               </ons-row>
-                              <ons-row>
+                              <ons-row style="height: 18px;">
                                 <ons-col>
                                   <p class="searchResultDescription">{{result.description}}</p>
+                                </ons-col>
+                              </ons-row>
+                              <ons-row class="resultInfo">
+                                <ons-col width="25%">
+                                  <p class="{{'inProgressMessage '+((result.inProgress == true)?'':'hidden')}}" >In progress</p>
+                                </ons-col>
+                                <ons-col width="25%">
+                                  <p class="{{'lockedMessage '+((result.locked == true)?'':'hidden')}}">Locked</p>
+                                </ons-col>
+                                <ons-col width="50%">
+                                  <p class="lastModifiedMessage">{{ result.lastModified| date:"MMM d, y h:mm:ss"}}</p>
                                 </ons-col>
                               </ons-row>
                             </ons-col>
@@ -300,7 +322,6 @@
                 </div>
               </div>
 
-              <!-- <canvas id="myCanvas" width="400" height="400"></canvas> -->
             </div>
             
           </ons-row>
@@ -378,7 +399,6 @@
       <div class="ToastTitle"></div>
       <div class="ToastBody"></div>
     </div>
-    <!-- $('#ToastMessage').fadeIn(500).delay(2000).fadeOut(500); // add before show title and body and porsition -->
 
     <div id="LoadingScreen" style="z-index: 100000;display:block;position: fixed;width: 100%;height: 100%;background: rgb(8,96,168);">
       <!-- <img src="img/IntelIcon.png" style="width: 200px;position: absolute;top: 0;bottom: 0;left: 0;right: 0;margin: auto;opacity: .85;z-index: 3;"> -->
@@ -390,6 +410,8 @@
     
 
   <script type="text/javascript" src="js/angular/angular.js"></script>
+  <script type="text/javascript" src="js/soapclient.js"></script>
+  <script type="text/javascript" src="js/angular.soap.js"></script>
   <script type="text/javascript" src="js/onsenui.js"></script> 
   <script type="text/javascript" src="js/jquery.js"></script>
   <script type="text/javascript" src="js/jquery.maskedinput.js"></script>

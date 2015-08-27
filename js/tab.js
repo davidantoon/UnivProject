@@ -39,6 +39,7 @@
 				this.dataHolding = tempJson.dataHolding;
 				this.color = ((tempJson.color != undefined)?tempJson.color:"#0860A8");
 				if(tempJson.requestFrom == "restoreStep"){
+						debugger;
 						if(tempJson.content != null && tempJson.content != null){
 							var passThis = this;
 							var stor = new Storage();
@@ -134,7 +135,6 @@
 			 */
 			addData: function(dataHolding){
 				this.dataHolding = dataHolding;
-				
 			},
 
 			/**

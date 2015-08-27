@@ -1,17 +1,18 @@
 (function(angular) {
     'use strict';
-	angular.module('IntelLearner').factory('User', ['$rootScope', 'Server', function($rootScope, Server){
+	angular.module('IntelLearner').factory('User', ['$rootScope', '$http','Server', function($rootScope, $http, Server){
 	
-		function User(firstname, lastname, username, password, email, profilePicture, role, tempJson){
+		function User(UID, firstname, lastname, username, email, profilePicture, role,token, tempJson){
 			if(tempJson){
+				this.UID = tempJson.UID;
 				this.firstname = tempJson.firstname;
 				this.lastname = tempJson.lastname
 				this.username = tempJson.username;
-				this.password = tempJson.password;
 				this.email = tempJson.email;
 				this.creationDate = tempJson.creationDate;
 				this.profilePicture = tempJson.profilePicture;
 				this.role = tempJson.role;
+				this.token = tempJson.token;
 
 			}else{
 				var now = new Date();
@@ -21,14 +22,15 @@
 				function AddZero(num) {
 				    return (num >= 0 && num < 10) ? "0" + num : num + "";
 				}
+				this.UID = UID;
 				this.firstname = firstname;
 				this.lastname = lastname
 				this.username = username;
-				this.password = password;
 				this.email = email;
 				this.creationDate = now;
 				this.profilePicture = profilePicture;
 				this.role = role;
+				this.token = token;
 			}
 			// connet to server for registeration
 		}
@@ -40,14 +42,24 @@
 		 * @param {String} Password password
 		 * @return {User} return null if wrong info, else User Object
 		 */
-		User.login = function(userName, Password, callback){
+		User.login = function(userName, password, callback){
 			try{
+				if(username == "dummy" && password =="1"){
+					// dummy login
+					var dummyUSer = new User("David", "Antoon", username, "david.antoon@hotmail.com", "https://graph.facebook.com/100003370268591/picture", "Learner");
+					// dummyUSer.updateCoockies();
+					callback(dummyUSer);
+					return;
+				}else{
 
+				}
 				return new User();
 			}catch(e){
 					
 			}
 		}
+
+
 		
 		User.prototype = {
 
@@ -67,7 +79,7 @@
 			 * Changes the email
 			 * @return {[type]} [description]
 			 */
-			changeEmail: function(callback){
+			changeEmail: function(newEmail, callback){
 				try{
 
 				}catch(e){
