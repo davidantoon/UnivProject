@@ -688,7 +688,6 @@ class Delivery {
 		return D2KRelation::add_D2K_relation($Kbit_UID, $Delivery_UID, $link_type, $link_weight, $user, 'user');
 	}
 
-
 	public static function remove_Kbit_from_delivery($Kbit_UID, $Delivery_UID, $link_type, $user) {
 
 		if(Lock::is_locked_by_user($Delivery_UID, 'DELIVERY_BASE', $user) == false) {
