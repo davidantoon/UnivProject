@@ -4674,7 +4674,7 @@ div.vertical {
   height: 35px;
   width: 35px;
   position: absolute;
-  left: 7px;
+  left: 57px;
   top: 7px;
   border-radius: 22px;
   border: 1px solid whitesmoke;
@@ -4746,6 +4746,9 @@ div.vertical {
   font-size: 13px;
   line-height: 49px;
   text-align: center;
+  -webkit-transform: rotate(180deg);  /* Chrome, Opera 15+, Safari 3.1+ */
+  -ms-transform: rotate(180deg);  /* IE 9 */
+  transform: rotate(180deg);  /* Firefox 16+, IE 10+, Opera */
 }
 
 .LogoutIcon{
@@ -6323,14 +6326,14 @@ div.vertical {
 }
 
 .newWorkFlow{
-  width: 200px;
   height: 200px;
   border: 3px solid rgb(210,210,210);
   border-radius: 40px;
   text-align: center;
-  margin: 85px;
+  margin: 85px auto;
   cursor: pointer;
   background: white;
+  width: 60%;
 }
 
 
@@ -6481,10 +6484,10 @@ div.vertical {
 }
 
 .newWorkflowButtonDiv{
-  -webkit-transition-property: all;
-  -moz-transition-property: all;
-  -o-transition-property: all;
-  transition-property: all;
+  -webkit-transition-property: opacity;
+  -moz-transition-property: opacity;
+  -o-transition-property: opacity;
+  transition-property: opacity;
   -webkit-transition-duration: 0.15s;
   -moz-transition-duration: 0.15s;
   -o-transition-duration: 0.15s;
@@ -6550,7 +6553,7 @@ div.vertical {
     font-weight: 300;
     cursor: pointer;
     color: rgb(8,96,168);
-    margin-top: 50px;
+    margin-top: 25px;
     border: 1px solid rgb(8,96,168);
     border-radius: 13px;
 }
@@ -6799,16 +6802,16 @@ div.vertical {
   border-radius: 0 0 5px 5px;
   overflow: hidden;
   position: absolute;
-  top: -200px;
+  top: -250px;
   z-index: -1;
   -webkit-transition-property: all;
   -moz-transition-property: all;
   -o-transition-property: all;
   transition-property: all;
-  -webkit-transition-duration: .15s;
-  -moz-transition-duration: .15s;
-  -o-transition-duration: .15s;
-  transition-duration: .15s;
+  -webkit-transition-duration: .25s;
+  -moz-transition-duration: .25s;
+  -o-transition-duration: .25s;
+  transition-duration: .25s;
   -webkit-transition-timing-function: ease-out;
   -moz-transition-timing-function: ease-out;
   -o-transition-timing-function: ease-out;
@@ -6874,7 +6877,7 @@ div.vertical {
   padding: 5px 10px;
   margin-bottom: 5px;
   border-bottom: 1px solid rgba(0,0,0,.1);
-  height: 50px;
+  height: 67px;
   position: relative;
   z-index: 1;
   overflow: hidden;
@@ -6917,12 +6920,39 @@ div.vertical {
 }
 
 
+.DebugMessage{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 208px;
+  height: 34px;
+  background: rgba(0,0,0,.6);
+  color: white;
+  font-size: 25px;
+  z-index: 10000;
+  padding: 7px;
+  text-align: center;
+}
 
+.resultInfo{
+  height: 15px;text-align: center;font-weight: 600;
+}
 
-
-
-
-
+.inProgressMessage, .lockedMessage, .lastModifiedMessage{
+  margin: 0;
+  font-size: 11px;
+}
+.inProgressMessage{
+  color: orange;
+  border-right: 1px solid rgba(0,0,0,.2);
+}
+.lockedMessage{
+  color: rgb(207,0,0);
+  border-right: 1px solid rgba(0,0,0,.2);
+}
+.lastModifiedMessage{
+  color: gray;
+}
 
 
 

@@ -3,20 +3,24 @@
 	"name":"kbit 1",
 	"description":"description 1",
 	"type":"Kbit",
+	"lastModified" : 1439567697991,
 	"terms": [{
 		"id": 1,
 		"description": "description 1",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term 1"
 	},{
 		"id": 2,
 		"description": "description 2",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term2"
 	},{
 		"id": 7,
 		"description": "description 7",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term7"
 	}]
 },{
@@ -24,15 +28,18 @@
 	"name":"kbit 2",
 	"description":"description 2",
 	"type":"Kbit",
+	"lastModified" : 1439567697991,
 	"terms": [{
 		"id": 2,
 		"description": "description 2",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term2"
 	},{
 		"id": 3,
 		"description": "description 3",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term3"
 	}]	
 },{
@@ -40,25 +47,30 @@
 	"name":"kbit 3",
 	"description":"description 3",
 	"type":"Kbit",
+	"lastModified" : 1439567697991,
 	"terms": [{
 		"id": 1,
 		"description": "description 1",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term 1"
 	},{
 		"id": 2,
 		"description": "description 2",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term2"
 	},{
 		"id": 4,
 		"description": "description 4",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term4"
 	},{
 		"id": 7,
 		"description": "description 7",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term7"
 	}]	
 },{
@@ -66,20 +78,24 @@
 	"name":"kbit 4",
 	"description":"description 4",
 	"type":"Kbit",
+	"lastModified" : 1439567697991,
 	"terms": [{
 		"id": 1,
 		"description": "description 1",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term 1"
 	},{
 		"id": 3,
 		"description": "description 3",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term3"
 	},{
 		"id": 5,
 		"description": "description 5",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term5"
 	}]	
 },{
@@ -87,10 +103,12 @@
 	"name":"kbit 5",
 	"description":"description 5",
 	"type":"Kbit",
+	"lastModified" : 1439567697991,
 	"terms": [{
 		"id": 3,
 		"description": "description 3",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term3"	
 	}]	
 },{
@@ -98,15 +116,18 @@
 	"name":"kbit 6",
 	"description":"description 6",
 	"type":"Kbit",
+	"lastModified" : 1439567697991,
 	"terms": [{
 		"id": 1,
 		"description": "description 1",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term 1"
 	},{
 		"id": 7,
 		"description": "description 7",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term7"
 	}]
 },{
@@ -114,15 +135,18 @@
 	"name":"kbit 7",
 	"description":"description 7",
 	"type":"Kbit",
+	"lastModified" : 1439567697991,
 	"terms": [{
 		"id": 5,
 		"description": "description 5",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term5"
 	},{
 		"id": 6,
 		"description": "description 6",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term6"
 	}]	
 },{
@@ -130,20 +154,24 @@
 	"name":"kbit 8",
 	"description":"description 8",
 	"type":"Kbit",
+	"lastModified" : 1439567697991,
 	"terms": [{
 		"id": 1,
 		"description": "description 1",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term 1"
 	},{
 		"id": 4,
 		"description": "description 4",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term4"
 	},{
 		"id": 7,
 		"description": "description 7",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term7"
 	}]	
 },{
@@ -151,15 +179,18 @@
 	"name":"kbit 9",
 	"description":"description 9",
 	"type":"Kbit",
+	"lastModified" : 1439567697991,
 	"terms": [{
 		"id": 2,
 		"description": "description 2",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term2"
 	},{
 		"id": 3,
 		"description": "description 3",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term3"	
 	}]	
 },{
@@ -167,25 +198,30 @@
 	"name":"kbit 10",
 	"description":"description 10",
 	"type":"Kbit",
+	"lastModified" : 1439567697991,
 	"terms": [{
 		"id": 1,
 		"description": "description 1",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term 1"
 	},{
 		"id": 2,
 		"description": "description 2",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term2"
 	},{
 		"id": 4,
 		"description": "description 4",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term4"
 	},{
 		"id": 7,
 		"description": "description 7",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term7"
 	}]	
 },{
@@ -193,20 +229,24 @@
 	"name":"kbit 11",
 	"description":"description 11",
 	"type":"Kbit",
+	"lastModified" : 1439567697991,
 	"terms": [{
 		"id": 1,
 		"description": "description 1",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term 1"
 	},{
 		"id": 3,
 		"description": "description 3",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term3"	
 	},{
 		"id": 5,
 		"description": "description 5",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term5"
 	}]	
 },{
@@ -214,26 +254,37 @@
 	"name":"kbit 12",
 	"description":"description 12",
 	"type":"Kbit",
+	"lastModified" : 1439567697991,
 	"terms": [{
 		"id": 3,
 		"description": "description 3",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term3"	
+	},{
+		"id": 4,
+		"description": "description 4",
+		"type":"Term",
+		"lastModified" : 1439567697991,
+		"name": "term4"
 	}]	
 },{
 	"id":13,
 	"name":"kbit 13",
 	"description":"description 13",
 	"type":"Kbit",
+	"lastModified" : 1439567697991,
 	"terms": [{
 		"id": 1,
 		"description": "description 1",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term 1"
 	},{
 		"id": 7,
 		"description": "description 7",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term7"
 	}]	
 },{
@@ -241,15 +292,18 @@
 	"name":"kbit 14",
 	"description":"description 14",
 	"type":"Kbit",
+	"lastModified" : 1439567697991,
 	"terms": [{
 		"id": 3,
 		"description": "description 3",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term3"	
 	},{
 		"id": 6,
 		"description": "description 6",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term6"
 	}]	
 },{
@@ -257,15 +311,18 @@
 	"name":"kbit 15",
 	"description":"description 15",
 	"type":"Kbit",
+	"lastModified" : 1439567697991,
 	"terms": [{
 		"id": 2,
 		"description": "description 2",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term2"
 	},{
 		"id": 3,
 		"description": "description 3",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term3"	
 	}]	
 },{
@@ -273,15 +330,18 @@
 	"name":"kbit 16",
 	"description":"description 16",
 	"type":"Kbit",
+	"lastModified" : 1439567697991,
 	"terms": [{
 		"id": 1,
 		"description": "description 1",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term 1"
 	},{
 		"id": 2,
 		"description": "description 2",
 		"type":"Term",
+		"lastModified" : 1439567697991,
 		"name": "term2"
 	}]	
 }]
