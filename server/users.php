@@ -71,6 +71,23 @@ class users {
 		return $results[0];	
 	}
 
+
+	public static function get_user_by_UID($UID) {
+
+		$dbObj = new dbAPI();
+		// validate user in database
+		$query = "SELECT * FROM users where UID = '" . $UID . "' ";
+		$results = $dbObj->db_select_query($dbObj->db_get_usersDB(), $query);
+		if(count($results) == 0)
+			return null;
+		// create token if user logged in
+		$token = users::create_new_token($username);
+		// // update token and hide password in returned value
+		$results[0]["PASSWORD"] = '*********';
+
+		return $results[0];	
+	}
+
 	// // change password
 	public static function change_password($username, $password, $new_password) {
 
@@ -91,6 +108,22 @@ class users {
 		debugLog::debug_log("change password for user: ". $username ." has failed");
 		return null;
 	}
+
+
+	public static function update_user($UID, $first_name, $last_name, $email, $profile_picture, $role = '') {
+
+		// update user's password in database
+		$dbObj = new dbAPI();
+		$query = "UPDATE users SET FIRST_NAME = '". $first_name ."', LAST_NAME = '". $last_name ."', email = '". $email ."', PROFILE_PICTURE = '". $profile_picture ."', ROLE = '". $role ."'  where UID = '" . $UID . "'";
+		$results = $dbObj->run_query($dbObj->db_get_usersDB(), $query);
+		if($results) {
+			return users::get_user_by_UID($UID);
+		}
+
+		debugLog::debug_log("change password for user: ". $username ." has failed");
+		return null;
+	}
+
 
 	// validate token
 	public static function validate_token($token) {

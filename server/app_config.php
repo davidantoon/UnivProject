@@ -9,7 +9,7 @@
 	include 'terms/term.php';
 	include 'relations/relations.php';
 	include 'elements/Kbits.php';
-	include 'elements/Lock.php';
+	include 'elements/lock.php';
 	include 'elements/delivery.php';
 
 	class Configurator {

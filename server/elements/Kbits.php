@@ -589,6 +589,27 @@ class Kbit {
 	}
 
 
+	public static function serach_kbits($search_word, $search_fields, $user) {
+
+		$dbObj = new dbAPI();
+
+		for($i=0; i<count($search_fields); $i++) {
+			$search_fields[$i] = "UPPER(" . $search_fields[$i] . ") LIKE UPPER('%" . $search_word . "%') "; 
+		}
+		$search_sttmnt = implode(" OR ", $search_fields);
+
+		$query = "SELECT * FROM KBIT_BASE where  ENABLED = '1' AND (". $search_sttmnt .")";
+		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
+		if(count($results) == 0)
+			return array();
+
+		for($i=0; $i<count($results); $i++) {
+			$results[$i] = Kbit::get_Kbit_details($results[$i], $user);
+		}
+		
+		return $results;	
+	}
+
 
 	public static function add_K2K_relation($first_UID, $second_UID, $is_hier, $user) {
 		
@@ -681,7 +702,7 @@ class Kbit {
 
 	
 
-	
+
 	// public static function serach_scopes($search_word, $search_fields, $lang = '') {
 
 	// 	$dbObj = new dbAPI();
