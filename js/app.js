@@ -782,16 +782,18 @@
                         }
                         $scope.holdingNewWorkflowData = null;
                     }
-                    //updates
-                    $scope.displayNewWorkflowButtons = false;
-                    $scope.updateAllTabName();
-                    $scope.updateMatrixLayout();
-                    $scope.workSpaces.updateNewWorkflowButtons();
-
                     setTimeout(function(){
-                        $scope.Steps.lastFocusedWorkflow = newWorkflow.ID;
-                        $scope.refocusLastWorkflow();
-                    },300);
+                        //updates
+                        $scope.displayNewWorkflowButtons = false;
+                        $scope.updateAllTabName();
+                        $scope.updateMatrixLayout();
+                        $scope.workSpaces.updateNewWorkflowButtons();
+
+                        setTimeout(function(){
+                            $scope.Steps.lastFocusedWorkflow = newWorkflow.ID;
+                            $scope.refocusLastWorkflow();
+                        },300);
+                    },100);
                 }catch(e){
                     $scope.Toast.show("Error!","Could'nt convert to workflow", Toast.LONG, Toast.ERROR);
                     console.error("convertToWorkflow: ", e);
@@ -1185,7 +1187,7 @@
                 var holdingRequestTab = wFlow.selectedTab;
                 var holdingDisplayObjectData = result;
                 if(dataHolding.childTab && dataHolding.childTab.length > 0){
-                    $scope.workSpaces.replaceSearchChildContent(dataHolding.childTab[dataHolding.childTab.length-1]);
+                    $scope.workSpaces.replaceSearchChildContent(dataHolding.childTab[dataHolding.childTab.length-1], result);
                 }else{
                     $scope.displayContentNewTab(wFlow, result);
                 }
@@ -1195,30 +1197,35 @@
                 var holdingDisplayObjectData = result;
                 var holdingRequestTab = wFlow.selectedTab;
                 $scope.workSpaces.updateNewWorkflowButtons(2);
-                $scope.displayNewWorkflowTabButtons = false;
-                $scope.displayNewWorkflowButtons = true;
-                $scope.holdingNewWorkflowData = {"selectedTab":holdingRequestTab, "Action":"DisplayObject", "data" :result};
-                $scope.selectColorFilter(0);
-                var waitForUserResponse = $interval(function(){
-                    if($scope.displayNewWorkflowButtons == false){
-                        $interval.cancel(waitForUserResponse);
-                        if(holdingRequestTab.dataHolding.childTab && holdingRequestTab.dataHolding.childTab.length > 0){
-                            // new workflow canceled
-                            $scope.holdingNewWorkflowData = null;
-                            $scope.displayNewWorkflowButtons = false;
-                        }else{
-                            setTimeout(function(){
-                                $scope.Steps.lastFocusedWorkflow = holdingRequestTab.dataHolding.childTab[holdingRequestTab.dataHolding.childTab.length-1].workflowId;
-                                $scope.refocusLastWorkflow();
+                setTimeout(function(){
+                    $scope.displayNewWorkflowTabButtons = false;
+                    $scope.displayNewWorkflowButtons = true;
+                    $scope.holdingNewWorkflowData = {"selectedTab":holdingRequestTab, "Action":"DisplayObject", "data" :result};
+                    $scope.selectColorFilter(0);
+                    var waitForUserResponse = $interval(function(){
+                        if($scope.displayNewWorkflowButtons == false){
+                            $interval.cancel(waitForUserResponse);
+                            if(holdingRequestTab.dataHolding.childTab && holdingRequestTab.dataHolding.childTab.length > 0){
+                                // new workflow canceled
+                                $scope.holdingNewWorkflowData = null;
+                                $scope.displayNewWorkflowButtons = false;
+                            }else{
                                 setTimeout(function(){
-                                    $scope.Steps.lastFocusedWorkflow = holdingRequestTab.parentWF.ID;
-                                    $scope.focusingLastWorkflow = false;
-                                },600);
-                            },300);
-                            $scope.InsertStepToLast10Steps();
+                                    debugger;
+                                    $scope.Steps.lastFocusedWorkflow = holdingRequestTab.dataHolding.childTab[holdingRequestTab.dataHolding.childTab.length-1].workflowId;
+                                    $scope.refocusLastWorkflow();
+                                    setTimeout(function(){
+                                        $scope.Steps.lastFocusedWorkflow = holdingRequestTab.parentWF.ID;
+                                        $scope.focusingLastWorkflow = false;
+                                    },600);
+                                },300);
+                                setTimeout(function(){
+                                    $scope.InsertStepToLast10Steps();
+                                },500);
+                            }
                         }
-                    }
-                },100);
+                    },100);
+                },200);
             }
 
 
