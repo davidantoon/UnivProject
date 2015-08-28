@@ -1,8 +1,8 @@
 (function(angular) {
     'use strict';
-    angular.module('IntelLearner', ['onsen', 'firebase', 'angularSoap']);
-    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope", "$soap", "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast",
-        function($rootScope, $scope, $soap, $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast) {
+    angular.module('IntelLearner', ['onsen', 'firebase']);
+    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope",  "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast",
+        function($rootScope, $scope,  $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast) {
 
 
             // PRIM COLOR = rgb(8,96,168)
@@ -719,6 +719,8 @@
              */
             $scope.convertToWorkflow = function(newWorkflow){
                 try{
+                    newWorkflow.fx = Math.floor(newWorkflow.fx);
+                    newWorkflow.tx = Math.round(newWorkflow.tx);
                     if($scope.holdingNewWorkflowData == null){
                         // display color picker to open new workflow
                         
@@ -820,6 +822,7 @@
              */
             $scope.openNewWorkflow = function(){
                 try{
+                    $scope.workSpaces.updateNewWorkflowButtons(1);
                     $scope.blurAllWindow = true;
                     $scope.handlePickColor = true;
                     $scope.colorPicked = null;
@@ -1044,7 +1047,7 @@
                                         $scope.displayNewWorkflowButtons = false;
                                     }else{
                                         $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, null);
-                                        var svr = new Server("SearchTab");
+                                        var svr = new Server("SearchTab", true);
                                         svr.search(dataToSearch, function(result, error){
                                             if(error || !result){
                                                 $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, []);
@@ -1076,7 +1079,7 @@
                         }else{ // there is old child tab search
                             $scope.workSpaces.selectTabAfterSearch(holdingRequestTab.dataHolding.childTab);
                             $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, null);
-                            var svr = new Server("SearchTab");
+                            var svr = new Server("SearchTab", true);
                             svr.search(dataToSearch, function(result, error){
                                 if(error || !result){
                                     $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, []);
@@ -1345,12 +1348,12 @@
             /**
              * Check if there is new content in the server
              */
-            $interval(function(){
-                Globals.getMinimized(function(minimizedData){
-                    console.log(minimizedData);
-                });
+            // $interval(function(){
+            //     Globals.getMinimized(function(minimizedData){
+            //         console.log(minimizedData);
+            //     });
 
-            },5000);
+            // },5000);
 
 
 
@@ -1394,15 +1397,14 @@
 
 
 
-
-
-
-
-
             $scope.testFunctions = function(){
-                $soap.post('http://31.154.164.129:8888/mopdqwompoaskdqomdiasjdiowqe/server/services.php','action',params).then(function(response){
-                    console.log(response);
-                });
+                $scope.workSpaces.updateNewWorkflowButtons(2);
+                $scope.displayNewWorkflowButtons = true;
+                // $scope.newWorkflowButtons
+                // $soap.post('http://31.154.164.129:8888/mopdqwompoaskdqomdiasjdiowqe/server/services.php','validateServerIdentity',{hash:"david antoon"}).then(function(response){
+                //     debugger;
+                //     console.log(response);
+                // });
             }
 
 
