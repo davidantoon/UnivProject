@@ -751,6 +751,24 @@
 
                                 $scope.workSpaces.workflows.push(newWorkflow);
                             break;
+                            case "DisplayObject":
+                                $scope.workSpaces.updateLastId();
+                                newWorkflow.ID = $scope.workSpaces.lastWorkflowId;
+                                $scope.workSpaces.updateLastId();
+                                newWorkflow.selectedTab = newWorkflow.addTab();
+                                newWorkflow.selectedTab.type = 5;
+                                newWorkflow.selectedTab.title = $scope.holdingNewWorkflowData.data.name;
+                                newWorkflow.selectedTab.color = $scope.holdingNewWorkflowData.selectedTab.color;
+                                newWorkflow.selectedTab.changeType(newWorkflow.selectedTab.type);
+                                newWorkflow.selectedTab.dataHolding.parentTab.workflowId = $scope.holdingNewWorkflowData.selectedTab.parentWF.ID;
+                                newWorkflow.selectedTab.dataHolding.parentTab.tabId = $scope.holdingNewWorkflowData.selectedTab.ID;
+
+                                // modify parent tab
+                                $scope.holdingNewWorkflowData.selectedTab.dataHolding.childTab.workflowId = newWorkflow.ID;
+                                $scope.holdingNewWorkflowData.selectedTab.dataHolding.childTab.tabId = newWorkflow.selectedTab.ID;
+
+                                $scope.workSpaces.workflows.push(newWorkflow);
+                            break;
                             default:break;
                         }
                         $scope.holdingNewWorkflowData = null;
@@ -1152,13 +1170,37 @@
 
             $scope.displayContent = function(wFlow,result){
                 
-                console.log(false);
-                console.log(result);
+                var dataHolding = wFlow.selectedTab.dataHolding;
+                var holdingRequestTab = wFlow.selectedTab;
+                var holdingDisplayObjectData = result;
+                if(dataHolding.childTab && dataHolding.childTab.length > 0){
+
+
+                }else{
+                    $scope.displayContentNewTab(wFlow, result);
+                }
             }
 
             $scope.displayContentNewTab = function(wFlow,result){
+                debugger;
                 var holdingDisplayObjectData = result;
-                // console.log(wFlow.selectedTab.dataHolding);
+                var holdingRequestTab = wFlow.selectedTab;
+                $scope.workSpaces.updateNewWorkflowButtons(2);
+                $scope.displayNewWorkflowButtons = true;
+                $scope.holdingNewWorkflowData = {"selectedTab":holdingRequestTab, "Action":"DisplayObject", "data" :result};
+                $scope.selectColorFilter(0);
+                var waitForUserResponse = $interval(function(){
+                    if($scope.displayNewWorkflowButtons == false){
+                        $interval.cancel(waitForUserResponse);
+                        if(holdingRequestTab.dataHolding.childTab.workflowId == null || holdingRequestTab.dataHolding.childTab.tabId == null){
+                            // new workflow canceled
+                            $scope.holdingNewWorkflowData = null;
+                            $scope.displayNewWorkflowButtons = false;
+                        }else{
+                               
+                        }
+                    }
+                },100);
             }
 
 
@@ -1398,8 +1440,6 @@
 
 
             $scope.testFunctions = function(){
-                $scope.workSpaces.updateNewWorkflowButtons(2);
-                $scope.displayNewWorkflowButtons = true;
                 // $scope.newWorkflowButtons
                 // $soap.post('http://31.154.164.129:8888/mopdqwompoaskdqomdiasjdiowqe/server/services.php','validateServerIdentity',{hash:"david antoon"}).then(function(response){
                 //     debugger;

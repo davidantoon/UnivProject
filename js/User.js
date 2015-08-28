@@ -9,25 +9,18 @@
 				this.lastname = tempJson.lastname
 				this.username = tempJson.username;
 				this.email = tempJson.email;
-				this.creationDate = tempJson.creationDate;
+				this.creationDate = new Date(tempJson.creationDate);
 				this.profilePicture = tempJson.profilePicture;
 				this.role = tempJson.role;
 				this.token = tempJson.token;
 
 			}else{
-				var now = new Date();
-				var strDateTime = [[AddZero(now.getDate()), AddZero(now.getMonth() + 1), now.getFullYear()].join("-"), [AddZero(now.getHours()), AddZero(now.getMinutes()), AddZero(now.getSeconds())].join(":")].join(" ");
-
-				//add to the given value to the left with "0" if its < 10
-				function AddZero(num) {
-				    return (num >= 0 && num < 10) ? "0" + num : num + "";
-				}
 				this.UID = UID;
 				this.firstname = firstname;
 				this.lastname = lastname
 				this.username = username;
 				this.email = email;
-				this.creationDate = now;
+				this.creationDate = new Date();
 				this.profilePicture = profilePicture;
 				this.role = role;
 				this.token = token;
