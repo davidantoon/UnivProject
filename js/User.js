@@ -45,42 +45,37 @@
 			try{
 				if(username == "dummy" && password =="dummy"){
 					// dummy login
-					var data = {
-						username: "1",
-						password: "2"
-					};
-					Soap.connetToServer(data,logIn, function(result){
-						if(result == "Access Denied"){
-							console.log("Access Denied");
-						}else{
-							console.log("Dummy success");
-							var UserObject = JSON.parse(result.toJSON().Body[Object.keys(result.toJSON().Body)[0]][Object.keys(result.toJSON().Body[Object.keys(result.toJSON().Body)[0]])]);
-							var dummyUSer = new User("David", "Antoon", username, "david.antoon@hotmail.com", "https://graph.facebook.com/100003370268591/picture", "Learner");
-							//dummyUSer.updateCookies();
-							callback(dummyUSer);
-							return;
-						}
-					});
+					console.warn("Logged as dummy user");
+					var dummyUSer = new User("David", "Antoon", username, "david.antoon@hotmail.com", "https://graph.facebook.com/100003370268591/picture", "Learner");
+					dummyUSer.updateCookies();
+					callback(dummyUSer);
+					return;
 				}else{
 					var data = {
 						username: username,
 						password: password
 					};
-					Soap.connetToServer(data, logIn, function(result){
-						if(result == "Access Denied"){
-							console.log("Access Denied no dummy");
+					Soap.connetToServer(data, Soap.logIn, function(success, error){
+						if(error != null && (success)){
+							var newUser = new User(result);
+							newUser.updateCookies(function(success, error){
+								if(success){
+									callback(newUser);
+									return;
+								}else{
+									console.error("could not update cookies: ", error)
+									callback(null, error);
+								}
+							});
 						}else{
-							console.log("user success");
-							var UserObject = JSON.parse(result.toJSON().Body[Object.keys(result.toJSON().Body)[0]][Object.keys(result.toJSON().Body[Object.keys(result.toJSON().Body)[0]])]);
-							var newUser = new User(UserObject);
-							//newUser.updateCookies();
-							callback(newUser);
-							return;
+							console.error("error logging in: ", error);
+							callback(null, error);
 						}
 					});
 				}
 			}catch(e){
-					
+				console.error("error logging in: ", e );
+				callback(null, e);
 			}
 		}
 
@@ -96,37 +91,53 @@
 		 * @param  {Function} callback       callback function
 		 */
 		User.singup = function(firstname, lastname, username, password, email, profilePicture, role, callback){
-			var data = {
-				firstname: firstname,
-				lastname: lastname,
-				username: username,
-				email: email,
-				password: password,
-				profilePicture: profilePicture,
-				role: role
-			};
-			Soap.connetToServer(data, signUp, function(result){
-				if(result == "Error"){
-					callback(result);
-				}
-				else{
-					var newUser = user(result);
-					// newUser.updateCookies();
-					callback(newUser);
-					return;
-				}
-			});
+			try{
+				var data = {
+					firstname: firstname,
+					lastname: lastname,
+					username: username,
+					email: email,
+					password: password,
+					profilePicture: profilePicture,
+					role: role
+				};
+				Soap.connetToServer(data, signUp, function(success, error){
+					if((success) && error != null){
+						var newUser = user(success);
+						newUser.updateCookies();
+						callback(newUser);
+						return;
+					}
+					else{
+						console.error("error signing up: ", error);
+						callback(null, error);
+					}
+				});
+			}catch(e){
+				console.error("error signing up: ", e);
+				callback(null, e);
+			}
 		}
 		User.prototype = {
 
-			updateCookies: function(newName, newValue, newDays){
-				if (days) {
-			        var date = new Date();
-			        date.setTime(date.getTime()+(days*24*60*60*1000));
-			        var expires = "; expires="+date.toGMTString();
-			    }
-			    else var expires = "";
-			    document.cookie = name+"="+value+expires+"; path=/";
+			/**
+			 * saves user object in local storage
+			 * @return {[type]}      [description]
+			 */
+			updateCookies: function(callback){
+				try{
+					localStorage.setItem("com.intel.user", this.toJSON());
+					callback(true);
+				}catch(e){
+					callback(null, false);
+				}
+			}
+
+			/**
+			 * removes user from local storage
+			 */
+			removeCookies: function(){
+				localStorage.removeItem("com.intel.user");
 			}
 			/**
 			 * Changes the password for the use
@@ -199,6 +210,26 @@
 					//update server
 				}catch(e){
 
+				}
+			},
+
+			toJSON: function(){
+				try{
+					return {
+						"UID" = this.UID;
+						"firstname" = this.firstname;
+						"lastname" = this.lastname
+						"username" = this.username;
+						"email" = this.email;
+						"creationDate" = this.creationDate;
+						"profilePicture" = this.profilePicture;
+						"role" = this.role;
+						"token" = this.token;
+					}
+				}catch(e){
+					$rootScope.currentScope.Toast.show("Error!","There was an error in converting to JSON", Toast.LONG, Toast.ERROR);
+	           		console.error("toJson: ", e);
+	           		return null;
 				}
 			}
 		}
