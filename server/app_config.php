@@ -11,6 +11,7 @@
 	include 'elements/Kbits.php';
 	include 'elements/lock.php';
 	include 'elements/delivery.php';
+	include 'elements/keyValuePair.php';
 
 	class Configurator {
 	
