@@ -144,7 +144,7 @@
 			addContent: function(contentObj, forceServerPull){
 				// pass content to storage function to check if already in cache or add it and return new content
 				if(contentObj == null || contentObj == undefined){
-					console.error("addContet: conten obj is null or undefined");
+					console.error("addContet: content obj is null or undefined");
 				}else{
 					var passThis = this;
 					var stor = new Storage();

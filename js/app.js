@@ -752,6 +752,7 @@
                                 $scope.workSpaces.workflows.push(newWorkflow);
                             break;
                             case "DisplayObject":
+                                debugger;
                                 $scope.workSpaces.updateLastId();
                                 newWorkflow.ID = $scope.workSpaces.lastWorkflowId;
                                 $scope.workSpaces.updateLastId();
@@ -759,7 +760,7 @@
                                 newWorkflow.selectedTab.type = 5;
                                 newWorkflow.selectedTab.title = $scope.holdingNewWorkflowData.data.name;
                                 newWorkflow.selectedTab.color = $scope.holdingNewWorkflowData.selectedTab.color;
-                                newWorkflow.selectedTab.changeType(newWorkflow.selectedTab.type);
+                                newWorkflow.selectedTab.changeType(newWorkflow.selectedTab.type, $scope.holdingNewWorkflowData.data);
                                 newWorkflow.selectedTab.dataHolding.parentTab.workflowId = $scope.holdingNewWorkflowData.selectedTab.parentWF.ID;
                                 newWorkflow.selectedTab.dataHolding.parentTab.tabId = $scope.holdingNewWorkflowData.selectedTab.ID;
 
