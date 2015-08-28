@@ -42,7 +42,7 @@
 					this.workflows.push(tempWorkflow);
 					return tempWorkflow;
 				}catch(e){
-					$scope.Toast.show("Error!","There was an error in adding new workflow", Toast.LONG, Toast.ERROR);
+					$rootScope.currentScope.Toast.show("Error!","There was an error in adding new workflow", Toast.LONG, Toast.ERROR);
 	           		console.error("addNewWorkflow: ", e);
 	           		return null;
 				}
@@ -51,11 +51,12 @@
 			/**
 			 * Updates the new work flow buttons
 			 */
-			updateNewWorkflowButtons: function(){
+			updateNewWorkflowButtons: function(size){
 				try{
-					this.newWorkflowButtons = this.getNewWorkflowButtons(1);
+					size = typeof size !== 'undefined' ? size : 1;
+					this.newWorkflowButtons = this.getNewWorkflowButtons(1, size);
 				}catch(e){
-					$scope.Toast.show("Error!","There was an error in updating new Workflow buttons", Toast.LONG, Toast.ERROR);
+					$rootScope.currentScope.Toast.show("Error!","There was an error in updating new Workflow buttons", Toast.LONG, Toast.ERROR);
 	           		console.error("updateNewWorkflowButtons: ", e);
 				}
 			},
@@ -65,32 +66,37 @@
 			 * @param  {[int workflow index]}
 			 * @return {[Array which contains the new workflow buttons]} 
 			 */
-			getNewWorkflowButtons: function(workFlowIndex){
+			getNewWorkflowButtons: function(workFlowIndex, size){
 				try{
+					size = typeof size !== 'undefined' ? size : 1;
 					var tempNewWorkflowButtons = [];
 					for(var i=0; i<this.workflows.length; i++){
 						var checkIndex =[];
-						for(var xcol = this.workflows[i].fx-1; xcol <= this.workflows[i].tx; xcol++){
+						for(var xcol = this.workflows[i].fx-size; xcol <= this.workflows[i].tx; xcol++){
 							checkIndex.push({x:xcol, y:this.workflows[i].fy-1, check:0});
 							checkIndex.push({x:xcol, y:this.workflows[i].ty, check:0});
 						}
 						for(var ycol = this.workflows[i].fy; ycol < this.workflows[i].ty; ycol++){
-							checkIndex.push({x:this.workflows[i].fx-1, y:ycol, check:0});
+							checkIndex.push({x:this.workflows[i].fx-size, y:ycol, check:0});
 							checkIndex.push({x:this.workflows[i].tx, y:ycol, check:0});
 						}
 
 						for(var ch = 0; ch < checkIndex.length; ch++){
-							checkIndex[ch].check = this.checkNewWorkflowButtons(checkIndex[ch].x,checkIndex[ch].y, tempNewWorkflowButtons);
+							checkIndex[ch].check = this.checkNewWorkflowButtons(checkIndex[ch].x,checkIndex[ch].y, tempNewWorkflowButtons, size);
 						}
 						for(var j=0; j<checkIndex.length; j++){
 							if(checkIndex[j].check == 1){
-								tempNewWorkflowButtons.push(new Workflow("newWorkflowButton", this.lastWorkflowId++, checkIndex[j].x, checkIndex[j].y, Number(checkIndex[j].x)+1, Number(checkIndex[j].y)+1))
+								if(size != 1){
+									tempNewWorkflowButtons.push(new Workflow("newWorkflowButton", this.lastWorkflowId++, checkIndex[j].x+0.5, checkIndex[j].y, Number(checkIndex[j].x)+(size-0.5), Number(checkIndex[j].y)+1))
+								}else{
+									tempNewWorkflowButtons.push(new Workflow("newWorkflowButton", this.lastWorkflowId++, checkIndex[j].x, checkIndex[j].y, Number(checkIndex[j].x)+ 1, Number(checkIndex[j].y)+1))
+								}
 							}
 						}
 					}
 					return tempNewWorkflowButtons;
 				}catch(e){
-					$scope.Toast.show("Error!","There was an error in getting new Workflow buttons", Toast.LONG, Toast.ERROR);
+					$rootScope.currentScope.Toast.show("Error!","There was an error in getting new Workflow buttons", Toast.LONG, Toast.ERROR);
 	           		console.error("getNewWorkflowButtons: ", e);
 	           		return null;
 				}
@@ -103,7 +109,7 @@
 			 * @param  {Array} tempNewWorkflowButtons  New Workflow buttons
 			 * @return {Boolean} If its possible to add new Workflow button
 			 */
-			checkNewWorkflowButtons: function(x, y, tempNewWorkflowButtons){
+			checkNewWorkflowButtons: function(x, y, tempNewWorkflowButtons, size){
 				try{
 					var flag = true;
 					for(var i=0; i<tempNewWorkflowButtons.length; i++){
@@ -113,14 +119,22 @@
 						}
 					}
 					for(var i=0; i<this.workflows.length; i++){
-						if(this.workflows[i].fx <= x && this.workflows[i].fy <= y && this.workflows[i].tx > x && this.workflows[i].ty > y ){
-							flag = false;
-							break;
+						if(size == 1){
+							if(this.workflows[i].fx <= x && this.workflows[i].fy <= y && this.workflows[i].tx > x  && this.workflows[i].ty > y ){
+								flag = false;
+								break;
+							}
+						}else{
+							if(this.workflows[i].fy == y){
+								if((this.workflows[i].fx >= x && this.workflows[i].fx < (x + size)) || (this.workflows[i].fx <= x && this.workflows[i].tx > x)){
+									flag = false;
+								}
+							}
 						}
 					}
 					return flag;
 				}catch(e){
-					$scope.Toast.show("Error!","There was an error in checking new Workflow buttons", Toast.LONG, Toast.ERROR);
+					$rootScope.currentScope.Toast.show("Error!","There was an error in checking new Workflow buttons", Toast.LONG, Toast.ERROR);
 	           		console.error("checkNewWorkflowButtons: ", e);
 				}
 			},
@@ -141,7 +155,7 @@
 					maxId++;
 					this.lastWorkflowId = maxId;
 				}catch(e){
-					$scope.Toast.show("Error!","There was an error in updating last Id", Toast.LONG, Toast.ERROR);
+					$rootScope.currentScope.Toast.show("Error!","There was an error in updating last Id", Toast.LONG, Toast.ERROR);
 	           		console.error("updateLastId: ", e);
 				}
 			},
@@ -175,7 +189,7 @@
 			            this.coloredWorkflows[indexOfScroll].scrollTo();
 			        }
 		        }catch(e){
-		        	$scope.Toast.show("Error!","There was an error in scrolling to last workflow", Toast.LONG, Toast.ERROR);
+		        	$rootScope.currentScope.Toast.show("Error!","There was an error in scrolling to last workflow", Toast.LONG, Toast.ERROR);
 	           		console.error("scrollToLastWorkflow: ", e);
 		        }
 			},
@@ -200,7 +214,7 @@
 						}
 					}
 				}catch(e){
-					$scope.Toast.show("Error!","There was an error in updating fata in tab", Toast.LONG, Toast.ERROR);
+					$rootScope.currentScope.Toast.show("Error!","There was an error in updating fata in tab", Toast.LONG, Toast.ERROR);
 	           		console.error("updateDataInTab: ", e);
 				}
 			},
@@ -238,7 +252,7 @@
 						}
 					}
 				}catch(e){
-					$scope.Toast.show("Error!","There was an error in selecting tab after search", Toast.LONG, Toast.ERROR);
+					$rootScope.currentScope.Toast.show("Error!","There was an error in selecting tab after search", Toast.LONG, Toast.ERROR);
 	           		console.error("selectTabAfterSearch: ", e);
 				}
 			},
@@ -278,7 +292,7 @@
 						}
 					}
 				}catch(e){
-					$scope.Toast.show("Error!","There was an error in deleting relative (child) tab", Toast.LONG, Toast.ERROR);
+					$rootScope.currentScope.Toast.show("Error!","There was an error in deleting relative (child) tab", Toast.LONG, Toast.ERROR);
 	           		console.error("deleteChildTabIds: ", e);
 				}
 			},
@@ -302,7 +316,7 @@
 						}
 					}
 				}catch(e){
-					$scope.Toast.show("Error!","There was an error in checking colors in workspace", Toast.LONG, Toast.ERROR);
+					$rootScope.currentScope.Toast.show("Error!","There was an error in checking colors in workspace", Toast.LONG, Toast.ERROR);
 	           		console.error("checkUserColorsInWorkspace: ", e);
 				}
 			},

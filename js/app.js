@@ -719,6 +719,8 @@
              */
             $scope.convertToWorkflow = function(newWorkflow){
                 try{
+                    newWorkflow.fx = Math.floor(newWorkflow.fx);
+                    newWorkflow.tx = Math.round(newWorkflow.tx);
                     if($scope.holdingNewWorkflowData == null){
                         // display color picker to open new workflow
                         
@@ -820,6 +822,7 @@
              */
             $scope.openNewWorkflow = function(){
                 try{
+                    $scope.workSpaces.updateNewWorkflowButtons(1);
                     $scope.blurAllWindow = true;
                     $scope.handlePickColor = true;
                     $scope.colorPicked = null;
@@ -1394,13 +1397,10 @@
 
 
 
-
-
-
-
-
             $scope.testFunctions = function(){
-                debugger;
+                $scope.workSpaces.updateNewWorkflowButtons(2);
+                $scope.displayNewWorkflowButtons = true;
+                // $scope.newWorkflowButtons
                 // $soap.post('http://31.154.164.129:8888/mopdqwompoaskdqomdiasjdiowqe/server/services.php','validateServerIdentity',{hash:"david antoon"}).then(function(response){
                 //     debugger;
                 //     console.log(response);
