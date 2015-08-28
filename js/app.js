@@ -1,8 +1,8 @@
 (function(angular) {
     'use strict';
     angular.module('IntelLearner', ['onsen', 'firebase']);
-    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope",  "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast",
-        function($rootScope, $scope,  $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast) {
+    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope",  "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast","User",
+        function($rootScope, $scope,  $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast, User) {
 
 
             // PRIM COLOR = rgb(8,96,168)
@@ -1448,7 +1448,15 @@
                 // });
             }
 
-
+            $scope.testFunctions1 = function(){
+                User.login("dummy","dummy", function(s,e){
+                    if(e || !s){
+                        console.warn("error login ",e);
+                    }else{
+                        console.log("good ", s);
+                    }
+                })
+            }
 
 
 

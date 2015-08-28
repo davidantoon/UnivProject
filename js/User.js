@@ -2,7 +2,7 @@
     'use strict';
 	angular.module('IntelLearner').factory('User', ['$rootScope', '$http','Server','Soap', function($rootScope, $http, Server,Soap){
 	
-		function User(UID, firstname, lastname, username, email, profilePicture, role,token, tempJson){
+		function User(tempJson, UID, firstname, lastname, username, email, profilePicture, role,token){
 			if(tempJson){
 				this.UID = tempJson.UID;
 				this.firstname = tempJson.firstname;
@@ -39,17 +39,23 @@
 				if(username == "dummy" && password =="dummy"){
 					// dummy login
 					console.warn("Logged as dummy user");
-					var dummyUSer = new User("David", "Antoon", username, "david.antoon@hotmail.com", "https://graph.facebook.com/100003370268591/picture", "Learner");
-					dummyUSer.updateCookies();
-					callback(dummyUSer);
-					return;
+					var dummyUSer = new User(null, "David", "Antoon", username, "david.antoon@hotmail.com", "https://graph.facebook.com/100003370268591/picture", "Learner");
+					dummyUSer.updateCookies(function(success, error){
+						if(error || !success){
+							console.error("error logging in dummy", error);
+							callback(null, error);
+						}else{
+							callback(dummyUSer);
+							return;
+						}
+					});
 				}else{
 					var data = {
 						username: username,
 						password: password
 					};
-					Soap.connetToServer(data, Soap.logIn, function(success, error){
-						if(error != null && (success)){
+					Soap.connetToServer(data, Soap.logIn, function(result, error){
+						if(error != null && (result)){
 							var newUser = new User(result);
 							newUser.updateCookies(function(success, error){
 								if(success){
@@ -94,14 +100,18 @@
 					profilePicture: profilePicture,
 					role: role
 				};
-				Soap.connetToServer(data, signUp, function(success, error){
-					if((success) && error != null){
-						var newUser = user(success);
-						newUser.updateCookies();
-						callback(newUser);
-						return;
-					}
-					else{
+				Soap.connetToServer(data, signUp, function(result, error){
+					if((result) && error != null){
+						var newUser = new User(result);
+						newUser.updateCookies(function(success, error){
+							if( error || !(success)){
+								callback(null, error);
+							}else{
+								callback(newUser);
+								return;
+							}
+						});
+					}else{
 						console.error("error signing up: ", error);
 						callback(null, error);
 					}
@@ -124,14 +134,14 @@
 				}catch(e){
 					callback(null, false);
 				}
-			}
+			},
 
 			/**
 			 * removes user from local storage
 			 */
 			removeCookies: function(){
 				localStorage.removeItem("com.intel.user");
-			}
+			},
 			/**
 			 * Changes the password for the use
 			 * @param  {String} newPassword new password
@@ -209,15 +219,15 @@
 			toJSON: function(){
 				try{
 					return {
-						"UID" = this.UID;
-						"firstname" = this.firstname;
-						"lastname" = this.lastname
-						"username" = this.username;
-						"email" = this.email;
-						"creationDate" = this.creationDate;
-						"profilePicture" = this.profilePicture;
-						"role" = this.role;
-						"token" = this.token;
+						"UID": this.UID,
+						"firstname": this.firstname,
+						"lastname": this.lastname,
+						"username": this.username,
+						"email": this.email,
+						"creationDate": this.creationDate,
+						"profilePicture": this.profilePicture,
+						"role": this.role,
+						"token": this.token
 					}
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in converting to JSON", Toast.LONG, Toast.ERROR);
@@ -226,6 +236,7 @@
 				}
 			}
 		}
+		return User;
 	}]);
 })(window.angular);
 
