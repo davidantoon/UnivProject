@@ -1,5 +1,5 @@
 (function(angular) {
-    'use strict';
+    // 'use strict';
 	angular.module('IntelLearner').factory('Tab', ["$rootScope", 'Content','Globals','Storage', function($rootScope, Content, Globals, Storage){
 	
 		// constant static members 

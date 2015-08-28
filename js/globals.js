@@ -1,5 +1,5 @@
 (function(angular) {
-    'use strict';
+    // 'use strict';
 	angular.module('IntelLearner').value('Globals', {
 		CashedObjects:{},
 		get: function(id, type){

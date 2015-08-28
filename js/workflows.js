@@ -1,5 +1,5 @@
 (function(angular) {
-    'use strict';
+    // 'use strict';
     angular.module('IntelLearner').factory('Workflow', ["$rootScope", 'Tab', 'TypeOf', function($rootScope, Tab, TypeOf){
 
         function Workflow(tempJson, id, fx, fy, tx, ty, colored){

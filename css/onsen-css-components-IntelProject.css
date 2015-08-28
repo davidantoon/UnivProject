@@ -6484,10 +6484,10 @@ div.vertical {
 }
 
 .newWorkflowButtonDiv{
-  -webkit-transition-property: all;
-  -moz-transition-property: all;
-  -o-transition-property: all;
-  transition-property: all;
+  -webkit-transition-property: opacity;
+  -moz-transition-property: opacity;
+  -o-transition-property: opacity;
+  transition-property: opacity;
   -webkit-transition-duration: 0.15s;
   -moz-transition-duration: 0.15s;
   -o-transition-duration: 0.15s;

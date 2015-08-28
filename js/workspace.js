@@ -1,5 +1,5 @@
 (function(angular) {
-    'use strict';
+    // 'use strict';
 	angular.module('IntelLearner').factory('Workspace', ['$rootScope', 'Workflow', function($rootScope, Workflow){
 		function Workspace(scope) {
 			try{
@@ -334,6 +334,7 @@
 						for(var j=0; j<this.workflows[i].tabs.length; j++){
 							if(childHoldingData.tabId == this.workflows[i].tabs[j].ID){
 								this.workflows[i].tabs[j].addContent(content);
+								this.workflows[i].tabs[j].title = content.name;
 								return;
 							}
 						}

@@ -1,5 +1,5 @@
 (function(angular) {
-    'use strict';
+    // 'use strict';
 	angular.module('IntelLearner').factory('Steps', ["$rootScope", "Workflow", "Workspace", "Server", "Toast", function($rootScope, Workflow, Workspace, Server, Toast){
 
 		function Steps(workspace, scope){
