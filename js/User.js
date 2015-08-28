@@ -38,29 +38,65 @@
 
 		/**
 		 * Connets with server, check the entered username and password for login
-		 * @param {String} userName username
+		 * @param {String} username username
 		 * @param {String} Password password
 		 * @return {User} return null if wrong info, else User Object
 		 */
-		User.login = function(userName, password, callback){
+		User.login = function(username, password, callback){
 			try{
-				if(username == "dummy" && password =="1"){
+				if(username == "dummy" && password =="dummy"){
 					// dummy login
-					var dummyUSer = new User("David", "Antoon", username, "david.antoon@hotmail.com", "https://graph.facebook.com/100003370268591/picture", "Learner");
-					// dummyUSer.updateCoockies();
-					callback(dummyUSer);
-					return;
+						User.connetToServer("1", "2",null, function(result){
+							if(result == "Access Denied"){
+								console.log("Access Denied");
+							}else{
+								console.log("Dummy success");
+								var UserObject = JSON.parse(result.toJSON().Body[Object.keys(result.toJSON().Body)[0]][Object.keys(result.toJSON().Body[Object.keys(result.toJSON().Body)[0]])]);
+								var dummyUSer = new User("David", "Antoon", username, "david.antoon@hotmail.com", "https://graph.facebook.com/100003370268591/picture", "Learner");
+								//dummyUSer.updateCoockies();
+								callback(dummyUSer);
+								return;
+							}
+					});
 				}else{
-
+					User.connetToServer(username, password, null, function(result){
+						if(result == "Access Denied"){
+							console.log("Access Denied no dummy");
+						}else{
+							console.log("user success");
+							var UserObject = JSON.parse(result.toJSON().Body[Object.keys(result.toJSON().Body)[0]][Object.keys(result.toJSON().Body[Object.keys(result.toJSON().Body)[0]])]);
+							var newUser = new User(UserObject);
+							//newUser.updateCoockies();
+							callback(newUser);
+							return;
+						}
+					});
 				}
-				return new User();
 			}catch(e){
 					
 			}
 		}
 
 
-		
+		User.connetToServer = function(userName, passWord, connection, callback){
+			$.soap({
+			    url: 'http://31.154.164.129:8888/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/',
+			    method: 'logIn',
+
+			    data: {serverHash:"DAVID&AMEER", username: userName , password: passWord},
+
+			    success: function (soapResponse) {
+			    	console.log("soap success");
+			        callback(soapResponse);
+			    },
+			    error: function (SOAPResponse) {
+			    	if(SOAPResponse == "Access Denied")
+			        	callback("Access Denied");
+			        else 
+			        	callback(SOAPResponse);
+			    }
+			});
+		}
 		User.prototype = {
 
 			/**

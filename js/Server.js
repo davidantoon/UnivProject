@@ -2,13 +2,22 @@
     'use strict';
 	angular.module('IntelLearner').factory('Server', ["$rootScope", "Toast", function($rootScope, Toast){
 	
-		function Server(connectionType, scope){
+		function Server(connectionType, dummy){
 			try{
-				this.baseUrl = "dummy";
-				this.searchQuery = "dummy";
-				this.getElemQuery = "dummy";
-				this.saveObjectQuery = "dummy";
-				this.TypeOfData = connectionType;
+				if(dummy){
+					this.baseUrl = "dummy";
+					this.searchQuery = "dummy";
+					this.getElemQuery = "dummy";
+					this.saveObjectQuery = "dummy";
+					this.TypeOfData = connectionType;
+				}else{
+					this.request = "http";
+					this.ip = "";
+					this.port = "";
+					this.baseUrl = "";
+					this.file = "";
+
+				}
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","There was an error in creating connection to server", Toast.LONG, Toast.ERROR);
 	            console.error("server: ", e);
