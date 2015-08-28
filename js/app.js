@@ -765,8 +765,17 @@
                                 newWorkflow.selectedTab.dataHolding.parentTab.tabId = $scope.holdingNewWorkflowData.selectedTab.ID;
 
                                 // modify parent tab
-                                $scope.holdingNewWorkflowData.selectedTab.dataHolding.childTab.workflowId = newWorkflow.ID;
-                                $scope.holdingNewWorkflowData.selectedTab.dataHolding.childTab.tabId = newWorkflow.selectedTab.ID;
+                                if($scope.holdingNewWorkflowData.selectedTab.dataHolding.childTab.length != undefined){
+                                    $scope.holdingNewWorkflowData.selectedTab.dataHolding.childTab.push({
+                                        "workflowId": newWorkflow.ID,
+                                        "tabId": newWorkflow.selectedTab.ID
+                                    });
+                                }else{
+                                    $scope.holdingNewWorkflowData.selectedTab.dataHolding.childTab = [{
+                                        "workflowId": newWorkflow.ID,
+                                        "tabId": newWorkflow.selectedTab.ID
+                                    }];
+                                }
 
                                 $scope.workSpaces.workflows.push(newWorkflow);
                             break;
@@ -1196,6 +1205,7 @@
                 var waitForUserResponse = $interval(function(){
                     if($scope.displayNewWorkflowButtons == false){
                         $interval.cancel(waitForUserResponse);
+                        debugger;
                         if(holdingRequestTab.dataHolding.childTab && holdingRequestTab.dataHolding.childTab.length > 0){
                             // new workflow canceled
                             $scope.holdingNewWorkflowData = null;
