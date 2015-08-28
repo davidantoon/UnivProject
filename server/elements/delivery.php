@@ -579,8 +579,7 @@ class Delivery {
 	public static function serach_deliveries($search_word, $search_fields, $user) {
 
 		$dbObj = new dbAPI();
-
-		for($i=0; i<count($search_fields); $i++) {
+		for($i=0; $i<count($search_fields); $i++) {
 			$search_fields[$i] = "UPPER(" . $search_fields[$i] . ") LIKE UPPER('%" . $search_word . "%') "; 
 		}
 		$search_sttmnt = implode(" OR ", $search_fields);
@@ -591,7 +590,24 @@ class Delivery {
 			return array();
 
 		for($i=0; $i<count($results); $i++) {
-			$results[$i] = Delivery::get_Delivery_details($results[$i], $user);
+			$results[$i] = Delivery::get_Delivery_details($results[$i]["UID"], $user);
+		}
+		
+		return $results;	
+	}
+
+
+	public static function serach_deliveries_by_query($where_sttmnt, $user) {
+
+		$dbObj = new dbAPI();
+
+		$query = "SELECT * FROM DELIVERY_BASE where  ENABLED = '1' AND (". $search_sttmnt .")";
+		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
+		if(count($results) == 0)
+			return array();
+
+		for($i=0; $i<count($results); $i++) {
+			$results[$i] = Delivery::get_Delivery_details($results[$i]["UID"], $user);
 		}
 		
 		return $results;	

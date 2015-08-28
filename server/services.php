@@ -14,6 +14,7 @@
 	$usersAPI = new SoapClient(NULL, $options);
 
 	$result = $usersAPI->hello('DAVID&AMEER');
+	$result = $usersAPI->DELIVERYsearchDelivery('DAVID&AMEER', 'kJwYvwzsyPLAF6wb09zggLvRnobKGOz1y503BzvaphK5nhgoqQEHCay0yKKfzjg7phb1QHcgYXlleBJFsnm4yV46FPmf8DmyUxzL', '', array('UID'));
 	// echo $result;
 	echo json_encode($result);
 ?> 

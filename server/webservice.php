@@ -126,6 +126,8 @@ class usersAPI {
 class termsAPI {
 
 	static function searchTerms($serverHash, $Token, $searchWord, $searchFields, $lang = '') {
+		
+		$searchFields = json_decode($searchFields);
 
 		if(serverAPI::validateServerIdentity($serverHash) == false)
     		return new SoapFault("403", json_encode(serverAPI::setError('Access Denied')));
@@ -217,6 +219,8 @@ class scopesAPI {
 
 	static function searchScopes($serverHash, $Token, $searchWord, $searchFields, $lang = '') {
 
+		$searchFields = json_decode($searchFields);
+
 		if(serverAPI::validateServerIdentity($serverHash) == false)
     		return new SoapFault("403", json_encode(serverAPI::setError('Access Denied')));
     	$user = usersAPI::validateToken($Token);
@@ -275,6 +279,8 @@ class KbitAPI {
 
 	static function searchKbits($serverHash, $Token, $searchWord, $searchFields) {
 
+		$searchFields = json_decode($searchFields);
+
 		if(serverAPI::validateServerIdentity($serverHash) == false)
     		return new SoapFault("403", json_encode(serverAPI::setError('Access Denied')));
     	$user = usersAPI::validateToken($Token);
@@ -291,6 +297,8 @@ class KbitAPI {
 
 
 	static function addNew($serverHash, $Token, $title, $desc, $front) {
+
+		$front = json_decode($front);
 
 		if(serverAPI::validateServerIdentity($serverHash) == false)
     		return new SoapFault("403", json_encode(serverAPI::setError('Access Denied')));
@@ -360,6 +368,8 @@ class KbitAPI {
 
 	static function update($serverHash, $Token, $kbitUID, $title, $desc, $front) {
 
+		$front = json_decode($front);
+		
 		if(serverAPI::validateServerIdentity($serverHash) == false)
     		return new SoapFault("403", json_encode(serverAPI::setError('Access Denied')));
     	$user = usersAPI::validateToken($Token);
@@ -500,6 +510,9 @@ class DeliveryAPI {
 
 
 	static function searchDelivery($serverHash, $Token, $searchWord, $searchFields) {
+		
+
+		$searchFields = json_decode($searchFields);
 
 		if(serverAPI::validateServerIdentity($serverHash) == false)
     		return new SoapFault("403", json_encode(serverAPI::setError('Access Denied')));
@@ -508,7 +521,7 @@ class DeliveryAPI {
     		return new SoapFault("4033", json_encode(serverAPI::setError('Expired Token')));
 
     	try {
-    		return json_encode(Delivery::serach_deliveries($searchWord, $searchFields, $user["UID0"]));
+    		return json_encode(Delivery::serach_deliveries($searchWord, $searchFields, $user["UID"]));
     	}
 	    catch (Exception $e) {
 		    return new SoapFault("403", json_encode($e));
@@ -517,6 +530,8 @@ class DeliveryAPI {
 
 
 	static function addNew($serverHash, $Token, $title, $desc, $front) {
+
+		$front = json_decode($front);
 
 		if(serverAPI::validateServerIdentity($serverHash) == false)
     		return new SoapFault("403", json_encode(serverAPI::setError('Access Denied')));
@@ -809,6 +824,110 @@ class keyValuePairAPI {
 }
 
 
+// ====================================================================
+// ====================================================================
+// 								searchableQueries
+// ====================================================================
+// ====================================================================
+class searchableQueriesAPI {
+	
+	public static function runQuery($serverHash, $Token, $queryID) {
+
+		if(serverAPI::validateServerIdentity($serverHash) == false)
+    		return new SoapFault("403", json_encode(serverAPI::setError('Access Denied')));
+    	$user = usersAPI::validateToken($Token);
+    	if($user == null)
+    		return new SoapFault("4033", json_encode(serverAPI::setError('Expired Token')));
+
+    	try {
+			return json_encode(searchQueries::run_query($queryID, $user["UID"]));
+		}
+		catch (Exception $e) {
+		    return new SoapFault("403", json_encode($e));
+		}
+
+	}
+	public static function removeQuery($serverHash, $Token, $key) {
+
+		if(serverAPI::validateServerIdentity($serverHash) == false)
+    		return new SoapFault("403", json_encode(serverAPI::setError('Access Denied')));
+    	$user = usersAPI::validateToken($Token);
+    	if($user == null)
+    		return new SoapFault("4033", json_encode(serverAPI::setError('Expired Token')));
+
+    	try {
+			return json_encode(searchQueries::remove_query($key, $user["UID"]));
+		}
+		catch (Exception $e) {
+		    return new SoapFault("403", json_encode($e));
+		}
+
+	}
+	public static function updateQuery($serverHash, $Token, $queryID, $text, $name) {
+
+		if(serverAPI::validateServerIdentity($serverHash) == false)
+    		return new SoapFault("403", json_encode(serverAPI::setError('Access Denied')));
+    	$user = usersAPI::validateToken($Token);
+    	if($user == null)
+    		return new SoapFault("4033", json_encode(serverAPI::setError('Expired Token')));
+
+    	try {
+			return json_encode(searchQueries::update_user_query($queryID, $text, $name, $user["UID"]));
+		}
+		catch (Exception $e) {
+		    return new SoapFault("403", json_encode($e));
+		}
+
+	}
+	public static function saveNewQuery($serverHash, $Token, $tableName, $queryName, $text) {
+
+		if(serverAPI::validateServerIdentity($serverHash) == false)
+    		return new SoapFault("403", json_encode(serverAPI::setError('Access Denied')));
+    	$user = usersAPI::validateToken($Token);
+    	if($user == null)
+    		return new SoapFault("4033", json_encode(serverAPI::setError('Expired Token')));
+
+    	try {
+			return json_encode(searchQueries::save_new_user_query($text, $tableName, $queryName, $user["UID"]));
+		}
+		catch (Exception $e) {
+		    return new SoapFault("403", json_encode($e));
+		}
+
+	}
+	public static function getUserQueries($serverHash, $Token) {
+
+		if(serverAPI::validateServerIdentity($serverHash) == false)
+    		return new SoapFault("403", json_encode(serverAPI::setError('Access Denied')));
+    	$user = usersAPI::validateToken($Token);
+    	if($user == null)
+    		return new SoapFault("4033", json_encode(serverAPI::setError('Expired Token')));
+
+    	try {
+			return json_encode(searchQueries::get_user_queries($user["UID"]));
+		}
+		catch (Exception $e) {
+		    return new SoapFault("403", json_encode($e));
+		}
+
+	}
+	public static function getSearchableTables($serverHash, $Token) {
+
+		if(serverAPI::validateServerIdentity($serverHash) == false)
+    		return new SoapFault("403", json_encode(serverAPI::setError('Access Denied')));
+    	$user = usersAPI::validateToken($Token);
+    	if($user == null)
+    		return new SoapFault("4033", json_encode(serverAPI::setError('Expired Token')));
+
+    	try {
+			return json_encode(searchQueries::get_searchable_tables());
+		}
+		catch (Exception $e) {
+		    return new SoapFault("403", json_encode($e));
+		}
+
+	}
+}
 
 
 
@@ -1012,14 +1131,44 @@ class interfaceAPI {
 // ====================================================================
 // ====================================================================
 
-	public static function KVPremove_key_value_pair($serverHash, $Token, $key) {
+	public static function KVPremoveKeyValuePair($serverHash, $Token, $key) {
 		return keyValuePairAPI::remove_key_value_pair($serverHash, $Token, $key);
 	}
-	public static function KVPset_key_value_pair($serverHash, $Token, $key, $value) {
+	public static function KVPsetKeyValuePair($serverHash, $Token, $key, $value) {
 		return keyValuePairAPI::set_key_value_pair($serverHash, $Token, $key, $value);
 	}
-	public static function KVPget_key_value_pair($serverHash, $Token, $key) {
+	public static function KVPgetKeyValuePair($serverHash, $Token, $key) {
 		return keyValuePairAPI::get_key_value_pair($serverHash, $Token, $key);
+	}
+
+
+
+
+
+
+// ====================================================================
+// ====================================================================
+// 								searchableQueries
+// ====================================================================
+// ====================================================================
+
+	public static function runQuery($serverHash, $Token, $queryID) {
+		return searchableQueriesAPI::runQuery($serverHash, $Token, $queryID);
+	}
+	public static function removeQuery($serverHash, $Token, $key) {
+		return searchableQueriesAPI::removeQuery($serverHash, $Token, $key);
+	}
+	public static function updateQuery($serverHash, $Token, $queryID, $text, $name) {
+		return searchableQueriesAPI::updateQuery($serverHash, $Token, $queryID, $text, $name);
+	}
+	public static function saveNewQuery($serverHash, $Token, $tableName, $queryName, $text) {
+		return searchableQueriesAPI::saveNewQuery($serverHash, $Token, $tableName, $queryName, $text);
+	}
+	public static function getUserQueries($serverHash, $Token) {
+		return searchableQueriesAPI::getUserQueries($serverHash, $Token);
+	}
+	public static function getSearchableTables($serverHash, $Token) {
+		return searchableQueriesAPI::getSearchableTables($serverHash, $Token);
 	}
 
 
