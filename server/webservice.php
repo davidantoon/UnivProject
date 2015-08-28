@@ -27,9 +27,7 @@ class serverAPI {
     }
 }
 
-// save key value
 // search queries
-// build global interface
 // test API
 // publish to server
 
@@ -750,6 +748,64 @@ class DeliveryAPI {
 
 
 
+// ====================================================================
+// ====================================================================
+// 								keyValuePair
+// ====================================================================
+// ====================================================================
+class keyValuePairAPI {
+
+	static function remove_key_value_pair($serverHash, $Token, $key) {
+
+		if(serverAPI::validateServerIdentity($serverHash) == false)
+    		return new SoapFault("403", json_encode(serverAPI::setError('Access Denied')));
+    	$user = usersAPI::validateToken($Token);
+    	if($user == null)
+    		return new SoapFault("4033", json_encode(serverAPI::setError('Expired Token')));
+
+    	try {
+			return json_encode(keyValuePair::remove_key_value_pair($key, $user["UID"]));
+		}
+		catch (Exception $e) {
+		    return new SoapFault("403", json_encode($e));
+		}
+
+	}
+	static function set_key_value_pair($serverHash, $Token, $key, $value) {
+
+		if(serverAPI::validateServerIdentity($serverHash) == false)
+    		return new SoapFault("403", json_encode(serverAPI::setError('Access Denied')));
+    	$user = usersAPI::validateToken($Token);
+    	if($user == null)
+    		return new SoapFault("4033", json_encode(serverAPI::setError('Expired Token')));
+
+    	try {
+			return json_encode(keyValuePair::set_key_value_pair($key, $value, $user["UID"]));
+		}
+		catch (Exception $e) {
+		    return new SoapFault("403", json_encode($e));
+		}
+
+	}
+	static function get_key_value_pair($serverHash, $Token, $key) {
+
+		if(serverAPI::validateServerIdentity($serverHash) == false)
+    		return new SoapFault("403", json_encode(serverAPI::setError('Access Denied')));
+    	$user = usersAPI::validateToken($Token);
+    	if($user == null)
+    		return new SoapFault("4033", json_encode(serverAPI::setError('Expired Token')));
+
+    	try {
+			return json_encode(keyValuePair::get_key_value_pair($key, $user["UID"]));
+		}
+		catch (Exception $e) {
+		    return new SoapFault("403", json_encode($e));
+		}
+
+	}
+
+
+}
 
 
 
@@ -945,6 +1001,25 @@ class interfaceAPI {
 	}
 	
 	
+
+
+
+
+// ====================================================================
+// ====================================================================
+// 								keyValuePair
+// ====================================================================
+// ====================================================================
+
+	public static function KVPremove_key_value_pair($serverHash, $Token, $key) {
+		return keyValuePairAPI::remove_key_value_pair($serverHash, $Token, $key);
+	}
+	public static function KVPset_key_value_pair($serverHash, $Token, $key, $value) {
+		return keyValuePairAPI::set_key_value_pair($serverHash, $Token, $key, $value);
+	}
+	public static function KVPget_key_value_pair($serverHash, $Token, $key) {
+		return keyValuePairAPI::get_key_value_pair($serverHash, $Token, $key);
+	}
 
 
 
