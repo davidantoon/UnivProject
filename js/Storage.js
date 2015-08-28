@@ -1,5 +1,5 @@
 (function(angular) {
-    'use strict';
+    // 'use strict';
 	angular.module('IntelLearner').factory('Storage', ["$rootScope", "Globals", "TypeOf", "Content", function($rootScope, Globals, TypeOf, Content){
 
 

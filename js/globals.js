@@ -1,5 +1,5 @@
 (function(angular) {
-    'use strict';
+    // 'use strict';
 	angular.module('IntelLearner').value('Globals', {
 		CashedObjects:{},
 		get: function(id, type){
@@ -69,13 +69,10 @@
 
 			    success: function (soapResponse) {
 			    	console.log("soap success");
-			        callback(soapResponse);
+			        callback(JSON.parse(soapResponse.toJSON().Body[Object.keys(soapResponse.toJSON().Body)[0]][Object.keys(soapResponse.toJSON().Body[Object.keys(soapResponse.toJSON().Body)[0]])]));
 			    },
 			    error: function (SOAPResponse) {
-			    	if(SOAPResponse == "Access Denied")
-			        	callback("Access Denied");
-			        else 
-			        	callback(SOAPResponse);
+			       callback(null, JSON.parse(soapResponse.toJSON().Body[Object.keys(soapResponse.toJSON().Body)][Object.keys(soapResponse.toJSON().Body[Object.keys(soapResponse.toJSON().Body)])[1]]));
 			    }
 			});
 		}

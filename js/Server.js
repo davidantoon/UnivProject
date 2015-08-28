@@ -1,5 +1,5 @@
 (function(angular) {
-    'use strict';
+    // 'use strict';
 	angular.module('IntelLearner').factory('Server', ["$rootScope", "Toast", function($rootScope, Toast){
 	
 		function Server(connectionType, dummy){
