@@ -1,5 +1,5 @@
 (function(angular) {
-    'use strict';
+    // 'use strict';
     angular.module('IntelLearner', ['onsen', 'firebase']);
     angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope",  "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast","User",
         function($rootScope, $scope,  $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast, User) {
@@ -752,7 +752,6 @@
                                 $scope.workSpaces.workflows.push(newWorkflow);
                             break;
                             case "DisplayObject":
-                                debugger;
                                 $scope.workSpaces.updateLastId();
                                 newWorkflow.ID = $scope.workSpaces.lastWorkflowId;
                                 $scope.workSpaces.updateLastId();
@@ -1186,15 +1185,13 @@
                 var holdingRequestTab = wFlow.selectedTab;
                 var holdingDisplayObjectData = result;
                 if(dataHolding.childTab && dataHolding.childTab.length > 0){
-
-
+                    $scope.workSpaces.replaceSearchChildContent(dataHolding.childTab[dataHolding.childTab.length-1]);
                 }else{
                     $scope.displayContentNewTab(wFlow, result);
                 }
             }
 
             $scope.displayContentNewTab = function(wFlow,result){
-                debugger;
                 var holdingDisplayObjectData = result;
                 var holdingRequestTab = wFlow.selectedTab;
                 $scope.workSpaces.updateNewWorkflowButtons(2);
@@ -1205,7 +1202,6 @@
                 var waitForUserResponse = $interval(function(){
                     if($scope.displayNewWorkflowButtons == false){
                         $interval.cancel(waitForUserResponse);
-                        debugger;
                         if(holdingRequestTab.dataHolding.childTab && holdingRequestTab.dataHolding.childTab.length > 0){
                             // new workflow canceled
                             $scope.holdingNewWorkflowData = null;

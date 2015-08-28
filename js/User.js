@@ -1,5 +1,5 @@
 (function(angular) {
-    'use strict';
+    // 'use strict';
 	angular.module('IntelLearner').factory('User', ['$rootScope', '$http','Server','Soap', function($rootScope, $http, Server,Soap){
 	
 		function User(tempJson, UID, firstname, lastname, username, email, profilePicture, role,token){
