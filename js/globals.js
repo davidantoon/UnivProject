@@ -49,5 +49,35 @@
 			return obj.objectType;
 		}
 	})
-	.value('ServerReq', "Not initialized");
+	.value('ServerReq', "Not initialized")
+	.value('Soap', {
+		protocol: "http",
+		ip: "31.154.164.129",
+		port: "8888",
+		baseUrl: "/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/",
+
+		login: "logIn",
+		signup: "signUp",
+		connectToServer: function(data, method, callback){
+			//data.serverHash = gethash();
+			data.serverHash = "DAVID&AMEER";
+			$.soap({
+			    url: prototype + "://" + ip + ":" + port + baseUrl,
+			    method: method,
+
+			    data: data,
+
+			    success: function (soapResponse) {
+			    	console.log("soap success");
+			        callback(soapResponse);
+			    },
+			    error: function (SOAPResponse) {
+			    	if(SOAPResponse == "Access Denied")
+			        	callback("Access Denied");
+			        else 
+			        	callback(SOAPResponse);
+			    }
+			});
+		}
+	});
 })(window.angular);

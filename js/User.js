@@ -1,6 +1,6 @@
 (function(angular) {
     'use strict';
-	angular.module('IntelLearner').factory('User', ['$rootScope', '$http','Server', function($rootScope, $http, Server){
+	angular.module('IntelLearner').factory('User', ['$rootScope', '$http','Server','Soap', function($rootScope, $http, Server,Soap){
 	
 		function User(UID, firstname, lastname, username, email, profilePicture, role,token, tempJson){
 			if(tempJson){
@@ -32,7 +32,6 @@
 				this.role = role;
 				this.token = token;
 			}
-			// connet to server for registeration
 		}
 
 
@@ -46,27 +45,35 @@
 			try{
 				if(username == "dummy" && password =="dummy"){
 					// dummy login
-						User.connetToServer("1", "2",null, function(result){
-							if(result == "Access Denied"){
-								console.log("Access Denied");
-							}else{
-								console.log("Dummy success");
-								var UserObject = JSON.parse(result.toJSON().Body[Object.keys(result.toJSON().Body)[0]][Object.keys(result.toJSON().Body[Object.keys(result.toJSON().Body)[0]])]);
-								var dummyUSer = new User("David", "Antoon", username, "david.antoon@hotmail.com", "https://graph.facebook.com/100003370268591/picture", "Learner");
-								//dummyUSer.updateCoockies();
-								callback(dummyUSer);
-								return;
-							}
+					var data = {
+						username: "1",
+						password: "2"
+					};
+					Soap.connetToServer(data,logIn, function(result){
+						if(result == "Access Denied"){
+							console.log("Access Denied");
+						}else{
+							console.log("Dummy success");
+							var UserObject = JSON.parse(result.toJSON().Body[Object.keys(result.toJSON().Body)[0]][Object.keys(result.toJSON().Body[Object.keys(result.toJSON().Body)[0]])]);
+							var dummyUSer = new User("David", "Antoon", username, "david.antoon@hotmail.com", "https://graph.facebook.com/100003370268591/picture", "Learner");
+							//dummyUSer.updateCookies();
+							callback(dummyUSer);
+							return;
+						}
 					});
 				}else{
-					User.connetToServer(username, password, null, function(result){
+					var data = {
+						username: username,
+						password: password
+					};
+					Soap.connetToServer(data, logIn, function(result){
 						if(result == "Access Denied"){
 							console.log("Access Denied no dummy");
 						}else{
 							console.log("user success");
 							var UserObject = JSON.parse(result.toJSON().Body[Object.keys(result.toJSON().Body)[0]][Object.keys(result.toJSON().Body[Object.keys(result.toJSON().Body)[0]])]);
 							var newUser = new User(UserObject);
-							//newUser.updateCoockies();
+							//newUser.updateCookies();
 							callback(newUser);
 							return;
 						}
@@ -77,28 +84,50 @@
 			}
 		}
 
-
-		User.connetToServer = function(userName, passWord, connection, callback){
-			$.soap({
-			    url: 'http://31.154.164.129:8888/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/',
-			    method: 'logIn',
-
-			    data: {serverHash:"DAVID&AMEER", username: userName , password: passWord},
-
-			    success: function (soapResponse) {
-			    	console.log("soap success");
-			        callback(soapResponse);
-			    },
-			    error: function (SOAPResponse) {
-			    	if(SOAPResponse == "Access Denied")
-			        	callback("Access Denied");
-			        else 
-			        	callback(SOAPResponse);
-			    }
+		/**
+		 * registers for the server
+		 * @param  {String}   firstname      first name
+		 * @param  {String}   lastname       last name
+		 * @param  {String}   username       username
+		 * @param  {Strinf}   password       password
+		 * @param  {String}   email          E-mail
+		 * @param  {String}   profilePicture profile picture link
+		 * @param  {String}   role           what is the role of the user
+		 * @param  {Function} callback       callback function
+		 */
+		User.singup = function(firstname, lastname, username, password, email, profilePicture, role, callback){
+			var data = {
+				firstname: firstname,
+				lastname: lastname,
+				username: username,
+				email: email,
+				password: password,
+				profilePicture: profilePicture,
+				role: role
+			};
+			Soap.connetToServer(data, signUp, function(result){
+				if(result == "Error"){
+					callback(result);
+				}
+				else{
+					var newUser = user(result);
+					// newUser.updateCookies();
+					callback(newUser);
+					return;
+				}
 			});
 		}
 		User.prototype = {
 
+			updateCookies: function(newName, newValue, newDays){
+				if (days) {
+			        var date = new Date();
+			        date.setTime(date.getTime()+(days*24*60*60*1000));
+			        var expires = "; expires="+date.toGMTString();
+			    }
+			    else var expires = "";
+			    document.cookie = name+"="+value+expires+"; path=/";
+			}
 			/**
 			 * Changes the password for the use
 			 * @param  {String} newPassword new password
