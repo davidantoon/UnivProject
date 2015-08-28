@@ -287,7 +287,7 @@ class Delivery {
 		// remove primary key (auto-increment) column (id)
 		$columns_names = str_replace("id,", "", $columns_names);
 		// copy record from content to user
-		$query = "INSERT INTO ". $dbObj->db_get_usersDB() .".DELIVERY_BASE (". $columns_names .") SELECT ". $columns_names ." FROM ". $dbObj->db_get_contentDB() . ".Delivery_BASE ". $where_sttmnt ."";
+		$query = "INSERT INTO ". $dbObj->db_get_usersDB() .".DELIVERY_BASE (". $columns_names .") SELECT ". $columns_names ." FROM ". $dbObj->db_get_contentDB() . ".DELIVERY_BASE ". $where_sttmnt ."";
 		$dbObj->run_query('', $query);
 		
 		
@@ -426,7 +426,7 @@ class Delivery {
 			if($links_tables_names[$i] == 'R_LD2D')
 				$where_sttmnt = ' (PARENT_ID = '. $UID .' OR CHILD_ID = '. $UID .') ';
 			else
-				$where_sttmnt = ' (Delivery_BASE_ID = '. $UID . ') ';
+				$where_sttmnt = ' (DELIVERY_BASE_ID = '. $UID . ') ';
 			// get columns names
 			$columns_names = $dbObj->db_get_columns_names($dbObj->db_get_contentDB(), $links_tables_names[$i], true);
 			// remove primary key (auto-increment) column (id)
@@ -467,7 +467,7 @@ class Delivery {
 	public static function cancel_edited_Delivery($UID, $user) {
 
 		// release lock off the Delivery
-		if(Lock::release_lock($UID, 'Delivery_BASE', $user) == false) {
+		if(Lock::release_lock($UID, 'DELIVERY_BASE', $user) == false) {
 			debugLog::log("<i>[delivery.php:cancel_edited_Delivery]</i> Could not release lock off Delivery (". $UID .")");
 			return false;
 		}
