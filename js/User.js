@@ -36,6 +36,7 @@
 		 */
 		User.login = function(username, password, callback){
 			try{
+				debugger;
 				if(username == "dummy" && password =="dummy"){
 					// dummy login
 					console.warn("Logged as dummy user");
@@ -54,11 +55,13 @@
 						username: username,
 						password: password
 					};
-					Soap.connetToServer(data, Soap.logIn, function(result, error){
+					Soap.connectToServer(data, Soap.logIn, function(result, error){
 						if(error != null && (result)){
+							console.log("connectToServer response: ", success);
 							var newUser = new User(result);
 							newUser.updateCookies(function(success, error){
 								if(success){
+									console.log("updateCookies response: ", success);
 									callback(newUser);
 									return;
 								}else{
@@ -67,6 +70,7 @@
 								}
 							});
 						}else{
+
 							console.error("error logging in: ", error);
 							callback(null, error);
 						}
@@ -100,7 +104,7 @@
 					profilePicture: profilePicture,
 					role: role
 				};
-				Soap.connetToServer(data, signUp, function(result, error){
+				Soap.connectToServer(data, signUp, function(result, error){
 					if((result) && error != null){
 						var newUser = new User(result);
 						newUser.updateCookies(function(success, error){
@@ -146,23 +150,61 @@
 			 * Changes the password for the use
 			 * @param  {String} newPassword new password
 			 */
-			changePassword: function(newPassword, callback){
+			changePassword: function(oldpassword, newPassword, callback){
 				try{
-
+					var data = {
+						token: this.token,
+						password: oldpassword,
+						newPassword: newPassword
+					}
+					Soap.connectToServer(data, Soap.changePassword, function(success, error){
+						if( error || !success){
+							console.error("could not change password: ", error);
+							callback(null, error);
+						}else{
+							callback(success);
+						}
+					});
 				}catch(e){
-					
+					console.error("could not change password: ", e);
+					callback(null, error);
 				}
 			},
 
 			/**
-			 * Changes the email
-			 * @return {[type]} [description]
+			 * Updates the user information
+			 * @param  {string}   firstname      first name
+			 * @param  {string}   lastname       last name
+			 * @param  {string}   email          email
+			 * @param  {string}   profilePicture picture link
+			 * @param  {string}   role           role of the user
+			 * @param  {Function} callback       callback function
 			 */
-			changeEmail: function(newEmail, callback){
+			updateUser: function(firstname, lastname, email, profilePicture, role, callback){
 				try{
-
+					var data = {
+						firstname: firstname,
+						lastname: lastname,
+						email: email,
+						profilePicture: profilePicture,
+						role: role
+					}
+					Soap,connectToServer(data, Soap.updateUser, function(success, error){
+						if( error || !success ){
+							console.error("could not update data: ", error);
+							callback(null, error);
+						}else{
+							this.firstname = success["firstName"];
+							this.lastname = success["lastName"];
+							this.email = success["email"];
+							this.profilePicture = success["profilePicture"];
+							this.role = success["role"];
+							callback(this);
+						}
+					});
 				}catch(e){
-					
+					console.error("could not update data: ", error);
+					callback(null, e);
 				}
 			},
 
@@ -187,32 +229,6 @@
 
 				}catch(e){
 					
-				}
-			},
-
-			/**
-			 * Changes role
-			 * @param  {string} newRole new role
-			 */
-			changeRole: function(newRole, callback){
-				try{
-					this.role = newRole;
-					// update server server
-				}catch(e){
-
-				}
-			},
-
-			/**
-			 * Change profile picture
-			 * @param  {String} newPicture New profile picture
-			 */
-			changeProfilePicture: function(newPicture, callback){
-				try{
-					this.profilePicture = newPicture;
-					//update server
-				}catch(e){
-
 				}
 			},
 

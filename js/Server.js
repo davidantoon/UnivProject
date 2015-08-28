@@ -11,7 +11,7 @@
 					this.saveObjectQuery = "dummy";
 					this.TypeOfData = connectionType;
 				}else{
-					this.request = "http";
+					this.protocol = "http";
 					this.ip = "";
 					this.port = "";
 					this.baseUrl = "";

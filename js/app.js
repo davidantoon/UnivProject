@@ -1470,11 +1470,18 @@
             }
 
             $scope.testFunctions1 = function(){
-                User.login("dummy","dummy", function(s,e){
+                User.login("antoon91","password5", function(s,e){
                     if(e || !s){
                         console.warn("error login ",e);
                     }else{
                         console.log("good ", s);
+                        s.changePassword("password5","1234",function(succ, err){
+                            if( err || ! succ ){
+                                console.error("could not change password ", err);
+                            }else{
+                                console.log("password change");
+                            }
+                        });
                     }
                 })
             }

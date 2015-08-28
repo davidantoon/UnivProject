@@ -56,13 +56,15 @@
 		port: "8888",
 		baseUrl: "/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/",
 
-		login: "logIn",
-		signup: "signUp",
+		logIn: "USERsignUp",
+		signUp: "USERlogIn",
+		changePassword: "USERchangePassword",
+		updateUser: "USERupdateUser",
 		connectToServer: function(data, method, callback){
 			//data.serverHash = gethash();
 			data.serverHash = "DAVID&AMEER";
 			$.soap({
-			    url: this.prototype + "://" + this.ip + ":" + this.port + this.baseUrl,
+			    url: this.protocol + "://" + this.ip + ":" + this.port + this.baseUrl,
 			    method: method,
 
 			    data: data,
@@ -71,8 +73,9 @@
 			    	console.log("soap success");
 			        callback(JSON.parse(soapResponse.toJSON().Body[Object.keys(soapResponse.toJSON().Body)[0]][Object.keys(soapResponse.toJSON().Body[Object.keys(soapResponse.toJSON().Body)[0]])]));
 			    },
-			    error: function (SOAPResponse) {
-			       callback(null, JSON.parse(soapResponse.toJSON().Body[Object.keys(soapResponse.toJSON().Body)][Object.keys(soapResponse.toJSON().Body[Object.keys(soapResponse.toJSON().Body)])[1]]));
+			    error: function (soapResponse) {
+			       console.log(soapResponse.toJSON());
+			       //callback(null, JSON.parse(soapResponse.toJSON().Body[Object.keys(soapResponse.toJSON().Body)][Object.keys(soapResponse.toJSON().Body[Object.keys(soapResponse.toJSON().Body)])[1]]));
 			    }
 			});
 		}
