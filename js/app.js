@@ -1,8 +1,8 @@
 (function(angular) {
     'use strict';
-    angular.module('IntelLearner', ['onsen', 'firebase', 'angularSoap']);
-    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope", "$soap", "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast",
-        function($rootScope, $scope, $soap, $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast) {
+    angular.module('IntelLearner', ['onsen', 'firebase']);
+    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope",  "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast",
+        function($rootScope, $scope,  $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast) {
 
 
             // PRIM COLOR = rgb(8,96,168)
@@ -1345,12 +1345,12 @@
             /**
              * Check if there is new content in the server
              */
-            $interval(function(){
-                Globals.getMinimized(function(minimizedData){
-                    console.log(minimizedData);
-                });
+            // $interval(function(){
+            //     Globals.getMinimized(function(minimizedData){
+            //         console.log(minimizedData);
+            //     });
 
-            },5000);
+            // },5000);
 
 
 
@@ -1400,9 +1400,11 @@
 
 
             $scope.testFunctions = function(){
-                $soap.post('http://31.154.164.129:8888/mopdqwompoaskdqomdiasjdiowqe/server/services.php','action',params).then(function(response){
-                    console.log(response);
-                });
+                debugger;
+                // $soap.post('http://31.154.164.129:8888/mopdqwompoaskdqomdiasjdiowqe/server/services.php','validateServerIdentity',{hash:"david antoon"}).then(function(response){
+                //     debugger;
+                //     console.log(response);
+                // });
             }
 
 
