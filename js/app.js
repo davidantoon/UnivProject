@@ -1047,7 +1047,7 @@
                                         $scope.displayNewWorkflowButtons = false;
                                     }else{
                                         $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, null);
-                                        var svr = new Server("SearchTab");
+                                        var svr = new Server("SearchTab", true);
                                         svr.search(dataToSearch, function(result, error){
                                             if(error || !result){
                                                 $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, []);
@@ -1079,7 +1079,7 @@
                         }else{ // there is old child tab search
                             $scope.workSpaces.selectTabAfterSearch(holdingRequestTab.dataHolding.childTab);
                             $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, null);
-                            var svr = new Server("SearchTab");
+                            var svr = new Server("SearchTab", true);
                             svr.search(dataToSearch, function(result, error){
                                 if(error || !result){
                                     $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, []);

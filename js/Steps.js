@@ -10,7 +10,7 @@
 			this.lastFocusedWorkflow = null;
 			
 			var passThis1 = this;
-			var svr = new Server(this.objectType);
+			var svr = new Server(this.objectType, true);
 			svr.getSteps(function(result, error){
 				if(error || !result){
 					ServerResquestComplete(null, passThis1);

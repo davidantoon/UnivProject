@@ -62,7 +62,7 @@
 			//data.serverHash = gethash();
 			data.serverHash = "DAVID&AMEER";
 			$.soap({
-			    url: prototype + "://" + ip + ":" + port + baseUrl,
+			    url: this.prototype + "://" + this.ip + ":" + this.port + this.baseUrl,
 			    method: method,
 
 			    data: data,
