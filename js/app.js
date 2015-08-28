@@ -850,6 +850,7 @@
                         $scope.handlePickColor = false;
                         $scope.selectColorFilter(0);
                         $scope.displayNewWorkflowButtons = true;
+                        $scope.displayNewWorkflowTabButtons = true;
                         $scope.holdingNewWorkflowData = null;
                     });
                 }catch(e){
@@ -1055,6 +1056,7 @@
                                 // give the ability to choose where to open new workflow (display newWorkflowButtons)
                                 $scope.holdingNewWorkflowData = {"selectedTab":holdingRequestTab, "Action":"Search"};
                                 $scope.displayNewWorkflowButtons = true;
+                                $scope.displayNewWorkflowTabButtons = true;
                                 $scope.selectColorFilter(0);
                             }
                             var waitForUserResponse = $interval(function(){
@@ -1187,18 +1189,27 @@
                 var holdingDisplayObjectData = result;
                 var holdingRequestTab = wFlow.selectedTab;
                 $scope.workSpaces.updateNewWorkflowButtons(2);
+                $scope.displayNewWorkflowTabButtons = false;
                 $scope.displayNewWorkflowButtons = true;
                 $scope.holdingNewWorkflowData = {"selectedTab":holdingRequestTab, "Action":"DisplayObject", "data" :result};
                 $scope.selectColorFilter(0);
                 var waitForUserResponse = $interval(function(){
                     if($scope.displayNewWorkflowButtons == false){
                         $interval.cancel(waitForUserResponse);
-                        if(holdingRequestTab.dataHolding.childTab.workflowId == null || holdingRequestTab.dataHolding.childTab.tabId == null){
+                        if(holdingRequestTab.dataHolding.childTab && holdingRequestTab.dataHolding.childTab.length > 0){
                             // new workflow canceled
                             $scope.holdingNewWorkflowData = null;
                             $scope.displayNewWorkflowButtons = false;
                         }else{
-                               
+                            setTimeout(function(){
+                                $scope.Steps.lastFocusedWorkflow = holdingRequestTab.dataHolding.childTab[holdingRequestTab.dataHolding.childTab.length-1].workflowId;
+                                $scope.refocusLastWorkflow();
+                                setTimeout(function(){
+                                    $scope.Steps.lastFocusedWorkflow = holdingRequestTab.parentWF.ID;
+                                    $scope.focusingLastWorkflow = false;
+                                },600);
+                            },300);
+                            $scope.InsertStepToLast10Steps();
                         }
                     }
                 },100);
