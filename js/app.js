@@ -1473,7 +1473,7 @@
             }
 
             $scope.testFunctions1 = function(){
-                User.login("antoon91","password5", function(s,e){
+                User.login("antoon91","pass5", function(s,e){
                     if(e || !s){
                         console.warn("error login ",e);
                     }else{

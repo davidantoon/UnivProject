@@ -56,6 +56,7 @@
 		port: "8888",
 		baseUrl: "/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/",
 
+   
 		logIn: "USERsignUp",
 		signUp: "USERlogIn",
 		changePassword: "USERchangePassword",
@@ -64,6 +65,7 @@
 			//data.serverHash = gethash();
 			data.serverHash = "DAVID&AMEER";
 			$.soap({
+			    //url: 'http://testserver-radjybaba.rhcloud.com/webservice.php/',
 			    url: this.protocol + "://" + this.ip + ":" + this.port + this.baseUrl,
 			    method: method,
 
