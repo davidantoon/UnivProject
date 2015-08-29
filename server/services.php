@@ -42,7 +42,7 @@
 
 	include 'app_config.php';
 	
-	var_dump(debugLog::get_all_log_files());
+	// var_dump(debugLog::get_all_log_files());
 
 
 

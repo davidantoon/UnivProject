@@ -1243,7 +1243,8 @@ ob_start();
 try {
     $rArray = array_change_key_case($_REQUEST, CASE_LOWER);
     $method = $rArray["method"];
-     
+    debugLog::api_log(print_r($_REQUEST, true));
+    
     if (method_exists('interfaceAPI', $method)) {
 
     	 $ref = new ReflectionMethod('interfaceAPI', $method);
