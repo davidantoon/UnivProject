@@ -1,23 +1,23 @@
 (function(angular) {
     // 'use strict';
-	angular.module('IntelLearner').factory('User', ['$rootScope', '$http','Server','Soap', function($rootScope, $http, Server,Soap){
+	angular.module('IntelLearner').factory('User', ['$rootScope', '$http','Server','$httpR', function($rootScope, $http, Server,$httpR){
 	
-		function User(tempJson, UID, firstname, lastname, username, email, profilePicture, role,token){
+		function User(tempJson, UID, firstName, lastName, username, email, profilePicture, role,token){
 			if(tempJson){
 				this.UID = tempJson.UID;
-				this.firstname = tempJson.firstname;
-				this.lastname = tempJson.lastname
-				this.username = tempJson.username;
-				this.email = tempJson.email;
-				this.creationDate = new Date(tempJson.creationDate);
-				this.profilePicture = tempJson.profilePicture;
-				this.role = tempJson.role;
+				this.firstName = tempJson.FIRST_NAME;
+				this.lastName = tempJson.LAST_NAME
+				this.username = tempJson.USERNAME;
+				this.email = tempJson.EMAIL;
+				this.creationDate = new Date(tempJson.CREATION_DATE);
+				this.profilePicture = tempJson.PROFILE_PICTURE;
+				this.role = tempJson.ROLE;
 				this.token = tempJson.token;
 
 			}else{
 				this.UID = UID;
-				this.firstname = firstname;
-				this.lastname = lastname
+				this.firstName = firstName;
+				this.lastName = lastName
 				this.username = username;
 				this.email = email;
 				this.creationDate = new Date();
@@ -50,15 +50,14 @@
 						}
 					});
 				}else{
-					var data = {
-						username: username,
-						password: password
-					};
-					Soap.connetToServer(data, Soap.logIn, function(result, error){
-						if(error != null && (result)){
+					var data = {"username": username, "password":password};
+					$httpR.connectToServer(data, $httpR.logIn, function(result, error){
+						if(result){
+							console.log("connectToServer response: ", result);
 							var newUser = new User(result);
 							newUser.updateCookies(function(success, error){
 								if(success){
+									console.log("updateCookies response: ", success);
 									callback(newUser);
 									return;
 								}else{
@@ -80,8 +79,8 @@
 
 		/**
 		 * registers for the server
-		 * @param  {String}   firstname      first name
-		 * @param  {String}   lastname       last name
+		 * @param  {String}   firstName      first name
+		 * @param  {String}   lastName       last name
 		 * @param  {String}   username       username
 		 * @param  {Strinf}   password       password
 		 * @param  {String}   email          E-mail
@@ -89,18 +88,18 @@
 		 * @param  {String}   role           what is the role of the user
 		 * @param  {Function} callback       callback function
 		 */
-		User.singup = function(firstname, lastname, username, password, email, profilePicture, role, callback){
+		User.singup = function(firstName, lastName, username, password, email, profilePicture, role, callback){
 			try{
 				var data = {
-					firstname: firstname,
-					lastname: lastname,
+					firstName: firstName,
+					lastName: lastName,
 					username: username,
 					email: email,
 					password: password,
 					profilePicture: profilePicture,
 					role: role
 				};
-				Soap.connetToServer(data, signUp, function(result, error){
+				$httpR.connectToServer(data, $httpR.signUp, function(result, error){
 					if((result) && error != null){
 						var newUser = new User(result);
 						newUser.updateCookies(function(success, error){
@@ -146,23 +145,62 @@
 			 * Changes the password for the use
 			 * @param  {String} newPassword new password
 			 */
-			changePassword: function(newPassword, callback){
+			changePassword: function(oldpassword, newPassword, callback){
 				try{
-
+					debugger;
+					var data = {
+						Token: this.token,
+						password: oldpassword,
+						new_password: newPassword
+					}
+					$httpR.connectToServer(data, $httpR.changePassword, function(success, error){
+						if( error || !success){
+							console.error("could not change password: ", error);
+							callback(null, error);
+						}else{
+							callback(success);
+						}
+					});
 				}catch(e){
-					
+					console.error("could not change password: ", e);
+					callback(null, error);
 				}
 			},
 
 			/**
-			 * Changes the email
-			 * @return {[type]} [description]
+			 * Updates the user information
+			 * @param  {string}   firstName      first name
+			 * @param  {string}   lastName       last name
+			 * @param  {string}   email          email
+			 * @param  {string}   profilePicture picture link
+			 * @param  {string}   role           role of the user
+			 * @param  {Function} callback       callback function
 			 */
-			changeEmail: function(newEmail, callback){
+			updateUser: function(firstName, lastName, email, profilePicture, role, callback){
 				try{
-
+					var data = {
+						firstName: firstName,
+						lastName: lastName,
+						email: email,
+						profilePicture: profilePicture,
+						role: role
+					}
+					Soap,connectToServer(data, Soap.updateUser, function(success, error){
+						if( error || !success ){
+							console.error("could not update data: ", error);
+							callback(null, error);
+						}else{
+							this.firstName = success["firstName"];
+							this.lastName = success["lastName"];
+							this.email = success["email"];
+							this.profilePicture = success["profilePicture"];
+							this.role = success["role"];
+							callback(this);
+						}
+					});
 				}catch(e){
-					
+					console.error("could not update data: ", error);
+					callback(null, e);
 				}
 			},
 
@@ -190,38 +228,12 @@
 				}
 			},
 
-			/**
-			 * Changes role
-			 * @param  {string} newRole new role
-			 */
-			changeRole: function(newRole, callback){
-				try{
-					this.role = newRole;
-					// update server server
-				}catch(e){
-
-				}
-			},
-
-			/**
-			 * Change profile picture
-			 * @param  {String} newPicture New profile picture
-			 */
-			changeProfilePicture: function(newPicture, callback){
-				try{
-					this.profilePicture = newPicture;
-					//update server
-				}catch(e){
-
-				}
-			},
-
 			toJSON: function(){
 				try{
 					return {
 						"UID": this.UID,
-						"firstname": this.firstname,
-						"lastname": this.lastname,
+						"firstName": this.firstName,
+						"lastName": this.lastName,
 						"username": this.username,
 						"email": this.email,
 						"creationDate": this.creationDate,

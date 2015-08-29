@@ -1,3 +1,7 @@
+// FOR Debugging
+console.warn("$scope stored in ngScope");
+var ngScope;
+
 (function(angular) {
     // 'use strict';
     angular.module('IntelLearner', ['onsen', 'firebase']);
@@ -21,6 +25,11 @@
              *  000          000     000  000     000  000     000  00       00     00000     *
              *                                                                                *
              *********************************************************************************/
+
+             // FOR Debugging
+            var appElement = document.querySelector('[ng-controller=MainCtrl]');
+            ngScope = angular.element(appElement).scope();
+
             $scope.AppStatus = 0;
             $scope.currentUser = {};
             $scope.Workflow = [];
@@ -1187,7 +1196,12 @@
                 var holdingRequestTab = wFlow.selectedTab;
                 var holdingDisplayObjectData = result;
                 if(dataHolding.childTab && dataHolding.childTab.length > 0){
+                    setTimeout(function(){
+                        $scope.Steps.lastFocusedWorkflow = holdingRequestTab.dataHolding.childTab[holdingRequestTab.dataHolding.childTab.length-1].workflowId;
+                        $scope.refocusLastWorkflow();
+                    },300);
                     $scope.workSpaces.replaceSearchChildContent(dataHolding.childTab[dataHolding.childTab.length-1], result);
+                    
                 }else{
                     $scope.displayContentNewTab(wFlow, result);
                 }
@@ -1197,34 +1211,34 @@
                 var holdingDisplayObjectData = result;
                 var holdingRequestTab = wFlow.selectedTab;
                 $scope.workSpaces.updateNewWorkflowButtons(2);
-                setTimeout(function(){
+                $timeout(function(){
                     $scope.displayNewWorkflowTabButtons = false;
                     $scope.displayNewWorkflowButtons = true;
                     $scope.holdingNewWorkflowData = {"selectedTab":holdingRequestTab, "Action":"DisplayObject", "data" :result};
                     $scope.selectColorFilter(0);
+                    var holdNumberOfChilds = holdingRequestTab.dataHolding.childTab.length;
                     var waitForUserResponse = $interval(function(){
                         if($scope.displayNewWorkflowButtons == false){
                             $interval.cancel(waitForUserResponse);
-                            if(holdingRequestTab.dataHolding.childTab && holdingRequestTab.dataHolding.childTab.length > 0){
+                            if(holdNumberOfChilds == holdingRequestTab.dataHolding.childTab.length){
                                 // new workflow canceled
                                 $scope.holdingNewWorkflowData = null;
                                 $scope.displayNewWorkflowButtons = false;
                             }else{
-                                setTimeout(function(){
-                                    debugger;
+                                $timeout(function(){
                                     $scope.Steps.lastFocusedWorkflow = holdingRequestTab.dataHolding.childTab[holdingRequestTab.dataHolding.childTab.length-1].workflowId;
                                     $scope.refocusLastWorkflow();
-                                    setTimeout(function(){
+                                    $timeout(function(){
                                         $scope.Steps.lastFocusedWorkflow = holdingRequestTab.parentWF.ID;
                                         $scope.focusingLastWorkflow = false;
                                     },600);
                                 },300);
-                                setTimeout(function(){
+                                $timeout(function(){
                                     $scope.InsertStepToLast10Steps();
                                 },500);
                             }
                         }
-                    },100);
+                    },500);
                 },200);
             }
 
@@ -1473,11 +1487,18 @@
             }
 
             $scope.testFunctions1 = function(){
-                User.login("dummy","dummy", function(s,e){
+                User.login("antoon91","pass5", function(s,e){
                     if(e || !s){
                         console.warn("error login ",e);
                     }else{
                         console.log("good ", s);
+                            s.changePassword("pass5","1234",function(succ, err){
+                                if( err || ! succ ){
+                                    console.error("could not change password ", err);
+                                }else{
+                                    console.log("password change");
+                                }
+                            });
                     }
                 })
             }
@@ -1641,4 +1662,6 @@
             }
         };
     }
+
 })(window.angular);
+

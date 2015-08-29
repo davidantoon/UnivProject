@@ -55,9 +55,10 @@
 			"name": "term2",
 			"lastModified" : 1439567697991
 	}],
-	"description" : "dummy description 1 dummy description 1 dummy description 1 dummy description 1",
+	"description" : "dummy description 1 dummy description 1 dummy description 1 dummy description 1,dummy description 1 dummy description 1 dummy description 1 dummy description 1,dummy description ",
 	"url" : "dummy url 1",
 	"locked" : true,
+	"lockedBy" : {"id":"2","UID":"2","firstName":"anton","lastName":"anton","username":"antoon91","password":"*********","email":null,"profilePictures":null,"role":null},
 	"lastModified" : 1439567697991,
 	"inProgress" : false
 },{

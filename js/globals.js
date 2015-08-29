@@ -50,29 +50,35 @@
 		}
 	})
 	.value('ServerReq', "Not initialized")
-	.value('Soap', {
+	.value('$httpR', {
 		protocol: "http",
 		ip: "31.154.164.129",
 		port: "8888",
 		baseUrl: "/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/",
 
-		login: "logIn",
-		signup: "signUp",
+   
+		logIn: "USERlogIn",
+		signUp: "USERsignUp",
+		changePassword: "USERchangePassword",
+		updateUser: "USERupdateUser",
 		connectToServer: function(data, method, callback){
 			//data.serverHash = gethash();
-			data.serverHash = "DAVID&AMEER";
-			$.soap({
-			    url: this.prototype + "://" + this.ip + ":" + this.port + this.baseUrl,
-			    method: method,
+			data.serverHash=("DAVID&AMEER");
 
+			console.log( this.protocol + "://" + this.ip + ":" + this.port + this.baseUrl + "?" + "method="+method +"&format=json");
+			
+			$.ajax({ 
+			    url: this.protocol + "://" + this.ip + ":" + this.port + this.baseUrl + "?" + "method="+method +"&format=json",
 			    data: data,
-
-			    success: function (soapResponse) {
-			    	console.log("soap success");
-			        callback(JSON.parse(soapResponse.toJSON().Body[Object.keys(soapResponse.toJSON().Body)[0]][Object.keys(soapResponse.toJSON().Body[Object.keys(soapResponse.toJSON().Body)[0]])]));
+			    success: function(success){
+			    	console.log(success);
+			    	if(success.status == 200)
+			    		callback(success.data, null);
+			    	else
+			    		callback(null, success);
 			    },
-			    error: function (SOAPResponse) {
-			       callback(null, JSON.parse(soapResponse.toJSON().Body[Object.keys(soapResponse.toJSON().Body)][Object.keys(soapResponse.toJSON().Body[Object.keys(soapResponse.toJSON().Body)])[1]]));
+			    error: function(error){
+			    	callback(null, JSON.parse(error.responseText).data.Message);
 			    }
 			});
 		}
