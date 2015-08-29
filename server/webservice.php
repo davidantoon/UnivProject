@@ -1240,66 +1240,68 @@ $api_response_code = array(
 
 ob_start();
 
-$rArray = array_change_key_case($_REQUEST, CASE_LOWER);
-$method = $rArray["method"];
- 
-if (method_exists('interfaceAPI', $method)) {
+try {
+    $rArray = array_change_key_case($_REQUEST, CASE_LOWER);
+    $method = $rArray["method"];
+     
+    if (method_exists('interfaceAPI', $method)) {
 
-	 $ref = new ReflectionMethod('interfaceAPI', $method);
-	 $params = $ref->getParameters();
-	 $pCount = count($params);
-	 $pArray = array();
-	 $paramStr = "";
-	 
-	 $i = 0;
-	 
-	foreach ($params as $param) {
+    	 $ref = new ReflectionMethod('interfaceAPI', $method);
+    	 $params = $ref->getParameters();
+    	 $pCount = count($params);
+    	 $pArray = array();
+    	 $paramStr = "";
+    	 
+    	 $i = 0;
+    	 
+    	foreach ($params as $param) {
 
-		$pArray[strtolower($param->getName())] = null;
-		$paramStr .= $param->getName();
-		if ($i != $pCount-1)  {
-			$paramStr .= ", ";
-		}
-		$i++;
-	}
+    		$pArray[strtolower($param->getName())] = null;
+    		$paramStr .= $param->getName();
+    		if ($i != $pCount-1)  {
+    			$paramStr .= ", ";
+    		}
+    		$i++;
+    	}
 
-	foreach ($pArray as $key => $val) {
+    	foreach ($pArray as $key => $val) {
 
-		$pArray[strtolower($key)] = $rArray[strtolower($key)];
-	}
+    		$pArray[strtolower($key)] = $rArray[strtolower($key)];
+    	}
 
-	if (count($pArray) == $pCount && !in_array(null, $pArray)) {
+    	if (count($pArray) == $pCount && !in_array(null, $pArray)) {
 
-		$response['data'] = call_user_func_array(array('interfaceAPI', $method), $pArray);
-	}
-	else {
+    		$response['data'] = call_user_func_array(array('interfaceAPI', $method), $pArray);
+    	}
+    	else {
 
-		$response['code']        = 7;
-		$response['status']      = 405;
-		$response['data']        = array('ErrorCode' => 0, "Message" => "Required parameter(s) for ". $method .": ". $paramStr);
-	}
+    		$response['code']        = 7;
+    		$response['status']      = 405;
+    		$response['data']        = array('ErrorCode' => 0, "Message" => "Required parameter(s) for ". $method .": ". $paramStr);
+    	}
+    }
+    else {
+    		$response['code']        = 8;
+    		$response['status']      = 405;
+    		$response['data']        = array('ErrorCode' => 0, "Message" => "The method " . $method . " does not exist.");
+    }
+
+    ob_end_clean();
+
+
+    if(is_null($response['data']['ErrorCode'])){
+        $response['code']   = 1;
+        $response['status'] = $api_response_code[$response['code']]['HTTP Response'];
+    }else{
+    	$response['code']   = $response['data']['ErrorCode'];
+        $response['status'] = $api_response_code[$response['code']]['HTTP Response'];
+    }
 }
-else {
-		$response['code']        = 8;
-		$response['status']      = 405;
-		$response['data']        = array('ErrorCode' => 0, "Message" => "The method " . $method . " does not exist.");
+catch (Exception $e) {
+        $response['code']        = 0;
+        $response['status']      = 400;
+        $response['data']        = array('ErrorCode' => 0, "Message" =>$e->getMessage());
 }
-
-ob_end_clean();
-
-
-if(is_null($response['data']['ErrorCode'])){
-    $response['code']   = 1;
-    $response['status'] = $api_response_code[$response['code']]['HTTP Response'];
-}else{
-	$response['code']   = $response['data']['ErrorCode'];
-    $response['status'] = $api_response_code[$response['code']]['HTTP Response'];
-}
-
-
-
-
-
 
 
 

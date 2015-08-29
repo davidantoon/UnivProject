@@ -49,7 +49,7 @@ class users {
 		
 		
 		$dbObj = new dbAPI();
-		$query = "SELECT count(USERNAME) AS count_user FROM users where USERNAME = '" . $username . "'";
+		$query = "SELECT count(USERNAME) AS count_user FROM USERS where USERNAME = '" . $username . "'";
 		$results = $dbObj->db_select_query($dbObj->db_get_usersDB(), $query);
 		if($results[0]["count_user"] > 0)
 			return false;
@@ -66,7 +66,7 @@ class users {
 
 		$dbObj = new dbAPI();
 		// validate user in database
-		$query = "SELECT * FROM users where USERNAME = '" . $username . "' AND PASSWORD = '" . $password . "'";
+		$query = "SELECT * FROM USERS where USERNAME = '" . $username . "' AND PASSWORD = '" . $password . "'";
 		$results = $dbObj->db_select_query($dbObj->db_get_usersDB(), $query);
 		if(count($results) == 0)
 			return null;
@@ -87,7 +87,7 @@ class users {
 
 		$dbObj = new dbAPI();
 		// validate user in database
-		$query = "SELECT * FROM users where UID = '" . $UID . "' ";
+		$query = "SELECT * FROM USERS where UID = '" . $UID . "' ";
 		$results = $dbObj->db_select_query($dbObj->db_get_usersDB(), $query);
 		if(count($results) == 0)
 			return null;
@@ -112,7 +112,7 @@ class users {
 
 		// update user's password in database
 		$dbObj = new dbAPI();
-		$query = "UPDATE users SET PASSWORD = '". $new_password ."' where USERNAME = '" . $username . "'";
+		$query = "UPDATE USERS SET PASSWORD = '". $new_password ."' where USERNAME = '" . $username . "'";
 		$results = $dbObj->run_query($dbObj->db_get_usersDB(), $query);
 		if($results) {
 			// create a new token to invalidate old tokens
@@ -131,7 +131,7 @@ class users {
 
 		// update user's password in database
 		$dbObj = new dbAPI();
-		$query = "UPDATE users SET FIRST_NAME = '". $first_name ."', LAST_NAME = '". $last_name ."', email = '". $email ."', PROFILE_PICTURE = '". $profile_picture ."', ROLE = '". $role ."'  where UID = '" . $UID . "'";
+		$query = "UPDATE USERS SET FIRST_NAME = '". $first_name ."', LAST_NAME = '". $last_name ."', email = '". $email ."', PROFILE_PICTURE = '". $profile_picture ."', ROLE = '". $role ."'  where UID = '" . $UID . "'";
 		$results = $dbObj->run_query($dbObj->db_get_usersDB(), $query);
 		if($results) {
 			return users::get_user_by_UID($UID);
@@ -149,7 +149,7 @@ class users {
 		
 
 		$dbObj = new dbAPI();
-		$query = "SELECT * FROM users where TOKEN = '" . $token . "'";
+		$query = "SELECT * FROM USERS where TOKEN = '" . $token . "'";
 		$results = $dbObj->db_select_query($dbObj->db_get_usersDB(), $query);
 		if(count($results) == 0)
 			return null;
@@ -164,7 +164,7 @@ class users {
 		
 
 		$dbObj = new dbAPI();
-		$query = "UPDATE users SET TOKEN = '' where USERNAME = '" . $username . "'";
+		$query = "UPDATE USERS SET TOKEN = '' where USERNAME = '" . $username . "'";
 		$results = $dbObj->run_query($dbObj->db_get_usersDB(), $query);
 		if($results)
 			return true;
@@ -181,7 +181,7 @@ class users {
 		try {
 			$token = users::generateRandomString();
 			$dbObj = new dbAPI();
-			$query = "UPDATE users SET TOKEN = '". $token ."' where USERNAME = '" . $username . "'";
+			$query = "UPDATE USERS SET TOKEN = '". $token ."' where USERNAME = '" . $username . "'";
 			$results = $dbObj->run_query($dbObj->db_get_usersDB(), $query);
 			if($results){
 				echo $results;

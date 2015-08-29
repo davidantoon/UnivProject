@@ -46,19 +46,19 @@
 
 
 
-	// $url= 'http://localhost:8888/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php'; // url + file.php
-	// $data = array('serverHash' => 'DAVIDAMEER', 'username' => 'antoon91', 'password' => '1234' , 'method'  => "USERlogIn" );
+	$url= 'http://localhost:8888/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php'; // url + file.php
+	$data = array('serverHash' => 'DAVIDAMEER', 'username' => 'antoon91', 'password' => '1234' , 'method'  => "USERlogIn" );
 
-	// // use key 'http' even if you send the request to https://...
-	// $options = array(
-	//     'http' => array(
-	//         'method'  => "POST",
-	//         'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-	//         'content' => http_build_query($data),
-	//     ),
-	// );
-	// $context  = stream_context_create($options);
-	// $result = file_get_contents($url, false, $context);
-	// var_dump($result);
+	// use key 'http' even if you send the request to https://...
+	$options = array(
+	    'http' => array(
+	        'method'  => "POST",
+	        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+	        'content' => http_build_query($data),
+	    ),
+	);
+	$context  = stream_context_create($options);
+	$result = file_get_contents($url, false, $context);
+	var_dump($result);
 ?> 
 
