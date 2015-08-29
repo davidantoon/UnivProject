@@ -2,7 +2,7 @@
     // 'use strict';
 	angular.module('IntelLearner').factory('User', ['$rootScope', '$http','Server','$httpR', function($rootScope, $http, Server,$httpR){
 	
-		function User(tempJson, UID, firstname, lastName, username, email, profilePicture, role,token){
+		function User(tempJson, UID, firstName, lastName, username, email, profilePicture, role,token){
 			if(tempJson){
 				this.UID = tempJson.UID;
 				this.firstName = tempJson.FIRST_NAME;
@@ -16,7 +16,7 @@
 
 			}else{
 				this.UID = UID;
-				this.firstname = firstname;
+				this.firstName = firstName;
 				this.lastName = lastName
 				this.username = username;
 				this.email = email;
@@ -79,7 +79,7 @@
 
 		/**
 		 * registers for the server
-		 * @param  {String}   firstname      first name
+		 * @param  {String}   firstName      first name
 		 * @param  {String}   lastName       last name
 		 * @param  {String}   username       username
 		 * @param  {Strinf}   password       password
@@ -88,10 +88,10 @@
 		 * @param  {String}   role           what is the role of the user
 		 * @param  {Function} callback       callback function
 		 */
-		User.singup = function(firstname, lastName, username, password, email, profilePicture, role, callback){
+		User.singup = function(firstName, lastName, username, password, email, profilePicture, role, callback){
 			try{
 				var data = {
-					firstname: firstname,
+					firstName: firstName,
 					lastName: lastName,
 					username: username,
 					email: email,
@@ -169,17 +169,17 @@
 
 			/**
 			 * Updates the user information
-			 * @param  {string}   firstname      first name
+			 * @param  {string}   firstName      first name
 			 * @param  {string}   lastName       last name
 			 * @param  {string}   email          email
 			 * @param  {string}   profilePicture picture link
 			 * @param  {string}   role           role of the user
 			 * @param  {Function} callback       callback function
 			 */
-			updateUser: function(firstname, lastName, email, profilePicture, role, callback){
+			updateUser: function(firstName, lastName, email, profilePicture, role, callback){
 				try{
 					var data = {
-						firstname: firstname,
+						firstName: firstName,
 						lastName: lastName,
 						email: email,
 						profilePicture: profilePicture,
@@ -190,7 +190,7 @@
 							console.error("could not update data: ", error);
 							callback(null, error);
 						}else{
-							this.firstname = success["firstName"];
+							this.firstName = success["firstName"];
 							this.lastName = success["lastName"];
 							this.email = success["email"];
 							this.profilePicture = success["profilePicture"];
@@ -232,7 +232,7 @@
 				try{
 					return {
 						"UID": this.UID,
-						"firstname": this.firstname,
+						"firstName": this.firstName,
 						"lastName": this.lastName,
 						"username": this.username,
 						"email": this.email,
