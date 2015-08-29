@@ -5,6 +5,8 @@ class scope {
 
 	// add new scope
 	public static function add_new_scope($title, $description, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		
 		$dbObj = new dbAPI();
 		// get new UID
@@ -22,6 +24,8 @@ class scope {
 	// returns a scope by its UID
 	public static function get_scope_by_UID($UID) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		$dbObj = new dbAPI();
 		$query = "SELECT * FROM scope where UID = '" . $UID . "' AND ENABLED = '1'";
 		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
@@ -33,6 +37,8 @@ class scope {
 	
 
 	public static function get_scope_with_relations($Scope, $lang = '') {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		// check if scope exists
 		if($Scope == null)
@@ -48,6 +54,8 @@ class scope {
 
 	public static function get_scope_by_UID_with_relations($UID, $lang = '') {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		// check if scope exists
 		$Scope = scope::get_scope_by_UID($UID);
 		if($Scope == null)
@@ -62,6 +70,8 @@ class scope {
 
 
 	public static function serach_scopes($search_word, $search_fields, $lang = '') {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		$dbObj = new dbAPI();
 
@@ -88,6 +98,8 @@ class scope {
 	// relate scope to another
 	public static function add_relation_to_scope($parent_scope_UID, $child_scope_UID, $is_hier, $user) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		// create relation between two terms
 		if(refRelation::add_relation_to_object($parent_scope_UID, $child_scope_UID, $is_hier, $user, 'R_Ls2s') == null) {
 			debugLog::log("parent scope (". $parent_scope_UID .") and child (". $child_scope_UID .") scope cannot be the same");
@@ -100,17 +112,23 @@ class scope {
 	// remove relation
 	public static function remove_relation($parent_scope_UID, $child_scope_UID) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		refRelation::remove_relation($$parent_scope_UID, $child_scope_UID, 'R_Ls2s');
 	}
 
 
 	public static function get_relations_of_scope($scope_UID) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		return refRelation::get_relations_of_object($scope_UID, 'R_Ls2s', 'scope::get_scope_by_UID');
 	}
 
 
 	public static function get_terms_of_scope($scope_UID, $lang = '') {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		$terms = array();
 

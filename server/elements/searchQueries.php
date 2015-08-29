@@ -7,6 +7,8 @@ class searchQueries {
 
 	public static function get_searchable_tables() {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		$dbObj = new dbAPI();
 		// validate user in database
 		$query = " SELECT * FROM SQL_SELECT_CONFIG ";
@@ -21,6 +23,8 @@ class searchQueries {
 
 	public static function get_user_queries($user_UID) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		$dbObj = new dbAPI();
 		$query = "SELECT * FROM SQL_TEMPLATES where USER_ID = '" . $user_UID . "'";
 		$results = $dbObj->db_select_query($dbObj->db_get_usersDB(), $query);
@@ -31,6 +35,8 @@ class searchQueries {
 	}
 
 	public static function get_query_by_id($query_id) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		$dbObj = new dbAPI();
 		$query = "SELECT * FROM SQL_TEMPLATES where id = '" . $query_id . "'";
@@ -44,6 +50,8 @@ class searchQueries {
 
 
 	public static function save_new_user_query($query_text, $table_name, $query_name, $user_UID) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		// check if table is searchable
 		$arr = searchQueries::get_searchable_tables();
@@ -67,6 +75,8 @@ class searchQueries {
 
 	public static function update_user_query($query_id, $query_text, $query_name, $user_UID) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		$query = " UPDATE SQL_TEMPLATES SET QUERY_TEXT = '". $query_text ."', QUERY_NAME = '" . $query_name . "' where  USER_ID = ". $user_UID ." AND id = ". $query_id ." ";
 		$dbObj->run_query($dbObj->db_get_usersDB(), $query);
 		return searchQueries::get_key_value_pair($key, $user_UID);
@@ -75,6 +85,8 @@ class searchQueries {
 
 
 	public static function remove_query($key, $user_UID) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		$dbObj = new dbAPI();
 		$query = "DELETE FROM SQL_TEMPLATES  where  USER_ID = ". $user_UID ." AND id = ". $query_id ." ";
@@ -85,6 +97,8 @@ class searchQueries {
 
 
 	public static function run_query($query_id, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		$query = searchQueries::get_query_by_id($query_id);
 		if($query == null)

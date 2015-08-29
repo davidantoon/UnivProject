@@ -15,6 +15,8 @@ class refRelation {
 	 * @return {refRelation} the relation that was just created
 	 */
 	public static function add_relation_to_object($parent_UID, $child_UID, $is_hier, $user, $tableName, $database_name = 'content') {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		
 		$database_name = dbAPI::get_db_name($database_name);
 		
@@ -56,6 +58,8 @@ class refRelation {
 	 */
 	public static function remove_relation($parent_UID, $child_UID, $tableName, $database_name = 'content') {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		$database_name = dbAPI::get_db_name($database_name);
 
 		// disable old relation
@@ -80,6 +84,8 @@ class refRelation {
 	 */
 	public static function get_objects_relation($first_object, $second_object, $tableName, $database_name = 'content') {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		$database_name = dbAPI::get_db_name($database_name);
 		$dbObj = new dbAPI();
 		$query = "SELECT * FROM ". $tableName ." where ENABLED = 1 AND ((PARENT_ID = " . $first_object .
@@ -102,6 +108,8 @@ class refRelation {
 	 * @return {array}             contains each of parents, children and others that each contains related objects
 	 */
 	public static function get_relations_of_object($object_UID, $tableName, $anonFunc, $param2 = '', $database_name = 'content') {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		$database_name = dbAPI::get_db_name($database_name);
 		$parents = array();
@@ -153,6 +161,8 @@ class O2TRelation {
 	 * @return  {O2TRelation} The relation that was just created
 	 */
 	public static function add_O2T_relation($object_UID, $term_UID, $link_type, $user, $tableName, $database_name) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		
 		$database_name = dbAPI::get_db_name($database_name);	
 		// disable old relation
@@ -196,6 +206,8 @@ class O2TRelation {
 	 */
 	public static function remove_O2T_relation($object_UID, $term_UID, $link_type, $tableName, $database_name) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		$database_name = dbAPI::get_db_name($database_name);
 
 		// disable old relation
@@ -226,6 +238,8 @@ class O2TRelation {
 	 * @return {O2TRelation}  
 	 */
 	public static function get_O2T_relation($object_UID, $term_UID, $link_type, $tableName, $database_name) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		$database_name = dbAPI::get_db_name($database_name);
 
@@ -259,6 +273,8 @@ class O2TRelation {
 	 * @return {array:terms}                array of terms
 	 */
 	public static function get_terms_of_object($object_UID, $database_name, $tableName, $lang = '') {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		// get database name
 		$database_name = dbAPI::get_db_name($database_name);
@@ -316,6 +332,8 @@ class D2KRelation {
 	 * @return  {D2KRelation} The relation that was just created
 	 */
 	public static function add_D2K_relation($Kbit_UID, $delivery_UID, $link_type, $link_weight, $user, $database_name) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		
 		
 		$database_name = dbAPI::get_db_name($database_name);
@@ -349,6 +367,8 @@ class D2KRelation {
 	 */
 	public static function remove_D2K_relation($Kbit_UID, $delivery_UID, $link_type, $database_name) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		$database_name = dbAPI::get_db_name($database_name);
 
 		// disable old relation
@@ -370,6 +390,8 @@ class D2KRelation {
 	 * @return {D2KRelation}   the relation object
 	 */
 	public static function get_D2K_relation($Kbit_UID, $delivery_UID, $link_type, $database_name) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		$database_name = dbAPI::get_db_name($database_name);
 
@@ -396,6 +418,8 @@ class D2KRelation {
 	 * @return {array:terms}                array of terms
 	 */
 	public static function get_related_Kbits($Delivery_UID, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		$NEEDED = array();
 		$PROVIDED = array();
