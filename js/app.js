@@ -1187,7 +1187,12 @@
                 var holdingRequestTab = wFlow.selectedTab;
                 var holdingDisplayObjectData = result;
                 if(dataHolding.childTab && dataHolding.childTab.length > 0){
+                    setTimeout(function(){
+                        $scope.Steps.lastFocusedWorkflow = holdingRequestTab.dataHolding.childTab[holdingRequestTab.dataHolding.childTab.length-1].workflowId;
+                        $scope.refocusLastWorkflow();
+                    },300);
                     $scope.workSpaces.replaceSearchChildContent(dataHolding.childTab[dataHolding.childTab.length-1], result);
+                    
                 }else{
                     $scope.displayContentNewTab(wFlow, result);
                 }
@@ -1211,7 +1216,6 @@
                                 $scope.displayNewWorkflowButtons = false;
                             }else{
                                 setTimeout(function(){
-                                    debugger;
                                     $scope.Steps.lastFocusedWorkflow = holdingRequestTab.dataHolding.childTab[holdingRequestTab.dataHolding.childTab.length-1].workflowId;
                                     $scope.refocusLastWorkflow();
                                     setTimeout(function(){

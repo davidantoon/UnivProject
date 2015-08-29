@@ -6954,6 +6954,18 @@ div.vertical {
   color: gray;
 }
 
+.lockedDiv{
+
+}
+.lockedDiv > img{
+
+}
+.lockedDiv > p{
+
+}
+.lockedDiv > p > strong{
+  
+}
 
 
 

@@ -12,6 +12,7 @@
 				this.description = ((conData != undefined)?conData.description:'');
 				this.url = ((conData != undefined)?conData.url:'');
 				this.locked = ((conData != undefined)?conData.locked:false);
+				this.lockedBy = ((conData != undefined)?conData.lockedBy:null);
 				this.lastModified = ((conData != undefined)?conData.lastModified:null);
 				this.inProgress = ((conData != undefined)?conData.inProgress:false);
 				this.type = ((conData != undefined)?conData.type:null);
@@ -184,6 +185,7 @@
 						"description": this.description,
 						"url": this.url,
 						"locked": this.locked,
+						"lockedBy": this.lockedBy,
 						"lastModified": this.lastModified,
 						"inProgress": this.inProgress,
 						"type": this.type,

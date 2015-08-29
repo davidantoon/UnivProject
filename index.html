@@ -313,9 +313,16 @@
                         </div>
                       </div>
                     </div>
-                    <div class="{{'searchTypeTab '+((getSelectedTabType(wFlow) == 5)?'':'hidden')}}">
+                    <div ng-init="contentTab=wFlow.selectedTab;" class="{{'searchTypeTab '+((getSelectedTabType(wFlow) == 5)?'':'hidden')}}">
                       <div ng-click="back(wFlow.selectedTab.dataHolding);" style="{{'border-top: 2px solid '+wFlow.selectedTab.color+'; border-right: 3px solid '+wFlow.selectedTab.color+';'}}" class="ReturnToSearchButton">
                         <ons-icon icon="ion-chevron-left" size="18px"></ons-icon> Back
+                      </div>
+                      <div class="{{'lockedDiv '+((contentTab.content.locked == true)?'':'hidden')}}">
+                        <ons-icon icon="ion-locked" size="20px"></ons-icon>
+                        <p>Locked by <strong>{{contentTab.content.lockedBy.firstName + " " + contentTab.content.lockedBy.firstName}}</strong></p>
+                      </div>
+                      <div class="{{'InprogressDiv '+((contentTab.content.inProgress == true)?'':'hidden')}}">
+                        <ons-icon icon="ion-code-working" size="20px"></ons-icon>
                       </div>
                       <pre>{{wFlow.selectedTab.content | json:4}}</pre>
                     </div>
