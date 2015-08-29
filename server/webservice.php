@@ -1299,9 +1299,11 @@ try {
     }
 }
 catch (Exception $e) {
+        $randomErrorCode = users::generateRandomString(10);
+        debugLog::important_log("<i>API ERROR: ". $randomErrorCode ."</i>:<br>". $e->getMessage());
         $response['code']        = 0;
         $response['status']      = 400;
-        $response['data']        = array('ErrorCode' => 0, "Message" =>$e->getMessage());
+        $response['data']        = array('ErrorCode' => 0, "Message" =>"Unexpected error: ". $randomErrorCode);
 }
 
 

@@ -195,7 +195,7 @@ class users {
 	}
 
 	// generates tokens
-	private static function generateRandomString($length = 100) {
+	public static function generateRandomString($length = 100) {
 
 		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		
