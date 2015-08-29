@@ -12,7 +12,7 @@ class dbAPI {
 	private $password = 'root';
 	private $dbUsers = 'CMS_USERSdb';
 	private $dbContent = 'CMSdb';
-	private $host = 'localhost';
+	private $host = 'localhost'; 
 
 	public function db_get_usersDB(){
 		return $this->dbUsers;
@@ -53,12 +53,13 @@ class dbAPI {
 		    return $result;
 		}
 		else {
-			echo "<br><hr>". date("d-m-y h:i:s") ."<br>SQL ERROR:<br>" . mysql_error() ."<br>QUERY:<br>" . $sql . "<br>";
-			echo '<hr>';
-			echo '<hr>';
+			$err = "\n SQL ERROR: ". mysql_error() . " \n Query: \n". $sql . " \n ";
+			ob_start();
 			var_dump($conn);
-			echo '<hr>';
-			echo "<hr><br>";
+			$logs = ob_get_clean();
+
+			debugLog::important_log("[DBobject.php:run_query] ". $err . $logs);
+			
 			$conn->close();
 		}
     }

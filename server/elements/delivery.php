@@ -718,7 +718,7 @@ class Delivery {
 			debugLog::log("<i>[delivery.php:remove_term_from_Delivery]</i> Delivery (". $Delivery_UID .") is not locked by the user (". $user .")");
 			return null;
 		}
-		$locking_user = Lock::get_locking_user($UID, 'KBIT_BASE');
+		$locking_user = Lock::get_locking_user($Kbit_UID, 'KBIT_BASE');
 		if($locking_user != null && $locking_user["UID"] != $user) {
 			debugLog::log("<i>[delivery.php:add_Kbit_to_delivery]</i> Kbit(". $Kbit_UID .") is locked by other user(". $locking_user["UID"] .")");
 			return null;
@@ -733,7 +733,7 @@ class Delivery {
 			debugLog::log("<i>[delivery.php:remove_term_from_Delivery]</i> Delivery (". $Delivery_UID .") is not locked by the user (". $user .")");
 			return null;
 		}
-		$locking_user = Lock::get_locking_user($UID, 'KBIT_BASE');
+		$locking_user = Lock::get_locking_user($Kbit_UID, 'KBIT_BASE');
 		if($locking_user != null && $locking_user["UID"] != $user) {
 			debugLog::log("<i>[delivery.php:add_Kbit_to_delivery]</i> Kbit(". $Kbit_UID .") is locked by other user(". $locking_user["UID"] .")");
 			return null;

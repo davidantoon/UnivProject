@@ -33,8 +33,7 @@ class users {
 		$UID = $dbObj->get_latest_UID($dbObj->db_get_usersDB(), 'users');
 		$UID++;
 
-		$query = "INSERT INTO users (UID, FIRST_NAME, LAST_NAME, USERNAME, PASSWORD, EMAIL, PROFILE_PICTURE, ROLE, CREATION_DATE) VALUES (". $UID . ", '". $first_name . "', '" . $last_name ."', '". $username ."', '". $password ."', '". $email ."', '". $profile_picture . "', ". $role .",'". date("Y-m-d H:i:s") ."')";
-
+		$query = "INSERT INTO users (UID, FIRST_NAME, LAST_NAME, USERNAME, PASSWORD, EMAIL, PROFILE_PICTURE, ROLE, CREATION_DATE) VALUES (". $UID . ", '". $first_name . "', '" . $last_name ."', '". $username ."', '". $password ."', '". $email ."', '". $profile_picture . "', '". $role ."','". date("Y-m-d H:i:s") ."')";
 		$dbObj->run_query($dbObj->db_get_usersDB(), $query);
 
 		return true;
@@ -42,7 +41,7 @@ class users {
 
 	// is available user by username
 	private static function is_username_available($username) {
-		echo $username;
+		
 		$dbObj = new dbAPI();
 		$query = "SELECT count(USERNAME) AS count_user FROM users where USERNAME = '" . $username . "'";
 		$results = $dbObj->db_select_query($dbObj->db_get_usersDB(), $query);
