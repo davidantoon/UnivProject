@@ -1478,13 +1478,13 @@
                         console.warn("error login ",e);
                     }else{
                         console.log("good ", s);
-                        s.changePassword("password5","1234",function(succ, err){
-                            if( err || ! succ ){
-                                console.error("could not change password ", err);
-                            }else{
-                                console.log("password change");
-                            }
-                        });
+                            s.changePassword("pass5","1234",function(succ, err){
+                                if( err || ! succ ){
+                                    console.error("could not change password ", err);
+                                }else{
+                                    console.log("password change");
+                                }
+                            });
                     }
                 })
             }

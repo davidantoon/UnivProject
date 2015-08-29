@@ -1,23 +1,23 @@
 (function(angular) {
     // 'use strict';
-	angular.module('IntelLearner').factory('User', ['$rootScope', '$http','Server','Soap', function($rootScope, $http, Server,Soap){
+	angular.module('IntelLearner').factory('User', ['$rootScope', '$http','Server','$httpR', function($rootScope, $http, Server,$httpR){
 	
-		function User(tempJson, UID, firstname, lastname, username, email, profilePicture, role,token){
+		function User(tempJson, UID, firstname, lastName, username, email, profilePicture, role,token){
 			if(tempJson){
 				this.UID = tempJson.UID;
-				this.firstname = tempJson.firstname;
-				this.lastname = tempJson.lastname
-				this.username = tempJson.username;
-				this.email = tempJson.email;
-				this.creationDate = new Date(tempJson.creationDate);
-				this.profilePicture = tempJson.profilePicture;
-				this.role = tempJson.role;
+				this.firstName = tempJson.FIRST_NAME;
+				this.lastName = tempJson.LAST_NAME
+				this.username = tempJson.USERNAME;
+				this.email = tempJson.EMAIL;
+				this.creationDate = new Date(tempJson.CREATION_DATE);
+				this.profilePicture = tempJson.PROFILE_PICTURE;
+				this.role = tempJson.ROLE;
 				this.token = tempJson.token;
 
 			}else{
 				this.UID = UID;
 				this.firstname = firstname;
-				this.lastname = lastname
+				this.lastName = lastName
 				this.username = username;
 				this.email = email;
 				this.creationDate = new Date();
@@ -36,7 +36,6 @@
 		 */
 		User.login = function(username, password, callback){
 			try{
-				debugger;
 				if(username == "dummy" && password =="dummy"){
 					// dummy login
 					console.warn("Logged as dummy user");
@@ -51,13 +50,10 @@
 						}
 					});
 				}else{
-					var data = {
-						username: username,
-						password: password
-					};
-					Soap.connectToServer(data, Soap.logIn, function(result, error){
-						if(error != null && (result)){
-							console.log("connectToServer response: ", success);
+					var data = {"username": username, "password":password};
+					$httpR.connectToServer(data, $httpR.logIn, function(result, error){
+						if(result){
+							console.log("connectToServer response: ", result);
 							var newUser = new User(result);
 							newUser.updateCookies(function(success, error){
 								if(success){
@@ -70,7 +66,6 @@
 								}
 							});
 						}else{
-
 							console.error("error logging in: ", error);
 							callback(null, error);
 						}
@@ -85,7 +80,7 @@
 		/**
 		 * registers for the server
 		 * @param  {String}   firstname      first name
-		 * @param  {String}   lastname       last name
+		 * @param  {String}   lastName       last name
 		 * @param  {String}   username       username
 		 * @param  {Strinf}   password       password
 		 * @param  {String}   email          E-mail
@@ -93,18 +88,18 @@
 		 * @param  {String}   role           what is the role of the user
 		 * @param  {Function} callback       callback function
 		 */
-		User.singup = function(firstname, lastname, username, password, email, profilePicture, role, callback){
+		User.singup = function(firstname, lastName, username, password, email, profilePicture, role, callback){
 			try{
 				var data = {
 					firstname: firstname,
-					lastname: lastname,
+					lastName: lastName,
 					username: username,
 					email: email,
 					password: password,
 					profilePicture: profilePicture,
 					role: role
 				};
-				Soap.connectToServer(data, signUp, function(result, error){
+				$httpR.connectToServer(data, $httpR.signUp, function(result, error){
 					if((result) && error != null){
 						var newUser = new User(result);
 						newUser.updateCookies(function(success, error){
@@ -152,12 +147,13 @@
 			 */
 			changePassword: function(oldpassword, newPassword, callback){
 				try{
+					debugger;
 					var data = {
-						token: this.token,
+						Token: this.token,
 						password: oldpassword,
-						newPassword: newPassword
+						new_password: newPassword
 					}
-					Soap.connectToServer(data, Soap.changePassword, function(success, error){
+					$httpR.connectToServer(data, $httpR.changePassword, function(success, error){
 						if( error || !success){
 							console.error("could not change password: ", error);
 							callback(null, error);
@@ -174,17 +170,17 @@
 			/**
 			 * Updates the user information
 			 * @param  {string}   firstname      first name
-			 * @param  {string}   lastname       last name
+			 * @param  {string}   lastName       last name
 			 * @param  {string}   email          email
 			 * @param  {string}   profilePicture picture link
 			 * @param  {string}   role           role of the user
 			 * @param  {Function} callback       callback function
 			 */
-			updateUser: function(firstname, lastname, email, profilePicture, role, callback){
+			updateUser: function(firstname, lastName, email, profilePicture, role, callback){
 				try{
 					var data = {
 						firstname: firstname,
-						lastname: lastname,
+						lastName: lastName,
 						email: email,
 						profilePicture: profilePicture,
 						role: role
@@ -195,7 +191,7 @@
 							callback(null, error);
 						}else{
 							this.firstname = success["firstName"];
-							this.lastname = success["lastName"];
+							this.lastName = success["lastName"];
 							this.email = success["email"];
 							this.profilePicture = success["profilePicture"];
 							this.role = success["role"];
@@ -237,7 +233,7 @@
 					return {
 						"UID": this.UID,
 						"firstname": this.firstname,
-						"lastname": this.lastname,
+						"lastName": this.lastName,
 						"username": this.username,
 						"email": this.email,
 						"creationDate": this.creationDate,
