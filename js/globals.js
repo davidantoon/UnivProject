@@ -63,13 +63,15 @@
 		updateUser: "USERupdateUser",
 		connectToServer: function(data, method, callback){
 			//data.serverHash = gethash();
-			data.serverHash=("DAVID&AMEER");
-
+			data.serverHash="DAVID&AMEER";
+			data.method = method;
+			data.format = "json";
 			console.log( this.protocol + "://" + this.ip + ":" + this.port + this.baseUrl + "?" + "method="+method +"&format=json");
 			
 			$.ajax({ 
-			    url: this.protocol + "://" + this.ip + ":" + this.port + this.baseUrl + "?" + "method="+method +"&format=json",
+			    url: this.protocol + "://" + this.ip + ":" + this.port + this.baseUrl,
 			    data: data,
+			    method: POST,
 			    success: function(success){
 			    	console.log(success);
 			    	if(success.status == 200)
