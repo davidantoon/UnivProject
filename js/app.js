@@ -29,6 +29,8 @@ var ngScope;
              // FOR Debugging
             var appElement = document.querySelector('[ng-controller=MainCtrl]');
             ngScope = angular.element(appElement).scope();
+            $scope.isDummy = true;
+
 
             $scope.AppStatus = 0;
             $scope.currentUser = {};
@@ -1101,8 +1103,8 @@ var ngScope;
                             ],
                             "searchBy": [
                                 dataHolding.searchBy[0], //  Name
-                                dataHolding.searchBy[1], //  UID
-                                dataHolding.searchBy[2]  //  Description
+                                dataHolding.searchBy[1], //  Description
+                                dataHolding.searchBy[2]  //  ID
                             ],
                             "forceSearch": ((dataHolding.forceLastModifed == true)?'LastModifed':'ServerPull')
                         } 
@@ -1128,7 +1130,7 @@ var ngScope;
                                         $scope.displayNewWorkflowButtons = false;
                                     }else{
                                         $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, null);
-                                        var svr = new Server("SearchTab", false);
+                                        var svr = new Server("SearchTab", $scope.isDummy);
                                         svr.search(dataToSearch, function(result, error){
                                             if(error || !result){
                                                 $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, []);
@@ -1160,7 +1162,7 @@ var ngScope;
                         }else{ // there is old child tab search
                             $scope.workSpaces.selectTabAfterSearch(holdingRequestTab.dataHolding.childTab);
                             $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, null);
-                            var svr = new Server("SearchTab", false);
+                            var svr = new Server("SearchTab", $scope.isDummy);
                             svr.search(dataToSearch, function(result, error){
                                 if(error || !result){
                                     $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, []);
@@ -1585,6 +1587,11 @@ var ngScope;
             }
 
 
+            $scope.getGlobals = function(){
+                return Globals;
+            }
+
+
 
 
 
@@ -1604,7 +1611,7 @@ var ngScope;
                         console.warn("error login ",e);
                     }else{
                         console.log("good login", s);
-                        var svr = new Server(null, false);
+                        var svr = new Server(null, $scope.isDummy);
                         var dataToSearch = {}
                         svr.Search()
                     }

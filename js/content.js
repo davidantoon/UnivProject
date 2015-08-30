@@ -16,7 +16,7 @@
 				this.lastModified = ((conData != undefined)?conData.lastModified:null);
 				this.inProgress = ((conData != undefined)?conData.inProgress:false);
 				this.type = ((conData != undefined)?conData.type:null);
-				this.connectToDataBase = ((this.type && new Server(this.type, true)) || null);
+				this.connectToDataBase = ((this.type && new Server(this.type, $rootScope.currentScope.isDummy)) || null);
 				this.progressIndex = ((conData != undefined)?conData.progressIndex:1);
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","There was an error in creating new Content", Toast.LONG, Toast.ERROR);
