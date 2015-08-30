@@ -130,8 +130,6 @@ class termsAPI {
 
 	static function searchTerms($serverHash, $Token, $searchWord, $searchFields, $lang = '') {
 		
-		$searchFields = json_decode($searchFields);
-
 		if(serverAPI::validateServerIdentity($serverHash) == false)
     		return array('ErrorCode' => 4, 'Message' => "Invalid serverHash : ".$serverHash);
     	$user = usersAPI::validateToken($Token);
@@ -221,8 +219,6 @@ class termsAPI {
 class scopesAPI {
 
 	static function searchScopes($serverHash, $Token, $searchWord, $searchFields, $lang = '') {
-
-		$searchFields = json_decode($searchFields);
 
 		if(serverAPI::validateServerIdentity($serverHash) == false)
     		return array('ErrorCode' => 4, 'Message' => "Invalid serverHash : ".$serverHash);
@@ -368,8 +364,6 @@ class KbitAPI {
 
 
 	static function update($serverHash, $Token, $kbitUID, $title, $desc, $front) {
-
-		$front = json_decode($front);
 
 		if(serverAPI::validateServerIdentity($serverHash) == false)
     		return array('ErrorCode' => 4, 'Message' => "Invalid serverHash : ".$serverHash);
@@ -528,8 +522,6 @@ class DeliveryAPI {
 
 
 	static function addNew($serverHash, $Token, $title, $desc, $front) {
-
-		$front = json_decode($front);
 
 		if(serverAPI::validateServerIdentity($serverHash) == false)
     		return array('ErrorCode' => 4, 'Message' => "Invalid serverHash : ".$serverHash);
