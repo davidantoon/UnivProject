@@ -17,7 +17,7 @@
 				this.inProgress = ((conData != undefined)?conData.inProgress:false);
 				this.type = ((conData != undefined)?conData.type:null);
 				this.connectToDataBase = ((this.type && new Server(this.type, $rootScope.currentScope.isDummy)) || null);
-				this.progressIndex = ((conData != undefined)?conData.progressIndex:1);
+				this.progressWizard = ((conData != undefined)?conData.progressWizard:{});
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","There was an error in creating new Content", Toast.LONG, Toast.ERROR);
 	            console.error("Content: ", e);
@@ -191,7 +191,7 @@
 						"inProgress": this.inProgress,
 						"type": this.type,
 						"objectType": this.objectType,
-						"progressIndex": this.progressIndex
+						"progressWizard": this.progressWizard
 					}
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in converting to JSON", Toast.LONG, Toast.ERROR);

@@ -6580,11 +6580,11 @@ div.vertical {
 }
 
 .blured{
-    /*-webkit-filter: blur(6px);
+    -webkit-filter: blur(6px);
     -moz-filter: blur(6px);
     -o-filter: blur(6px);
     -ms-filter: blur(6px);
-    filter: blur(6px);*/
+    filter: blur(6px);
 }
 
 
@@ -6841,7 +6841,7 @@ div.vertical {
   height: 73px;
 }
 
-.searchResultSpinner{
+.searchResultSpinner, .SpinnerLoader{
   position: absolute;
   width: 100%;
   left: 0;
@@ -6850,6 +6850,7 @@ div.vertical {
   opacity: 0;
   z-index: 0;
 }
+
 .centerMeInDiv{
   margin: auto;
   left: 0;
@@ -7132,9 +7133,48 @@ selectable{
   padding: 0 7px;
 }
 
+.wizardContainer{
+  /*height: 357px;*/
+  background-color: white;
+  border: 1px solid rgba(0,0,0,.1);
+  z-index: 1000;
+  position: absolute;
+  /*top: 36px;*/
+  top: 0;
+  height: 100%;
+}
 
-
-
+.wizardContainer .header{
+  height: 60px;
+  background-color: #0860A8;
+  color: white;
+}
+.wizardContainer .header .title{
+  position: absolute;
+  min-width: 200px;
+  max-width: 230px;
+  margin: 18px auto;
+  font-size: 18px;
+  font-weight: 500;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+.wizardContainer .header .buttons{
+  line-height: 60px;
+  padding: 0 10px;
+  text-align: center;
+}
+.wizardContainer .header .buttons:hover{
+  background: rgba(255,255,255,.3);
+}
+.wizardContainer .header .buttons ons-icon{
+  vertical-align: -20% !important;
+}
+.wizardContainer .header .buttons p{
+  margin: 0;
+  display: inline-block;
+}
 
 
 

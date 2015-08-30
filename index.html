@@ -313,12 +313,123 @@
                         </div>
                       </div>
                     </div>
+                    <!-- DISPLAY CONETNT -->
                     <div  class="{{'contentTypeTab '+((getSelectedTabType(wFlow) == 5)?'':'hidden')}}">
+                      <ons-row class="wizardContainer" style="{{((wFlow.selectedTab.content.inProgress == true)?'visibility:visible':'visibility:hidden');}}">
+                        <div class="SpinnerLoader" style="{{((wFlow.selectedTab.content.progressWizard.spinner == true)?'visibility:visible;':'visibility:hidden');}}">
+                          <div class="centerMeInDiv " style="width:50px; height:50px">
+                            <img src="img/loader.gif" style="height:50px; width:50px" />
+                          </div>
+                        </div>
+                        <div ng-switch="wFlow.selectedTab.content.progressWizard.index" style="width: 100%;">
+                          <ons-row ng-switch-when="1">
+                            <ons-col>
+                              <ons-row class="header">
+
+                                <ons-col width="110px" ng-click="wFlow.selectedTab.content.progressWizard = {}; wFlow.selectedTab.content.inProgress = false;" class="backButton buttons clickable">
+                                  <ons-icon icon="ion-android-cancel" size="25px"></ons-icon>
+                                  <p>Cancel</p>
+                                </ons-col>
+                                <ons-col></ons-col>  <!-- SPACE FOR TITLE -->
+                                <div class="title">
+                                  {{wFlow.selectedTab.content.progressWizard.header}}
+                                </div>
+                                <ons-col width="110px" ng-click="wFlow.selectedTab.content.progressWizard.index=wFlow.selectedTab.content.progressWizard.index+1;" class="backButton buttons clickable">
+                                  <p>Next</p>
+                                  <ons-icon icon="ion-android-arrow-dropright-circle" size="25px"></ons-icon>
+                                </ons-col>
+
+                              </ons-row>
+                              <!-- (DELIVERY & KBIT) CHANGE NAME | DESCRIPTION | PATH -->
+                            </ons-col>
+                          </ons-row>
+                          <ons-row ng-switch-when="2">
+                            <div ng-switch="wFlow.selectedTab.content.type" style="width: 100%;">
+                              <ons-row ng-switch-when="Delivery">
+                                <ons-col>
+                                  <ons-row class="header">
+
+                                    <ons-col width="110px" ng-click="wFlow.selectedTab.content.progressWizard.index=wFlow.selectedTab.content.progressWizard.index-1;" class="backButton buttons clickable">
+                                      <ons-icon icon="ion-android-arrow-dropleft-circle" size="25px"></ons-icon>
+                                      <p>Back</p>
+                                    </ons-col>
+                                    <ons-col></ons-col>  <!-- SPACE FOR TITLE -->
+                                    <div class="title">
+                                      Kbits Needed & Provided
+                                    </div>
+                                    <ons-col width="110px" ng-click="wFlow.selectedTab.content.progressWizard.index=wFlow.selectedTab.content.progressWizard.index+1;" class="backButton buttons clickable">
+                                      <p>Next</p>
+                                      <ons-icon icon="ion-android-arrow-dropright-circle" size="25px"></ons-icon>
+                                    </ons-col>
+
+                                  </ons-row>
+                                  <!-- (DELIVERY) ADD | REMOVE TERMS -->
+                                  <!-- CANCEL BUTTON -->
+                                  <!-- BACK BUTTON -->
+                                  <!-- NEXT BUTTON -->
+                                <ons-col>
+                              </ons-row>
+                              <ons-row ng-switch-when="Kbit">
+                                <ons-col>
+                                  <div class="header">
+                                    {{wFlow.selectedTab.content.progressWizard.header}}
+                                  </div>
+                                  <!-- (KBIT) ADD | REMOVE TERMS -->
+                                  <!-- CANCEL BUTTON -->
+                                  <!-- BACK BUTTON -->
+                                  <!-- SAVE BUTTON -->
+                                  <!-- PUBLISH BUTTON -->
+                                <ons-col>
+                              </ons-row>
+                            </div>
+                          </ons-row>
+                          <ons-row ng-switch-when="3">
+                            <div ng-switch="wFlow.selectedTab.content.type" style="width: 100%;">
+                              <ons-row ng-switch-when="Delivery">
+                                <ons-col>
+                                  <div class="header">
+                                    {{wFlow.selectedTab.content.progressWizard.header}}
+                                  </div>
+                                  <!-- (DELIVERY) ADD | REMOVE KBITS NEEDED & PROVIDED -->
+                                  <!-- CANCEL BUTTON -->
+                                  <!-- BACK BUTTON -->
+                                  <!-- SAVE BUTTON -->
+                                  <!-- PUBLISH BUTTON -->
+                                <ons-col>
+                              </ons-row>
+                            </div>
+                          </ons-row>
+                          <!-- <ons-col width="90px" class="backButton">
+                            <ons-icon icon="ion-android-arrow-dropleft-circle" size="20px"></ons-icon>
+                            <p>Back</p>
+                          </ons-col> -->
+
+                          <!-- <ons-col width="90px" class="backButton">
+                            <ons-icon icon="ion-android-cancel" size="20px"></ons-icon>
+                            <p>Cancel</p>
+                          </ons-col> -->
+
+                          <!-- <ons-col width="90px" class="backButton">
+                            <ons-icon icon="ion-android-arrow-dropright-circle" size="20px"></ons-icon>
+                            <p>Next</p>
+                          </ons-col> -->
+
+                          <!-- <ons-col width="90px" class="backButton">
+                            <ons-icon icon="ion-checkmark-circled" size="20px"></ons-icon>
+                            <p>Save</p>
+                          </ons-col> -->
+
+                          <!-- <ons-col width="90px" class="backButton">
+                            <ons-icon icon="ion-social-dropbox" size="20px"></ons-icon>
+                            <p>Publish</p>
+                          </ons-col> -->
+                        </div>
+                      </ons-row>
                       <div ng-click="back(wFlow.selectedTab.dataHolding);" style="{{'border-top: 2px solid '+wFlow.selectedTab.color+'; border-right: 3px solid '+wFlow.selectedTab.color+';'}}" class="ReturnToSearchButton">
                         <ons-icon icon="ion-chevron-left" size="18px"></ons-icon> Back
                       </div>
-                      <div class="{{'tabOptionsDiv '+ ((wFlow.selectedTab.tabOption == true)?'':'invisible')}}" ng-mouseleave="closeOptionTab(wFlow)">
-                        <ons-row class="hoverOp clickable">
+                      <div class="{{'tabOptionsDiv '+ ((wFlow.selectedTab.tabOption == true && wFlow.selectedTab.content.type != 'Term')?'':'invisible')}}" ng-mouseleave="closeOptionTab(wFlow)">
+                        <ons-row ng-click="editContent(wFlow);" class="hoverOp clickable">
                           <ons-col class="optionIcon" width="34px">
                             <ons-icon icon="ion-edit" size="18px"></ons-icon>
                           </ons-col>
@@ -454,7 +565,6 @@
                           </div>
                         </ons-col>
                       </ons-row>
-                      <pre>{{wFlow.selectedTab.content | json:4}}</pre>
                     </div>
                 </div>
               </div>

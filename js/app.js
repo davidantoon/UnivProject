@@ -522,7 +522,7 @@ var ngScope;
             }
 
 
-            $scope.openTabOptions = function(wFlow){
+            $scope.openTabOptions = function(wFlow, header){
                 wFlow.selectedTab.tabOption = true;
             }
             $scope.closeOptionTab = function(wFlow){
@@ -1406,6 +1406,14 @@ var ngScope;
 
 
 
+            $scope.editContent = function(wFlow){
+                wFlow.selectedTab.content.progressWizard = {
+                    header:wFlow.selectedTab.content.type +' Details',
+                    index:1,
+                    spinner:false
+                };
+                wFlow.selectedTab.content.inProgress = true;
+            }
 
 
 
