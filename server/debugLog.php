@@ -4,6 +4,9 @@ class debugLog {
 	private static function debug_mode() {
 		return false; // debug mode
 	}
+	private static function debug_db() {
+		return false; // debug database function/queries
+	}
 
 	// #66d9ef blue (time)
 	// #f92772 pink (important)
@@ -26,6 +29,10 @@ class debugLog {
 	}
 
 	public static function trace($fileName, $function, $arg, $class_name = 'trace') {
+		
+		if(debugLog::debug_db() == false && $class_name == 'db')
+			return;
+
 		if($class_name != 'db')
 			$function = '<font color="#a381ff">'. $function . '</font>';
 		$str = '<br><font color = "#dadb74" size="2"><b>' . date("Y-m-d H:i:s"). ": </b>";

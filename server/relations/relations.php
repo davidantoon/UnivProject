@@ -295,7 +295,7 @@ class O2TRelation {
 		// retrieve term's details from terms class into array
 		$terms = array();
 		for($i=0;$i<count($results);$i++) {
-			$curr_term = term::get_term_by_UID($results[$i]["TERM_ID"], $lang);
+			$curr_term = term::get_full_term_by_UID($results[$i]["TERM_ID"], $lang);
 			// copy LINK_TYPE to term object
 			$curr_term["LINK_TYPE"] = $results[$i]["LINK_TYPE"];
 			array_push($terms, $curr_term);
@@ -452,6 +452,25 @@ class D2KRelation {
 		}
 		$kbits = array("NEEDED"=>$NEEDED, "PROVIDED"=>$PROVIDED, "OTHERS"=>$OTHERS);
 		return $kbits;
+	}
+
+
+	public static function get_related_deliveries($Delivery_UID, $user) {
+
+		// step: 1) get needed + provided 'kbits' of current 'delivery' 
+		// get database name
+		if(Lock::is_locked_by_user($Delivery_UID, 'DELIVERY_BASE', $user) == true)
+			$database_name = dbAPI::get_db_name('user');
+		else
+			$database_name = dbAPI::get_db_name('content');
+		
+		$dbObj = new dbAPI();
+
+		// get all needed and provided Kbits (as relation objects)
+		$query = "SELECT * FROM ". $database_name .".R_LD2K where ENABLED = 1 AND (DELIVERY_BASE_ID = " . $Delivery_UID .")";
+		$results = $dbObj->db_select_query($database_name, $query);
+
+		
 	}
 }
 ?>

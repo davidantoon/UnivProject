@@ -1,53 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="IntelLearner">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <link rel="icon" href="img/favicon.ico" type="image/x-icon"/> -->
+  <!-- <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon"/> -->
+  <title></title>
+  
+  <link rel="stylesheet" href="../css/app.css"> 
+  <link rel="stylesheet" href="../css/bootstrap-datepicker3.css"> 
+  <link rel="stylesheet" href="../css/onsenui.css">
+  <link rel="stylesheet" href="../css/onsen-css-components-IntelProject.css">
+  <link rel="stylesheet" href="../css/app.css">
+  
+
+
 <?php
-
-	
-	// echo MyAPI2::hello2();
-	// echo 'Current PHP version: ' . phpversion();
-	
-
-	// $options = array('location' => 'http://localhost:8888/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php', 
-	//                   'uri' => 'http://localhost:8888/mopdqwompoaskdqomdiasjdiowqe/');
-
-	// // $options = array('location' => 'http://testserver-radjybaba.rhcloud.com/webservice.php', 
-	// //                   'uri' => 'http://testserver-radjybaba.rhcloud.com');
-
-	// //create an instante of the SOAPClient (the API will be available)
-	// $usersAPI = new SoapClient(NULL, $options);
-
-	// $result = $usersAPI->hello('DAVID&AMEER');
-	// $result = $usersAPI->DELIVERYsearchDelivery('DAVID&AMEER', 'kJwYvwzsyPLAF6wb09zggLvRnobKGOz1y503BzvaphK5nhgoqQEHCay0yKKfzjg7phb1QHcgYXlleBJFsnm4yV46FPmf8DmyUxzL', '', array('UID'));
-	// // echo $result;
-	// echo json_encode($result);
-	// 
-	
-
-	// $url = 'http://localhost:8888/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php'; // url + file.php
-	// $data = array('serverHash' => 'DAVID&AMEER', 'username' => 'antoon91', 'password' => 'pass5');
-
-	// // use key 'http' even if you send the request to https://...
-	// $options = array(
-	//     'http' => array(
-	//         'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-	//         'method'  => 'POST',
-	//         'content' => http_build_query($data),
-	//     ),
-	// );
-	// $context  = stream_context_create($options);
-	// $result = file_get_contents($url, false, $context);
-	// var_dump($result);
-
-
-
-
-
 	include 'app_config.php';
 	
-	// var_dump(debugLog::get_all_log_files());
-
-
+	// $temp = users::validate_username_password('rajibaba', 'my_password');
 
 	$url= 'http://localhost:8888/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php'; // url + file.php
-	$data = array('serverHash' => 'DAVIDAMEER', 'username' => 'antoon91', 'password' => '1234' , 'method'  => "USERlogIn" );
+	$data = array('serverHash' => 'DAVIDAMEER', 'searchWord' => ' ' , 'searchFields' => array(''), 'method'  => "DELIVERYsearchDelivery", 'token' => '7Qpv7KBEZVk3t67TARQqcEBITdZKb9EiZ3O7OpLOl6ROdZHORye4dQM63MQeVuxVyl2nLOb6V3V83CWUbbYo1Ku4xljsQRnodqLY' );
 
 	// use key 'http' even if you send the request to https://...
 	$options = array(
@@ -59,6 +35,35 @@
 	);
 	$context  = stream_context_create($options);
 	$result = file_get_contents($url, false, $context);
-	var_dump($result);
+
 ?> 
+
+
+</head>
+<body ng-controller="MainCtrl">
+<?php
+	echo "<pre style='-webkit-user-select: initial;-moz-user-select: initial;-ms-user-select: initial;user-select: initial;' ng-init='david=". $result ."'>{{ david | json:4}}</pre>";
+	echo "<script>console.log(". $result .")<"."/script>";
+?>
+
+
+
+ <script type="text/javascript" src="../js/angular/angular.js"></script>
+  <script type="text/javascript" src="../js/onsenui.js"></script> 
+  <script type="text/javascript" src="../js/jquery.js"></script>
+  <script type="text/javascript" src="../js/jquery.maskedinput.js"></script>
+  <script type="text/javascript" src="../js/firebase.js"></script>
+  <script type="text/javascript" src="../js/angularfire.min.js"></script>
+  <script type="text/javascript" src="../js/visible.js"></script>
+  <script type="text/javascript" src="../js/serverapp.js"></script>
+
+  </body>
+</html>
+
+
+
+
+
+
+
 

@@ -601,10 +601,46 @@ class Delivery {
 		if($locking_user != null)
 			$Delivery["LOCKING_USER"] = $locking_user;
 
+		// get kbits
+		$Delivery["KBITS"] = Delivery::get_Kbit_of_delivery($UID, $user);
+
+		// get terms
+		$terms = Delivery::get_terms_of_Delivery($UID, $user, $lang);
+		if($terms != null)
+			$kbit["TERMS"] = $terms;
+
+		// get front
+		
+		// get related deliveries
+
 		return $Delivery;
 	}
 
 
+	public static function get_Delivery_details_without_related_deliveries($UID, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
+		if(Lock::is_locked_by_user($UID, 'DELIVERY_BASE', $user))
+			$Delivery = Delivery::get_edited_Delivery_by_UID($UID);
+		else
+			$Delivery = Delivery::get_Delivery_by_UID($UID);
+
+		// get locking user
+		$locking_user = Lock::get_locking_user($UID, 'DELIVERY_BASE');
+		if($locking_user != null)
+			$Delivery["LOCKING_USER"] = $locking_user;
+
+		// get kbits
+		$Delivery["KBITS"] = Delivery::get_Kbit_of_delivery($UID, $user);
+
+		// get terms
+		$terms = Delivery::get_terms_of_Delivery($UID, $user, $lang);
+		if($terms != null)
+			$kbit["TERMS"] = $terms;
+
+		return $Delivery;
+	}
 
 	public static function serach_deliveries($search_word, $search_fields, $user) {
 
@@ -615,8 +651,11 @@ class Delivery {
 			$search_fields[$i] = "UPPER(" . $search_fields[$i] . ") LIKE UPPER('%" . $search_word . "%') "; 
 		}
 		$search_sttmnt = implode(" OR ", $search_fields);
+		$where_sttmnt = '';
+		if($search_word != " ")
+			$where_sttmnt = " AND (". $search_sttmnt .")";
 
-		$query = "SELECT * FROM DELIVERY_BASE where  ENABLED = '1' AND (". $search_sttmnt .")";
+		$query = "SELECT * FROM DELIVERY_BASE where  ENABLED = '1' ". $where_sttmnt;
 		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
 		if(count($results) == 0)
 			return array();
@@ -712,6 +751,13 @@ class Delivery {
 		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		return refRelation::get_relations_of_object($Delivery_UID, 'R_LD2D', 'Delivery::get_Delivery_details', $user);
+	}
+
+
+	private static function get_related_deliveries($Delivery_UID, $user) {
+
+		$dbObj = new dbAPI();
+		
 	}
 
 

@@ -603,7 +603,7 @@ class Kbit {
 		return $results[0];
 	}
 
-	public static function get_Kbit_details($UID, $user) {
+	public static function get_Kbit_details($UID, $user, $lang = '') {
 
 		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
@@ -616,6 +616,10 @@ class Kbit {
 		$locking_user = Lock::get_locking_user($UID, 'KBIT_BASE');
 		if($locking_user != null)
 			$kbit["LOCKING_USER"] = $locking_user;
+
+		$terms = Kbit::get_terms_of_Kbit($UID, $user, $lang);
+		if($terms != null)
+			$kbit["TERMS"] = $terms;
 
 		return $kbit;
 	}

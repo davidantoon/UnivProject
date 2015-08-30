@@ -45,7 +45,7 @@ class usersAPI {
     static function hello($hash) {
     	// return $hash;
     	// return Delivery::get_Delivery_by_UID(1039);
-    	return json_encode(serverAPI::validateServerIdentity($hash));
+    	return serverAPI::validateServerIdentity($hash);
     }
 
     static function signUp($serverHash, $firstName, $lastName, $username, $password, $email, $profilePicture, $role = '') {
@@ -138,7 +138,7 @@ class termsAPI {
     	if($user == null)
 	    	return array('ErrorCode' => 3, 'Message' => "Expired Token");
     	try {
-    		return json_encode(scope::serach_scopes($searchWord, $searchFields, $lang));
+    		return scope::serach_scopes($searchWord, $searchFields, $lang);
     	}
 	    catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -154,7 +154,7 @@ class termsAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-    		return json_encode(term::add_relation_to_scope($firstUID, $secondUID, $isHier, $user["UID"]));
+    		term::add_relation_to_scope($firstUID, $secondUID, $isHier, $user["UID"]);
     	}
 	    catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -170,7 +170,7 @@ class termsAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-    		return json_encode(term::remove_relation($firstUID, $secondUID));
+    		return term::remove_relation($firstUID, $secondUID);
     	}
 	    catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -186,7 +186,7 @@ class termsAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-    		return json_encode(term::get_relations_of_term($termUID, $lang = ''));
+    		return term::get_relations_of_term($termUID, $lang = '');
     	}
 	    catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -202,7 +202,7 @@ class termsAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-    		return json_encode(term::get_all_term_strings($lang));
+    		return term::get_all_term_strings($lang);
     	}
 	    catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -231,7 +231,7 @@ class scopesAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-    		return json_encode(scope::serach_scopes($searchWord, $searchFields, $lang));
+    		return scope::serach_scopes($searchWord, $searchFields, $lang);
     	}
 	    catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -247,7 +247,7 @@ class scopesAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-    		return json_encode(scope::add_relation_to_scope($firstUID, $secondUID, $isHier, $user["UID"]));
+    		return scope::add_relation_to_scope($firstUID, $secondUID, $isHier, $user["UID"]);
     	}
 	    catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -262,7 +262,7 @@ class scopesAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-    		return json_encode(scope::remove_relation($firstUID, $secondUID));
+    		return scope::remove_relation($firstUID, $secondUID);
     	}
 	    catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -282,7 +282,6 @@ class KbitAPI {
 
 	static function searchKbits($serverHash, $Token, $searchWord, $searchFields) {
 
-		$searchFields = json_decode($searchFields);
 
 		if(serverAPI::validateServerIdentity($serverHash) == false)
     		return array('ErrorCode' => 4, 'Message' => "Invalid serverHash : ".$serverHash);
@@ -291,7 +290,7 @@ class KbitAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-    		return json_encode(Kbit::serach_kbits($searchWord, $searchFields, $user["UID0"]));
+    		return Kbit::serach_kbits($searchWord, $searchFields, $user["UID"]);
     	}
 	    catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -301,7 +300,6 @@ class KbitAPI {
 
 	static function addNew($serverHash, $Token, $title, $desc, $front) {
 
-		$front = json_decode($front);
 
 		if(serverAPI::validateServerIdentity($serverHash) == false)
     		return array('ErrorCode' => 4, 'Message' => "Invalid serverHash : ".$serverHash);
@@ -310,7 +308,7 @@ class KbitAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-	    	return json_encode(Kbit::add_new_Kbit_in_edit_mode($title, $desc, $user["UID"], $front));
+	    	return Kbit::add_new_Kbit_in_edit_mode($title, $desc, $user["UID"], $front);
     	}
 	    catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -327,7 +325,7 @@ class KbitAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-			return json_encode(Kbit::begin_editing_kbit($kbitUID, $user["UID"]));
+			return Kbit::begin_editing_kbit($kbitUID, $user["UID"]);
 		}
 	    catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -344,7 +342,7 @@ class KbitAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-			return json_encode(Kbit::cancel_edited_kbit($kbitUID, $user["UID"]));
+			return Kbit::cancel_edited_kbit($kbitUID, $user["UID"]);
 		}
 		catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -361,7 +359,7 @@ class KbitAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-			return json_encode(Kbit::publish_changes($kbitUID, $user["UID"]));
+			return Kbit::publish_changes($kbitUID, $user["UID"]);
 		}
 		catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -380,7 +378,7 @@ class KbitAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-			return json_encode(Kbit::add_new_edit_for_kbit($kbitUID, $title, $desc, $user["UID"], $front));
+			return Kbit::add_new_edit_for_kbit($kbitUID, $title, $desc, $user["UID"], $front);
 		}
 		catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -396,7 +394,7 @@ class KbitAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-			return json_encode(Kbit::add_K2K_relation($firstUID, $secondUID, $isHier, $user["UID"]));
+			return Kbit::add_K2K_relation($firstUID, $secondUID, $isHier, $user["UID"]);
 		}
 		catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -412,7 +410,7 @@ class KbitAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-			return json_encode(Kbit::remove_K2K_relation($firstUID, $secondUID, $user["UID"]));
+			return Kbit::remove_K2K_relation($firstUID, $secondUID, $user["UID"]);
 		}
 		catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -428,7 +426,7 @@ class KbitAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-			return json_encode(Kbit::add_K2T_relation($kbitUID, $termUID, $linkType, $user["UID"]));
+			return Kbit::add_K2T_relation($kbitUID, $termUID, $linkType, $user["UID"]);
 		}
 		catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -444,7 +442,7 @@ class KbitAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
     	try {
 	    	$term = term::add_new_term_with_scope_and_meaning($termStringText, $lang, $user["UID"], $scopeUID, $termMeaningText);
-	    	return json_encode(Kbit::add_K2T_relation($kbitUID, $term["UID"], $linkType, $user["UID"]));
+	    	return Kbit::add_K2T_relation($kbitUID, $term["UID"], $linkType, $user["UID"]);
 	    }
 	    catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -460,7 +458,7 @@ class KbitAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
     	try {
 	    	$term = term::add_sysnonym($scopeUID, $termUID, $termMeaningText, $lang, $user["UID"]);
-	    	return json_encode(Kbit::add_K2T_relation($kbitUID, $term["UID"], $linkType, $user["UID"]));
+	    	return Kbit::add_K2T_relation($kbitUID, $term["UID"], $linkType, $user["UID"]);
 	    }
 	    catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -477,7 +475,7 @@ class KbitAPI {
     	try {
     		$termString = term::add_new_term($termStringText, $lang, $user["UID"]);
 	    	$term = term::add_new_meaning_under_new_scope($termString["UID"], $lang, $user["UID"], $scopeTitle, $scopeDesc, $termMeaningText);
-	    	return json_encode(Kbit::add_K2T_relation($kbitUID, $term["UID"], $linkType, $user["UID"]));
+	    	return Kbit::add_K2T_relation($kbitUID, $term["UID"], $linkType, $user["UID"]);
 	    }
 	    catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -493,7 +491,7 @@ class KbitAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-			return json_encode(Kbit::remove_term_from_Kbit($kbitUID, $termUID, $linkType, $user["UID"]));
+			return Kbit::remove_term_from_Kbit($kbitUID, $termUID, $linkType, $user["UID"]);
 		}
 		catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -513,9 +511,6 @@ class DeliveryAPI {
 
 
 	static function searchDelivery($serverHash, $Token, $searchWord, $searchFields) {
-		
-
-		$searchFields = json_decode($searchFields);
 
 		if(serverAPI::validateServerIdentity($serverHash) == false)
     		return array('ErrorCode' => 4, 'Message' => "Invalid serverHash : ".$serverHash);
@@ -524,7 +519,7 @@ class DeliveryAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-    		return json_encode(Delivery::serach_deliveries($searchWord, $searchFields, $user["UID"]));
+    		return Delivery::serach_deliveries($searchWord, $searchFields, $user["UID"]);
     	}
 	    catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -543,7 +538,7 @@ class DeliveryAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-	    	return json_encode(Delivery::add_new_Delivery_in_edit_mode($title, $desc, $user["UID"], $front));
+	    	return Delivery::add_new_Delivery_in_edit_mode($title, $desc, $user["UID"], $front);
     	}
 	    catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -560,7 +555,7 @@ class DeliveryAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-			return json_encode(Delivery::begin_editing_Delivery($deliveryUID, $user["UID"]));
+			return Delivery::begin_editing_Delivery($deliveryUID, $user["UID"]);
 		}
 	    catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -577,7 +572,7 @@ class DeliveryAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-			return json_encode(Delivery::cancel_edited_Delivery($deliveryUID, $user["UID"]));
+			return Delivery::cancel_edited_Delivery($deliveryUID, $user["UID"]);
 		}
 		catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -594,7 +589,7 @@ class DeliveryAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-			return json_encode(Delivery::publish_changes($deliveryUID, $user["UID"]));
+			return Delivery::publish_changes($deliveryUID, $user["UID"]);
 		}
 		catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -611,7 +606,7 @@ class DeliveryAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-			return json_encode(Delivery::add_new_edit_for_Delivery($deliveryUID, $title, $desc, $user["UID"], $front));
+			return Delivery::add_new_edit_for_Delivery($deliveryUID, $title, $desc, $user["UID"], $front);
 		}
 		catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -627,7 +622,7 @@ class DeliveryAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-			return json_encode(Delivery::add_D2D_relation($firstUID, $secondUID, $isHier, $user["UID"]));
+			return Delivery::add_D2D_relation($firstUID, $secondUID, $isHier, $user["UID"]);
 		}
 		catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -643,7 +638,7 @@ class DeliveryAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-			return json_encode(Delivery::remove_D2D_relation($firstUID, $secondUID, $user["UID"]));
+			return Delivery::remove_D2D_relation($firstUID, $secondUID, $user["UID"]);
 		}
 		catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -659,7 +654,7 @@ class DeliveryAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-			return json_encode(Delivery::add_D2T_relation($deliveryUID, $termUID, $linkType, $user["UID"]));
+			return Delivery::add_D2T_relation($deliveryUID, $termUID, $linkType, $user["UID"]);
 		}
 		catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -675,7 +670,7 @@ class DeliveryAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
     	try {
 	    	$term = term::add_new_term_with_scope_and_meaning($termStringText, $lang, $user["UID"], $scopeUID, $termMeaningText);
-	    	return json_encode(Delivery::add_D2T_relation($deliveryUID, $term["UID"], $linkType, $user["UID"]));
+	    	return Delivery::add_D2T_relation($deliveryUID, $term["UID"], $linkType, $user["UID"]);
 	    }
 	    catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -691,7 +686,7 @@ class DeliveryAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
     	try {
 	    	$term = term::add_sysnonym($scopeUID, $termUID, $termMeaningText, $lang, $user["UID"]);
-	    	return json_encode(Delivery::add_D2T_relation($deliveryUID, $term["UID"], $linkType, $user["UID"]));
+	    	return Delivery::add_D2T_relation($deliveryUID, $term["UID"], $linkType, $user["UID"]);
 	    }
 	    catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -708,7 +703,7 @@ class DeliveryAPI {
     	try {
     		$termString = term::add_new_term($termStringText, $lang, $user["UID"]);
 	    	$term = term::add_new_meaning_under_new_scope($termString["UID"], $lang, $user["UID"], $scopeTitle, $scopeDesc, $termMeaningText);
-	    	return json_encode(Delivery::add_D2T_relation($deliveryUID, $term["UID"], $linkType, $user["UID"]));
+	    	return Delivery::add_D2T_relation($deliveryUID, $term["UID"], $linkType, $user["UID"]);
 	    }
 	    catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -724,7 +719,7 @@ class DeliveryAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-			return json_encode(Delivery::remove_term_from_Delivery($deliveryUID, $termUID, $linkType, $user["UID"]));
+			return Delivery::remove_term_from_Delivery($deliveryUID, $termUID, $linkType, $user["UID"]);
 		}
 		catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -740,7 +735,7 @@ class DeliveryAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-			return json_encode(Delivery::add_Kbit_to_delivery($KbitUID, $DeliveryUID, $linkType, $linkWeight, $user["UID"]));
+			return Delivery::add_Kbit_to_delivery($KbitUID, $DeliveryUID, $linkType, $linkWeight, $user["UID"]);
 		}
 		catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -757,7 +752,7 @@ class DeliveryAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-			return json_encode(Delivery::remove_Kbit_from_delivery($KbitUID, $DeliveryUID, $linkType, $user["UID"]));
+			return Delivery::remove_Kbit_from_delivery($KbitUID, $DeliveryUID, $linkType, $user["UID"]);
 		}
 		catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -783,7 +778,7 @@ class keyValuePairAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-			return json_encode(keyValuePair::remove_key_value_pair($key, $user["UID"]));
+			return keyValuePair::remove_key_value_pair($key, $user["UID"]);
 		}
 		catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -799,7 +794,7 @@ class keyValuePairAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-			return json_encode(keyValuePair::set_key_value_pair($key, $value, $user["UID"]));
+			return keyValuePair::set_key_value_pair($key, $value, $user["UID"]);
 		}
 		catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -815,7 +810,7 @@ class keyValuePairAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-			return json_encode(keyValuePair::get_key_value_pair($key, $user["UID"]));
+			return keyValuePair::get_key_value_pair($key, $user["UID"]);
 		}
 		catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -843,7 +838,7 @@ class searchableQueriesAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-			return json_encode(searchQueries::run_query($queryID, $user["UID"]));
+			return searchQueries::run_query($queryID, $user["UID"]);
 		}
 		catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -859,7 +854,7 @@ class searchableQueriesAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-			return json_encode(searchQueries::remove_query($key, $user["UID"]));
+			return searchQueries::remove_query($key, $user["UID"]);
 		}
 		catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -875,7 +870,7 @@ class searchableQueriesAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-			return json_encode(searchQueries::update_user_query($queryID, $text, $name, $user["UID"]));
+			return searchQueries::update_user_query($queryID, $text, $name, $user["UID"]);
 		}
 		catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -891,7 +886,7 @@ class searchableQueriesAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-			return json_encode(searchQueries::save_new_user_query($text, $tableName, $queryName, $user["UID"]));
+			return searchQueries::save_new_user_query($text, $tableName, $queryName, $user["UID"]);
 		}
 		catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -907,7 +902,7 @@ class searchableQueriesAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-			return json_encode(searchQueries::get_user_queries($user["UID"]));
+			return searchQueries::get_user_queries($user["UID"]);
 		}
 		catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -923,7 +918,7 @@ class searchableQueriesAPI {
     		return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
     	try {
-			return json_encode(searchQueries::get_searchable_tables());
+			return searchQueries::get_searchable_tables();
 		}
 		catch (Exception $e) {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -1077,7 +1072,8 @@ class interfaceAPI {
 // ====================================================================
 // ====================================================================
 
-	public static function DELIVERYsearchDelivery($serverHash, $Token, $searchWord, $searchFields) {
+	public static function DELIVERYsearchDelivery($serverHash, $Token, $searchWord, $searchFields = array()) {
+    
 		return DeliveryAPI::searchDelivery($serverHash, $Token, $searchWord, $searchFields);
 	}
 	public static function DELIVERYaddNew($serverHash, $Token, $title, $desc, $front) {
@@ -1192,6 +1188,7 @@ class interfaceAPI {
  
 function deliver_response($format, $api_response)
 {
+    ob_start();
     $http_response_code = array(
         200 => 'OK',
         400 => 'Bad Request',
@@ -1204,13 +1201,16 @@ function deliver_response($format, $api_response)
     if (strcasecmp($format, 'json') == 0) {
         header('Content-Type: application/json; charset=utf-8');
         $json_response = json_encode($api_response);
+        ob_end_clean();
         echo $json_response;
     } elseif (strcasecmp($format, 'xml') == 0) {
         header('Content-Type: application/xml; charset=utf-8');
         $xml_response = '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . '<response>' . "\n" . "\t" . '<code>' . $api_response['code'] . '</code>' . "\n" . "\t" . '<data>' . $api_response['data'] . '</data>' . "\n" . '</response>';
+        ob_end_clean();
         echo $xml_response;
     } else {
         header('Content-Type: text/html; charset=utf-8');
+        ob_end_clean();
         echo $api_response['data'];
     }
     exit;
@@ -1239,6 +1239,10 @@ $api_response_code = array(
 
 
 ob_start();
+        // $randomErrorCode = users::generateRandomString(10);
+        $response['code']        = 0;
+        $response['status']      = 500;
+        $response['data']        = array('ErrorCode' => 0, "Message" =>"Unexpected error: ");//. $randomErrorCode);
 
 try {
     $rArray = array_change_key_case($_REQUEST, CASE_LOWER);
@@ -1269,7 +1273,7 @@ try {
 
     		$pArray[strtolower($key)] = $rArray[strtolower($key)];
     	}
-
+        
     	if (count($pArray) == $pCount && !in_array(null, $pArray)) {
 
     		$response['data'] = call_user_func_array(array('interfaceAPI', $method), $pArray);
@@ -1278,7 +1282,7 @@ try {
 
     		$response['code']        = 7;
     		$response['status']      = 405;
-    		$response['data']        = array('ErrorCode' => 0, "Message" => "Required parameter(s) for ". $method .": ". $paramStr);
+    		$response['data']        = array('ErrorCode' => 7, "Message" => "Required parameter(s) for ". $method .": ". $paramStr);
     	}
     }
     else {
@@ -1287,7 +1291,6 @@ try {
     		$response['data']        = array('ErrorCode' => 0, "Message" => "The method " . $method . " does not exist.");
     }
 
-    ob_end_clean();
 
 
     if(is_null($response['data']['ErrorCode'])){
@@ -1299,22 +1302,30 @@ try {
     }
 }
 catch (Exception $e) {
-        $randomErrorCode = users::generateRandomString(10);
-        debugLog::important_log("<i>API ERROR: ". $randomErrorCode ."</i>:<br>". $e->getMessage());
+
+        // debugLog::important_log("<i>API ERROR: ". $randomErrorCode ."</i>:<br>". $e->getMessage());
         $response['code']        = 0;
         $response['status']      = 400;
-        $response['data']        = array('ErrorCode' => 0, "Message" =>"Unexpected error: ". $randomErrorCode);
+        $response['data']        = array('ErrorCode' => 0, "Message" =>"Unexpected error: ");//. $randomErrorCode);
 }
 
+// debugLog::important_log("<i>API ERROR: ". $randomErrorCode ."</i>:<br>". $e->getMessage());
 
 
 
 
-
-
+ob_end_clean();
 deliver_response(/*$_GET['format']*/'json', $response);
 
 
+
+function getValue($string) {
+    return $string;
+    json_decode($string, true);
+    if(json_last_error() == JSON_ERROR_NONE)
+        return json_decode($string, true);
+    return $string;
+}
 ?>
 
 
