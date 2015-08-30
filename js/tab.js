@@ -30,31 +30,55 @@
 				this.dataHolding = {};
 				return this;
 			}else if(tempJson){
-				
+				// debugger;
 				this.parentWF = workflow;
 				this.ID = tempJson.ID;
 				this.title = tempJson.title;
 				this.Type = tempJson.Type;
 				this.orderTab = tempJson.orderTab;
-				this.dataHolding = tempJson.dataHolding;
-				this.color = ((tempJson.color != undefined)?tempJson.color:"#0860A8");
-				if(tempJson.requestFrom == "restoreStep"){
-						if(tempJson.content != null && tempJson.content != null){
-							var passThis = this;
+				var passThis = this;
+				if(this.Type != 4){
+					this.dataHolding = tempJson.dataHolding;
+					Continue(passThis);
+					return;
+				}
+				else{
+					this.dataHolding = tempJson.dataHolding;
+					loopResults(0, this.dataHolding.results, []);
+					function loopResults(index, results, dataToReturn){
+						if(index < results.length){
 							var stor = new Storage();
-							stor.getElementById(tempJson.content, /* force last modefied */ true, /* force server pull */ false, function(dataFromStorage){
-								passThis.content = dataFromStorage;
-								tempJson.callback(passThis, tempJson.passindex, tempJson.passThis, tempJson.passTempJson);
+							stor.getElementById(results[index], /* force last modefied */ true, /* force server pull */ false, function(dataFromStorage){
+								dataToReturn.push(dataFromStorage);
+								loopResults(Number(index)+1, results, dataToReturn);
 							});
 						}else{
-							tempJson.callback(this, tempJson.passindex, tempJson.passThis, tempJson.passTempJson);
+							// debugger;
+							passThis.dataHolding.results = dataToReturn;
+							Continue(passThis);
+							return;
 						}
-				}else{
-					if(tempJson.content != null && tempJson.content != null){
-						var tempData = Globals.get(JSON.parse(tempJson.content).id);
-						this.content = ((tempData != undefined)?(new Content(tempJson.content)):null);
+					}
+				}
+				function Continue(passThis){
+					passThis.color = ((tempJson.color != undefined)?tempJson.color:"#0860A8");
+					if(tempJson.requestFrom == "restoreStep"){
+							if(tempJson.content != null && tempJson.content != null){
+								var stor = new Storage();
+								stor.getElementById(tempJson.content, /* force last modefied */ true, /* force server pull */ false, function(dataFromStorage){
+									passThis.content = dataFromStorage;
+									tempJson.callback(passThis, tempJson.passindex, tempJson.passThis, tempJson.passTempJson);
+								});
+							}else{
+								tempJson.callback(passThis, tempJson.passindex, tempJson.passThis, tempJson.passTempJson);
+							}
 					}else{
-						this.content = null;
+						if(tempJson.content != null && tempJson.content != null){
+							var tempData = Globals.get(JSON.parse(tempJson.content).id);
+							passThis.content = ((tempData != undefined)?(new Content(tempJson.content)):null);
+						}else{
+							passThis.content = null;
+						}
 					}
 				}
 
@@ -118,7 +142,8 @@
 					break;
 					case Tab.CONTENT_VIEW:
 						this.addData({
-							"parentTab":{"workflowId":null,"tabId":null}
+							"parentTab":{"workflowId":null,"tabId":null},
+							"childTab":{"workflowId":null,"tabId":null}
 						});
 						this.addContent(content, true);
 					break;
@@ -188,7 +213,7 @@
 	                "ID": this.ID,
 	                "title": this.title,
 	                "Type": this.Type,
-	                "content": ((this.content == null)?null:this.content.toString()),
+	                "content": ((this.content == null)?null:this.content.toJson()),
 	                "orderTab": this.orderTab,
 	                "dataHolding": this.dataHolding,
 	                "color": this.color

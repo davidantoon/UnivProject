@@ -1,6 +1,6 @@
 (function(angular) {
     // 'use strict';
-	angular.module('IntelLearner').factory('Server', ["$rootScope", "Toast", function($rootScope, Toast){
+	angular.module('IntelLearner').factory('Server', ["$rootScope", "Toast", "$httpR", "Globals", function($rootScope, Toast, $httpR, Globals){
 	
 		function Server(connectionType, dummy){
 			try{
@@ -11,11 +11,9 @@
 					this.saveObjectQuery = "dummy";
 					this.TypeOfData = connectionType;
 				}else{
-					this.protocol = "http";
-					this.ip = "";
-					this.port = "";
-					this.baseUrl = "";
-					this.file = "";
+					this.baseUrl = "http://192.168.1.4:8888/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/";
+					this.method = "POST";
+					this.timeout = 10000;
 
 				}
 			}catch(e){
@@ -32,7 +30,7 @@
 			 * @param  {Function} callback     callback function
 			 */
 			search: function(dataToSearch, callback){
-				try{ 
+				try{
 					if(this.baseUrl == "dummy"){
 						var searchResults = [];
 						var SplitText = dataToSearch.text.split(' ');
@@ -125,18 +123,303 @@
 						callback(searchResults, null);
 						return;
 					}else{
-						$.ajax({
-							url: baseUrl+searchQuery,
-							type: 'GET',
-							dataType: 'Content-Type: application/json',
-							data: {text: searchText},
-							success: function(res){
-								callback(res);
-							},
-							error: function(err){
-								callback("Error");
-							}
-						});
+						var searchFields = [];
+						var mergeResult = [];
+						var resultCounter = 0;
+						var searchResults = [];
+						if(dataToSearch.searchBy[0] == 1)
+							searchFields.push("TITLE");
+						if(dataToSearch.searchBy[1] == 1)
+							searchFields.push("DESCRIPTION");
+						if(dataToSearch.searchBy[2] == 1)
+							searchFields.push("UID");
+						var data= {
+							"searchWord": dataToSearch["text"],
+							"searchFields": searchFields,
+							"Token": Globals.currentUser.token
+						};
+						//Kbit
+						if(dataToSearch.dataType[0] == 1){
+							$httpR.connectToServer(data, "KBITsearchKbits", function(success, error){
+								
+								var successModified = [];
+								if(error || !success){
+									console.error("error searching kbit is server: ", error);
+								}else{
+									console.log("search kbit in serve done: ", success);
+									// loop on kbits
+									for(var i=0; i<success.length; i++){
+										var tempTerms= [];
+										var lockingUser = {};
+										if(success[i].TERMS)
+											// loop on terms inside kbit
+											for(var j=0; j< success[i].TERMS.length; j++){
+												var tempDisc= {};
+												if(success[i].TERMS[j].TERM_STRING.other_langs){
+													// loop on other lang inside term
+													for(var k=0; k<success[i].TERMS[j].TERM_STRING.other_langs.length; k++){
+														tempDisc[success[i].TERMS[j].TERM_STRING.other_langs[k].LANG] = success[i].TERMS[j].TERM_STRING.other_langs[k].TEXT;
+													}
+												}
+												tempDisc[success[i].TERMS[j].TERM_STRING.LANG] = success[i].TERMS[j].TERM_STRING.TEXT;
+												tempTerms.push({
+													id: success[i].TERMS[j].UID,
+													lastModified: new Date(success[i].TERMS[j].CREATION_DATE),
+													description: tempDisc,
+													type: "Term"
+												});
+											}
+										if(success[i].LOCKING_USER){
+											lockingUser = {
+												id: success[i].LOCKING_USER.UID,
+												username: success[i].LOCKING_USER.USERNAME,
+												firstName: success[i].LOCKING_USER.FIRST_NAME,
+												lastName: success[i].LOCKING_USER.LAST_NAME,
+												email: success[i].LOCKING_USER.EMAIL,
+												profilePicture: success[i].LOCKING_USER.PROFILE_PICTURE
+											};
+											successModified.push({
+												id: success[i].UID,
+												name: success[i].TITLE,
+												terms: tempTerms,
+												description: success[i].DESCRIPTION,
+												locked: true,
+												lockedBy: lockingUser,
+												lastModified: new Date(success[i].CREATION_DATE),
+												inProgress: false,
+												type: "Kbit",
+											});
+										}else{
+											successModified.push({
+												id: success[i].UID,
+												name: success[i].TITLE,
+												terms: tempTerms,
+												description: success[i].DESCRIPTION,
+												locked: false,
+												lockedBy: null,
+												lastModified: new Date(success[i].CREATION_DATE),
+												inProgress: false,
+												type: "Kbit",
+											});
+										}
+									}
+								}
+								mergeData(successModified, ++resultCounter);
+							});
+						}else{
+							mergeData([], ++resultCounter);
+						}
+						// Delivery
+						if(dataToSearch.dataType[1] == 1){
+							$httpR.connectToServer(data, "DELIVERYsearchDelivery", function(success, error){
+								
+								var successModified = [];
+								var lockingUser = {};
+								if(error || !success){
+									console.error("error searching delivery is server: ", error);
+								}else{
+									console.log("search delivery in serve done: ", success);
+									// loop on deliveries
+									for(var i=0; i<success.length; i++){
+										var termKbits = [];
+										
+										if(success[i].KBITS){
+											var successKbitModifiedNeeded = [];
+											var successKbitModifiedProvided = [];
+											// loop over the kbits dic.
+											var tempKbitsNeeded = success[i].KBITS["NEEDED"];
+											var tempKbitsProvided = success[i].KBITS["PROVIDED"];
+											for(var j=0; j<tempKbitsNeeded.length; j++){
+												var tempTerms= [];
+												var lockingUserKbit = {};
+												if(tempKbitsNeeded[j].TERMS){
+													// loop on terms inside kbit
+													for(var k=0; k< tempKbitsNeeded[j].TERMS.length; k++){
+														var tempDisc= {};
+														if(tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs){
+															// loop on other lang inside term
+															for(var h=0; h<tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs.length; h++){
+																
+																tempDisc[tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs[h].LANG] = tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs[h].TEXT;
+															}
+														}
+														tempDisc[tempKbitsNeeded[j].TERMS[k].TERM_STRING.LANG] = tempKbitsNeeded[j].TERMS[k].TERM_STRING.TEXT;
+														tempTerms.push({
+															id: tempKbitsNeeded[j].TERMS[k].UID,
+															lastModified: new Date(tempKbitsNeeded[j].TERMS[k].CREATION_DATE),
+															description: tempDisc,
+															type: "Term"
+														});
+													}
+												}
+												if(tempKbitsNeeded[j].LOCKING_USER){
+													lockingUserKbit = {
+														id: tempKbitsNeeded[j].LOCKING_USER.UID,
+														username: tempKbitsNeeded[j].LOCKING_USER.USERNAME,
+														firstName: tempKbitsNeeded[j].LOCKING_USER.FIRST_NAME,
+														lastName: tempKbitsNeeded[j].LOCKING_USER.LAST_NAME,
+														email: tempKbitsNeeded[j].LOCKING_USER.EMAIL,
+														profilePicture: tempKbitsNeeded[j].LOCKING_USER.PROFILE_PICTURE
+													};
+													successKbitModifiedNeeded.push({
+														id: tempKbitsNeeded[j].UID,
+														name: tempKbitsNeeded[j].TITLE,
+														terms: tempTerms,
+														description: tempKbitsNeeded[j].DESCRIPTION,
+														locked: true,
+														lockedBy: lockingUserKbit,
+														lastModified: new Date(tempKbitsNeeded[j].CREATION_DATE),
+														inProgress: false,
+														type: "Kbit"
+													});
+												}else{
+													successKbitModifiedNeeded.push({
+														id: tempKbitsNeeded[j].UID,
+														name: tempKbitsNeeded[j].TITLE,
+														terms: tempTerms,
+														description: tempKbitsNeeded[j].DESCRIPTION,
+														locked: false,
+														lockedBy: null,
+														lastModified: new Date(tempKbitsNeeded[j].CREATION_DATE),
+														inProgress: false,
+														type: "Kbit"
+													});
+												}
+											}
+											// loop over kbits provided
+											for(var j=0; j<tempKbitsProvided.length; j++){
+												var tempTerms= [];
+												var lockingUserKbit = {};
+												if(tempKbitsProvided[j] != null)
+												if(tempKbitsProvided[j].TERMS){
+													// loop on terms inside kbit
+													for(var k=0; k< tempKbitsProvided[j].TERMS.length; k++){
+														var tempDisc= {};
+														if(tempKbitsProvided[j].TERMS[k].TERM_STRING.other_langs){
+															// loop on other lang inside term
+															for(var h=0; h<tempKbitsProvided[j].TERMS[k].TERM_STRING.other_langs.length; h++){
+																
+																tempDisc[tempKbitsProvided[j].TERMS[k].TERM_STRING.other_langs[h].LANG] = tempKbitsProvided[j].TERMS[k].TERM_STRING.other_langs[h].TEXT;
+															}
+														}
+														tempDisc[tempKbitsProvided[j].TERMS[k].TERM_STRING.LANG] = tempKbitsProvided[j].TERMS[k].TERM_STRING.TEXT;
+														tempTerms.push({
+															id: tempKbitsProvided[j].TERMS[k].UID,
+															lastModified: new Date(tempKbitsProvided[j].TERMS[k].CREATION_DATE),
+															description: tempDisc,
+															type: "Term"
+														});
+													}
+												}
+
+												if(tempKbitsProvided[j] != null)
+												if(tempKbitsProvided[j].LOCKING_USER){
+													lockingUserKbit = {
+														id: tempKbitsProvided[j].LOCKING_USER.UID,
+														username: tempKbitsProvided[j].LOCKING_USER.USERNAME,
+														firstName: tempKbitsProvided[j].LOCKING_USER.FIRST_NAME,
+														lastName: tempKbitsProvided[j].LOCKING_USER.LAST_NAME,
+														email: tempKbitsProvided[j].LOCKING_USER.EMAIL,
+														profilePicture: tempKbitsProvided[j].LOCKING_USER.PROFILE_PICTURE
+													};
+													successKbitModifiedProvided.push({
+														id: tempKbitsProvided[j].UID,
+														name: tempKbitsProvided[j].TITLE,
+														terms: tempTerms,
+														description: tempKbitsProvided[j].DESCRIPTION,
+														locked: true,
+														lockedBy: lockingUserKbit,
+														lastModified: new Date(tempKbitsProvided[j].CREATION_DATE),
+														inProgress: false,
+														type: "Kbit",
+													});
+												}else{
+													successKbitModifiedProvided.push({
+														id: tempKbitsProvided[j].UID,
+														name: tempKbitsProvided[j].TITLE,
+														terms: tempTerms,
+														description: tempKbitsProvided[j].DESCRIPTION,
+														locked: false,
+														lockedBy: null,
+														lastModified: new Date(tempKbitsProvided[j].CREATION_DATE),
+														inProgress: false,
+														type: "Kbit",
+													});
+												}
+											}
+										}
+
+										if(success[i].LOCKING_USER){
+											lockingUser = {
+												id: success[i].LOCKING_USER.UID,
+												username: success[i].LOCKING_USER.USERNAME,
+												firstName: success[i].LOCKING_USER.FIRST_NAME,
+												lastName: success[i].LOCKING_USER.LAST_NAME,
+												email: success[i].LOCKING_USER.EMAIL,
+												profilePicture: success[i].LOCKING_USER.PROFILE_PICTURE
+											};
+											successModified.push({
+												id: success[i].UID,
+												name: success[i].TITLE,
+												description: success[i].DESCRIPTION,
+												lastModified: new Date(success[i].CREATION_DATE),
+												type: "Delivery",
+												lockedBy: lockingUser,
+												locked: true,
+												kBitsNeeded: successKbitModifiedNeeded,
+												kBitsProvided: successKbitModifiedProvided,
+												terms: termKbits
+											});
+										}else{
+											successModified.push({
+												id: success[i].UID,
+												name: success[i].TITLE,
+												description: success[i].DESCRIPTION,
+												lastModified: new Date(success[i].CREATION_DATE),
+												type: "Delivery",
+												kBitsNeeded: successKbitModifiedNeeded,
+												kBitsProvided: successKbitModifiedProvided,
+												terms: termKbits
+											});
+										}
+									}
+								}
+								mergeData(successModified, ++resultCounter);
+							});
+						}else{
+							mergeData([], ++resultCounter);
+						}
+						// Term
+						if(dataToSearch.dataType[2] == 1){
+							$httpR.connectToServer(data, "TERMsearchTerms", function(success, error){
+								var successModified = [];
+								if(error || !success){
+									console.error("error searching kbit is server: ", error);
+								}else{
+									console.log("search kbit in serve done: ", success);
+									// for(){
+									// 	successModified.push({
+									// 		// conten properties
+									// 	});
+									// }
+									
+								}
+								mergeData(successModified, ++resultCounter);
+							});
+						}else{
+							mergeData([], ++resultCounter);
+						}
+						
+
+						function mergeData(result, index){
+							mergeResult = mergeResult.concat(result);
+							if(index == 3)
+								callback(mergeResult);
+						}
+
+
+
+
 					}
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in search in server", Toast.LONG, Toast.ERROR);
@@ -217,7 +500,6 @@
 					if(saveObjectQuery == "dummy"){
 					// 	return localStorage.getItem("dummy");
 					// }
-
 						switch (this.TypeOfData){
 							case "delivery":
 								var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
@@ -410,7 +692,11 @@
 	                console.error("getSettings: ", e);
 	                callback(null,{"message":e.message,"code":e.code});
 				}
-			}
+			},
+
+			
+
+
 		}
 		return Server;
 	}]);

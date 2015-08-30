@@ -1,6 +1,6 @@
 (function(angular) {
     // 'use strict';
-	angular.module('IntelLearner').factory('Content', ["$rootScope", 'Globals', "Toast", "Server", function($rootScope, Globals, Toast, Server){
+	angular.module('IntelLearner').factory('Content', ["$rootScope", 'Globals', "Toast", "Server", "$httpR", function($rootScope, Globals, Toast, Server, $httpR){
 	
 		function Content(conData, forceLastmodefied, forceServerPull){
 			try{
@@ -16,7 +16,8 @@
 				this.lastModified = ((conData != undefined)?conData.lastModified:null);
 				this.inProgress = ((conData != undefined)?conData.inProgress:false);
 				this.type = ((conData != undefined)?conData.type:null);
-				this.connectToDataBase = ((this.type && new Server(this.type, true)) || null);
+				this.connectToDataBase = ((this.type && new Server(this.type, $rootScope.currentScope.isDummy)) || null);
+				this.progressWizard = ((conData != undefined)?conData.progressWizard:{});
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","There was an error in creating new Content", Toast.LONG, Toast.ERROR);
 	            console.error("Content: ", e);
@@ -33,10 +34,15 @@
 			 */
 			lock: function(callback){
 				try{
-
+					var dataToSend = {
+						"Token": Globals.currentUser.token,
+					}
+					dataToSend[this.type.toLowerCase()+"UID"] = this.id;
+					$httpR.connectToServer(dataToSend, this.type.toUpperCase() + "beginEdit", callback);
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in locking content", Toast.LONG, Toast.ERROR);
 	           		console.error("lock: ", e);
+	           		callback(null, e);
 				}
 			},
 
@@ -189,8 +195,8 @@
 						"lastModified": this.lastModified,
 						"inProgress": this.inProgress,
 						"type": this.type,
-						"objectType": this.objectType
-						// "connectToDataBase": this.connectToDataBase 
+						"objectType": this.objectType,
+						"progressWizard": this.progressWizard
 					}
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in converting to JSON", Toast.LONG, Toast.ERROR);
