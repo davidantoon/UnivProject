@@ -30,7 +30,7 @@
 			 * @param  {Function} callback     callback function
 			 */
 			search: function(dataToSearch, callback){
-				try{ 
+				try{
 					if(this.baseUrl == "dummy"){
 						var searchResults = [];
 						var SplitText = dataToSearch.text.split(' ');
@@ -164,7 +164,7 @@
 												}
 												tempDisc[success[i].TERMS[j].TERM_STRING.LANG] = success[i].TERMS[j].TERM_STRING.TEXT;
 												tempTerms.push({
-													id: success[i].TERMS[j].id,
+													id: success[i].TERMS[j].UID,
 													lastModified: new Date(success[i].TERMS[j].CREATION_DATE),
 													description: tempDisc,
 													type: "Term"
@@ -172,7 +172,7 @@
 											}
 										if(success[i].LOCKING_USER){
 											lockingUser = {
-												id: success[i].LOCKING_USER.id,
+												id: success[i].LOCKING_USER.UID,
 												username: success[i].LOCKING_USER.USERNAME,
 												firstName: success[i].LOCKING_USER.FIRST_NAME,
 												lastName: success[i].LOCKING_USER.LAST_NAME,
@@ -180,7 +180,7 @@
 												profilePicture: success[i].LOCKING_USER.PROFILE_PICTURE
 											};
 											successModified.push({
-												id: success[i].id,
+												id: success[i].UID,
 												name: success[i].TITLE,
 												terms: tempTerms,
 												description: success[i].DESCRIPTION,
@@ -192,7 +192,7 @@
 											});
 										}else{
 											successModified.push({
-												id: success[i].id,
+												id: success[i].UID,
 												name: success[i].TITLE,
 												terms: tempTerms,
 												description: success[i].DESCRIPTION,
@@ -210,10 +210,11 @@
 						}else{
 							mergeData([], ++resultCounter);
 						}
-						// Deleivery
+						// Delivery
+						debugger;
 						if(dataToSearch.dataType[1] == 1){
 							$httpR.connectToServer(data, "DELIVERYsearchDelivery", function(success, error){
-								debugger;
+								
 								var successModified = [];
 								var lockingUser = {};
 								if(error || !success){
@@ -223,20 +224,14 @@
 									// loop on deliveries
 									for(var i=0; i<success.length; i++){
 										var termKbits = [];
-										if(success[i].LOCKING_USER){
-											lockingUser = {
-												id: success[i].LOCKING_USER.id,
-												username: success[i].LOCKING_USER.USERNAME,
-												firstName: success[i].LOCKING_USER.FIRST_NAME,
-												lastName: success[i].LOCKING_USER.LAST_NAME,
-												email: success[i].LOCKING_USER.EMAIL,
-												profilePicture: success[i].LOCKING_USER.PROFILE_PICTURE
-											};
-										}
+										
 										if(success[i].KBITS){
+											var successKbitModifiedNeeded = [];
+											var successKbitModifiedProvided = [];
 											// loop over the kbits dic.
 											var tempKbitsNeeded = success[i].KBITS["NEEDED"];
-											for(j=0; j<tempKbitsNeeded.length; j++){
+											var tempKbitsProvided = success[i].KBITS["PROVIDED"];
+											for(var j=0; j<tempKbitsNeeded.length; j++){
 												var tempTerms= [];
 												var lockingUserKbit = {};
 												if(tempKbitsNeeded[j].TERMS){
@@ -246,13 +241,13 @@
 														if(tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs){
 															// loop on other lang inside term
 															for(var h=0; h<tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs.length; h++){
-																debugger;
+																
 																tempDisc[tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs[h].LANG] = tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs[h].TEXT;
 															}
 														}
 														tempDisc[tempKbitsNeeded[j].TERMS[k].TERM_STRING.LANG] = tempKbitsNeeded[j].TERMS[k].TERM_STRING.TEXT;
 														tempTerms.push({
-															id: tempKbitsNeeded[j].TERMS[k].id,
+															id: tempKbitsNeeded[j].TERMS[k].UID,
 															lastModified: new Date(tempKbitsNeeded[j].TERMS[k].CREATION_DATE),
 															description: tempDisc,
 															type: "Term"
@@ -261,15 +256,15 @@
 												}
 												if(tempKbitsNeeded[j].LOCKING_USER){
 													lockingUserKbit = {
-														id: tempKbitsNeeded[j].LOCKING_USER.id,
+														id: tempKbitsNeeded[j].LOCKING_USER.UID,
 														username: tempKbitsNeeded[j].LOCKING_USER.USERNAME,
 														firstName: tempKbitsNeeded[j].LOCKING_USER.FIRST_NAME,
 														lastName: tempKbitsNeeded[j].LOCKING_USER.LAST_NAME,
 														email: tempKbitsNeeded[j].LOCKING_USER.EMAIL,
 														profilePicture: tempKbitsNeeded[j].LOCKING_USER.PROFILE_PICTURE
 													};
-													successModified.push({
-														id: tempKbitsNeeded[j].id,
+													successKbitModifiedNeeded.push({
+														id: tempKbitsNeeded[j].UID,
 														name: tempKbitsNeeded[j].TITLE,
 														terms: tempTerms,
 														description: tempKbitsNeeded[j].DESCRIPTION,
@@ -277,11 +272,11 @@
 														lockedBy: lockingUserKbit,
 														lastModified: new Date(tempKbitsNeeded[j].CREATION_DATE),
 														inProgress: false,
-														type: "Kbit",
+														type: "Kbit"
 													});
 												}else{
-													successModified.push({
-														id: tempKbitsNeeded[j].id,
+													successKbitModifiedNeeded.push({
+														id: tempKbitsNeeded[j].UID,
 														name: tempKbitsNeeded[j].TITLE,
 														terms: tempTerms,
 														description: tempKbitsNeeded[j].DESCRIPTION,
@@ -289,10 +284,105 @@
 														lockedBy: null,
 														lastModified: new Date(tempKbitsNeeded[j].CREATION_DATE),
 														inProgress: false,
+														type: "Kbit"
+													});
+												}
+											}
+											// loop over kbits provided
+											for(var j=0; j<tempKbitsProvided.length; j++){
+												var tempTerms= [];
+												var lockingUserKbit = {};
+												if(tempKbitsProvided[j] != null)
+												if(tempKbitsProvided[j].TERMS){
+													// loop on terms inside kbit
+													for(var k=0; k< tempKbitsProvided[j].TERMS.length; k++){
+														var tempDisc= {};
+														if(tempKbitsProvided[j].TERMS[k].TERM_STRING.other_langs){
+															// loop on other lang inside term
+															for(var h=0; h<tempKbitsProvided[j].TERMS[k].TERM_STRING.other_langs.length; h++){
+																
+																tempDisc[tempKbitsProvided[j].TERMS[k].TERM_STRING.other_langs[h].LANG] = tempKbitsProvided[j].TERMS[k].TERM_STRING.other_langs[h].TEXT;
+															}
+														}
+														tempDisc[tempKbitsProvided[j].TERMS[k].TERM_STRING.LANG] = tempKbitsProvided[j].TERMS[k].TERM_STRING.TEXT;
+														tempTerms.push({
+															id: tempKbitsProvided[j].TERMS[k].UID,
+															lastModified: new Date(tempKbitsProvided[j].TERMS[k].CREATION_DATE),
+															description: tempDisc,
+															type: "Term"
+														});
+													}
+												}
+
+												if(tempKbitsProvided[j] != null)
+												if(tempKbitsProvided[j].LOCKING_USER){
+													lockingUserKbit = {
+														id: tempKbitsProvided[j].LOCKING_USER.UID,
+														username: tempKbitsProvided[j].LOCKING_USER.USERNAME,
+														firstName: tempKbitsProvided[j].LOCKING_USER.FIRST_NAME,
+														lastName: tempKbitsProvided[j].LOCKING_USER.LAST_NAME,
+														email: tempKbitsProvided[j].LOCKING_USER.EMAIL,
+														profilePicture: tempKbitsProvided[j].LOCKING_USER.PROFILE_PICTURE
+													};
+													successKbitModifiedProvided.push({
+														id: tempKbitsProvided[j].UID,
+														name: tempKbitsProvided[j].TITLE,
+														terms: tempTerms,
+														description: tempKbitsProvided[j].DESCRIPTION,
+														locked: true,
+														lockedBy: lockingUserKbit,
+														lastModified: new Date(tempKbitsProvided[j].CREATION_DATE),
+														inProgress: false,
+														type: "Kbit",
+													});
+												}else{
+													successKbitModifiedProvided.push({
+														id: tempKbitsProvided[j].UID,
+														name: tempKbitsProvided[j].TITLE,
+														terms: tempTerms,
+														description: tempKbitsProvided[j].DESCRIPTION,
+														locked: false,
+														lockedBy: null,
+														lastModified: new Date(tempKbitsProvided[j].CREATION_DATE),
+														inProgress: false,
 														type: "Kbit",
 													});
 												}
 											}
+										}
+
+										if(success[i].LOCKING_USER){
+											lockingUser = {
+												id: success[i].LOCKING_USER.UID,
+												username: success[i].LOCKING_USER.USERNAME,
+												firstName: success[i].LOCKING_USER.FIRST_NAME,
+												lastName: success[i].LOCKING_USER.LAST_NAME,
+												email: success[i].LOCKING_USER.EMAIL,
+												profilePicture: success[i].LOCKING_USER.PROFILE_PICTURE
+											};
+											successModified.push({
+												id: success[i].UID,
+												name: success[i].TITLE,
+												description: success[i].DESCRIPTION,
+												lastModified: new Date(success[i].CREATION_DATE),
+												type: "Delivery",
+												lockedBy: lockingUser,
+												locked: true,
+												kBitsNeeded: successKbitModifiedNeeded,
+												kBitsProvided: successKbitModifiedProvided,
+												terms: termKbits
+											});
+										}else{
+											successModified.push({
+												id: success[i].UID,
+												name: success[i].TITLE,
+												description: success[i].DESCRIPTION,
+												lastModified: new Date(success[i].CREATION_DATE),
+												type: "Delivery",
+												kBitsNeeded: successKbitModifiedNeeded,
+												kBitsProvided: successKbitModifiedProvided,
+												terms: termKbits
+											});
 										}
 									}
 								}
