@@ -151,7 +151,6 @@
                  */
                 changePassword: function(oldpassword, newPassword, callback) {
                     try {
-                        debugger;
                         var data = {
                             Token: this.token,
                             password: oldpassword,

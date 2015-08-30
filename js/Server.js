@@ -123,7 +123,6 @@
 						callback(searchResults, null);
 						return;
 					}else{
-						debugger;
 						var searchFields = [];
 						var mergeResult = [];
 						var resultCounter = 0;
@@ -211,7 +210,6 @@
 							mergeData([], ++resultCounter);
 						}
 						// Delivery
-						debugger;
 						if(dataToSearch.dataType[1] == 1){
 							$httpR.connectToServer(data, "DELIVERYsearchDelivery", function(success, error){
 								
@@ -414,7 +412,6 @@
 						
 
 						function mergeData(result, index){
-							debugger;
 							mergeResult = mergeResult.concat(result);
 							if(index == 3)
 								callback(mergeResult);
@@ -503,7 +500,6 @@
 					if(saveObjectQuery == "dummy"){
 					// 	return localStorage.getItem("dummy");
 					// }
-						debugger;
 						switch (this.TypeOfData){
 							case "delivery":
 								var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
