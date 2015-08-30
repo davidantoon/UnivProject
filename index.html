@@ -317,21 +317,43 @@
                       <div ng-click="back(wFlow.selectedTab.dataHolding);" style="{{'border-top: 2px solid '+wFlow.selectedTab.color+'; border-right: 3px solid '+wFlow.selectedTab.color+';'}}" class="ReturnToSearchButton">
                         <ons-icon icon="ion-chevron-left" size="18px"></ons-icon> Back
                       </div>
-                      <div class="{{'lockedDiv '+((contentTab.content.locked == true)?'':'invisible')}}">
-                        <ons-icon icon="ion-locked" style="vertical-align: -10%;" size="20px"></ons-icon>
+                      <!-- <div class="{{'lockedDiv '+((contentTab.content.locked == true)?'':'invisible')}}">
+                        
                         <p>Locked by <strong>{{contentTab.content.lockedBy.firstName + " " + contentTab.content.lockedBy.firstName}}</strong></p>
-                      </div>
-                      <div class="{{'InprogressDiv '+((contentTab.content.inProgress == true)?'':'invisible')}}">
-                        <ons-icon icon="ion-code-working" size="20px"></ons-icon>
-                      </div>
+                      </div> -->
+
                       <ons-row class="contentHeader">
-                        <ons-col class="contentName">{{contentTab.content.name}}</ons-col>
+                        <ons-col class="contentName">
+                          <selectable>
+                            {{contentTab.content.name}}
+                          </selectable>
+                          <span class="{{'lockedDiv '+((contentTab.content.locked == true)?'':'invisible')}}">
+                            <ons-icon icon="ion-locked" style="vertical-align: 7%;" size="17px"></ons-icon>
+                          </span>
+                          <span class="{{'InprogressDiv '+((contentTab.content.inProgress == true)?'':'invisible')}}">
+                            <ons-icon icon="ion-code-working" style="vertical-align: 7%;" size="17px"></ons-icon>
+                          </span>
+                        </ons-col>
                         <ons-col class="contentType" width="70px">{{contentTab.content.type}}</ons-col>
-                        <ons-col class="contentLastModified" width="150px">Last Modified <br>{{contentTab.content.lastModified| date:"MMM d, y h:mm:ss"}}</ons-col>
+                        <ons-col class="contentLastModified" width="150px">Last Modified <br>
+                          <selectable>
+                            {{contentTab.content.lastModified| date:"MMM d, y h:mm:ss"}}
+                          </selectable>
+                        </ons-col>
                       </ons-row>
                       <ons-row class="contentBody" style="padding-top: 6px;">
                         <ons-col>
-                          {{contentTab.content.description}}<br>
+                          <selectable>{{contentTab.content.description}}</selectable><br>
+                        </ons-col>
+                      </ons-row>
+                      <ons-row class="contentPath">
+                        <ons-col class="title" width="50px">
+                          Path
+                        </ons-col>
+                        <ons-col class="link">
+                          <selectable>
+                            {{((contentTab.content.url != "")?contentTab.content.url:"Not specified")}}
+                          </selectable>
                         </ons-col>
                       </ons-row>
                       <ons-row class="contentDetails">
@@ -339,14 +361,6 @@
                           <div ng-switch="contentTab.content.type">
                             <ons-row ng-switch-when="Delivery">
                               <ons-col>
-                                <ons-row class="contentPath">
-                                  <ons-col class="title" width="50px">
-                                    Path
-                                  </ons-col>
-                                  <ons-col class="link">
-                                    {{((contentTab.content.url != "")?contentTab.content.url:"Not specified")}}
-                                  </ons-col>
-                                </ons-row>
                                 <ons-row class="tables">
                                   <ons-col class="tableCols">
                                     <ons-row class="title">

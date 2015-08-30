@@ -6955,31 +6955,23 @@ div.vertical {
 }
 
 .lockedDiv{
-  position: absolute;
-  top: 36px;
-  height: 22px;
-  left: 1px;
-  padding: 2px 7px;
-  background-color: #CF3232;
+  padding: 0px 9px;
   color: white;
-  overflow: hidden;
-  width: 200px;
+  background-color: #CF3232;
+  border-radius: 6px;
+  text-align: center;
+  display: inline-block;
 }
-.lockedDiv > p{
-  display: inline;
-  line-height: 20px;
-  font-size: 14px;
+.lockedDiv > ons-icon{
+  vertical-align: -3%;
 }
 
 .InprogressDiv{
-  position: absolute;
-  top: 36px;
-  height: 22px;
-  left: 215px;
-  padding: 2px 7px;
-  background-color: rgb(255,166,1);
+  padding: 0px 8px;
   color: white;
-  width: 17px;
+  background-color: rgb(255,166,1);
+  border-radius: 6px;
+  text-align: center;
 }
 
 .invisible{
@@ -6991,15 +6983,9 @@ div.vertical {
   width: 100%;
   height: 99%;
 }
-.contentTypeTab *{
-  -webkit-user-select: initial;
-  -moz-user-select: initial;
-  -ms-user-select: initial;
-  user-select: initial;
-}
 
 .contentHeader{
-  margin-top: 25px;
+  margin-top: 0px;
   padding: 5px 20px;
   border: 1px solid rgba(0,0,0,.1);
   background-color: rgb(240,240,240);
@@ -7029,7 +7015,7 @@ div.vertical {
 .contentBody{
   padding: 0px 20px;
   color: rgb(80,80,80);
-  height: 60px;
+  height: 85px;
   text-overflow: ellipsis;
   overflow: auto;
   margin: -1px 0;
@@ -7037,24 +7023,25 @@ div.vertical {
 
 .contentDetails{
   width: 100%;
-  height: 234px;
+  height: 205px;
   background-color: #F0F0F0;
   border: 1px solid rgba(0,0,0,.1);
   box-shadow: 0px 0px 8px -4px black;
 }
 
-.contentDetails .contentPath{
+
+
+.contentPath{
   padding: 4px 18px;
-  border-bottom: 1px solid rgba(0,0,0,.1);
   height: 30px;
 }
 
-.contentDetails .contentPath .title{
+.contentPath .title{
   font-weight: 400;
   font-style: italic;
   border-right: 1px solid rgba(0,0,0,.2);
 }
-.contentDetails .contentPath .link{
+.contentPath .link{
   padding: 0 10px;
   font-size: 15px;
   line-height: 20px;
@@ -7063,14 +7050,17 @@ div.vertical {
   cursor: pointer;
 }
 
+
 .contentDetails .tables{
   height: 202px;
   padding: 10px;
 }
 
+
 .contentDetails .tables .tableCols{
   background-color: rgb(250,250,250);
-  margin: 0 5px;
+  margin: 0 6px;
+  border: 1px solid rgba(0,0,0,.2);
 }
 
 .contentDetails .tables .tableCols > .title{
@@ -7092,6 +7082,18 @@ div.vertical {
 .contentDetails .tables .tableCols > .listItems .listItem:hover{
   background-color: whitesmoke;
 }
+
+selectable{
+  -webkit-user-select: initial !important;
+  -moz-user-select: initial !important;
+  -ms-user-select: initial !important;
+  user-select: initial !important;
+}
+
+
+
+
+
 
 
 

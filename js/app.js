@@ -1179,7 +1179,10 @@ var ngScope;
                     // loop on each result check if the type is equal add them to new holding data
                     for(var i=0; i<results.length; i++){
                         if(results[i].type == type){
-                            newResults.push(results[i]);
+                            var stor = new Storage();
+                            stor.getElementById(results[i], false, false, function(res){
+                                newResults.push(res);
+                            });
                         }
                     }
                     return newResults;
@@ -1191,20 +1194,23 @@ var ngScope;
 
 
             $scope.displayContent = function(wFlow,result){
-                
-                var dataHolding = wFlow.selectedTab.dataHolding;
-                var holdingRequestTab = wFlow.selectedTab;
-                var holdingDisplayObjectData = result;
-                if(dataHolding.childTab && dataHolding.childTab.length > 0){
-                    $timeout(function(){
-                        $scope.Steps.lastFocusedWorkflow = holdingRequestTab.dataHolding.childTab[holdingRequestTab.dataHolding.childTab.length-1].workflowId;
-                        $scope.refocusLastWorkflow();
-                    },300);
-                    $scope.workSpaces.replaceSearchChildContent(dataHolding.childTab[dataHolding.childTab.length-1], result);
-                    
-                }else{
-                    $scope.displayContentNewTab(wFlow, result);
-                }
+                var stor = new Storage();
+                stor.getElementById(result, false, false, function(res){
+                    result = res;
+                    var dataHolding = wFlow.selectedTab.dataHolding;
+                    var holdingRequestTab = wFlow.selectedTab;
+                    var holdingDisplayObjectData = result;
+                    if(dataHolding.childTab && dataHolding.childTab.length > 0){
+                        $timeout(function(){
+                            $scope.Steps.lastFocusedWorkflow = holdingRequestTab.dataHolding.childTab[holdingRequestTab.dataHolding.childTab.length-1].workflowId;
+                            $scope.refocusLastWorkflow();
+                        },300);
+                        $scope.workSpaces.replaceSearchChildContent(dataHolding.childTab[dataHolding.childTab.length-1], result);
+                        
+                    }else{
+                        $scope.displayContentNewTab(wFlow, result);
+                    }
+                });
             }
 
             $scope.displayContentNewTab = function(wFlow,result){

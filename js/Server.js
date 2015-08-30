@@ -11,11 +11,9 @@
 					this.saveObjectQuery = "dummy";
 					this.TypeOfData = connectionType;
 				}else{
-					this.protocol = "http";
-					this.ip = "";
-					this.port = "";
-					this.baseUrl = "";
-					this.file = "";
+					this.baseUrl = "http://192.168.1.4:8888/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/";
+					this.method = "POST";
+					this.timeout = 10000;
 
 				}
 			}catch(e){
