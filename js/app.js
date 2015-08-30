@@ -29,7 +29,7 @@ var ngScope;
              // FOR Debugging
             var appElement = document.querySelector('[ng-controller=MainCtrl]');
             ngScope = angular.element(appElement).scope();
-            $scope.isDummy = true;
+            $scope.isDummy = false;
 
 
             $scope.AppStatus = 0;
@@ -1139,6 +1139,7 @@ var ngScope;
                                                 $scope.InsertStepToLast10Steps();
                                             }else{
                                                 $timeout(function(){
+                                                    debugger;
                                                     var stor = new Storage();
                                                     loopResults(0, result, []);
                                                     function loopResults(index, originalData, resultData){
@@ -1171,6 +1172,7 @@ var ngScope;
                                     $scope.InsertStepToLast10Steps();
                                 }else{
                                     $timeout(function(){
+                                        debugger;
                                         var stor = new Storage();
                                         loopResults(0, result, []);
                                         function loopResults(index, originalData, resultData){

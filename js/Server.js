@@ -123,8 +123,8 @@
 						callback(searchResults, null);
 						return;
 					}else{
-						debugger;
 						var searchFields = [];
+						var searchResults = [];
 						if(dataToSearch.searchBy[0] == 1)
 							searchFields.push("TITLE");
 						if(dataToSearch.searchBy[1] == 1)
@@ -134,15 +134,35 @@
 						var data= {
 							"searchWord": dataToSearch["text"],
 							"searchFields": searchFields,
-							"Token": "7Qpv7KBEZVk3t67TARQqcEBITdZKb9EiZ3O7OpLOl6ROdZHORye4dQM63MQeVuxVyl2nLOb6V3V83CWUbbYo1Ku4xljsQRnodqLY"
+							"Token": "I6VT3j9c4GSWcCqKLlvXAaTkyItRHGvpMqiPJs1N9UKlwa5iwBf6L8rkRUbzBGYn6hcQJeDS8oeFykY5VdcHmE1eycNaTMx03KQN"
 						};
-						$httpR.connectToServer(data, "KBITsearchKbits", function(success, error){
-							if(error || !success){
-								console.error("error searching kbit is server: ", error);
-							}else{
-								console.log("search kbit in serve done: ", success);
+						debugger;
+						for(var i=0; i< dataToSearch.dataType.length; i++){
+							if(dataToSearch.dataType[i]){
+								switch (i){
+									case 1:
+									break;
+									case 0:
+										$httpR.connectToServer(data, "KBITsearchKbits", function(success, error){
+											if(error || !success){
+												console.error("error searching kbit is server: ", error);
+											}else{
+												console.log("search kbit in serve done: ", success);
+												debugger;
+												for(var i=0; i<success.length; i++){
+													success[i].type = "Kbit";
+												}
+												callback(success, null);
+											}
+										});
+									break;
+									case 2:
+									break;
+									default:
+									break; 
+								}
 							}
-						});
+						}
 					}
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in search in server", Toast.LONG, Toast.ERROR);
@@ -223,7 +243,7 @@
 					if(saveObjectQuery == "dummy"){
 					// 	return localStorage.getItem("dummy");
 					// }
-
+						debugger;
 						switch (this.TypeOfData){
 							case "delivery":
 								var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
