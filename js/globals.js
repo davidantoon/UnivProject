@@ -60,7 +60,7 @@
         .value('$httpR', {
 
             protocol: "http",
-            ip: "31.154.164.129",
+            ip: "109.160.254.78",
             port: "8888",
             baseUrl: "/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/",
 
@@ -77,11 +77,11 @@
                 //console.log( this.protocol + "://" + this.ip + ":" + this.port + this.baseUrl + "?" + "method="+method +"&format=json");
 
                 $.ajax({
-                    url: "http://testserver-radjybaba.rhcloud.com/webservice.php/",
+                    // url: "http://testserver-radjybaba.rhcloud.com/webservice.php/",
+                    url: this.protocol+"://"+this.ip+":"+this.port+this.baseUrl,
                     data: data,
                     method: "POST",
                     success: function(success) {
-                        console.log(success);
                         if (success.status == 200)
                             callback(success.data, null);
                         else

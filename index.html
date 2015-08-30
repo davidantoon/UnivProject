@@ -316,7 +316,7 @@
                     <!-- DISPLAY CONETNT -->
                     <div  class="{{'contentTypeTab '+((getSelectedTabType(wFlow) == 5)?'':'hidden')}}">
                       <ons-row class="wizardContainer" style="{{((wFlow.selectedTab.content.inProgress == true)?'visibility:visible':'visibility:hidden');}}">
-                        <div class="SpinnerLoader" style="{{((wFlow.selectedTab.content.progressWizard.spinner == true)?'visibility:visible;':'visibility:hidden');}}">
+                        <div class="SpinnerLoader" style="{{((wFlow.selectedTab.content.progressWizard.spinner == true)?'visibility:visible;opacity:1;':'visibility:hidden');}}">
                           <div class="centerMeInDiv " style="width:50px; height:50px">
                             <img src="img/loader.gif" style="height:50px; width:50px" />
                           </div>

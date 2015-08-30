@@ -109,6 +109,9 @@ var ngScope;
                 $('#MainDiv').show();
                 $timeout(function() {
                     TypeOf.init();
+
+                    $scope.login();
+
                     $scope.loadUserData();
                 }, 500);
                 $(function() {
@@ -151,6 +154,21 @@ var ngScope;
 
                 // CLEAR DATA
 
+                // Globals.clear();
+                // $scope.Steps.clear();
+
+            }
+
+            $scope.login = function(){
+                var username = "rajibaba";
+                var password = "my_password";
+                User.login(username, password, function(succes, error){
+                    if(error || !succes)
+                        $scope.logout();
+                    else{
+                        Globals.currentUser = succes;
+                    }
+                });
             }
 
             $scope.loadUserData = function() {
@@ -158,9 +176,7 @@ var ngScope;
                 $scope.loadDataFromSRV(function(e) {
                     AllDataLoaded(++loadedAmmount);
                 });
-                // $scope.loadDataFromSRV2(function(e){
-                // 	AllDataLoaded(++loadedAmmount);
-                // });
+
                 function AllDataLoaded(finished) {
                     $('.StatusBarPerc').css('width', ((finished / 1) * 100) + "%");
                     if (finished == 1) {
@@ -1407,12 +1423,37 @@ var ngScope;
 
 
             $scope.editContent = function(wFlow){
-                wFlow.selectedTab.content.progressWizard = {
-                    header:wFlow.selectedTab.content.type +' Details',
-                    index:1,
-                    spinner:false
-                };
-                wFlow.selectedTab.content.inProgress = true;
+                if(wFlow.selectedTab.content.locked){
+                    if(wFlow.selectedTab.content.lockedBy.id == Globals.currentUser.id){
+                        wFlow.selectedTab.content.progressWizard = {
+                            header:wFlow.selectedTab.content.type +' Details',
+                            index:1,
+                            spinner:false
+                        };
+                        wFlow.selectedTab.content.inProgress = true;
+                    }else{
+                        $scope.Toast.show("Cannot Lock Content", "Content locked by "+wFlow.selectedTab.content.lockedBy.firstName+" "+wFlow.selectedTab.content.lockedBy.lastName+".", Toast.LONG, Toast.ERROR);
+                    }
+                }else{
+                    wFlow.selectedTab.content.progressWizard = {
+                        header:wFlow.selectedTab.content.type +' Details',
+                        index:1,
+                        spinner:true
+                    };
+                    wFlow.selectedTab.content.inProgress = true;
+                    wFlow.selectedTab.content.lock(function(success, error){
+                        $timeout(function(){
+                            if(error || !success){
+                                $scope.Toast.show("Cannot Lock Content", "Content locked by another user.", Toast.LONG, Toast.ERROR);
+                                wFlow.selectedTab.content.progressWizard.spinner = {};
+                                wFlow.selectedTab.content.inProgress = false;
+                            }else{
+                                wFlow.selectedTab.content.progressWizard.spinner = false;
+                            }
+                        },200);
+
+                    })
+                }
             }
 
 

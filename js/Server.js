@@ -1,6 +1,6 @@
 (function(angular) {
     // 'use strict';
-	angular.module('IntelLearner').factory('Server', ["$rootScope", "Toast","$httpR", function($rootScope, Toast, $httpR){
+	angular.module('IntelLearner').factory('Server', ["$rootScope", "Toast", "$httpR", "Globals", function($rootScope, Toast, $httpR, Globals){
 	
 		function Server(connectionType, dummy){
 			try{
@@ -136,7 +136,7 @@
 						var data= {
 							"searchWord": dataToSearch["text"],
 							"searchFields": searchFields,
-							"Token": "I6VT3j9c4GSWcCqKLlvXAaTkyItRHGvpMqiPJs1N9UKlwa5iwBf6L8rkRUbzBGYn6hcQJeDS8oeFykY5VdcHmE1eycNaTMx03KQN"
+							"Token": Globals.currentUser.token
 						};
 						//Kbit
 						if(dataToSearch.dataType[0] == 1){
@@ -692,7 +692,11 @@
 	                console.error("getSettings: ", e);
 	                callback(null,{"message":e.message,"code":e.code});
 				}
-			}
+			},
+
+			
+
+
 		}
 		return Server;
 	}]);

@@ -43,7 +43,7 @@
                         var dummyUSer = new User(null, "David", "Antoon", username, "david.antoon@hotmail.com", "https://graph.facebook.com/100003370268591/picture", "Learner");
                         dummyUSer.updateCookies(function(success, error) {
                             if (error || !success) {
-                                console.error("error logging in dummy", error);
+                                // console.error("error logging in dummy", error);
                                 callback(null, error);
                             } else {
                                 callback(dummyUSer);
@@ -57,15 +57,15 @@
                         };
                         $httpR.connectToServer(data, $httpR.logIn, function(result, error) {
                             if (result) {
-                                console.log("connectToServer response: ", result);
+                                // console.log("connectToServer response: ", result);
                                 var newUser = new User(result);
                                 newUser.updateCookies(function(success, error) {
                                     if (success) {
-                                        console.log("updateCookies response: ", success);
+                                        // console.log("updateCookies response: ", success);
                                         callback(newUser);
                                         return;
                                     } else {
-                                        console.error("could not update cookies: ", error)
+                                        // console.error("could not update cookies: ", error)
                                         callback(null, error);
                                     }
                                 });
