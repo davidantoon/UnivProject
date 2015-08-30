@@ -1,6 +1,6 @@
 (function(angular) {
     // 'use strict';
-	angular.module('IntelLearner').factory('Server', ["$rootScope", "Toast", function($rootScope, Toast){
+	angular.module('IntelLearner').factory('Server', ["$rootScope", "Toast","$httpR", function($rootScope, Toast, $httpR){
 	
 		function Server(connectionType, dummy){
 			try{
@@ -123,16 +123,24 @@
 						callback(searchResults, null);
 						return;
 					}else{
-						$.ajax({
-							url: baseUrl+searchQuery,
-							type: 'GET',
-							dataType: 'Content-Type: application/json',
-							data: {text: searchText},
-							success: function(res){
-								callback(res);
-							},
-							error: function(err){
-								callback("Error");
+						debugger;
+						var searchFields = [];
+						if(dataToSearch.searchBy[0] == 1)
+							searchFields.push("TITLE");
+						if(dataToSearch.searchBy[1] == 1)
+							searchFields.push("DESCRIPTION");
+						if(dataToSearch.searchBy[2] == 1)
+							searchFields.push("UID");
+						var data= {
+							"searchWord": dataToSearch["text"],
+							"searchFields": searchFields,
+							"Token": "7Qpv7KBEZVk3t67TARQqcEBITdZKb9EiZ3O7OpLOl6ROdZHORye4dQM63MQeVuxVyl2nLOb6V3V83CWUbbYo1Ku4xljsQRnodqLY"
+						};
+						$httpR.connectToServer(data, "KBITsearchKbits", function(success, error){
+							if(error || !success){
+								console.error("error searching kbit is server: ", error);
+							}else{
+								console.log("search kbit in serve done: ", success);
 							}
 						});
 					}

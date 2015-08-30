@@ -185,7 +185,7 @@
 						profilePicture: profilePicture,
 						role: role
 					}
-					Soap,connectToServer(data, Soap.updateUser, function(success, error){
+					$httpR,connectToServer(data, $httpR.updateUser, function(success, error){
 						if( error || !success ){
 							console.error("could not update data: ", error);
 							callback(null, error);

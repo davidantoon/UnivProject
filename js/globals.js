@@ -51,6 +51,7 @@
 	})
 	.value('ServerReq', "Not initialized")
 	.value('$httpR', {
+		
 		protocol: "http",
 		ip: "31.154.164.129",
 		port: "8888",
@@ -63,15 +64,15 @@
 		updateUser: "USERupdateUser",
 		connectToServer: function(data, method, callback){
 			//data.serverHash = gethash();
-			data.serverHash="DAVID&AMEER";
+			data.serverHash="DAVIDAMEER";
 			data.method = method;
 			data.format = "json";
-			console.log( this.protocol + "://" + this.ip + ":" + this.port + this.baseUrl + "?" + "method="+method +"&format=json");
+			//console.log( this.protocol + "://" + this.ip + ":" + this.port + this.baseUrl + "?" + "method="+method +"&format=json");
 			
 			$.ajax({ 
-			    url: this.protocol + "://" + this.ip + ":" + this.port + this.baseUrl,
+			    url: "http://109.160.254.78:8888/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/",
 			    data: data,
-			    method: POST,
+			    method: "POST",
 			    success: function(success){
 			    	console.log(success);
 			    	if(success.status == 200)

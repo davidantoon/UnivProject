@@ -1060,8 +1060,8 @@ var ngScope;
                             ],
                             "searchBy": [
                                 dataHolding.searchBy[0], //  Name
-                                dataHolding.searchBy[1], //  Description
-                                dataHolding.searchBy[2]  //  ID
+                                dataHolding.searchBy[1], //  UID
+                                dataHolding.searchBy[2]  //  Description
                             ],
                             "forceSearch": ((dataHolding.forceLastModifed == true)?'LastModifed':'ServerPull')
                         } 
@@ -1087,7 +1087,7 @@ var ngScope;
                                         $scope.displayNewWorkflowButtons = false;
                                     }else{
                                         $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, null);
-                                        var svr = new Server("SearchTab", true);
+                                        var svr = new Server("SearchTab", false);
                                         svr.search(dataToSearch, function(result, error){
                                             if(error || !result){
                                                 $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, []);
@@ -1119,7 +1119,7 @@ var ngScope;
                         }else{ // there is old child tab search
                             $scope.workSpaces.selectTabAfterSearch(holdingRequestTab.dataHolding.childTab);
                             $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, null);
-                            var svr = new Server("SearchTab", true);
+                            var svr = new Server("SearchTab", false);
                             svr.search(dataToSearch, function(result, error){
                                 if(error || !result){
                                     $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, []);
@@ -1497,14 +1497,10 @@ var ngScope;
                     if(e || !s){
                         console.warn("error login ",e);
                     }else{
-                        console.log("good ", s);
-                            s.changePassword("pass5","1234",function(succ, err){
-                                if( err || ! succ ){
-                                    console.error("could not change password ", err);
-                                }else{
-                                    console.log("password change");
-                                }
-                            });
+                        console.log("good login", s);
+                        var svr = new Server(null, false);
+                        var dataToSearch = {}
+                        svr.Search()
                     }
                 })
             }
