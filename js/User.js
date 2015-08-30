@@ -5,7 +5,7 @@
 
             function User(tempJson, UID, firstName, lastName, username, email, profilePicture, role, token) {
                 if (tempJson) {
-                    this.UID = tempJson.UID;
+                    this.id = tempJson.UID;
                     this.firstName = tempJson.FIRST_NAME;
                     this.lastName = tempJson.LAST_NAME
                     this.username = tempJson.USERNAME;
@@ -16,7 +16,7 @@
                     this.token = tempJson.token;
 
                 } else {
-                    this.UID = UID;
+                    this.id = UID;
                     this.firstName = firstName;
                     this.lastName = lastName
                     this.username = username;
@@ -234,7 +234,7 @@
                 toJSON: function() {
                     try {
                         return {
-                            "UID": this.UID,
+                            "id": this.id,
                             "firstName": this.firstName,
                             "lastName": this.lastName,
                             "username": this.username,

@@ -160,8 +160,9 @@ var ngScope;
             }
 
             $scope.login = function(){
-                var username = "rajibaba";
-                var password = "my_password";
+                var username = "rajibaba"; var password = "my_password"; // Jeries Mousa
+                var username1 = "antoon91"; var password1 = "1234"; // Antoon Antoon
+
                 User.login(username, password, function(succes, error){
                     if(error || !succes)
                         $scope.logout();
