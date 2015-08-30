@@ -123,7 +123,10 @@
 						callback(searchResults, null);
 						return;
 					}else{
+						debugger;
 						var searchFields = [];
+						var mergeResult = [];
+						var resultCounter = 0;
 						var searchResults = [];
 						if(dataToSearch.searchBy[0] == 1)
 							searchFields.push("TITLE");
@@ -136,33 +139,200 @@
 							"searchFields": searchFields,
 							"Token": "I6VT3j9c4GSWcCqKLlvXAaTkyItRHGvpMqiPJs1N9UKlwa5iwBf6L8rkRUbzBGYn6hcQJeDS8oeFykY5VdcHmE1eycNaTMx03KQN"
 						};
-						debugger;
-						for(var i=0; i< dataToSearch.dataType.length; i++){
-							if(dataToSearch.dataType[i]){
-								switch (i){
-									case 1:
-									break;
-									case 0:
-										$httpR.connectToServer(data, "KBITsearchKbits", function(success, error){
-											if(error || !success){
-												console.error("error searching kbit is server: ", error);
-											}else{
-												console.log("search kbit in serve done: ", success);
-												debugger;
-												for(var i=0; i<success.length; i++){
-													success[i].type = "Kbit";
+						//Kbit
+						if(dataToSearch.dataType[0] == 1){
+							$httpR.connectToServer(data, "KBITsearchKbits", function(success, error){
+								
+								var successModified = [];
+								if(error || !success){
+									console.error("error searching kbit is server: ", error);
+								}else{
+									console.log("search kbit in serve done: ", success);
+									// loop on kbits
+									for(var i=0; i<success.length; i++){
+										var tempTerms= [];
+										var lockingUser = {};
+										if(success[i].TERMS)
+											// loop on terms inside kbit
+											for(var j=0; j< success[i].TERMS.length; j++){
+												var tempDisc= {};
+												if(success[i].TERMS[j].TERM_STRING.other_langs){
+													// loop on other lang inside term
+													for(var k=0; k<success[i].TERMS[j].TERM_STRING.other_langs.length; k++){
+														tempDisc[success[i].TERMS[j].TERM_STRING.other_langs[k].LANG] = success[i].TERMS[j].TERM_STRING.other_langs[k].TEXT;
+													}
 												}
-												callback(success, null);
+												tempDisc[success[i].TERMS[j].TERM_STRING.LANG] = success[i].TERMS[j].TERM_STRING.TEXT;
+												tempTerms.push({
+													id: success[i].TERMS[j].id,
+													lastModified: new Date(success[i].TERMS[j].CREATION_DATE),
+													description: tempDisc,
+													type: "Term"
+												});
 											}
-										});
-									break;
-									case 2:
-									break;
-									default:
-									break; 
+										if(success[i].LOCKING_USER){
+											lockingUser = {
+												id: success[i].LOCKING_USER.id,
+												username: success[i].LOCKING_USER.USERNAME,
+												firstName: success[i].LOCKING_USER.FIRST_NAME,
+												lastName: success[i].LOCKING_USER.LAST_NAME,
+												email: success[i].LOCKING_USER.EMAIL,
+												profilePicture: success[i].LOCKING_USER.PROFILE_PICTURE
+											};
+											successModified.push({
+												id: success[i].id,
+												name: success[i].TITLE,
+												terms: tempTerms,
+												description: success[i].DESCRIPTION,
+												locked: true,
+												lockedBy: lockingUser,
+												lastModified: new Date(success[i].CREATION_DATE),
+												inProgress: false,
+												type: "Kbit",
+											});
+										}else{
+											successModified.push({
+												id: success[i].id,
+												name: success[i].TITLE,
+												terms: tempTerms,
+												description: success[i].DESCRIPTION,
+												locked: false,
+												lockedBy: null,
+												lastModified: new Date(success[i].CREATION_DATE),
+												inProgress: false,
+												type: "Kbit",
+											});
+										}
+									}
 								}
-							}
+								mergeData(successModified, ++resultCounter);
+							});
+						}else{
+							mergeData([], ++resultCounter);
 						}
+						// Deleivery
+						if(dataToSearch.dataType[1] == 1){
+							$httpR.connectToServer(data, "DELIVERYsearchDelivery", function(success, error){
+								debugger;
+								var successModified = [];
+								var lockingUser = {};
+								if(error || !success){
+									console.error("error searching delivery is server: ", error);
+								}else{
+									console.log("search delivery in serve done: ", success);
+									// loop on deliveries
+									for(var i=0; i<success.length; i++){
+										var termKbits = [];
+										if(success[i].LOCKING_USER){
+											lockingUser = {
+												id: success[i].LOCKING_USER.id,
+												username: success[i].LOCKING_USER.USERNAME,
+												firstName: success[i].LOCKING_USER.FIRST_NAME,
+												lastName: success[i].LOCKING_USER.LAST_NAME,
+												email: success[i].LOCKING_USER.EMAIL,
+												profilePicture: success[i].LOCKING_USER.PROFILE_PICTURE
+											};
+										}
+										if(success[i].KBITS){
+											// loop over the kbits dic.
+											var tempKbitsNeeded = success[i].KBITS["NEEDED"];
+											for(j=0; j<tempKbitsNeeded.length; j++){
+												var tempTerms= [];
+												var lockingUserKbit = {};
+												if(tempKbitsNeeded[j].TERMS){
+													// loop on terms inside kbit
+													for(var k=0; k< tempKbitsNeeded[j].TERMS.length; k++){
+														var tempDisc= {};
+														if(tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs){
+															// loop on other lang inside term
+															for(var h=0; h<tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs.length; h++){
+																debugger;
+																tempDisc[tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs[h].LANG] = tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs[h].TEXT;
+															}
+														}
+														tempDisc[tempKbitsNeeded[j].TERMS[k].TERM_STRING.LANG] = tempKbitsNeeded[j].TERMS[k].TERM_STRING.TEXT;
+														tempTerms.push({
+															id: tempKbitsNeeded[j].TERMS[k].id,
+															lastModified: new Date(tempKbitsNeeded[j].TERMS[k].CREATION_DATE),
+															description: tempDisc,
+															type: "Term"
+														});
+													}
+												}
+												if(tempKbitsNeeded[j].LOCKING_USER){
+													lockingUserKbit = {
+														id: tempKbitsNeeded[j].LOCKING_USER.id,
+														username: tempKbitsNeeded[j].LOCKING_USER.USERNAME,
+														firstName: tempKbitsNeeded[j].LOCKING_USER.FIRST_NAME,
+														lastName: tempKbitsNeeded[j].LOCKING_USER.LAST_NAME,
+														email: tempKbitsNeeded[j].LOCKING_USER.EMAIL,
+														profilePicture: tempKbitsNeeded[j].LOCKING_USER.PROFILE_PICTURE
+													};
+													successModified.push({
+														id: tempKbitsNeeded[j].id,
+														name: tempKbitsNeeded[j].TITLE,
+														terms: tempTerms,
+														description: tempKbitsNeeded[j].DESCRIPTION,
+														locked: true,
+														lockedBy: lockingUserKbit,
+														lastModified: new Date(tempKbitsNeeded[j].CREATION_DATE),
+														inProgress: false,
+														type: "Kbit",
+													});
+												}else{
+													successModified.push({
+														id: tempKbitsNeeded[j].id,
+														name: tempKbitsNeeded[j].TITLE,
+														terms: tempTerms,
+														description: tempKbitsNeeded[j].DESCRIPTION,
+														locked: false,
+														lockedBy: null,
+														lastModified: new Date(tempKbitsNeeded[j].CREATION_DATE),
+														inProgress: false,
+														type: "Kbit",
+													});
+												}
+											}
+										}
+									}
+								}
+								mergeData(successModified, ++resultCounter);
+							});
+						}else{
+							mergeData([], ++resultCounter);
+						}
+						// Term
+						if(dataToSearch.dataType[2] == 1){
+							$httpR.connectToServer(data, "TERMsearchTerms", function(success, error){
+								var successModified = [];
+								if(error || !success){
+									console.error("error searching kbit is server: ", error);
+								}else{
+									console.log("search kbit in serve done: ", success);
+									// for(){
+									// 	successModified.push({
+									// 		// conten properties
+									// 	});
+									// }
+									
+								}
+								mergeData(successModified, ++resultCounter);
+							});
+						}else{
+							mergeData([], ++resultCounter);
+						}
+						
+
+						function mergeData(result, index){
+							debugger;
+							mergeResult = mergeResult.concat(result);
+							if(index == 3)
+								callback(mergeResult);
+						}
+
+
+
+
 					}
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in search in server", Toast.LONG, Toast.ERROR);

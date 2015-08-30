@@ -312,6 +312,7 @@
 									}
 								break;
 								case "Kbit":
+								debugger;
 									loopTerms2(0, objectToAdd.terms, []);
 									function loopTerms2(index, termsArray, termResults){
 										if(index < termsArray.length){
@@ -330,6 +331,7 @@
 									}
 								break;
 								case "Term":
+								debugger;
 									var newObject = new Content(objectToAdd);
 									Globals.set(newObject);
 									passCallback(newObject);
