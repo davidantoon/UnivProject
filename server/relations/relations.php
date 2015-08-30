@@ -460,17 +460,44 @@ class D2KRelation {
 		// step: 1) get needed + provided 'kbits' of current 'delivery' 
 		// get database name
 		if(Lock::is_locked_by_user($Delivery_UID, 'DELIVERY_BASE', $user) == true)
-			$database_name = dbAPI::get_db_name('user');
+			$sdb = dbAPI::get_db_name('user');
 		else
-			$database_name = dbAPI::get_db_name('content');
+			$sdb = dbAPI::get_db_name('content');
 		
 		$dbObj = new dbAPI();
 
-		// get all needed and provided Kbits (as relation objects)
-		$query = "SELECT * FROM ". $database_name .".R_LD2K where ENABLED = 1 AND (DELIVERY_BASE_ID = " . $Delivery_UID .")";
-		$results = $dbObj->db_select_query($database_name, $query);
+		$cdb = dbAPI::get_db_name('content');
+		$udb = dbAPI::get_db_name('user');
 
-		
+		// get all needed and provided Kbits (as relation objects)
+		$query = "  SELECT R2.* FROM ". $sdb .".R_LD2K /*USER OR CONTENT*/ AS R1 INNER JOIN (SELECT * FROM (
+					SELECT R_1.* FROM ".$cdb.".R_LD2K AS R_1 WHERE R_1.ENABLED = 1 AND R_1.DELIVERY_BASE_ID NOT IN (SELECT R.DELIVERY_BASE_ID FROM ".$cdb.".R_LD2K AS R INNER JOIN ".$cdb.".CONTENT_LOCK AS LK ON (R.DELIVERY_BASE_ID = LK.LOCKED_UID AND LK.ENTITY_TYPE = 'DELIVERY_BASE') WHERE (LK.ENABLED = 1 AND LK.LOCK_STATUS = 'LOCKED' AND LK.USER_ID = ". $user ." /*USER_ID*/))
+					) AS R5) AS R2 
+					ON (R1.KBIT_BASE_ID = R2.KBIT_BASE_ID AND R1.ENABLED = R2.ENABLED) WHERE (((R1.LINK_TYPE = 'NEEDED' AND R2.LINK_TYPE = 'PROVIDED')  OR (R2.LINK_TYPE = 'NEEDED' AND R1.LINK_TYPE = 'PROVIDED')) AND R1.ENABLED = 1 AND R1.DELIVERY_BASE_ID = ". $Delivery_UID ." /*DELIVERY_ID*/)
+					UNION
+					SELECT R2.* FROM ".$sdb.".R_LD2K /*USER OR CONTENT*/ AS R1 INNER JOIN (SELECT * FROM (
+					SELECT R_1.* FROM ".$udb.".R_LD2K AS R_1 WHERE R_1.ENABLED = 1 AND R_1.DELIVERY_BASE_ID IN (SELECT R.DELIVERY_BASE_ID FROM ".$udb.".R_LD2K AS R WHERE (ENABLED = 1 AND USER_ID = ". $user ." /*USER_ID*/))
+					) AS R5) AS R2 
+					ON (R1.KBIT_BASE_ID = R2.KBIT_BASE_ID AND R1.ENABLED = R2.ENABLED) WHERE (((R1.LINK_TYPE = 'NEEDED' AND R2.LINK_TYPE = 'PROVIDED')  OR (R2.LINK_TYPE = 'NEEDED' AND R1.LINK_TYPE = 'PROVIDED')) AND R1.ENABLED = 1 AND R1.DELIVERY_BASE_ID = ". $Delivery_UID ." /*DELIVERY_ID*/)
+		";
+		$results = $dbObj->db_select_query('', $query);
+
+		$parents = array();
+		$children = array();
+
+		for($i=0;$i<count($results);$i++) {
+
+			$curr_Delivery = Delivery::get_Delivery_details_without_related_deliveries($results[$i]["DELIVERY_BASE_ID"], $user);
+			
+			if($results[$i]["LINK_TYPE"] == 'NEEDED')
+				array_push($parents, $curr_Delivery);
+			if($results[$i]["LINK_TYPE"] == 'PROVIDED')
+				array_push($children, $curr_Delivery);			
+		}
+
+		$temp = array("PARENTS" => $parents, "CHILDREN" => $children);
+		return $temp;
+
 	}
 }
 ?>

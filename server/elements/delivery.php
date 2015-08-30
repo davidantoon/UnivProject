@@ -267,6 +267,14 @@ class Delivery {
 		return $temp;
 	}
 
+	public static function get_front_Delivery_with_user($UID, $tableName, $user) {
+
+		if(Lock::is_locked_by_user($UID, 'DELIVERY_BASE', $user))
+			$dbName = 'user';
+		else
+			$dbName = 'content';
+		return Delivery::get_front_Delivery($UID, $tableName, $dbName);
+	}
 
 
 	/**
@@ -605,13 +613,15 @@ class Delivery {
 		$Delivery["KBITS"] = Delivery::get_Kbit_of_delivery($UID, $user);
 
 		// get terms
-		$terms = Delivery::get_terms_of_Delivery($UID, $user, $lang);
+		$terms = Delivery::get_terms_of_Delivery($UID, $user);
 		if($terms != null)
 			$kbit["TERMS"] = $terms;
 
 		// get front
-		
+		$Delivery["FRONT_DELIVERY"] = Delivery::get_front_Delivery_with_user($UID, $Delivery["FRONT_TYPE"], $user);
+
 		// get related deliveries
+		$Delivery["RELATEED_DELIVERIES"] = Delivery::get_deliveries_of_delivery($UID, $user);
 
 		return $Delivery;
 	}
@@ -626,6 +636,8 @@ class Delivery {
 		else
 			$Delivery = Delivery::get_Delivery_by_UID($UID);
 
+
+
 		// get locking user
 		$locking_user = Lock::get_locking_user($UID, 'DELIVERY_BASE');
 		if($locking_user != null)
@@ -635,7 +647,7 @@ class Delivery {
 		$Delivery["KBITS"] = Delivery::get_Kbit_of_delivery($UID, $user);
 
 		// get terms
-		$terms = Delivery::get_terms_of_Delivery($UID, $user, $lang);
+		$terms = Delivery::get_terms_of_Delivery($UID, $user);
 		if($terms != null)
 			$kbit["TERMS"] = $terms;
 
@@ -844,6 +856,13 @@ class Delivery {
 		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		return D2KRelation::get_related_Kbits($Delivery_UID, $user);
+	}
+
+	public static function get_deliveries_of_delivery($Delivery_UID, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
+		return D2KRelation::get_related_deliveries($Delivery_UID, $user);
 	}
 }
 

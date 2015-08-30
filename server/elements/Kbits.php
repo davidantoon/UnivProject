@@ -276,6 +276,18 @@ class Kbit {
 		return $temp;
 	}
 
+	public static function get_front_kbit_with_user($UID, $tableName, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
+		if(Lock::is_locked_by_user($UID, 'KBIT_BASE', $user))
+			$dbName = 'user';
+		else
+			$dbName = 'content';
+		$dbName = dbAPI::get_db_name($dbName);
+		return Kbit::get_front_Kbit($UID, $tableName, $dbName);
+	}
+
 
 
 	/**
@@ -607,16 +619,26 @@ class Kbit {
 
 		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
-		if(Lock::is_locked_by_user($UID, 'KBIT_BASE', $user))
+		if(Lock::is_locked_by_user($UID, 'KBIT_BASE', $user) == true)
 			$kbit = Kbit::get_edited_kbit_by_UID($UID);
 		else
 			$kbit = Kbit::get_kbit_by_UID($UID);
+
+		if($kbit == null) {
+			debugLog::important_log("<i>[Kbits.php:". __FUNCTION___ ."]</i> Kbit (". $UID .") was not found");
+			return null;
+		}
 
 		// get locking user
 		$locking_user = Lock::get_locking_user($UID, 'KBIT_BASE');
 		if($locking_user != null)
 			$kbit["LOCKING_USER"] = $locking_user;
+		
 
+		// get front
+		$kbit["FRONT_KBIT"] = Kbit::get_front_kbit_with_user($UID, $kbit["FRONT_TYPE"], $user);
+
+		// get terms of kbit
 		$terms = Kbit::get_terms_of_Kbit($UID, $user, $lang);
 		if($terms != null)
 			$kbit["TERMS"] = $terms;
