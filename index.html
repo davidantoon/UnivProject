@@ -145,7 +145,7 @@
                     <ons-icon ng-click="((displayNewWorkflowButtons == true)?return:closeTab(wFlow));" class="closeTabButton" icon="ion-ios-close" size="18px"></ons-icon>
                     <ons-icon ng-click="((displayNewWorkflowButtons == true)?return:openTabOptions(wFlow));" class="optionTabButton" icon="ion-navicon-round" size="18px"></ons-icon>
                   </ons-col>
-                  <ons-col ng-click="addNewTabToWorkflow(wFlow);" class="{{'col ons-col-inner newWorkflowTab ' + ((displayNewWorkflowButtons == true && displayNewWorkflowTabButtons == true)?'':'hidden')}}">
+                  <ons-col ng-click="addNewTabToWorkflow(wFlow);" class="{{'col ons-col-inner newWorkflowTab ' + ((displayNewWorkflowButtons == true && displayNewWorkflowTabButtons == true && holdingNewWorkflowData.Action !='DisplayObject' && (wFlow.tx-wFlow.fx == 1))?'':'hidden')}}">
                     +
                   </ons-col>
                 </ons-row>
@@ -313,52 +313,73 @@
                         </div>
                       </div>
                     </div>
-                    <div ng-init="contentTab=wFlow.selectedTab;" class="{{'contentTypeTab '+((getSelectedTabType(wFlow) == 5)?'':'hidden')}}">
+                    <div  class="{{'contentTypeTab '+((getSelectedTabType(wFlow) == 5)?'':'hidden')}}">
                       <div ng-click="back(wFlow.selectedTab.dataHolding);" style="{{'border-top: 2px solid '+wFlow.selectedTab.color+'; border-right: 3px solid '+wFlow.selectedTab.color+';'}}" class="ReturnToSearchButton">
                         <ons-icon icon="ion-chevron-left" size="18px"></ons-icon> Back
                       </div>
-                      <!-- <div class="{{'lockedDiv '+((contentTab.content.locked == true)?'':'invisible')}}">
-                        
-                        <p>Locked by <strong>{{contentTab.content.lockedBy.firstName + " " + contentTab.content.lockedBy.firstName}}</strong></p>
-                      </div> -->
-
+                      <div class="{{'tabOptionsDiv '+ ((wFlow.selectedTab.tabOption == true)?'':'invisible')}}" ng-mouseleave="closeOptionTab(wFlow)">
+                        <ons-row class="hoverOp clickable">
+                          <ons-col class="optionIcon" width="34px">
+                            <ons-icon icon="ion-edit" size="18px"></ons-icon>
+                          </ons-col>
+                          <ons-col class="optionTitle">
+                            Edit
+                          </ons-col>
+                        </ons-row>
+                        <ons-row class="hoverOp clickable">
+                          <ons-col class="optionIcon" width="34px">
+                            <ons-icon icon="ion-backspace" size="18px"></ons-icon>
+                          </ons-col>
+                          <ons-col class="optionTitle">
+                            Revoke
+                          </ons-col>
+                        </ons-row>
+                        <ons-row class="hoverOp clickable">
+                          <ons-col class="optionIcon" width="34px">
+                            <ons-icon icon="ion-social-dropbox" size="18px"></ons-icon>
+                          </ons-col>
+                          <ons-col class="optionTitle">
+                            Publish
+                          </ons-col>
+                        </ons-row>
+                      </div>
                       <ons-row class="contentHeader">
                         <ons-col class="contentName">
                           <selectable>
-                            {{contentTab.content.name}}
+                            {{wFlow.selectedTab.content.name}}
                           </selectable>
-                          <span class="{{'lockedDiv '+((contentTab.content.locked == true)?'':'invisible')}}">
+                          <span class="{{'lockedDiv '+((wFlow.selectedTab.content.locked == true)?'':'invisible')}}">
                             <ons-icon icon="ion-locked" style="vertical-align: 7%;" size="17px"></ons-icon>
                           </span>
-                          <span class="{{'InprogressDiv '+((contentTab.content.inProgress == true)?'':'invisible')}}">
+                          <span class="{{'InprogressDiv '+((wFlow.selectedTab.content.inProgress == true)?'':'invisible')}}">
                             <ons-icon icon="ion-code-working" style="vertical-align: 7%;" size="17px"></ons-icon>
                           </span>
                         </ons-col>
-                        <ons-col class="contentType" width="70px">{{contentTab.content.type}}</ons-col>
-                        <ons-col class="contentLastModified" width="150px">Last Modified <br>
+                        <ons-col class="contentType" width="60px">{{wFlow.selectedTab.content.type}}</ons-col>
+                        <ons-col class="contentLastModified" width="130px">Last Modified <br>
                           <selectable>
-                            {{contentTab.content.lastModified| date:"MMM d, y h:mm:ss"}}
+                            {{wFlow.selectedTab.content.lastModified| date:"MMM d, y h:mm:ss"}}
                           </selectable>
                         </ons-col>
                       </ons-row>
                       <ons-row class="contentBody" style="padding-top: 6px;">
                         <ons-col>
-                          <selectable>{{contentTab.content.description}}</selectable><br>
+                          <selectable>{{wFlow.selectedTab.content.description}}</selectable><br>
                         </ons-col>
                       </ons-row>
-                      <ons-row class="contentPath">
+                      <ons-row class="{{'contentPath row ons-row-inner '+((wFlow.selectedTab.content.type == 'Term')?'hidden':'')}}">
                         <ons-col class="title" width="50px">
                           Path
                         </ons-col>
                         <ons-col class="link">
                           <selectable>
-                            {{((contentTab.content.url != "")?contentTab.content.url:"Not specified")}}
+                            {{((wFlow.selectedTab.content.url != "")?wFlow.selectedTab.content.url:"Not specified")}}
                           </selectable>
                         </ons-col>
                       </ons-row>
-                      <ons-row class="contentDetails">
+                      <ons-row class="{{'contentDetails row ons-row-inner '+((wFlow.selectedTab.content.type == 'Term')?'hidden':'')}}">
                         <ons-col>
-                          <div ng-switch="contentTab.content.type">
+                          <div ng-switch="wFlow.selectedTab.content.type">
                             <ons-row ng-switch-when="Delivery">
                               <ons-col>
                                 <ons-row class="tables">
@@ -370,7 +391,7 @@
                                     </ons-row>
                                     <ons-row class="listItems">
                                       <ons-col>
-                                        <ons-row class="listItem" ng-repeat="Term in contentTab.content.terms">
+                                        <ons-row class="listItem" ng-click="displaySmallContent(wFlow,Term);" ng-repeat="Term in wFlow.selectedTab.content.terms">
                                           {{Term.name}}
                                         </ons-row>
                                       </ons-col>
@@ -384,7 +405,7 @@
                                     </ons-row>
                                     <ons-row class="listItems">
                                       <ons-col>
-                                        <ons-row class="listItem" ng-repeat="Kbits in contentTab.content.kBitsNeeded">
+                                        <ons-row class="listItem" ng-click="displaySmallContent(wFlow,Kbits);" ng-repeat="Kbits in wFlow.selectedTab.content.kBitsNeeded">
                                           {{Kbits.name}}
                                         </ons-row>
                                       </ons-col>
@@ -398,7 +419,7 @@
                                     </ons-row>
                                     <ons-row class="listItems">
                                       <ons-col>
-                                        <ons-row class="listItem" ng-repeat="Kbits in contentTab.content.kBitsProvided">
+                                        <ons-row class="listItem" ng-click="displaySmallContent(wFlow,Kbits);" ng-repeat="Kbits in wFlow.selectedTab.content.kBitsProvided">
                                           {{Kbits.name}}
                                         </ons-row>
                                       </ons-col>
@@ -408,7 +429,24 @@
                               </ons-col>
                             </ons-row>
                             <ons-row ng-switch-when="Kbit">
-                              Kbit
+                              <ons-col>
+                                <ons-row class="tables">
+                                  <ons-col class="tableCols">
+                                    <ons-row class="title">
+                                      <ons-col>
+                                        Terms
+                                      </ons-col>
+                                    </ons-row>
+                                    <ons-row class="listItems">
+                                      <ons-col>
+                                        <ons-row class="listItem" ng-click="displaySmallContent(wFlow,Term);" ng-repeat="Term in wFlow.selectedTab.content.terms">
+                                          {{Term.name}}
+                                        </ons-row>
+                                      </ons-col>
+                                    </ons-row>
+                                  </ons-col>
+                                </ons-row>
+                              </ons-col>
                             </ons-row>
                             <ons-row ng-switch-when="Term">
                               Term
@@ -421,7 +459,7 @@
                 </div>
               </div>
 
-              <div ng-repeat="newButtons in workSpaces.newWorkflowButtons" id="{{'newWorkflowButton'+newButtons.ID}}" class="{{'newWorkflowButtonDiv WorkFlowBlock ' + ((displayNewWorkflowButtons == true)?'':'hidden')}}" fx="{{newButtons.fx}}" fy="{{newButtons.fy}}" tx="{{newButtons.tx}}" ty="{{newButtons.ty}}" >
+              <div ng-repeat="newButtons in workSpaces.newWorkflowButtons" id="{{'newWorkflowButton'+newButtons.ID}}" class="{{'newWorkflowButtonDiv WorkFlowBlock ' + ((displayNewWorkflowButtons == true)?'':'invisible')}}" fx="{{newButtons.fx}}" fy="{{newButtons.fy}}" tx="{{newButtons.tx}}" ty="{{newButtons.ty}}" >
                 <div ng-click="convertToWorkflow(newButtons);" class="newWorkFlow">
                   <ons-icon icon="ion-plus-round" size="150px" class="ons-icon ons-icon--ion ion-plus-round" style="line-height: 200px; display: block; color: rgb(210, 210, 210); font-size: 150px;"></ons-icon>
                 </div>

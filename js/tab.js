@@ -30,7 +30,7 @@
 				this.dataHolding = {};
 				return this;
 			}else if(tempJson){
-				
+				debugger;
 				this.parentWF = workflow;
 				this.ID = tempJson.ID;
 				this.title = tempJson.title;
@@ -118,7 +118,8 @@
 					break;
 					case Tab.CONTENT_VIEW:
 						this.addData({
-							"parentTab":{"workflowId":null,"tabId":null}
+							"parentTab":{"workflowId":null,"tabId":null},
+							"childTab":{"workflowId":null,"tabId":null}
 						});
 						this.addContent(content, true);
 					break;
@@ -188,7 +189,7 @@
 	                "ID": this.ID,
 	                "title": this.title,
 	                "Type": this.Type,
-	                "content": ((this.content == null)?null:this.content.toString()),
+	                "content": ((this.content == null)?null:this.content.toJson()),
 	                "orderTab": this.orderTab,
 	                "dataHolding": this.dataHolding,
 	                "color": this.color
