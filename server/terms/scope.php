@@ -13,7 +13,7 @@ class scope {
 		$UID = $dbObj->get_latest_UID($dbObj->db_get_contentDB(), 'scope');
 		$UID++;
 		// add record to database
-		$query = "INSERT INTO scope (UID, TITLE, DESCRIPTION, ENABLED, USER_ID, CREATION_DATE) VALUES (".
+		$query = "INSERT INTO SCOPE (UID, TITLE, DESCRIPTION, ENABLED, USER_ID, CREATION_DATE) VALUES (".
 			$UID . ", '". $title . "', '" . $description ."', 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
 		$dbObj->run_query($dbObj->db_get_contentDB(), $query);
 
@@ -27,7 +27,7 @@ class scope {
 		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		$dbObj = new dbAPI();
-		$query = "SELECT * FROM scope where UID = '" . $UID . "' AND ENABLED = '1'";
+		$query = "SELECT * FROM SCOPE where UID = '" . $UID . "' AND ENABLED = '1'";
 		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
 		if(count($results) == 0)
 			return null;
@@ -80,7 +80,7 @@ class scope {
 		}
 		$search_sttmnt = implode(" OR ", $search_fields);
 
-		$query = "SELECT * FROM scope where  ENABLED = '1' AND (". $search_sttmnt .")";
+		$query = "SELECT * FROM SCOPE where  ENABLED = '1' AND (". $search_sttmnt .")";
 		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
 		if(count($results) == 0)
 			return array();
@@ -102,7 +102,7 @@ class scope {
 
 		// create relation between two terms
 		if(refRelation::add_relation_to_object($parent_scope_UID, $child_scope_UID, $is_hier, $user, 'R_Ls2s') == null) {
-			debugLog::log("parent scope (". $parent_scope_UID .") and child (". $child_scope_UID .") scope cannot be the same");
+			debugLog::log("parent SCOPE (". $parent_scope_UID .") and child (". $child_scope_UID .") scope cannot be the same");
 			return null;
 		}
 		// return recently created relation
