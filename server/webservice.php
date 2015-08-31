@@ -112,6 +112,21 @@ class usersAPI {
 		    return array('ErrorCode' => 0, 'Message' => "Unknown Error");
 		}
     }
+    
+    static function logout($serverHash, $Token) {
+
+        if(serverAPI::validateServerIdentity($serverHash) == false)
+            return array('ErrorCode' => 4, 'Message' => "Invalid serverHash : ".$serverHash);
+        $user = usersAPI::validateToken($Token);
+        if($user == null)
+            return array('ErrorCode' => 3, 'Message' => "User is not logged in");
+        try {
+            return users::log_out($user["USERNAME"]);
+        }
+        catch (Exception $e) {
+            return array('ErrorCode' => 0, 'Message' => "Unknown Error");
+        }
+    }
 
     static function validateToken($token) {
     	
@@ -959,6 +974,9 @@ class interfaceAPI {
 	public static function USERupdateUser($serverHash, $Token, $firstName, $lastName, $email, $profilePicture, $role = '') {
 		return usersAPI::updateUser($serverHash, $Token, $firstName, $lastName, $email, $profilePicture, $role = '');
 	}
+	public static function USERlogout($serverHash, $Token) {
+        	return usersAPI::logout($serverHash, $Token);
+    	}
 
 
 
