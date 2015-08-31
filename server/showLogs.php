@@ -44,6 +44,7 @@ include("phpFileTree/php_file_tree.php");
 		<script src="phpFileTree/php_file_tree.js" type="text/javascript"></script>
 		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 		<script>
+			var timerRunning = 1;
 			$(document).ready(function(){
 			    $("#hide").click(function(){
 			        $('.trace').hide();
@@ -57,12 +58,26 @@ include("phpFileTree/php_file_tree.php");
 			    $("#showdb").click(function(){
 			        $('.db').show();
 			    });
+			    $("#stopStartTimer").click(function(){
+			        timerRunning = 1 - timerRunning;
+			    });
 
 			});
 
+
+			var global_u = "";
 			function showLogFile(u) {
-			    $("#two").load(u);
+			    global_u = u;
+			    $("#two").load(global_u);
 			}
+			setInterval(function(){
+				if(timerRunning == 1) {
+					if(global_u != ''){
+						$("#two").load(global_u);
+					}
+				}
+			},500);
+
 		</script>
 	</head>
 
@@ -77,6 +92,8 @@ include("phpFileTree/php_file_tree.php");
 		<button id="show">Show trace</button>
 		<button id="hidedb">Hide db</button>
 		<button id="showdb">Show db</button>
+		<button id="stopStartTimer">Run/Stop timer</button>
+		
 		<hr>
 		<?php
 				

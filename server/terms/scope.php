@@ -92,6 +92,18 @@ class scope {
 		return $results;	
 	}
 
+	public static function serach_scopes2($search_word) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
+		$query = "SELECT UID as 'SCOPE_UID', TITLE as 'SCOPE_TITLE', DESCRIPTION as 'SCOPE_DESCRIPTION' from [DB_NAME].SCOPE where (UPPER(TITLE) LIKE UPPER('%[SEARCH_WORD]%') OR UPPER(DESCRIPTION) LIKE UPPER('%[SEARCH_WORD]%')) AND ENABLED = 1";
+		$dbObj = new dbAPI();
+		$query = str_replace('[DB_NAME]', $dbObj->db_get_contentDB(), $query);
+		$query = str_replace('[SEARCH_WORD]', $search_word, $query);
+		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
+		return $results;
+	}
+
 
 
 

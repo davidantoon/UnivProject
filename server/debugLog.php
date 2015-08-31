@@ -120,7 +120,7 @@ class debugLog {
 		$latest_number++;
 		$new_file_name = "logs/". date("Y-m-d") ."/log-file-". date("Y-m-d") .".log" . sprintf("%03d", $latest_number);
 
-		if(filesize($curr_file_name) < 90000)
+		if(filesize($curr_file_name) < 150000)
 			return $curr_file_name;
 		return $new_file_name;
 
