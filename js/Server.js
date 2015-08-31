@@ -135,11 +135,11 @@
 							searchFields.push("UID");
 						var data= {
 							"searchWord": dataToSearch["text"],
-							"searchFields": searchFields,
+							"searchFields": searchFields
 						};
 						//Kbit
 						if(dataToSearch.dataType[0] == 1){
-							$httpR.connectToServer(data, "KBITsearchKbits", function(success, error){
+							$httpR.connectToServer(data, "KBITsearchKbits", Globals, function(success, error){
 								
 								var successModified = [];
 								if(error || !success){
@@ -210,7 +210,7 @@
 						}
 						// Delivery
 						if(dataToSearch.dataType[1] == 1){
-							$httpR.connectToServer(data, "DELIVERYsearchDelivery", function(success, error){
+							$httpR.connectToServer(data, "DELIVERYsearchDelivery", Globals, function(success, error){
 								
 								var successModified = [];
 								var lockingUser = {};
@@ -393,7 +393,7 @@
 						if(dataToSearch.dataType[2] == 1){
 							data.lang = 0;
 							console.error("error in function in server");
-							$httpR.connectToServer(data, "TERMsearchTerms", function(success, error){
+							$httpR.connectToServer(data, "TERMsearchTerms", Globals, function(success, error){
 								var successModified = [];
 								debugger;
 								if(error || !success){
@@ -491,7 +491,7 @@
 							break;
 							case "Terms":
 
-								$httpR.connectToServer(data, "TERMaddTermToTermRelation", function(success, error){
+								$httpR.connectToServer(data, "TERMaddTermToTermRelation", Globals, function(success, error){
 									if(error || !(success)){
 										console.log("error in saving element :", error);
 									}else{
@@ -572,7 +572,7 @@
 								data.kbitUID = objID;
 								data.lang = 0;
 								console.warn("get kbit by id missing from API");
-								// $httpR.connectToServer(data, "TERMgetRelatedTerms", function(success, error){
+								// $httpR.connectToServer(data, "TERMgetRelatedTerms", Globals, function(success, error){
 								// 	if(error || !(success)){
 								// 		console.log("error getting term by id: ", error);
 								// 	}else{
@@ -583,7 +583,7 @@
 							case "term":
 								data.termUID = objID;
 								data.lang = 0;
-								$httpR.connectToServer(data, "TERMgetRelatedTerms", function(success, error){
+								$httpR.connectToServer(data, "TERMgetRelatedTerms", Globals, function(success, error){
 									if(error || !(success)){
 										console.log("error getting term by id: ", error);
 									}else{
@@ -669,7 +669,7 @@
 								data.kbitUID = objID;
 								data.lang = 0;
 								console.warn("Delete kbit by id missing from API");
-								// $httpR.connectToServer(data, "TERMgetRelatedTerms", function(success, error){
+								// $httpR.connectToServer(data, "TERMgetRelatedTerms", Globals, function(success, error){
 								// 	if(error || !(success)){
 								// 		console.log("error getting term by id: ", error);
 								// 	}else{
@@ -733,20 +733,40 @@
 			 */
 			getSteps: function(callback){
 				try{
-					var stepsDB = localStorage.getItem("com.intel.server.steps");
-					if(stepsDB == null || stepsDB == undefined){
-						callback(null, {"message":"could not get steps from server", "code": ""});
-						return;
-					}else{
-						if(stepsDB.length == 0){
-							callback(null, {"message":"there is no steps in server", "code": ""});
+					if(this.baseUrl == "dummy"){
+						var stepsDB = localStorage.getItem("com.intel.server.steps");
+						if(stepsDB == null || stepsDB == undefined){
+							callback(null, {"message":"could not get steps from server", "code": ""});
+							return;
+						}else{
+							if(stepsDB.length == 0){
+								callback(null, {"message":"there is no steps in server", "code": ""});
+								return;
+							}
+							callback(JSON.parse(stepsDB), null);
 							return;
 						}
-						callback(JSON.parse(stepsDB), null);
-						return;
+					}else{
+						$httpR.connectToServer({Key:"Steps"},"KVPgetKeyValuePair", Globals, callback);
 					}
 				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","There was an error in getting steps from server", Toast.LONG, Toast.ERROR);
+	                console.error("getSteps: ", e);
+	                callback(null,{"message":e.message,"code":e.code});
+				}
+			},
+
+			/**
+			 * Save the steps in server
+			 * @param {Function} callback callback function
+			 */
+			setSteps: function(callback){
+				try{
+					if(this.baseUrl == "dummy"){
+						callback();
+					}else{
+						$httpR.connectToServer({Key:"Steps"},"KVPsetKeyValuePair", Globals, callback);
+					}
+				}catch(e){
 	                console.error("getSteps: ", e);
 	                callback(null,{"message":e.message,"code":e.code});
 				}
@@ -773,7 +793,6 @@
 						return;
 					}
 				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","There was an error in getting settings from server", Toast.LONG, Toast.ERROR);
 	                console.error("getSettings: ", e);
 	                callback(null,{"message":e.message,"code":e.code});
 				}

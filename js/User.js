@@ -1,22 +1,34 @@
 (function(angular) {
     // 'use strict';
-    angular.module('IntelLearner').factory('User', ['$rootScope', '$http', 'Server', '$httpR',
-        function($rootScope, $http, Server, $httpR) {
+    angular.module('IntelLearner').factory('User', ['$rootScope', '$http', 'Server', '$httpR', 'Globals',
+        function($rootScope, $http, Server, $httpR, Globals) {
 
-            function User(tempJson, UID, firstName, lastName, username, email, profilePicture, role, token) {
+            function User(tempJson, id, firstName, lastName, username, email, profilePicture, role, token) {
                 if (tempJson) {
-                    this.id = tempJson.UID;
-                    this.firstName = tempJson.FIRST_NAME;
-                    this.lastName = tempJson.LAST_NAME
-                    this.username = tempJson.USERNAME;
-                    this.email = tempJson.EMAIL;
-                    this.creationDate = new Date(tempJson.CREATION_DATE);
-                    this.profilePicture = tempJson.PROFILE_PICTURE;
-                    this.role = tempJson.ROLE;
-                    this.token = tempJson.token;
+                    if(tempJson.UID){
+                        this.id = tempJson.UID;
+                        this.firstName = tempJson.FIRST_NAME;
+                        this.lastName = tempJson.LAST_NAME
+                        this.username = tempJson.USERNAME;
+                        this.email = tempJson.EMAIL;
+                        this.creationDate = new Date(tempJson.CREATION_DATE);
+                        this.profilePicture = tempJson.PROFILE_PICTURE;
+                        this.role = tempJson.ROLE;
+                        this.token = tempJson.token;
+                    }else{
+                        this.id = tempJson.id;
+                        this.firstName = tempJson.firstName;
+                        this.lastName = tempJson.lastName;
+                        this.username = tempJson.username;
+                        this.email = tempJson.email;
+                        this.creationDate = new Date(tempJson.creationDate);
+                        this.profilePicture = tempJson.profilePicture;
+                        this.role = tempJson.role;
+                        this.token = tempJson.token;
+                    }
 
                 } else {
-                    this.id = UID;
+                    this.id = id;
                     this.firstName = firstName;
                     this.lastName = lastName
                     this.username = username;
@@ -55,7 +67,7 @@
                             "username": username,
                             "password": password
                         };
-                        $httpR.connectToServer(data, $httpR.logIn, function(result, error) {
+                        $httpR.connectToServer(data, $httpR.logIn, Globals, function(result, error) {
                             if (result) {
                                 // console.log("connectToServer response: ", result);
                                 var newUser = new User(result);
@@ -103,7 +115,7 @@
                         profilePicture: profilePicture,
                         role: role
                     };
-                    $httpR.connectToServer(data, $httpR.signUp, function(result, error) {
+                    $httpR.connectToServer(data, $httpR.signUp, Globals, function(result, error) {
                         if ((result) && error != null) {
                             var newUser = new User(result);
                             newUser.updateCookies(function(success, error) {
@@ -156,7 +168,7 @@
                             password: oldpassword,
                             new_password: newPassword
                         }
-                        $httpR.connectToServer(data, $httpR.changePassword, function(success, error) {
+                        $httpR.connectToServer(data, $httpR.changePassword, Globals, function(success, error) {
                             if (error || !success) {
                                 console.error("could not change password: ", error);
                                 callback(null, error);
@@ -188,7 +200,7 @@
                             profilePicture: profilePicture,
                             role: role
                         }
-                        $httpR, connectToServer(data, $httpR.updateUser, function(success, error) {
+                        $httpR.connectToServer(data, $httpR.updateUser, Globals, function(success, error) {
                             if (error || !success) {
                                 console.error("could not update data: ", error);
                                 callback(null, error);

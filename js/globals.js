@@ -45,52 +45,55 @@
             }
         }
     })
-        .value('TypeOf', {
-            init: function() {
-                Number.prototype.objectType = "number";
-                Array.prototype.objectType = "array";
-                String.prototype.objectType = "string";
-                (function() {}).prototype.objectType = "function";
-            },
-            get: function(obj) {
-                return obj.objectType;
+    .value('TypeOf', {
+        init: function() {
+            Number.prototype.objectType = "number";
+            Array.prototype.objectType = "array";
+            String.prototype.objectType = "string";
+            (function() {}).prototype.objectType = "function";
+        },
+        get: function(obj) {
+            return obj.objectType;
+        }
+    })
+    .value('ServerReq', "Not initialized")
+    .value('$httpR', {
+
+        protocol: "http",
+        ip: "94.159.162.6",
+        port: "8888",
+        baseUrl: "/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/",
+
+
+        logIn: "USERlogIn",
+        signUp: "USERsignUp",
+        changePassword: "USERchangePassword",
+        updateUser: "USERupdateUser",
+        connectToServer: function(data, method, Globals, callback) {
+
+            //data.serverHash = gethash();
+            data.serverHash = "DAVIDAMEER";
+            data.method = method;
+            data.format = "json";
+            if(Globals.CurrentUser && Globals.CurrentUser.id){
+                data.Token = Globals.CurrentUser.token;
             }
-        })
-        .value('ServerReq', "Not initialized")
-        .value('$httpR', {
 
-            protocol: "http",
-            ip: "94.159.162.6",
-            port: "8888",
-            baseUrl: "/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/",
-
-
-            logIn: "USERlogIn",
-            signUp: "USERsignUp",
-            changePassword: "USERchangePassword",
-            updateUser: "USERupdateUser",
-            connectToServer: function(data, method, callback) {
-                //data.serverHash = gethash();
-                data.serverHash = "DAVIDAMEER";
-                data.method = method;
-                data.format = "json";
-                //console.log( this.protocol + "://" + this.ip + ":" + this.port + this.baseUrl + "?" + "method="+method +"&format=json");
-
-                $.ajax({
-                    // url: "http://testserver-radjybaba.rhcloud.com/webservice.php/",
-                    url: this.protocol+"://"+this.ip+":"+this.port+this.baseUrl,
-                    data: data,
-                    method: "POST",
-                    success: function(success) {
-                        if (success.status == 200)
-                            callback(success.data, null);
-                        else
-                            callback(null, success);
-                    },
-                    error: function(error) {
-                        callback(null, JSON.parse(error.responseText).data.Message);
-                    }
-                });
-            }
-        });
+            $.ajax({
+                // url: "http://testserver-radjybaba.rhcloud.com/webservice.php/",
+                url: this.protocol+"://"+this.ip+":"+this.port+this.baseUrl,
+                data: data,
+                method: "POST",
+                success: function(success) {
+                    if (success.status == 200)
+                        callback(success.data, null);
+                    else
+                        callback(null, success);
+                },
+                error: function(error) {
+                    callback(null, error);
+                }
+            });
+        }
+    });
 })(window.angular);

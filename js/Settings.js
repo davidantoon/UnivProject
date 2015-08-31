@@ -10,24 +10,19 @@
 			this.autoOpenTabs = false;
 			this.defaultToastPosition = "BOTTOM";
 			this.removeScrollOnMouseOver = false;
-			
+			this.lastModified = new Date();
 		}
 
-		/**
-		 * Rename a certan tab
-		 * @param  {object}   tab      Tab
-		 * @param  {string}   newName  new name for the tab
-		 * @param  {Function} callback callback function
-		 */
-		// renameTab : function(tab, newName, callback){
-		// 	if( tab == null || tab == undefined){
-		// 		callback();
-		// 		return;
-		// 	}
-		// 	tab.name = newName;
-		// }
-		// 
-		// COLOR PICKER : http://www.dematte.at/colorPicker/
+		Settings.prototype = {
+			loadSettings: function(callback){
+
+				// compare setting from storage and server
+				
+				// update current instacne
+				
+				callback();
+			}
+		}
 
 		return Settings;
 	}]);

@@ -1,89 +1,98 @@
 (function(angular) {
     // 'use strict';
-	angular.module('IntelLearner').factory('Steps', ["$rootScope", "Workflow", "Workspace", "Server", "Toast", function($rootScope, Workflow, Workspace, Server, Toast){
+	angular.module('IntelLearner').factory('Steps', ["$rootScope", "Workflow", "Workspace", "Server", "Toast", "Storage", function($rootScope, Workflow, Workspace, Server, Toast, Storage){
 
-		function Steps(workspace, scope){
+		function Steps(){
 
 			this.last20Steps = [];	
 			this.currentUndoOrder = 1;
 			this.savedInServer = false;
 			this.lastFocusedWorkflow = null;
-			
-			var passThis1 = this;
-			var svr = new Server(this.objectType, true);
-			svr.getSteps(function(result, error){
-				if(error || !result){
-					ServerResquestComplete(null, passThis1);
-				}else{
-					ServerResquestComplete(result, passThis1);
-				}
-			});
-			$rootScope.currentScope.Toast.show("david","dasds");
-			function ServerResquestComplete(serverSteps, passThis){
-				try{
-					var dataFromLocalStorage = JSON.parse(localStorage.getItem("com.intel.steps.last20Steps"));
-					// init workspace
-					if(serverSteps){
-						if(dataFromLocalStorage != null){
-							// compare 
-							if(Number(serverSteps.lastModified) < dataFromLocalStorage.lastModified){
-								passThis.last20Steps = dataFromLocalStorage.last20Steps;
-								passThis.currentUndoOrder = dataFromLocalStorage.currentUndoOrder;
-								passThis.lastFocusedWorkflow = dataFromLocalStorage.lastFocusedWorkflow;
-							}else{
-								passThis.last20Steps = serverSteps.last20Steps;
-								passThis.currentUndoOrder = serverSteps.currentUndoOrder;
-								passThis.lastFocusedWorkflow = serverSteps.lastFocusedWorkflow;
-							}
-							
-						}else{
-							// only server steps
-							passThis.last20Steps = serverSteps.last20Steps;
-							passThis.currentUndoOrder = serverSteps.currentUndoOrder;
-							passThis.lastFocusedWorkflow = serverSteps.lastFocusedWorkflow;
-						}
-					}else{
-						// only local steps
-						if(dataFromLocalStorage != null){
-							passThis.last20Steps = dataFromLocalStorage.last20Steps;
-							passThis.currentUndoOrder = dataFromLocalStorage.currentUndoOrder;
-							passThis.lastFocusedWorkflow = dataFromLocalStorage.lastFocusedWorkflow;
-						}else{
-							workspace = new Workspace();
-							workspace.selectedWorkflow = workspace.workflows[0];
-							passThis.InsertStepToLastSteps(workspace);
-							lastFocusedWorkflow = workspace.workflows[0].ID;
-						}
-					}
-					passThis.commitSteps();
-					passThis.savedInServer = true;
-					// update layout of workspace
-					passThis.restoreStep(workspace, function(){
-						if(passThis.lastFocusedWorkflow == null || passThis.lastFocusedWorkflow == undefined){
-							passThis.lastFocusedWorkflow = workspace.workflows[0].ID;
-						}else{
-							var indexOfScroll = 0;
-		                    for(var i=0; i< workspace.workflows.length; i++){
-		                        if(workspace.workflows[i].ID == passThis.lastFocusedWorkflow){
-		                            indexOfScroll = i;
-		                            break;
-		                        }
-		                    }
-		                    passThis.lastFocusedWorkflow = workspace.workflows[indexOfScroll].ID;
-						}
-						workspace.updateNewWorkflowButtons();
-						workspace.updateLastId();
-					});
-				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","There was an error in ", Toast.LONG, Toast.ERROR);
-		            console.error("ServerResquestComplete: ", e);
-				}
-			}
 		}
+
 
 		Steps.prototype = {
 
 			objectType: "steps",
+
+			loadSteps: function(workspace, callback){
+
+				var passThis1 = this;
+				var svr = new Server(this.objectType, $rootScope.currentScope.isDummy);
+				svr.getSteps(function(result, error){
+					if(error || !result){
+						ServerResquestComplete(null, passThis1);
+					}else{
+						ServerResquestComplete(result, passThis1);
+					}
+				});
+				function ServerResquestComplete(serverSteps, passThis){
+					try{
+						var stor = new Storage();
+						stor.getWorkspaceData(false,function(dataFromLocalStorage, error){
+							dataFromLocalStorage = ((dataFromLocalStorage)?dataFromLocalStorage.Steps:null);
+							// init workspace
+							if(serverSteps){
+								if(dataFromLocalStorage != null){
+									// compare 
+									if(Number(serverSteps.lastModified) < dataFromLocalStorage.lastModified){
+										passThis.last20Steps = dataFromLocalStorage.last20Steps;
+										passThis.currentUndoOrder = dataFromLocalStorage.currentUndoOrder;
+										passThis.lastFocusedWorkflow = dataFromLocalStorage.lastFocusedWorkflow;
+									}else{
+										passThis.last20Steps = serverSteps.last20Steps;
+										passThis.currentUndoOrder = serverSteps.currentUndoOrder;
+										passThis.lastFocusedWorkflow = serverSteps.lastFocusedWorkflow;
+									}
+									
+								}else{
+									// only server steps
+									passThis.last20Steps = serverSteps.last20Steps;
+									passThis.currentUndoOrder = serverSteps.currentUndoOrder;
+									passThis.lastFocusedWorkflow = serverSteps.lastFocusedWorkflow;
+								}
+							}else{
+								// only local steps
+								if(dataFromLocalStorage != null){
+									passThis.last20Steps = dataFromLocalStorage.last20Steps;
+									passThis.currentUndoOrder = dataFromLocalStorage.currentUndoOrder;
+									passThis.lastFocusedWorkflow = dataFromLocalStorage.lastFocusedWorkflow;
+								}else{
+									workspace = new Workspace();
+									workspace.selectedWorkflow = workspace.workflows[0];
+									passThis.InsertStepToLastSteps(workspace);
+									lastFocusedWorkflow = workspace.workflows[0].ID;
+								}
+							}
+
+							passThis.savedInServer = true;
+							// update layout of workspace
+							passThis.restoreStep(workspace, function(){
+								if(passThis.lastFocusedWorkflow == null || passThis.lastFocusedWorkflow == undefined){
+									passThis.lastFocusedWorkflow = workspace.workflows[0].ID;
+								}else{
+									var indexOfScroll = 0;
+				                    for(var i=0; i< workspace.workflows.length; i++){
+				                        if(workspace.workflows[i].ID == passThis.lastFocusedWorkflow){
+				                            indexOfScroll = i;
+				                            break;
+				                        }
+				                    }
+				                    passThis.lastFocusedWorkflow = workspace.workflows[indexOfScroll].ID;
+								}
+								workspace.updateNewWorkflowButtons();
+								workspace.updateLastId();
+								callback();
+							});
+						});
+					}catch(e){
+			            console.error("ServerResquestComplete: ", e);
+			            callback();
+					}
+				}
+			},
+
+
 			/**
 			 * check if there is older step to undo it
 			 * @return {Boolean} True if older step exist, else False
@@ -252,7 +261,6 @@
 		                callback();
 					}
 				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","there was an error in redo function", Toast.LONG, Toast.ERROR);
 	                console.error("redoWorkflow: ", e);
 	                callback(false);
 				}
@@ -306,8 +314,15 @@
 		            for (var i = 0; i < this.last20Steps.length; i++) {
 		                this.last20Steps[i].orderSteps = (i + 1);
 		            }
-		            localStorage.setItem("com.intel.steps.last20Steps", JSON.stringify(this.toJson()));
-		            this.savedInServer = false;
+		            var passThis = this;
+		            var stor = new Storage();
+		            stor.setWorkspaceData(this.toJson(), null, null, function(success, error){
+		            	if(error || !success){
+		            		$rootScope.currentScope.Toast.show("Error!","there was an error in upadting last steps", Toast.LONG, Toast.ERROR);		
+		            	}else{
+		            		passThis.savedInServer = false;
+		            	}
+		            });
 		        }catch(e){
 		        	$rootScope.currentScope.Toast.show("Error!","there was an error in upadting last steps", Toast.LONG, Toast.ERROR);
 	                console.error("InsertStepToLastSteps: ", e);
@@ -381,8 +396,9 @@
 			/**
 			 * Save last steps to server
 			 */
-			commitSteps: function(callback){
+			commitSteps: function(workspace, callback){
 				try{
+					this.InsertStepToLastSteps(workspace);
 					if(this.savedInServer == false){
 						this.savedInServer = true;
 						// locate index of next step (indexOfNextStep = IONS)
@@ -396,17 +412,25 @@
 						if(IONS > 0){
 							this.last20Steps = this.last20Steps.slice(IONS);
 						}
-						var svr = new Server(this.objectType);
-						if(typeof callback == "funtion")
-							svr.saveElement(this.toJson(), callback);
-						else
-							svr.saveElement(this.toJson(), function(){});
+
+						
+						var stor = new Storage();
+						stor.getWorkspaceData(true, function(myWorkspaceString){
+							var svr = new Server("myWorkspace", $rootScope.currentScope.isDummy);
+							svr.save(myWorkspaceString, function(success, error){
+								if(typeof callback == "funtion"){
+									if(error || !success)
+										callback(null, error);
+									else
+										callback(success, null);
+								}
+							});
+						});
 					}else{
 						if(typeof callback == "funtion")
 							callback(null, {"message": "Steps up to date", "code":""});
 					}
 				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","there was an error in saving steps", Toast.LONG, Toast.ERROR);
 	                console.error("commitSteps: ", e);
 	                callback(null, {"message": e.message, "code":e.code});
 				}
