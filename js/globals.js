@@ -60,7 +60,7 @@
         .value('$httpR', {
 
             protocol: "http",
-            ip: "109.160.254.78",
+            ip: "94.159.162.6",
             port: "8888",
             baseUrl: "/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/",
 

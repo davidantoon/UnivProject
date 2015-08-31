@@ -11,7 +11,7 @@
 					this.saveObjectQuery = "dummy";
 					this.TypeOfData = connectionType;
 				}else{
-					this.baseUrl = "http://192.168.1.4:8888/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/";
+					this.baseUrl = "http://94.159.162.6:8888/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/";
 					this.method = "POST";
 					this.timeout = 10000;
 
@@ -136,7 +136,6 @@
 						var data= {
 							"searchWord": dataToSearch["text"],
 							"searchFields": searchFields,
-							"Token": Globals.currentUser.token
 						};
 						//Kbit
 						if(dataToSearch.dataType[0] == 1){
@@ -390,18 +389,18 @@
 							mergeData([], ++resultCounter);
 						}
 						// Term
+						debugger;
 						if(dataToSearch.dataType[2] == 1){
+							data.lang = 0;
+							console.error("error in function in server");
 							$httpR.connectToServer(data, "TERMsearchTerms", function(success, error){
 								var successModified = [];
+								debugger;
 								if(error || !success){
-									console.error("error searching kbit is server: ", error);
+									console.error("error searching term is server: ", error);
 								}else{
 									console.log("search kbit in serve done: ", success);
-									// for(){
-									// 	successModified.push({
-									// 		// conten properties
-									// 	});
-									// }
+									
 									
 								}
 								mergeData(successModified, ++resultCounter);
@@ -480,7 +479,30 @@
 						}
 						console.warn("DUMMY REQUESTS");
 					}else{
-						// AJAX
+						switch (this.TypeOfData){
+							case "Deliveries":
+								
+							break;
+							case "kbits":
+							break;
+							case "settings":
+							break;
+							case "steps":
+							break;
+							case "Terms":
+
+								$httpR.connectToServer(data, "TERMaddTermToTermRelation", function(success, error){
+									if(error || !(success)){
+										console.log("error in saving element :", error);
+									}else{
+										console.log("element saved: ", success);
+									}
+								});
+							break;
+							default:
+							break;
+						}
+						
 					}
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in saving element", Toast.LONG, Toast.ERROR);
@@ -495,7 +517,7 @@
 			 * @param  {Function} callback callback funtion
 			 * @return {object}            returns the objects we asked for
 			 */
-			getElementByID: function(objD, callback){
+			getElementByID: function(objID, callback){
 				try{	
 					if(saveObjectQuery == "dummy"){
 					// 	return localStorage.getItem("dummy");
@@ -540,7 +562,39 @@
 							break;
 						}
 					}else{
-						// AJAAAXXX
+						switch (this.TypeOfData){
+							case "delivery":
+								data.deliveryUID = objID;
+								data.lang = 0;
+								console.warn("get delivery by id missing from API");
+							break;
+							case "kbits":
+								data.kbitUID = objID;
+								data.lang = 0;
+								console.warn("get kbit by id missing from API");
+								// $httpR.connectToServer(data, "TERMgetRelatedTerms", function(success, error){
+								// 	if(error || !(success)){
+								// 		console.log("error getting term by id: ", error);
+								// 	}else{
+								// 		console.log("term got by id from server: ", success);
+								// 	}
+								// });
+							break;
+							case "term":
+								data.termUID = objID;
+								data.lang = 0;
+								$httpR.connectToServer(data, "TERMgetRelatedTerms", function(success, error){
+									if(error || !(success)){
+										console.log("error getting term by id: ", error);
+									}else{
+										console.log("term got by id from server: ", success);
+									}
+								});
+							break;
+							default:
+								callback(null, {"message":"Save Element func Object is not found","code":"404"});
+								return;
+							break;
 					}
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in getting element", Toast.LONG, Toast.ERROR);
@@ -559,52 +613,81 @@
 					if(saveObjectQuery == "dummy"){
 						localStorage.removeItem("dummy");
 						callback("success",{"message": "dummy has been removed","code" : ""});
-					}
-
-					switch(this.TypeOfData){
-						case "delivery":
-							var deliveryDB = JSON.parse(localStorage.getItem("com.intel.server.delivery"));
-							for(var i = 0; i < deliveryDB.length; i++){
-								if(deliveryDB[i].id == objID){
-									deliveryDB.splice(i,1);
-									localStorage.setItem("com.intel.server.delivery",deliveryDB);
-									callback({"message":"delivery has successfuly removed","code":""},null);
-									return;
+						switch(this.TypeOfData){
+							case "delivery":
+								var deliveryDB = JSON.parse(localStorage.getItem("com.intel.server.delivery"));
+								for(var i = 0; i < deliveryDB.length; i++){
+									if(deliveryDB[i].id == objID){
+										deliveryDB.splice(i,1);
+										localStorage.setItem("com.intel.server.delivery",deliveryDB);
+										callback({"message":"delivery has successfuly removed","code":""},null);
+										return;
+									}
 								}
-							}
-							callback(null,{"message":"could not remove delivery","code":""});
-							return;
-						break;
-						case "kbits":
-							var kbitsDB = JSON.parse(localStorage.getItem("com.intel.server.kbits"));
-							for(var i = 0; i < kbitsDB.length; i++){
-								if(kbitsDB[i].id == objID){
-									kbitsDB.splice(i,1);
-									localStorage.setItem("com.intel.server.kbits",kbitsDB);
-									callback({"message":"kbits has successfuly removed","code":""},null);
-									return;
+								callback(null,{"message":"could not remove delivery","code":""});
+								return;
+							break;
+							case "kbits":
+								var kbitsDB = JSON.parse(localStorage.getItem("com.intel.server.kbits"));
+								for(var i = 0; i < kbitsDB.length; i++){
+									if(kbitsDB[i].id == objID){
+										kbitsDB.splice(i,1);
+										localStorage.setItem("com.intel.server.kbits",kbitsDB);
+										callback({"message":"kbits has successfuly removed","code":""},null);
+										return;
+									}
 								}
-							}
-							callback(null,{"message":"could not remove kbits","code":""});
-							return;
-						break;
-						case "term":
-							var termsDB = JSON.parse(localStorage.getItem("com.intel.server.term"));
-							for(var i = 0; i < termsDB.length; i++){
-								if(termsDB[i].id == objID){
-									termsDB.splice(i,1);
-									localStorage.setItem("com.intel.server.term",termsDB);
-									callback({"message":"term has successfuly removed","code":""},null);
-									return;
+								callback(null,{"message":"could not remove kbits","code":""});
+								return;
+							break;
+							case "term":
+								var termsDB = JSON.parse(localStorage.getItem("com.intel.server.term"));
+								for(var i = 0; i < termsDB.length; i++){
+									if(termsDB[i].id == objID){
+										termsDB.splice(i,1);
+										localStorage.setItem("com.intel.server.term",termsDB);
+										callback({"message":"term has successfuly removed","code":""},null);
+										return;
+									}
 								}
-							}
-							callback(null,{"message":"could not remove term","code":""});
-							return;
-						break;
-						default:
-							callback(null, {"message":"Delete Element func Object is not found","code":"404"});
-							return;
-						break;
+								callback(null,{"message":"could not remove term","code":""});
+								return;
+							break;
+							default:
+								callback(null, {"message":"Delete Element func Object is not found","code":"404"});
+								return;
+							break;
+						}
+					}else{
+						switch (this.TypeOfData){
+							case "delivery":
+								data.deliveryUID = objID;
+								data.lang = 0;
+								console.warn("Delete delivery by id missing from API");
+							break;
+							case "kbits":
+								data.kbitUID = objID;
+								data.lang = 0;
+								console.warn("Delete kbit by id missing from API");
+								// $httpR.connectToServer(data, "TERMgetRelatedTerms", function(success, error){
+								// 	if(error || !(success)){
+								// 		console.log("error getting term by id: ", error);
+								// 	}else{
+								// 		console.log("term got by id from server: ", success);
+								// 	}
+								// });
+							break;
+							case "term":
+								data.kbitUID = objID;
+								data.lang = 0;
+								console.warn("Delete term by id missing from API");
+								
+							break;
+							default:
+								callback(null, {"message":"Save Element func Object is not found","code":"404"});
+								return;
+							break;
+						}
 					}
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in deleting element", Toast.LONG, Toast.ERROR);
@@ -623,6 +706,7 @@
 				try{
 					callback(null, null);
 				}catch(e){
+					console.error("getVersionsByID: ", e);
 					callback(null, {"message":e.message,"code":e.code});
 				}
 			},
@@ -637,6 +721,7 @@
 				try{
 					callback(null, null);
 				}catch(e){
+					console.error("getVersionList: ", e);
 					callback(null,{"message":e.message,"code":e.code});
 				}
 			},
