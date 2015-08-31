@@ -24,6 +24,8 @@ class Kbit {
 	
 	public static function add_new_Kbit_in_edit_mode($title, $desc, $user, $front) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		$dbObj = new dbAPI();		
 
 		// get new UID from contents database to reseve the UID
@@ -48,6 +50,8 @@ class Kbit {
 	 * @return {Kbit}
 	 */
 	public static function add_new_edit_for_kbit($UID, $title, $desc, $user, $front) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		// check if Kbit is locked by user
 		if(Lock::is_locked_by_user($UID, 'KBIT_BASE', $user) == false) {
@@ -128,6 +132,8 @@ class Kbit {
 	 */
 	private static function add_new_front($UID, $front, $user) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		$dbObj = new dbAPI();
 
 		$front_type = $front["FRONT_TYPE"];
@@ -167,6 +173,8 @@ class Kbit {
 	 * @return {frontKbit:KBIT_FRONT}
 	 */
 	private static function add_new_KBIT_FRONT($UID, $front, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		
 		$dbObj = new dbAPI();
 		// determines the database name which the {Kbit} should be imported from
@@ -194,6 +202,8 @@ class Kbit {
 	 */
 	private static function get_new_Revision_and_disbale_old_ones($UID, $tableName, $source = 'content') {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		$dbObj = new dbAPI();
 		// determines the database name which the {Kbit} should be imported from
 		$database_source = dbAPI::get_db_name($source);
@@ -218,6 +228,8 @@ class Kbit {
 	 * @returns {KbitBase}
 	 */
 	private static function get_base_Kbit($UID, $source = 'content') {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		$dbObj = new dbAPI();		
 
@@ -244,6 +256,8 @@ class Kbit {
 	 */
 	private static function get_front_Kbit($UID, $tableName, $source = 'content') {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		$dbObj = new dbAPI();		
 
 		// determines the database name which the {Kbit} should be imported from
@@ -262,6 +276,18 @@ class Kbit {
 		return $temp;
 	}
 
+	public static function get_front_kbit_with_user($UID, $tableName, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
+		if(Lock::is_locked_by_user($UID, 'KBIT_BASE', $user))
+			$dbName = 'user';
+		else
+			$dbName = 'content';
+		$dbName = dbAPI::get_db_name($dbName);
+		return Kbit::get_front_Kbit($UID, $tableName, $dbName);
+	}
+
 
 
 	/**
@@ -271,6 +297,8 @@ class Kbit {
 	 * @return {bool}       returns true on success false otherwise
 	 */
 	public static function begin_editing_kbit($UID, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		// acquire lock copy data records of the kbit from the content database into user database
 		// get selected Kbit
 		$curr_kbit = Kbit::get_kbit_by_UID($UID);
@@ -357,6 +385,8 @@ class Kbit {
 	 * @return {string}             front kbit table name
 	 */
 	private static function get_front_table_name($front_type) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		// determine front kbit table name
 		switch ($front_type) {
 		    case "KBIT_FRONT":
@@ -381,6 +411,8 @@ class Kbit {
 	 * @return {bool}       true on success false otherwise
 	 */
 	public static function publish_changes($UID, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		// add new record in content database for each data record and disable all data records in user database
 		
 		if(Lock::is_locked_by_user($UID, 'KBIT_BASE', $user) == false) {
@@ -476,6 +508,8 @@ class Kbit {
 	 */
 	public static function cancel_edited_kbit($UID, $user) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		// release lock off the Kbit
 		if(Lock::release_lock($UID, 'KBIT_BASE', $user) == false) {
 			debugLog::log("<i>[Kbits.php:cancel_edited_kbit]</i> Could not release lock off kbit (". $UID .")");
@@ -488,6 +522,8 @@ class Kbit {
 
 
 	private static function disable_base_and_front($UID) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		$dbObj = new dbAPI();
 		
@@ -505,6 +541,8 @@ class Kbit {
 	}
 
 	public static function disable_all_kbit_info($UID, $destination = 'user') {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		$dbObj = new dbAPI();
 		
@@ -547,6 +585,8 @@ class Kbit {
 	 * @return {KbitBase}      the requested Kbit
 	 */
 	public static function get_kbit_by_UID($UID) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		// returns the kbit from content database for as read-only
 		$dbObj = new dbAPI();
 		$query = "SELECT * FROM KBIT_BASE where UID = '" . $UID . "' AND ENABLED = '1'";
@@ -563,6 +603,8 @@ class Kbit {
 	 * @return {KbitBase}      the requested Kbit
 	 */
 	public static function get_edited_kbit_by_UID($UID) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		// returns the kbit from user database
 		$dbObj = new dbAPI();
 		$query = "SELECT * FROM KBIT_BASE where UID = '" . $UID . "' AND ENABLED = '1'";
@@ -573,17 +615,33 @@ class Kbit {
 		return $results[0];
 	}
 
-	public static function get_Kbit_details($UID, $user) {
+	public static function get_Kbit_details($UID, $user, $lang = '') {
 
-		if(Lock::is_locked_by_user($UID, 'KBIT_BASE', $user))
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
+		if(Lock::is_locked_by_user($UID, 'KBIT_BASE', $user) == true)
 			$kbit = Kbit::get_edited_kbit_by_UID($UID);
 		else
 			$kbit = Kbit::get_kbit_by_UID($UID);
+
+		if($kbit == null) {
+			debugLog::important_log("<i>[Kbits.php:". __FUNCTION___ ."]</i> Kbit (". $UID .") was not found");
+			return null;
+		}
 
 		// get locking user
 		$locking_user = Lock::get_locking_user($UID, 'KBIT_BASE');
 		if($locking_user != null)
 			$kbit["LOCKING_USER"] = $locking_user;
+		
+
+		// get front
+		$kbit["FRONT_KBIT"] = Kbit::get_front_kbit_with_user($UID, $kbit["FRONT_TYPE"], $user);
+
+		// get terms of kbit
+		$terms = Kbit::get_terms_of_Kbit($UID, $user, $lang);
+		if($terms != null)
+			$kbit["TERMS"] = $terms;
 
 		return $kbit;
 	}
@@ -591,9 +649,11 @@ class Kbit {
 
 	public static function serach_kbits($search_word, $search_fields, $user) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		$dbObj = new dbAPI();
 
-		for($i=0; i<count($search_fields); $i++) {
+		for($i=0; $i<count($search_fields); $i++) {
 			$search_fields[$i] = "UPPER(" . $search_fields[$i] . ") LIKE UPPER('%" . $search_word . "%') "; 
 		}
 		$search_sttmnt = implode(" OR ", $search_fields);
@@ -604,7 +664,27 @@ class Kbit {
 			return array();
 
 		for($i=0; $i<count($results); $i++) {
-			$results[$i] = Kbit::get_Kbit_details($results[$i], $user);
+			$results[$i] = Kbit::get_Kbit_details($results[$i]["UID"], $user);
+		}
+		
+		return $results;	
+	}
+
+
+
+	public static function serach_kbits_by_query($where_sttmnt, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
+		$dbObj = new dbAPI();
+
+		$query = "SELECT * FROM KBIT_BASE where  ENABLED = '1' AND (". $search_sttmnt .")";
+		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
+		if(count($results) == 0)
+			return array();
+
+		for($i=0; $i<count($results); $i++) {
+			$results[$i] = Kbit::get_Kbit_details($results[$i]["UID"], $user);
 		}
 		
 		return $results;	
@@ -612,6 +692,8 @@ class Kbit {
 
 
 	public static function add_K2K_relation($first_UID, $second_UID, $is_hier, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		
 		// check if Kbits is locked by user
 		if(Lock::is_locked_by_user($first_UID, 'KBIT_BASE', $user) == false && Lock::is_locked_by_user($second_UID, 'KBIT_BASE', $user) == false) {
@@ -641,6 +723,8 @@ class Kbit {
 
 	public static function remove_K2K_relation($first_UID, $second_UID, $user) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		// check if Kbits is locked by user
 		if(Lock::is_locked_by_user($first_UID, 'KBIT_BASE', $user) == false && Lock::is_locked_by_user($second_UID, 'KBIT_BASE', $user) == false) {
 			debugLog::log("<i>[Kbits.php:add_K2K_relation]</i> Non of the Kbits (". $first_UID .", ". $second_UID .") are locked by user (". $user .")");
@@ -663,6 +747,8 @@ class Kbit {
 
 	public static function get_K2K_relations($Kbit_UID, $user) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		return refRelation::get_relations_of_object($Kbit_UID, 'R_LK2K', 'Kbit::get_Kbit_details', $user);
 	}
 
@@ -671,6 +757,8 @@ class Kbit {
 
 
 	public static function add_K2T_relation($Kbit_UID, $term_UID, $link_type, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		if(Lock::is_locked_by_user($Kbit_UID, 'KBIT_BASE', $user) == false) {
 			debugLog::log("<i>[Kbits.php:add_K2T_relation]</i> Kbit (". $Kbit_UID .") is not locked by the user (". $user .")");
@@ -681,6 +769,8 @@ class Kbit {
 
 	public static function get_terms_of_Kbit($Kbit_UID, $user = '', $lang = '') {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		if($user != '' && Lock::is_locked_by_user($Kbit_UID, 'KBIT_BASE', $user))
 			$database_name = 'user';
 		else
@@ -690,6 +780,8 @@ class Kbit {
 	}
 
 	public static function remove_term_from_Kbit($Kbit_UID, $term_UID, $link_type, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		if(Lock::is_locked_by_user($Kbit_UID, 'KBIT_BASE', $user) == false) {
 			debugLog::log("<i>[Kbits.php:remove_term_from_Kbit]</i> Kbit (". $Kbit_UID .") is not locked by the user (". $user .")");

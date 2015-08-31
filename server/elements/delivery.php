@@ -24,6 +24,8 @@ class Delivery {
 	
 	public static function add_new_Delivery_in_edit_mode($title, $desc, $user, $front) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		$dbObj = new dbAPI();		
 
 		// get new UID from contents database to reseve the UID
@@ -48,6 +50,8 @@ class Delivery {
 	 * @return {Delivery}
 	 */
 	public static function add_new_edit_for_Delivery($UID, $title, $desc, $user, $front) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		// check if Kbit is locked by user
 		if(Lock::is_locked_by_user($UID, 'DELIVERY_BASE', $user) == false) {
@@ -126,6 +130,8 @@ class Delivery {
 	 */
 	private static function add_new_front($UID, $front, $user) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		$dbObj = new dbAPI();
 
 		$front_type = $front["FRONT_TYPE"];
@@ -163,6 +169,8 @@ class Delivery {
 	 * @return {frontDelivery:Delivery_FRONT}
 	 */
 	private static function add_new_Delivery_FRONT($UID, $front, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		
 		$dbObj = new dbAPI();
 		// static table name of specific Delivery front
@@ -187,6 +195,8 @@ class Delivery {
 	 */
 	private static function get_new_Revision_and_disbale_old_ones($UID, $tableName, $source = 'content') {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		$dbObj = new dbAPI();
 		// determines the database name which the {Delivery} should be imported from
 		$database_source = dbAPI::get_db_name($source);
@@ -210,6 +220,8 @@ class Delivery {
 	 * @returns {DeliveryBase}
 	 */
 	private static function get_base_Delivery($UID, $source = 'content') {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		$dbObj = new dbAPI();		
 
@@ -236,6 +248,8 @@ class Delivery {
 	 */
 	private static function get_front_Delivery($UID, $tableName, $source = 'content') {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		$dbObj = new dbAPI();		
 
 		// determines the database name which the {Delivery} should be imported from
@@ -253,6 +267,14 @@ class Delivery {
 		return $temp;
 	}
 
+	public static function get_front_Delivery_with_user($UID, $tableName, $user) {
+
+		if(Lock::is_locked_by_user($UID, 'DELIVERY_BASE', $user))
+			$dbName = 'user';
+		else
+			$dbName = 'content';
+		return Delivery::get_front_Delivery($UID, $tableName, $dbName);
+	}
 
 
 	/**
@@ -262,6 +284,8 @@ class Delivery {
 	 * @return {bool}       returns true on success false otherwise
 	 */
 	public static function begin_editing_Delivery($UID, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		// acquire lock copy data records of the Delivery from the content database into user database
 		// get selected Delivery
 		$curr_Delivery = Delivery::get_Delivery_by_UID($UID);
@@ -346,6 +370,8 @@ class Delivery {
 	 * @return {string}             front Delivery table name
 	 */
 	private static function get_front_table_name($front_type) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		// determine front Delivery table name
 		switch ($front_type) {
 		    case "DELIVERY_FRONT":
@@ -370,6 +396,8 @@ class Delivery {
 	 * @return {bool}       true on success false otherwise
 	 */
 	public static function publish_changes($UID, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		// add new record in content database for each data record and disable all data records in user database
 		
 		if(Lock::is_locked_by_user($UID, 'DELIVERY_BASE', $user) == false) {
@@ -466,6 +494,8 @@ class Delivery {
 	 */
 	public static function cancel_edited_Delivery($UID, $user) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		// release lock off the Delivery
 		if(Lock::release_lock($UID, 'DELIVERY_BASE', $user) == false) {
 			debugLog::log("<i>[delivery.php:cancel_edited_Delivery]</i> Could not release lock off Delivery (". $UID .")");
@@ -493,6 +523,8 @@ class Delivery {
 	}
 
 	public static function disable_all_Delivery_info($UID, $destination = 'user') {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		$dbObj = new dbAPI();
 
@@ -533,6 +565,8 @@ class Delivery {
 	 * @return {DeliveryBase}      the requested Delivery
 	 */
 	public static function get_Delivery_by_UID($UID) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		// returns the Delivery from content database for as read-only
 		$dbObj = new dbAPI();
 		$query = "SELECT * FROM DELIVERY_BASE where UID = '" . $UID . "' AND ENABLED = '1'";
@@ -549,6 +583,8 @@ class Delivery {
 	 * @return {DeliveryBase}      the requested Delivery
 	 */
 	public static function get_edited_Delivery_by_UID($UID) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		// returns the Delivery from user database
 		$dbObj = new dbAPI();
 		$query = "SELECT * FROM DELIVERY_BASE where UID = '" . $UID . "' AND ENABLED = '1'";
@@ -561,6 +597,8 @@ class Delivery {
 
 	public static function get_Delivery_details($UID, $user) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		if(Lock::is_locked_by_user($UID, 'DELIVERY_BASE', $user))
 			$Delivery = Delivery::get_edited_Delivery_by_UID($UID);
 		else
@@ -571,19 +609,82 @@ class Delivery {
 		if($locking_user != null)
 			$Delivery["LOCKING_USER"] = $locking_user;
 
+		// get kbits
+		$Delivery["KBITS"] = Delivery::get_Kbit_of_delivery($UID, $user);
+
+		// get terms
+		$terms = Delivery::get_terms_of_Delivery($UID, $user);
+		if($terms != null)
+			$kbit["TERMS"] = $terms;
+
+		// get front
+		$Delivery["FRONT_DELIVERY"] = Delivery::get_front_Delivery_with_user($UID, $Delivery["FRONT_TYPE"], $user);
+
+		// get related deliveries
+		$Delivery["RELATEED_DELIVERIES"] = Delivery::get_deliveries_of_delivery($UID, $user);
+
 		return $Delivery;
 	}
 
 
+	public static function get_Delivery_details_without_related_deliveries($UID, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
+		if(Lock::is_locked_by_user($UID, 'DELIVERY_BASE', $user))
+			$Delivery = Delivery::get_edited_Delivery_by_UID($UID);
+		else
+			$Delivery = Delivery::get_Delivery_by_UID($UID);
+
+
+
+		// get locking user
+		$locking_user = Lock::get_locking_user($UID, 'DELIVERY_BASE');
+		if($locking_user != null)
+			$Delivery["LOCKING_USER"] = $locking_user;
+
+		// get kbits
+		$Delivery["KBITS"] = Delivery::get_Kbit_of_delivery($UID, $user);
+
+		// get terms
+		$terms = Delivery::get_terms_of_Delivery($UID, $user);
+		if($terms != null)
+			$kbit["TERMS"] = $terms;
+
+		return $Delivery;
+	}
 
 	public static function serach_deliveries($search_word, $search_fields, $user) {
 
-		$dbObj = new dbAPI();
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
-		for($i=0; i<count($search_fields); $i++) {
+		$dbObj = new dbAPI();
+		for($i=0; $i<count($search_fields); $i++) {
 			$search_fields[$i] = "UPPER(" . $search_fields[$i] . ") LIKE UPPER('%" . $search_word . "%') "; 
 		}
 		$search_sttmnt = implode(" OR ", $search_fields);
+		$where_sttmnt = '';
+		if($search_word != " ")
+			$where_sttmnt = " AND (". $search_sttmnt .")";
+
+		$query = "SELECT * FROM DELIVERY_BASE where  ENABLED = '1' ". $where_sttmnt;
+		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
+		if(count($results) == 0)
+			return array();
+
+		for($i=0; $i<count($results); $i++) {
+			$results[$i] = Delivery::get_Delivery_details($results[$i]["UID"], $user);
+		}
+		
+		return $results;	
+	}
+
+
+	public static function serach_deliveries_by_query($where_sttmnt, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
+		$dbObj = new dbAPI();
 
 		$query = "SELECT * FROM DELIVERY_BASE where  ENABLED = '1' AND (". $search_sttmnt .")";
 		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
@@ -591,7 +692,7 @@ class Delivery {
 			return array();
 
 		for($i=0; $i<count($results); $i++) {
-			$results[$i] = Delivery::get_Delivery_details($results[$i], $user);
+			$results[$i] = Delivery::get_Delivery_details($results[$i]["UID"], $user);
 		}
 		
 		return $results;	
@@ -600,6 +701,8 @@ class Delivery {
 
 
 	public static function add_D2D_relation($first_UID, $second_UID, $is_hier, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		// check if delivery is locked by user
 		if(Lock::is_locked_by_user($first_UID, 'DELIVERY_BASE', $user) == false && Lock::is_locked_by_user($second_UID, 'DELIVERY_BASE', $user) == false) {
@@ -628,6 +731,8 @@ class Delivery {
 
 	public static function remove_D2D_relation($first_UID, $second_UID) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		// check if delivery is locked by user
 		if(Lock::is_locked_by_user($first_UID, 'DELIVERY_BASE', $user) == false && Lock::is_locked_by_user($second_UID, 'DELIVERY_BASE', $user) == false) {
 			debugLog::log("<i>[delivery.php:add_D2D_relation]</i> Non of the deliveries (". $first_UID .", ". $second_UID .") are locked by user (". $user .")");
@@ -655,7 +760,16 @@ class Delivery {
 
 	public static function get_D2D_relations($Delivery_UID, $user) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		return refRelation::get_relations_of_object($Delivery_UID, 'R_LD2D', 'Delivery::get_Delivery_details', $user);
+	}
+
+
+	private static function get_related_deliveries($Delivery_UID, $user) {
+
+		$dbObj = new dbAPI();
+		
 	}
 
 
@@ -663,6 +777,8 @@ class Delivery {
 
 
 	public static function add_D2T_relation($Delivery_UID, $term_UID, $link_type, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		if(Lock::is_locked_by_user($Delivery_UID, 'DELIVERY_BASE', $user) == false) {
 			debugLog::log("<i>[delivery.php:add_D2T_relation]</i> Delivery (". $Delivery_UID .") is not locked by the user (". $user .")");
@@ -673,6 +789,8 @@ class Delivery {
 
 	public static function get_terms_of_Delivery($Delivery_UID, $user = '', $lang = '') {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		if($user != '' && Lock::is_locked_by_user($Delivery_UID, 'DELIVERY_BASE', $user))
 			$database_name = 'user';
 		else
@@ -682,6 +800,8 @@ class Delivery {
 	}
 
 	public static function remove_term_from_Delivery($Delivery_UID, $term_UID, $link_type, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		if(Lock::is_locked_by_user($Delivery_UID, 'DELIVERY_BASE', $user) == false) {
 			debugLog::log("<i>[delivery.php:remove_term_from_Delivery]</i> Delivery (". $Delivery_UID .") is not locked by the user (". $user .")");
@@ -698,11 +818,13 @@ class Delivery {
 
 	public static function add_Kbit_to_delivery($Kbit_UID, $Delivery_UID, $link_type, $link_weight, $user) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		if(Lock::is_locked_by_user($Delivery_UID, 'DELIVERY_BASE', $user) == false) {
 			debugLog::log("<i>[delivery.php:remove_term_from_Delivery]</i> Delivery (". $Delivery_UID .") is not locked by the user (". $user .")");
 			return null;
 		}
-		$locking_user = Lock::get_locking_user($UID, 'KBIT_BASE');
+		$locking_user = Lock::get_locking_user($Kbit_UID, 'KBIT_BASE');
 		if($locking_user != null && $locking_user["UID"] != $user) {
 			debugLog::log("<i>[delivery.php:add_Kbit_to_delivery]</i> Kbit(". $Kbit_UID .") is locked by other user(". $locking_user["UID"] .")");
 			return null;
@@ -713,11 +835,13 @@ class Delivery {
 
 	public static function remove_Kbit_from_delivery($Kbit_UID, $Delivery_UID, $link_type, $user) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		if(Lock::is_locked_by_user($Delivery_UID, 'DELIVERY_BASE', $user) == false) {
 			debugLog::log("<i>[delivery.php:remove_term_from_Delivery]</i> Delivery (". $Delivery_UID .") is not locked by the user (". $user .")");
 			return null;
 		}
-		$locking_user = Lock::get_locking_user($UID, 'KBIT_BASE');
+		$locking_user = Lock::get_locking_user($Kbit_UID, 'KBIT_BASE');
 		if($locking_user != null && $locking_user["UID"] != $user) {
 			debugLog::log("<i>[delivery.php:add_Kbit_to_delivery]</i> Kbit(". $Kbit_UID .") is locked by other user(". $locking_user["UID"] .")");
 			return null;
@@ -729,7 +853,16 @@ class Delivery {
 
 	public static function get_Kbit_of_delivery($Delivery_UID, $user) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		return D2KRelation::get_related_Kbits($Delivery_UID, $user);
+	}
+
+	public static function get_deliveries_of_delivery($Delivery_UID, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
+		return D2KRelation::get_related_deliveries($Delivery_UID, $user);
 	}
 }
 

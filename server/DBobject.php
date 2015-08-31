@@ -12,7 +12,7 @@ class dbAPI {
 	private $password = 'root';
 	private $dbUsers = 'CMS_USERSdb';
 	private $dbContent = 'CMSdb';
-	private $host = 'localhost';
+	private $host = 'localhost'; 
 
 	public function db_get_usersDB(){
 		return $this->dbUsers;
@@ -21,6 +21,8 @@ class dbAPI {
 		return $this->dbContent;
 	}
 	public static function get_db_name($source) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args(), 'db');
 		$dbObj = new dbAPI();
 		if($source == 'content' || $source == "CMSdb")
 			return $dbObj->db_get_contentDB();
@@ -29,6 +31,8 @@ class dbAPI {
 	}
     
     private function db_get_connection($database_name = '') {
+
+    	debugLog::trace(__FILE__, __FUNCTION__, func_get_args(), 'db');
     	// Create connection
     	if($database_name != '')
 			$conn = new mysqli($this->host, $this->user, $this->password, $database_name);
@@ -43,6 +47,8 @@ class dbAPI {
     }
     
     public function run_query($database_name, $sql) {
+
+    	debugLog::trace(__FILE__, __FUNCTION__, func_get_args(), 'db');
 		$database_name = dbAPI::get_db_name($database_name);
 		$conn = $this->db_get_connection($database_name);
 		$result = $conn->query($sql);
@@ -53,17 +59,20 @@ class dbAPI {
 		    return $result;
 		}
 		else {
-			echo "<br><hr>". date("d-m-y h:i:s") ."<br>SQL ERROR:<br>" . mysql_error() ."<br>QUERY:<br>" . $sql . "<br>";
-			echo '<hr>';
-			echo '<hr>';
+			$err = "\n SQL ERROR: ". mysql_error() . " \n Query: \n". $sql . " \n ";
+			ob_start();
 			var_dump($conn);
-			echo '<hr>';
-			echo "<hr><br>";
+			$logs = ob_get_clean();
+
+			debugLog::important_log("[DBobject.php:run_query] ". $err . $logs);
+			
 			$conn->close();
 		}
     }
 
     public function db_select_query($database_name, $sql) {
+
+    	debugLog::trace(__FILE__, __FUNCTION__, func_get_args(), 'db');
     	try {
 	    	$res = $this->run_query($database_name, $sql);
 	    	$results = array();
@@ -78,6 +87,8 @@ class dbAPI {
     }
 
     public function db_get_columns_names($database_name, $table_name, $separated = false) {
+
+    	debugLog::trace(__FILE__, __FUNCTION__, func_get_args(), 'db');
     	
     	$query = "select column_name from INFORMATION_SCHEMA.COLUMNS  where table_name = '". $table_name ."' AND TABLE_SCHEMA = '". $database_name ."'";
     	$results = $this->db_select_query($database_name, $query);
@@ -88,6 +99,8 @@ class dbAPI {
     }
 
     public function insert_batch($database_name, $table_name, $data) {
+
+    	debugLog::trace(__FILE__, __FUNCTION__, func_get_args(), 'db');
 
     	echo '13<br>';
     	$conn = $this->db_get_connection($database_name);
@@ -111,6 +124,8 @@ class dbAPI {
     }
 
     public function get_latest_UID($database_name, $table_name) {
+
+    	debugLog::trace(__FILE__, __FUNCTION__, func_get_args(), 'db');
     	
     	$query = 'SELECT MAX(id) AS max_UID FROM ' . $table_name;
     	$results = $this->db_select_query($database_name, $query);
@@ -120,6 +135,8 @@ class dbAPI {
     }
 
     public function get_latest_Rivision_ID($database_name, $table_name, $whereSttmnt = '') {
+
+    	debugLog::trace(__FILE__, __FUNCTION__, func_get_args(), 'db');
     	$database_name = dbAPI::get_db_name($database_name);
     	if($whereSttmnt != '')
     		$whereSttmnt = ' WHERE (('. $whereSttmnt .'))';
@@ -132,6 +149,8 @@ class dbAPI {
     }
 
     public function disable_revision($database_name, $table_name, $whereSttmnt) {
+
+    	debugLog::trace(__FILE__, __FUNCTION__, func_get_args(), 'db');
 
 		$query = "UPDATE ". $table_name ." SET ENABLED = 0 WHERE ". $whereSttmnt . " ";
 		
@@ -146,6 +165,8 @@ class dbAPI {
 
 
     public function print_table($results) {
+
+    	debugLog::trace(__FILE__, __FUNCTION__, func_get_args(), 'db');
     	echo "<hr>";
     	$jsonIterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($results), RecursiveIteratorIterator::SELF_FIRST);
 
@@ -191,6 +212,8 @@ class dbAPI {
 
 
     public static function delete_all($dbArr) {
+
+    	debugLog::trace(__FILE__, __FUNCTION__, func_get_args(), 'db');
     	$dbObj = new dbAPI();
 		// $dbArr = array( $u.'.KBIT_BASE', $u.'.KBIT_FRONT', $c.'.KBIT_BASE', $c.'.KBIT_FRONT', $c.'.CONTENT_LOCK');
 		for($k = 0; $k < count($dbArr); $k++)
