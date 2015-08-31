@@ -189,38 +189,61 @@
 			},
 
 			/**
-			 * Saves steps locally
-			 * @param  {object}   steps    steps we are going to save
-			 * @param  {Function} callback callback function
+			 * Gets Steps, Settings, currentUser
+			 * @param  {Function} callback ({Steps, Settings, CurrentUser}, error)
 			 */
-			saveStepsLocaly: function(steps, callback){
+			getWorkspaceData: function(stringType, callback){
 				try{
-					if(steps == null || steps == undefined){
-						callback(null, {"message": "steps you wanted to save is null or undefined", "code": ""});
-						return;
+					var dataToRetrieve = localStorage["com.intel.userdata"];
+					if(stringType == true)
+						callback(dataToRetrieve, null);
+					else{
+						dataToRetrieve = JSON.parse(dataToRetrieve);
+						callback(dataToRetrieve, null);
 					}
-					localStorage.setItem("steps",JSON.stringify(steps));
-					callback({"message":"steps has sucsessfully save in local storage","code":""}, null);
 					return;
 				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","There was an error in saving steps locally", Toast.LONG, Toast.ERROR);
-	                console.error("saveStepsLocaly: ", e);
+					console.error("getWorkspaceData:", e);
+					var data = {
+						"Steps": null,
+						"Settings": null,
+						"CurrentUser": null
+					};
+					callback(data, null);
 				}
 			},
 
 			/**
-			 * Gets steps from local storage
-			 * @param  {Function} callback callback function
+			 * Save Steps, Settings, currentUser
+			 * @param {Steps}   steps       Current Steps object
+			 * @param {Settings}   settings    Current Settings obejct
+			 * @param {Object}   currentUser Current logged user
+			 * @param {Function} callback    (success, error)
 			 */
-			getStepsFromStorage: function(callback){
+			setWorkspaceData: function(steps, settings, currentUser, callback){
 				try{
-					callback(JSON.parse(localStorage.getItem("steps")), null);
-					return;
+					this.getWorkspaceData(false, function(data){
+						if(data){
+							data.Steps = ((steps)?steps:data.Steps);
+							data.Settings = ((settings)?settings:data.Settings);
+							data.CurrentUser = ((currentUser)?currentUser:data.CurrentUser);
+						}else{
+							data = {
+								"Steps": steps,
+								"Settings": settings,
+								"CurrentUser": currentUser
+							};
+						}
+						localStorage.setItem("com.intel.userdata", JSON.stringify(data));
+						callback(true, null);
+					});
+
 				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","There was an error in getting steps from storage", Toast.LONG, Toast.ERROR);
-	                console.error("getStepsFromStorage: ", e);
+					console.error("setWorkspaceData:", e);
+					callback(false, e);
 				}
 			},
+
 
 			/**
 			 * Gets elemtent or creates new onw if it doesnt exist

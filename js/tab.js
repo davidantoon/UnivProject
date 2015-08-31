@@ -74,8 +74,10 @@
 							}
 					}else{
 						if(tempJson.content != null && tempJson.content != null){
-							var tempData = Globals.get(JSON.parse(tempJson.content).id);
-							passThis.content = ((tempData != undefined)?(new Content(tempJson.content)):null);
+							var stor = new Storage();
+							stor.getElementById(tempJson.content, /* force last modefied */ true, /* force server pull */ false, function(dataFromStorage){
+								passThis.content = dataFromStorage;
+							});
 						}else{
 							passThis.content = null;
 						}

@@ -83,7 +83,7 @@ var ngScope;
                     localStorage.setItem("com.intel.Server.terms",JSON.stringify(json)); 
                 });
             }
-            dummyData();
+            // dummyData();
 
 
 
@@ -109,10 +109,17 @@ var ngScope;
                 $('#MainDiv').show();
                 $timeout(function() {
                     TypeOf.init();
-
-                    $scope.login();
-
-                    $scope.loadUserData();
+                    var stor = new Storage();
+                    debugger;
+                    stor.getWorkspaceData(false, function(data){
+                        if(data.CurrentUser){
+                            Globals.CurrentUser = new User(data.CurrentUser);
+                            $scope.currentUser = Globals.CurrentUser;
+                            $scope.loadUserData();
+                        }else{
+                            $scope.logout();
+                        }
+                    });
                 }, 500);
                 $(function() {
                     $(".TimePicker").mask('99:99');
@@ -167,20 +174,23 @@ var ngScope;
                     if(error || !succes)
                         $scope.logout();
                     else{
-                        Globals.currentUser = succes;
+                        Globals.CurrentUser = succes;
+                        var stor = new Storage();
+                        stor.setWorkspaceData(null, null, Globals.CurrentUser, function(){});
                     }
                 });
             }
+
 
             $scope.loadUserData = function() {
                 var loadedAmmount = 0;
                 $scope.loadDataFromSRV(function(e) {
                     AllDataLoaded(++loadedAmmount);
                 });
-
+                AllDataLoaded(++loadedAmmount);
                 function AllDataLoaded(finished) {
-                    $('.StatusBarPerc').css('width', ((finished / 1) * 100) + "%");
-                    if (finished == 1) {
+                    $('.StatusBarPerc').css('width', ((finished / 2) * 100) + "%");
+                    if (finished == 2) {
                         $timeout(function() {
                             $scope.$apply(function() {
                                 $scope.AppStatus = 2;
@@ -201,39 +211,35 @@ var ngScope;
                     }
                 }
             }
-            // $scope.loadDataFromSRV2 = function(callbackFunction){
-            // 	setTimeout(function(){
-            // 		callbackFunction(true);
-            // 	},3000);
-            // }
             
+
             /**
              * Loads the dama from the server
              * @param  {Function} callbackFunction callback function
              */
             $scope.loadDataFromSRV = function(callbackFunction) {
-                callbackFunction(true);
-                $scope.currentUser = {
-                    'firstName': 'David',
-                    'lastName': 'Antoon',
-                    'profilePicture': 'https://graph.facebook.com/100003370268591/picture'
-                };
-
+                
+                debugger;
                 // init worksace
                 $rootScope.currentScope = $scope;
                 $scope.Toast = new Toast();
                 $scope.workSpaces = new Workspace();
-                $scope.Settings = new Settings();
-                $scope.Steps = new Steps($scope.workSpaces);
-                $scope.Workflow = $scope.workSpaces.workflows;
 
-                $scope.updateAllTabName();
-                $scope.updateMatrixLayout();
-                $scope.workSpaces.checkUserColorsInWorkspace();
-                
-                
+                $scope.Steps = new Steps();
+                $scope.Steps.loadSteps($scope.workSpaces, function(){
+                    debugger;
+                    $scope.Settings = new Settings();
+                    $scope.Settings.loadSettings(function(){
+                        $scope.Workflow = $scope.workSpaces.workflows;
+                        $scope.updateAllTabName();
+                        $scope.updateMatrixLayout();
+                        $scope.workSpaces.checkUserColorsInWorkspace();
+                        
+                        $('#WorkFlowMatrix').css('min-width', "10000px").css('min-height', "10000px").css('width', "10000px").css('height', "10000px");
 
-                $('#WorkFlowMatrix').css('min-width', "10000px").css('min-height', "10000px").css('width', "10000px").css('height', "10000px");
+                        callbackFunction(true);
+                    });
+                });
             }
 
 
@@ -1425,7 +1431,7 @@ var ngScope;
 
             $scope.editContent = function(wFlow){
                 if(wFlow.selectedTab.content.locked){
-                    if(wFlow.selectedTab.content.lockedBy.id == Globals.currentUser.id){
+                    if(wFlow.selectedTab.content.lockedBy.id == Globals.CurrentUser.id){
                         wFlow.selectedTab.content.progressWizard = {
                             header:wFlow.selectedTab.content.type +' Details',
                             index:1,
@@ -1578,14 +1584,15 @@ var ngScope;
              *
              */
             $interval(function(){
-                // check login user
-                if($scope.Settings.autoSave == true){
-                    // if the steps are not already saved in server and there is no redo to apply -> autosaves
-                    if($scope.Steps.savedInServer == false && $scope.Steps.canRedo() == false){
-                        $scope.counterBeforeSave++;
-                        if($scope.counterBeforeSave > 7){
-                            $scope.Steps.commitSteps();
-                            $scope.counterBeforeSave = 0;
+                if($scope.Settings){
+                    if($scope.Settings.autoSave == true){
+                        // if the steps are not already saved in server and there is no redo to apply -> autosaves
+                        if($scope.Steps.savedInServer == false && $scope.Steps.canRedo() == false){
+                            $scope.counterBeforeSave++;
+                            if($scope.counterBeforeSave > 7){
+                                $scope.Steps.commitSteps($scope.workSpaces);
+                                $scope.counterBeforeSave = 0;
+                            }
                         }
                     }
                 }
@@ -1669,18 +1676,6 @@ var ngScope;
                     }
                 })
             }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
