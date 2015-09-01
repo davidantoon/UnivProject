@@ -5,13 +5,14 @@ var ngScope;
 (function(angular) {
     // 'use strict';
     angular.module('IntelLearner', ['onsen', 'firebase']);
-    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope",  "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast","User",
-        function($rootScope, $scope,  $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast, User) {
+    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope",  "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast","User", "$httpR",
+        function($rootScope, $scope,  $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast, User, $httpR) {
 
 
             // PRIM COLOR = rgb(8,96,168)
 
 
+            console.warn("Check duplicated steps");
             // David antoon
 
             /*********************************************************************************
@@ -110,7 +111,6 @@ var ngScope;
                 $timeout(function() {
                     TypeOf.init();
                     var stor = new Storage();
-                    debugger;
                     stor.getWorkspaceData(false, function(data){
                         if(data.CurrentUser){
                             Globals.CurrentUser = new User(data.CurrentUser);
@@ -176,6 +176,7 @@ var ngScope;
                     else{
                         Globals.CurrentUser = succes;
                         var stor = new Storage();
+
                         stor.setWorkspaceData(null, null, Globals.CurrentUser, function(){});
                     }
                 });
@@ -219,7 +220,6 @@ var ngScope;
              */
             $scope.loadDataFromSRV = function(callbackFunction) {
                 
-                debugger;
                 // init worksace
                 $rootScope.currentScope = $scope;
                 $scope.Toast = new Toast();
@@ -227,7 +227,6 @@ var ngScope;
 
                 $scope.Steps = new Steps();
                 $scope.Steps.loadSteps($scope.workSpaces, function(){
-                    debugger;
                     $scope.Settings = new Settings();
                     $scope.Settings.loadSettings(function(){
                         $scope.Workflow = $scope.workSpaces.workflows;
@@ -730,7 +729,6 @@ var ngScope;
 
                             break;
                             case "DisplaySmallObject":
-                                debugger;
 
                                 workflow.selectedTab = workflow.addTab();
                                 workflow.selectedTab.type = 5;
@@ -833,7 +831,6 @@ var ngScope;
                                 $scope.workSpaces.workflows.push(newWorkflow);
                             break;
                             case "DisplaySmallObject":
-                                debugger;
                                 $scope.workSpaces.updateLastId();
                                 newWorkflow.ID = $scope.workSpaces.lastWorkflowId;
                                 $scope.workSpaces.updateLastId();
@@ -1162,7 +1159,6 @@ var ngScope;
                                                 $scope.InsertStepToLast10Steps();
                                             }else{
                                                 $timeout(function(){
-                                                    debugger;
                                                     var stor = new Storage();
                                                     loopResults(0, result, []);
                                                     function loopResults(index, originalData, resultData){
@@ -1195,7 +1191,6 @@ var ngScope;
                                     $scope.InsertStepToLast10Steps();
                                 }else{
                                     $timeout(function(){
-                                        debugger;
                                         var stor = new Storage();
                                         loopResults(0, result, []);
                                         function loopResults(index, originalData, resultData){
@@ -1657,15 +1652,17 @@ var ngScope;
 
 
             $scope.testFunctions = function(){
-                // $scope.newWorkflowButtons
-                // $soap.post('http://31.154.164.129:8888/mopdqwompoaskdqomdiasjdiowqe/server/services.php','validateServerIdentity',{hash:"david antoon"}).then(function(response){
-                //     debugger;
-                //     console.log(response);
-                // });
+                $httpR.connectToServer({Key:"Steps", value:"dsadasdasdasdsadsad"},"KVPsetKeyValuePair", Globals, function(s,e){
+                    if(e || !s){
+                        console.error(e);
+                    }else{
+                        console.log(s);
+                    }
+                });
             }
 
             $scope.testFunctions1 = function(){
-                User.login("antoon91","pass5", function(s,e){
+                User.login("antoon91","1234", function(s,e){
                     if(e || !s){
                         console.warn("error login ",e);
                     }else{

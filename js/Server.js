@@ -661,6 +661,7 @@
 							return;
 						}
 					}else{
+
 						$httpR.connectToServer({Key:"Steps"},"KVPgetKeyValuePair", Globals, callback);
 					}
 				}catch(e){
@@ -673,12 +674,14 @@
 			 * Save the steps in server
 			 * @param {Function} callback callback function
 			 */
-			setSteps: function(callback){
+			setSteps: function(steps, callback){
 				try{
 					if(this.baseUrl == "dummy"){
 						callback();
 					}else{
-						$httpR.connectToServer({Key:"Steps"},"KVPsetKeyValuePair", Globals, callback);
+						
+						steps = strCompress(JSON.stringify(steps));
+						$httpR.connectToServer({Key:"Steps", value:steps},"KVPsetKeyValuePair", Globals, callback);
 					}
 				}catch(e){
 	                console.error("getSteps: ", e);

@@ -198,8 +198,17 @@
 					if(stringType == true)
 						callback(dataToRetrieve, null);
 					else{
-						dataToRetrieve = JSON.parse(dataToRetrieve);
-						callback(dataToRetrieve, null);
+						if(dataToRetrieve){
+							dataToRetrieve = JSON.parse(dataToRetrieve);
+							callback(dataToRetrieve, null);
+						}else{
+							var data = {
+								"Steps": null,
+								"Settings": null,
+								"CurrentUser": null
+							};
+							callback(data, null);
+						}
 					}
 					return;
 				}catch(e){
@@ -234,13 +243,13 @@
 								"CurrentUser": currentUser
 							};
 						}
+						console.log(data);
 						localStorage.setItem("com.intel.userdata", JSON.stringify(data));
 						callback(true, null);
 					});
 
 				}catch(e){
 					console.error("setWorkspaceData:", e);
-					callback(false, e);
 				}
 			},
 

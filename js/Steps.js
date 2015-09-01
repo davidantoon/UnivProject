@@ -23,7 +23,13 @@
 					if(error || !result){
 						ServerResquestComplete(null, passThis1);
 					}else{
-						ServerResquestComplete(result, passThis1);
+						try{
+							debugger;
+							var x =JSON.parse(strDecompress(result.OBJECT_VALUE));
+							ServerResquestComplete(x, passThis1);
+						}catch(e){
+							ServerResquestComplete(null, passThis1);
+						}
 					}
 				});
 				function ServerResquestComplete(serverSteps, passThis){
@@ -413,19 +419,11 @@
 							this.last20Steps = this.last20Steps.slice(IONS);
 						}
 
-						
-						var stor = new Storage();
-						stor.getWorkspaceData(true, function(myWorkspaceString){
-							var svr = new Server("myWorkspace", $rootScope.currentScope.isDummy);
-							svr.save(myWorkspaceString, function(success, error){
-								if(typeof callback == "funtion"){
-									if(error || !success)
-										callback(null, error);
-									else
-										callback(success, null);
-								}
-							});
-						});
+						var svr = new Server("steps", $rootScope.currentScope.isDummy);
+						if(typeof callback == "funtion")
+							svr.setSteps(this, callback);
+						else
+							svr.setSteps(this, function(){});
 					}else{
 						if(typeof callback == "funtion")
 							callback(null, {"message": "Steps up to date", "code":""});
