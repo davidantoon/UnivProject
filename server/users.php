@@ -23,6 +23,9 @@ class users {
 	// add new user
 	public static function add_new_user($first_name, $last_name, $username, $password, $email, $profile_picture, $role) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+		
+
 		if(!users::is_username_available($username)) {
 			debugLog::log("<i>[users.php:add_new_user]</i> User already exists");
 			
@@ -33,8 +36,7 @@ class users {
 		$UID = $dbObj->get_latest_UID($dbObj->db_get_usersDB(), 'users');
 		$UID++;
 
-		$query = "INSERT INTO users (UID, FIRST_NAME, LAST_NAME, USERNAME, PASSWORD, EMAIL, PROFILE_PICTURE, ROLE, CREATION_DATE) VALUES (". $UID . ", '". $first_name . "', '" . $last_name ."', '". $username ."', '". $password ."', '". $email ."', '". $profile_picture . "', ". $role .",'". date("Y-m-d H:i:s") ."')";
-
+		$query = "INSERT INTO USERS (UID, FIRST_NAME, LAST_NAME, USERNAME, PASSWORD, EMAIL, PROFILE_PICTURE, ROLE, CREATION_DATE) VALUES (". $UID . ", '". $first_name . "', '" . $last_name ."', '". $username ."', '". $password ."', '". $email ."', '". $profile_picture . "', '". $role ."','". date("Y-m-d H:i:s") ."')";
 		$dbObj->run_query($dbObj->db_get_usersDB(), $query);
 
 		return true;
@@ -42,9 +44,12 @@ class users {
 
 	// is available user by username
 	private static function is_username_available($username) {
-		echo $username;
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+		
+		
 		$dbObj = new dbAPI();
-		$query = "SELECT count(USERNAME) AS count_user FROM users where USERNAME = '" . $username . "'";
+		$query = "SELECT count(USERNAME) AS count_user FROM USERS where USERNAME = '" . $username . "'";
 		$results = $dbObj->db_select_query($dbObj->db_get_usersDB(), $query);
 		if($results[0]["count_user"] > 0)
 			return false;
@@ -56,9 +61,12 @@ class users {
 	// validate username and password
 	public static function validate_username_password($username, $password) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+		
+
 		$dbObj = new dbAPI();
 		// validate user in database
-		$query = "SELECT * FROM users where USERNAME = '" . $username . "' AND PASSWORD = '" . $password . "'";
+		$query = "SELECT * FROM USERS where USERNAME = '" . $username . "' AND PASSWORD = '" . $password . "'";
 		$results = $dbObj->db_select_query($dbObj->db_get_usersDB(), $query);
 		if(count($results) == 0)
 			return null;
@@ -74,9 +82,12 @@ class users {
 
 	public static function get_user_by_UID($UID) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+		
+
 		$dbObj = new dbAPI();
 		// validate user in database
-		$query = "SELECT * FROM users where UID = '" . $UID . "' ";
+		$query = "SELECT * FROM USERS where UID = '" . $UID . "' ";
 		$results = $dbObj->db_select_query($dbObj->db_get_usersDB(), $query);
 		if(count($results) == 0)
 			return null;
@@ -91,6 +102,9 @@ class users {
 	// // change password
 	public static function change_password($username, $password, $new_password) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+		
+
 		// validate user existance
 		$tempUser = users::validate_username_password($username, $password);
 		if($tempUser == null)
@@ -98,7 +112,7 @@ class users {
 
 		// update user's password in database
 		$dbObj = new dbAPI();
-		$query = "UPDATE users SET PASSWORD = '". $new_password ."' where USERNAME = '" . $username . "'";
+		$query = "UPDATE USERS SET PASSWORD = '". $new_password ."' where USERNAME = '" . $username . "'";
 		$results = $dbObj->run_query($dbObj->db_get_usersDB(), $query);
 		if($results) {
 			// create a new token to invalidate old tokens
@@ -112,9 +126,12 @@ class users {
 
 	public static function update_user($UID, $first_name, $last_name, $email, $profile_picture, $role = '') {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+		
+
 		// update user's password in database
 		$dbObj = new dbAPI();
-		$query = "UPDATE users SET FIRST_NAME = '". $first_name ."', LAST_NAME = '". $last_name ."', email = '". $email ."', PROFILE_PICTURE = '". $profile_picture ."', ROLE = '". $role ."'  where UID = '" . $UID . "'";
+		$query = "UPDATE USERS SET FIRST_NAME = '". $first_name ."', LAST_NAME = '". $last_name ."', email = '". $email ."', PROFILE_PICTURE = '". $profile_picture ."', ROLE = '". $role ."'  where UID = '" . $UID . "'";
 		$results = $dbObj->run_query($dbObj->db_get_usersDB(), $query);
 		if($results) {
 			return users::get_user_by_UID($UID);
@@ -128,8 +145,11 @@ class users {
 	// validate token
 	public static function validate_token($token) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+		
+
 		$dbObj = new dbAPI();
-		$query = "SELECT * FROM users where TOKEN = '" . $token . "'";
+		$query = "SELECT * FROM USERS where TOKEN = '" . $token . "'";
 		$results = $dbObj->db_select_query($dbObj->db_get_usersDB(), $query);
 		if(count($results) == 0)
 			return null;
@@ -140,8 +160,11 @@ class users {
 	// // log out user by removing token
 	public static function log_out($username) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+		
+
 		$dbObj = new dbAPI();
-		$query = "UPDATE users SET TOKEN = '' where USERNAME = '" . $username . "'";
+		$query = "UPDATE USERS SET TOKEN = '' where USERNAME = '" . $username . "'";
 		$results = $dbObj->run_query($dbObj->db_get_usersDB(), $query);
 		if($results)
 			return true;
@@ -152,10 +175,13 @@ class users {
 	// generates a new token for logged in user
 	private static function create_new_token($username) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+		
+
 		try {
 			$token = users::generateRandomString();
 			$dbObj = new dbAPI();
-			$query = "UPDATE users SET TOKEN = '". $token ."' where USERNAME = '" . $username . "'";
+			$query = "UPDATE USERS SET TOKEN = '". $token ."' where USERNAME = '" . $username . "'";
 			$results = $dbObj->run_query($dbObj->db_get_usersDB(), $query);
 			if($results){
 				echo $results;
@@ -169,7 +195,10 @@ class users {
 	}
 
 	// generates tokens
-	private static function generateRandomString($length = 100) {
+	public static function generateRandomString($length = 100) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+		
 	    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 	    $charactersLength = strlen($characters);
 	    $randomString = '';

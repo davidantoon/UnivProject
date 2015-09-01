@@ -12,14 +12,6 @@
 	include 'elements/lock.php';
 	include 'elements/delivery.php';
 	include 'elements/keyValuePair.php';
-
-	class Configurator {
-	
-		public static function get_webservice_URI() {
-			$webservice_URI = 'http://localhost:8888/mopdqwompoaskdqomdiasjdiowqe/server/';
-			return $webservice_URI;
-		}
-	}
 	
 	
 ?>

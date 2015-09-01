@@ -9,6 +9,8 @@ class term {
 	// 1) add a new term with scope and meaning, if no scope selected create term with 'general scope' and 'general meaning'
 	public static function add_new_term_with_scope_and_meaning($term_text, $lang, $user, $scope_UID = '', $meaning_text = '') {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		// create single term
 		$new_term = term::add_new_term($term_text, $lang, $user);
 		
@@ -57,6 +59,8 @@ class term {
 	// 2) add new meaning under new scope
 	public static function add_new_meaning_under_new_scope($termUID, $lang, $user, $scope_text = '', $scope_desc, $meaning_text = '') {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		// get term
 		$selected_term = term::get_term_by_UID($termUID, $lang);
 		if($selected_term == null) {
@@ -91,6 +95,8 @@ class term {
 	// 3) add new scope under specific meaining
 	public static function add_new_scope_under_specific_meaning($termUID, $meaningUID, $user, $scope_text = '', $scope_desc) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		// create new scope
 		$new_scope = scope::add_new_scope($scope_text, $scope_desc, $user);
 		if($new_scope == null) {
@@ -116,6 +122,8 @@ class term {
 	// 4) edit meaning under specific scope
 	public static function edit_meaning($relationUID, $new_meaning, $lang) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		$rel = term::get_connection_by_UID($relationUID);
 		if($rel == null) {
 			debugLog::debug_log("[edit_meaning]: could not locate relation \"". $relationUID ."\"");
@@ -138,6 +146,8 @@ class term {
 
 	// 5) add synonyms to scope and term (hence, adding new meaning under specific scope)
 	public static function add_sysnonym($scope_UID, $term_UID, $new_meaning, $lang, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		// check if a term exists
 		if(term::get_term_by_UID($term_UID, $lang) == null) {
@@ -167,6 +177,8 @@ class term {
 	// 6) add new language to term
 	public static function add_translation_to_term($term_UID, $text, $lang, $user) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		// check if a term exists
 		if(term::get_term_by_UID($term_UID) == null) {
 
@@ -193,6 +205,8 @@ class term {
 
 	// 7) add new language to term meaning
 	public static function add_translation_to_term_meaning($meaning_UID, $text, $lang, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		// check if a term meaning exists
 		if(term::get_term_meaning_by_UID($meaning_UID) == null) {
@@ -223,6 +237,8 @@ class term {
 	// add single term to term string
 	public static function add_new_term($text, $lang, $user) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		$dbObj = new dbAPI();
 		// get new UID
 		$UID = $dbObj->get_latest_UID($dbObj->db_get_contentDB(), 'TERM_STRING');
@@ -239,6 +255,8 @@ class term {
 
 	// return term by UID and language
 	public static function get_term_by_UID($UID, $lang = '') {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		
 		$dbObj = new dbAPI();
 		// validate user in database
@@ -271,6 +289,8 @@ class term {
 	}
 
 	public static function get_all_term_strings($lang) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		
 		$dbObj = new dbAPI();
 		// validate user in database
@@ -292,6 +312,8 @@ class term {
 
 	// return term by UID in all languages language
 	private static function get_term_by_UID_in_all_languages($UID) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		
 		$dbObj = new dbAPI();
 		// validate user in database
@@ -303,6 +325,8 @@ class term {
 
 	// add meaning
 	public static function add_meaning($meaning, $lang, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		$dbObj = new dbAPI();
 		// get new UID
@@ -319,6 +343,8 @@ class term {
 
 	// return term meaning by UID and language
 	public static function get_term_meaning_by_UID($UID, $lang = '') {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		
 		$dbObj = new dbAPI();
 		// validate user in database
@@ -352,6 +378,8 @@ class term {
 
 	// return term meaning by UID in all languages
 	private static function get_term_meaning_by_UID_in_all_languages($UID) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		
 		$dbObj = new dbAPI();
 		// validate user in database
@@ -363,6 +391,8 @@ class term {
 
 	// returns a term + meaning + scope connection by its UID
 	public static function get_connection_by_UID($UID) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		$dbObj = new dbAPI();
 		$query = "SELECT * FROM TERMS where UID = '" . $UID . "' AND ENABLED = '1'";
@@ -379,6 +409,8 @@ class term {
 
 	// relate term to another
 	public static function add_relation_to_terms($parent_term_UID, $child_term_UID, $is_hier, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		// create relation between two terms
 		if(refRelation::add_relation_to_object($parent_term_UID, $child_term_UID, $is_hier, $user, 'R_Lt2t') == null) {
 			debugLog::log("parent term (". $parent_term_UID .") and child (". $child_term_UID .") term cannot be the same");
@@ -391,17 +423,23 @@ class term {
 	// remove relation
 	public static function remove_relation($parent_term_UID, $child_term_UID) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		refRelation::remove_relation($parent_term_UID, $child_term_UID, 'R_Lt2t');
 	}
 
 	// returns related terms
 	public static function get_relations_of_term($term_UID, $lang = '') {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		return refRelation::get_relations_of_object($term_UID, 'R_Lt2t', 'term::get_full_term_by_UID', $lang);
 	}
 
 
 	public static function get_full_term_by_UID($UID, $lang = '') {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		$connectRelation = term::get_connection_by_UID($UID);
 		$termString = term::get_term_by_UID($connectRelation["ID_TERM_STRING"], $lang = '');
@@ -422,6 +460,8 @@ class term {
 
 	// get related terms
 	public static function get_term_by_UID_with_relations($UID, $lang = '') {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		// check if term exists
 		$term = term::get_term_by_UID($UID, $lang);
@@ -455,6 +495,8 @@ class term {
 
 
 	public static function get_scopes_of_term($term_UID, $lang = '') {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		$scopes = array();
 

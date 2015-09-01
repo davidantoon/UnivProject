@@ -1,0 +1,543 @@
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 12:38:27: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 12:38:27: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_Delivery</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 12:38:27: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 12:38:27: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_object</font></i></u><ul><li>[{"column_name":"DELIVERY_BASE_ID","value":"1820"},"user","R_LD2T",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 12:38:27: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 12:38:27: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Delivery</font></i></u><ul><li>["1820","DELIVERY_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 12:38:27: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_deliveries_of_delivery</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 12:38:27: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 12:39:12: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 12:39:12: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 12:39:12: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 12:41:54: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 12:41:54: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 12:41:54: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 12:43:57: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 12:43:57: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 12:43:57: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:34:41: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:34:41: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:34:41: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [searchWord] => 2
+    [searchFields] => Array
+        (
+            [0] => UID
+        )
+
+    [Token] => Rder36l20PB4fmtdhORwcGP9yYUDqOuh1JJ5P47PTJU96nmnbeUoUKxtIr68fBqgkalaetZ8dUhjhEHtSCRNmog4Qmd5YEmiOIs3
+    [serverHash] => DAVIDAMEER
+    [method] => DELIVERYsearchDelivery
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:34:58: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_token</font></i></u><ul><li>["Rder36l20PB4fmtdhORwcGP9yYUDqOuh1JJ5P47PTJU96nmnbeUoUKxtIr68fBqgkalaetZ8dUhjhEHtSCRNmog4Qmd5YEmiOIs3"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:34:58: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">serach_deliveries</font></i></u><ul><li>["2",["UID"],"1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:34:58: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Delivery_details</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:34:58: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:34:58: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_edited_Delivery_by_UID</font></i></u><ul><li>["1820"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:34:58: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["1820","DELIVERY_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:34:58: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Kbit_of_delivery</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:34:58: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_related_Kbits</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:34:58: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:34:58: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_Delivery</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:34:58: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:34:58: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_object</font></i></u><ul><li>[{"column_name":"DELIVERY_BASE_ID","value":"1820"},"user","R_LD2T",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:34:58: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:34:58: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Delivery</font></i></u><ul><li>["1820","DELIVERY_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:34:58: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_deliveries_of_delivery</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:34:58: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:35:07: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:35:07: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:35:07: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:35:28: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:35:28: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:35:28: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [searchWord] => 2
+    [searchFields] => Array
+        (
+            [0] => UID
+        )
+
+    [Token] => ImsmvsldBUFT1NlhLNHbUDg8viBRqM798zvE1RRDLxxNkS56GMhApyIVQjNh5UqetWSvNK9zhGmBysIfeZPExyAoSnFYh6cL25hQ
+    [serverHash] => DAVIDAMEER
+    [method] => DELIVERYsearchDelivery
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:35:31: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_token</font></i></u><ul><li>["ImsmvsldBUFT1NlhLNHbUDg8viBRqM798zvE1RRDLxxNkS56GMhApyIVQjNh5UqetWSvNK9zhGmBysIfeZPExyAoSnFYh6cL25hQ"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:35:31: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">serach_deliveries</font></i></u><ul><li>["2",["UID"],"1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:35:31: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Delivery_details</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:35:31: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:35:31: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_edited_Delivery_by_UID</font></i></u><ul><li>["1820"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:35:31: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["1820","DELIVERY_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:35:31: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Kbit_of_delivery</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:35:31: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_related_Kbits</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:35:31: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:35:31: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_Delivery</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:35:31: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:35:31: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_object</font></i></u><ul><li>[{"column_name":"DELIVERY_BASE_ID","value":"1820"},"user","R_LD2T",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:35:31: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:35:31: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Delivery</font></i></u><ul><li>["1820","DELIVERY_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:35:31: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_deliveries_of_delivery</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:35:31: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:36:03: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:36:03: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:36:03: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [searchWord] => 2
+    [searchFields] => Array
+        (
+            [0] => UID
+        )
+
+    [Token] => 70WBqoiQD6ZZoexVEVRpSuiu1cKUs27A34buttk7Ak6YzDUdyMCrhVWi7GdzJkaMpmgSQBZqV5puJkIh7lJogFHnmUX5f7SEu9wk
+    [serverHash] => DAVIDAMEER
+    [method] => DELIVERYsearchDelivery
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:36:05: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_token</font></i></u><ul><li>["70WBqoiQD6ZZoexVEVRpSuiu1cKUs27A34buttk7Ak6YzDUdyMCrhVWi7GdzJkaMpmgSQBZqV5puJkIh7lJogFHnmUX5f7SEu9wk"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:36:05: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">serach_deliveries</font></i></u><ul><li>["2",["UID"],"1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:36:05: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Delivery_details</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:36:05: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:36:05: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_edited_Delivery_by_UID</font></i></u><ul><li>["1820"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:36:05: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["1820","DELIVERY_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:36:05: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Kbit_of_delivery</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:36:05: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_related_Kbits</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:36:05: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:36:05: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_Delivery</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:36:05: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:36:05: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_object</font></i></u><ul><li>[{"column_name":"DELIVERY_BASE_ID","value":"1820"},"user","R_LD2T",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:36:05: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:36:05: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Delivery</font></i></u><ul><li>["1820","DELIVERY_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:36:05: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_deliveries_of_delivery</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:36:05: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:37:54: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:37:54: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:37:54: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [searchWord] => 1
+    [searchFields] => Array
+        (
+            [0] => UID
+        )
+
+    [Token] => spJ2dfoiGBq4YmqjcfCPDxASxj4II15arOdE3CWJenOcKewXt8M7Gn0dG4Wp51AwPNbSq7CEvrQfFmc9vZhbmhp3llsrm2YbQ94g
+    [serverHash] => DAVIDAMEER
+    [method] => DELIVERYsearchDelivery
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_token</font></i></u><ul><li>["spJ2dfoiGBq4YmqjcfCPDxASxj4II15arOdE3CWJenOcKewXt8M7Gn0dG4Wp51AwPNbSq7CEvrQfFmc9vZhbmhp3llsrm2YbQ94g"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">serach_deliveries</font></i></u><ul><li>["1",["UID"],"1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Delivery_details</font></i></u><ul><li>["1819","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1819","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_edited_Delivery_by_UID</font></i></u><ul><li>["1819"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["1819","DELIVERY_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Kbit_of_delivery</font></i></u><ul><li>["1819","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_related_Kbits</font></i></u><ul><li>["1819","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1819","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_Delivery</font></i></u><ul><li>["1819","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1819","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_object</font></i></u><ul><li>[{"column_name":"DELIVERY_BASE_ID","value":"1819"},"user","R_LD2T",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1819","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Delivery</font></i></u><ul><li>["1819","DELIVERY_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_deliveries_of_delivery</font></i></u><ul><li>["1819","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1819","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Delivery_details</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_edited_Delivery_by_UID</font></i></u><ul><li>["1820"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["1820","DELIVERY_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Kbit_of_delivery</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_related_Kbits</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_Delivery</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_object</font></i></u><ul><li>[{"column_name":"DELIVERY_BASE_ID","value":"1820"},"user","R_LD2T",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Delivery</font></i></u><ul><li>["1820","DELIVERY_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_deliveries_of_delivery</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Delivery_details</font></i></u><ul><li>["1","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_edited_Delivery_by_UID</font></i></u><ul><li>["1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["1","DELIVERY_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Kbit_of_delivery</font></i></u><ul><li>["1","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_related_Kbits</font></i></u><ul><li>["1","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_Kbit_details</font></i></u><ul><li>["1","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","KBIT_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_kbit_by_UID</font></i></u><ul><li>["1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["1","KBIT_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_front_kbit_with_user</font></i></u><ul><li>["1","KBIT_FRONT","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","KBIT_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Kbit</font></i></u><ul><li>["1","KBIT_FRONT","CMSdb"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_Kbit</font></i></u><ul><li>["1","1",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","KBIT_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_object</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"1"},"content","R_LK2T",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_full_term_by_UID</font></i></u><ul><li>["2",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_connection_by_UID</font></i></u><ul><li>["2"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_by_UID</font></i></u><ul><li>["2",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_by_UID_in_all_languages</font></i></u><ul><li>["2"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_meaning_by_UID</font></i></u><ul><li>["2",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_meaning_by_UID_in_all_languages</font></i></u><ul><li>["2"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">get_scope_by_UID</font></i></u><ul><li>["0"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_Kbit_details</font></i></u><ul><li>["782","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["782","KBIT_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_kbit_by_UID</font></i></u><ul><li>["782"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["782","KBIT_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_front_kbit_with_user</font></i></u><ul><li>["782","KBIT_FRONT","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["782","KBIT_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Kbit</font></i></u><ul><li>["782","KBIT_FRONT","CMSdb"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_Kbit</font></i></u><ul><li>["782","1",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["782","KBIT_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_object</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"782"},"content","R_LK2T",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_Delivery</font></i></u><ul><li>["1","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_object</font></i></u><ul><li>[{"column_name":"DELIVERY_BASE_ID","value":"1"},"user","R_LD2T",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_full_term_by_UID</font></i></u><ul><li>["2",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_connection_by_UID</font></i></u><ul><li>["2"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_by_UID</font></i></u><ul><li>["2",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_by_UID_in_all_languages</font></i></u><ul><li>["2"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_meaning_by_UID</font></i></u><ul><li>["2",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_meaning_by_UID_in_all_languages</font></i></u><ul><li>["2"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">get_scope_by_UID</font></i></u><ul><li>["0"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Delivery</font></i></u><ul><li>["1","DELIVERY_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_deliveries_of_delivery</font></i></u><ul><li>["1","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Delivery_details_without_related_deliveries</font></i></u><ul><li>["3","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["3","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Delivery_by_UID</font></i></u><ul><li>["3"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["3","DELIVERY_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Kbit_of_delivery</font></i></u><ul><li>["3","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_related_Kbits</font></i></u><ul><li>["3","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["3","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_Kbit_details</font></i></u><ul><li>["1","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","KBIT_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_kbit_by_UID</font></i></u><ul><li>["1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["1","KBIT_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_front_kbit_with_user</font></i></u><ul><li>["1","KBIT_FRONT","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","KBIT_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Kbit</font></i></u><ul><li>["1","KBIT_FRONT","CMSdb"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_Kbit</font></i></u><ul><li>["1","1",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","KBIT_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_object</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"1"},"content","R_LK2T",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_full_term_by_UID</font></i></u><ul><li>["2",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_connection_by_UID</font></i></u><ul><li>["2"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_by_UID</font></i></u><ul><li>["2",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_by_UID_in_all_languages</font></i></u><ul><li>["2"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_meaning_by_UID</font></i></u><ul><li>["2",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_meaning_by_UID_in_all_languages</font></i></u><ul><li>["2"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">get_scope_by_UID</font></i></u><ul><li>["0"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_Delivery</font></i></u><ul><li>["3","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["3","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_object</font></i></u><ul><li>[{"column_name":"DELIVERY_BASE_ID","value":"3"},"content","R_LD2T",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Delivery_details_without_related_deliveries</font></i></u><ul><li>["12","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["12","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_edited_Delivery_by_UID</font></i></u><ul><li>["12"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["12","DELIVERY_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Kbit_of_delivery</font></i></u><ul><li>["12","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_related_Kbits</font></i></u><ul><li>["12","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["12","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_Kbit_details</font></i></u><ul><li>["1","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","KBIT_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_kbit_by_UID</font></i></u><ul><li>["1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["1","KBIT_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_front_kbit_with_user</font></i></u><ul><li>["1","KBIT_FRONT","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","KBIT_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Kbit</font></i></u><ul><li>["1","KBIT_FRONT","CMSdb"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_Kbit</font></i></u><ul><li>["1","1",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","KBIT_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_object</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"1"},"content","R_LK2T",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_full_term_by_UID</font></i></u><ul><li>["2",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_connection_by_UID</font></i></u><ul><li>["2"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_by_UID</font></i></u><ul><li>["2",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_by_UID_in_all_languages</font></i></u><ul><li>["2"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_meaning_by_UID</font></i></u><ul><li>["2",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_meaning_by_UID_in_all_languages</font></i></u><ul><li>["2"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">get_scope_by_UID</font></i></u><ul><li>["0"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_Delivery</font></i></u><ul><li>["12","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["12","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_object</font></i></u><ul><li>[{"column_name":"DELIVERY_BASE_ID","value":"12"},"user","R_LD2T",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Delivery_details</font></i></u><ul><li>["1818","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1818","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_edited_Delivery_by_UID</font></i></u><ul><li>["1818"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["1818","DELIVERY_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Kbit_of_delivery</font></i></u><ul><li>["1818","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_related_Kbits</font></i></u><ul><li>["1818","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1818","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_Delivery</font></i></u><ul><li>["1818","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1818","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_object</font></i></u><ul><li>[{"column_name":"DELIVERY_BASE_ID","value":"1818"},"user","R_LD2T",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1818","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Delivery</font></i></u><ul><li>["1818","DELIVERY_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_deliveries_of_delivery</font></i></u><ul><li>["1818","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1818","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Delivery_details</font></i></u><ul><li>["10","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["10","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Delivery_by_UID</font></i></u><ul><li>["10"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["10","DELIVERY_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Kbit_of_delivery</font></i></u><ul><li>["10","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_related_Kbits</font></i></u><ul><li>["10","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["10","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_Delivery</font></i></u><ul><li>["10","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["10","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_object</font></i></u><ul><li>[{"column_name":"DELIVERY_BASE_ID","value":"10"},"content","R_LD2T",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["10","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Delivery</font></i></u><ul><li>["10","DELIVERY_FRONT","content"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_deliveries_of_delivery</font></i></u><ul><li>["10","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["10","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Delivery_details</font></i></u><ul><li>["11","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["11","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Delivery_by_UID</font></i></u><ul><li>["11"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["11","DELIVERY_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Kbit_of_delivery</font></i></u><ul><li>["11","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_related_Kbits</font></i></u><ul><li>["11","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["11","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_Delivery</font></i></u><ul><li>["11","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["11","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_object</font></i></u><ul><li>[{"column_name":"DELIVERY_BASE_ID","value":"11"},"content","R_LD2T",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["11","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Delivery</font></i></u><ul><li>["11","DELIVERY_FRONT","content"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_deliveries_of_delivery</font></i></u><ul><li>["11","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:38:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["11","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => antoon91
+    [password] => 1234
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:42:21: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["antoon91","1234"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:42:21: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["antoon91"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:42:21: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:47:37: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:47:37: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:47:37: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:00: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:00: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:00: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:10: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:10: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:10: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:24: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:24: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:24: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:32: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:32: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:32: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [searchWord] => 1
+    [searchFields] => Array
+        (
+            [0] => UID
+        )
+
+    [Token] => Pqp76MJFerUtrK8YiIna639n9l9crq2gQroWe7CtywW0g5YzOmJUpTiyerKGRMWIelEtshW1NT14Y0DMmnHMgZlvq5biS807tEAW
+    [serverHash] => DAVIDAMEER
+    [method] => DELIVERYsearchDelivery
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_token</font></i></u><ul><li>["Pqp76MJFerUtrK8YiIna639n9l9crq2gQroWe7CtywW0g5YzOmJUpTiyerKGRMWIelEtshW1NT14Y0DMmnHMgZlvq5biS807tEAW"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">serach_deliveries</font></i></u><ul><li>["1",["UID"],"1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Delivery_details</font></i></u><ul><li>["1819","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1819","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_edited_Delivery_by_UID</font></i></u><ul><li>["1819"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["1819","DELIVERY_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Kbit_of_delivery</font></i></u><ul><li>["1819","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_related_Kbits</font></i></u><ul><li>["1819","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1819","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_Delivery</font></i></u><ul><li>["1819","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1819","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_object</font></i></u><ul><li>[{"column_name":"DELIVERY_BASE_ID","value":"1819"},"user","R_LD2T",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1819","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Delivery</font></i></u><ul><li>["1819","DELIVERY_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_deliveries_of_delivery</font></i></u><ul><li>["1819","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1819","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Delivery_details</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_edited_Delivery_by_UID</font></i></u><ul><li>["1820"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["1820","DELIVERY_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Kbit_of_delivery</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_related_Kbits</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_Delivery</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_object</font></i></u><ul><li>[{"column_name":"DELIVERY_BASE_ID","value":"1820"},"user","R_LD2T",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Delivery</font></i></u><ul><li>["1820","DELIVERY_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_deliveries_of_delivery</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Delivery_details</font></i></u><ul><li>["1","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_edited_Delivery_by_UID</font></i></u><ul><li>["1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["1","DELIVERY_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Kbit_of_delivery</font></i></u><ul><li>["1","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_related_Kbits</font></i></u><ul><li>["1","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 19:49:35: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
