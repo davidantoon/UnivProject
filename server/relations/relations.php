@@ -15,6 +15,8 @@ class refRelation {
 	 * @return {refRelation} the relation that was just created
 	 */
 	public static function add_relation_to_object($parent_UID, $child_UID, $is_hier, $user, $tableName, $database_name = 'content') {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		
 		$database_name = dbAPI::get_db_name($database_name);
 		
@@ -56,6 +58,8 @@ class refRelation {
 	 */
 	public static function remove_relation($parent_UID, $child_UID, $tableName, $database_name = 'content') {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		$database_name = dbAPI::get_db_name($database_name);
 
 		// disable old relation
@@ -80,6 +84,8 @@ class refRelation {
 	 */
 	public static function get_objects_relation($first_object, $second_object, $tableName, $database_name = 'content') {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		$database_name = dbAPI::get_db_name($database_name);
 		$dbObj = new dbAPI();
 		$query = "SELECT * FROM ". $tableName ." where ENABLED = 1 AND ((PARENT_ID = " . $first_object .
@@ -102,6 +108,8 @@ class refRelation {
 	 * @return {array}             contains each of parents, children and others that each contains related objects
 	 */
 	public static function get_relations_of_object($object_UID, $tableName, $anonFunc, $param2 = '', $database_name = 'content') {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		$database_name = dbAPI::get_db_name($database_name);
 		$parents = array();
@@ -153,6 +161,8 @@ class O2TRelation {
 	 * @return  {O2TRelation} The relation that was just created
 	 */
 	public static function add_O2T_relation($object_UID, $term_UID, $link_type, $user, $tableName, $database_name) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		
 		$database_name = dbAPI::get_db_name($database_name);	
 		// disable old relation
@@ -196,6 +206,8 @@ class O2TRelation {
 	 */
 	public static function remove_O2T_relation($object_UID, $term_UID, $link_type, $tableName, $database_name) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		$database_name = dbAPI::get_db_name($database_name);
 
 		// disable old relation
@@ -226,6 +238,8 @@ class O2TRelation {
 	 * @return {O2TRelation}  
 	 */
 	public static function get_O2T_relation($object_UID, $term_UID, $link_type, $tableName, $database_name) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		$database_name = dbAPI::get_db_name($database_name);
 
@@ -260,6 +274,8 @@ class O2TRelation {
 	 */
 	public static function get_terms_of_object($object_UID, $database_name, $tableName, $lang = '') {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		// get database name
 		$database_name = dbAPI::get_db_name($database_name);
 		
@@ -279,7 +295,7 @@ class O2TRelation {
 		// retrieve term's details from terms class into array
 		$terms = array();
 		for($i=0;$i<count($results);$i++) {
-			$curr_term = term::get_term_by_UID($results[$i]["TERM_ID"], $lang);
+			$curr_term = term::get_full_term_by_UID($results[$i]["TERM_ID"], $lang);
 			// copy LINK_TYPE to term object
 			$curr_term["LINK_TYPE"] = $results[$i]["LINK_TYPE"];
 			array_push($terms, $curr_term);
@@ -316,6 +332,8 @@ class D2KRelation {
 	 * @return  {D2KRelation} The relation that was just created
 	 */
 	public static function add_D2K_relation($Kbit_UID, $delivery_UID, $link_type, $link_weight, $user, $database_name) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		
 		
 		$database_name = dbAPI::get_db_name($database_name);
@@ -349,6 +367,8 @@ class D2KRelation {
 	 */
 	public static function remove_D2K_relation($Kbit_UID, $delivery_UID, $link_type, $database_name) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		$database_name = dbAPI::get_db_name($database_name);
 
 		// disable old relation
@@ -370,6 +390,8 @@ class D2KRelation {
 	 * @return {D2KRelation}   the relation object
 	 */
 	public static function get_D2K_relation($Kbit_UID, $delivery_UID, $link_type, $database_name) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		$database_name = dbAPI::get_db_name($database_name);
 
@@ -396,6 +418,8 @@ class D2KRelation {
 	 * @return {array:terms}                array of terms
 	 */
 	public static function get_related_Kbits($Delivery_UID, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		$NEEDED = array();
 		$PROVIDED = array();
@@ -428,6 +452,52 @@ class D2KRelation {
 		}
 		$kbits = array("NEEDED"=>$NEEDED, "PROVIDED"=>$PROVIDED, "OTHERS"=>$OTHERS);
 		return $kbits;
+	}
+
+
+	public static function get_related_deliveries($Delivery_UID, $user) {
+
+		// step: 1) get needed + provided 'kbits' of current 'delivery' 
+		// get database name
+		if(Lock::is_locked_by_user($Delivery_UID, 'DELIVERY_BASE', $user) == true)
+			$sdb = dbAPI::get_db_name('user');
+		else
+			$sdb = dbAPI::get_db_name('content');
+		
+		$dbObj = new dbAPI();
+
+		$cdb = dbAPI::get_db_name('content');
+		$udb = dbAPI::get_db_name('user');
+
+		// get all needed and provided Kbits (as relation objects)
+		$query = "  SELECT R2.* FROM ". $sdb .".R_LD2K /*USER OR CONTENT*/ AS R1 INNER JOIN (SELECT * FROM (
+					SELECT R_1.* FROM ".$cdb.".R_LD2K AS R_1 WHERE R_1.ENABLED = 1 AND R_1.DELIVERY_BASE_ID NOT IN (SELECT R.DELIVERY_BASE_ID FROM ".$cdb.".R_LD2K AS R INNER JOIN ".$cdb.".CONTENT_LOCK AS LK ON (R.DELIVERY_BASE_ID = LK.LOCKED_UID AND LK.ENTITY_TYPE = 'DELIVERY_BASE') WHERE (LK.ENABLED = 1 AND LK.LOCK_STATUS = 'LOCKED' AND LK.USER_ID = ". $user ." /*USER_ID*/))
+					) AS R5) AS R2 
+					ON (R1.KBIT_BASE_ID = R2.KBIT_BASE_ID AND R1.ENABLED = R2.ENABLED) WHERE (((R1.LINK_TYPE = 'NEEDED' AND R2.LINK_TYPE = 'PROVIDED')  OR (R2.LINK_TYPE = 'NEEDED' AND R1.LINK_TYPE = 'PROVIDED')) AND R1.ENABLED = 1 AND R1.DELIVERY_BASE_ID = ". $Delivery_UID ." /*DELIVERY_ID*/)
+					UNION
+					SELECT R2.* FROM ".$sdb.".R_LD2K /*USER OR CONTENT*/ AS R1 INNER JOIN (SELECT * FROM (
+					SELECT R_1.* FROM ".$udb.".R_LD2K AS R_1 WHERE R_1.ENABLED = 1 AND R_1.DELIVERY_BASE_ID IN (SELECT R.DELIVERY_BASE_ID FROM ".$udb.".R_LD2K AS R WHERE (ENABLED = 1 AND USER_ID = ". $user ." /*USER_ID*/))
+					) AS R5) AS R2 
+					ON (R1.KBIT_BASE_ID = R2.KBIT_BASE_ID AND R1.ENABLED = R2.ENABLED) WHERE (((R1.LINK_TYPE = 'NEEDED' AND R2.LINK_TYPE = 'PROVIDED')  OR (R2.LINK_TYPE = 'NEEDED' AND R1.LINK_TYPE = 'PROVIDED')) AND R1.ENABLED = 1 AND R1.DELIVERY_BASE_ID = ". $Delivery_UID ." /*DELIVERY_ID*/)
+		";
+		$results = $dbObj->db_select_query('', $query);
+
+		$parents = array();
+		$children = array();
+
+		for($i=0;$i<count($results);$i++) {
+
+			$curr_Delivery = Delivery::get_Delivery_details_without_related_deliveries($results[$i]["DELIVERY_BASE_ID"], $user);
+			
+			if($results[$i]["LINK_TYPE"] == 'NEEDED')
+				array_push($parents, $curr_Delivery);
+			if($results[$i]["LINK_TYPE"] == 'PROVIDED')
+				array_push($children, $curr_Delivery);			
+		}
+
+		$temp = array("PARENTS" => $parents, "CHILDREN" => $children);
+		return $temp;
+
 	}
 }
 ?>

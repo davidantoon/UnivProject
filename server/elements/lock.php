@@ -12,6 +12,8 @@ class Lock {
 
 
 	public static function acquire_lock($UID, $entity_type, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		// add record to lock table in order to specify that the kbit is locked
 		// NOTE: it is recomended to implement the lock in separated class
 		if(Lock::is_locked($UID, $entity_type)) {
@@ -34,6 +36,8 @@ class Lock {
 	}
 
 	public static function release_lock($UID, $entity_type, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		// add record to lock table in order to specify that the kbit is no longer locked
 		// NOTE: it is recomended to implement the lock in separated class
 		if(Lock::is_locked($UID, $entity_type) == false) {
@@ -62,6 +66,8 @@ class Lock {
 
 	public static function is_locked($UID, $entity_type) {
 
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		$dbObj = new dbAPI();
 		$query = "SELECT * FROM CONTENT_LOCK where LOCKED_UID = '" . $UID . "' AND ENTITY_TYPE = '" . $entity_type . "' AND LOCK_STATUS = 'LOCKED' AND ENABLED = 1 ";
 		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
@@ -69,6 +75,8 @@ class Lock {
 	}
 
 	public static function is_locked_by_user($UID, $entity_type, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 		
 		$dbObj = new dbAPI();
 		$query = "SELECT * FROM CONTENT_LOCK where LOCKED_UID = '" . $UID . "' AND ENTITY_TYPE = '" . $entity_type . "' AND LOCK_STATUS = 'LOCKED' AND ENABLED = 1 AND USER_ID = ". $user ." ";
@@ -77,6 +85,8 @@ class Lock {
 	}
 
 	public static function get_locking_user($UID, $entity_type) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		$dbObj = new dbAPI();
 		$query = "SELECT usr.* FROM ". dbAPI::get_db_name('content') .".CONTENT_LOCK AS lk INNER JOIN ". dbAPI::get_db_name('user') .".USERS AS usr ON (usr.UID = lk.USER_ID) where lk.LOCKED_UID = '" . $UID . "' AND lk.ENTITY_TYPE = '" . $entity_type . "' AND lk.LOCK_STATUS = 'LOCKED' AND lk.ENABLED = 1 ";
