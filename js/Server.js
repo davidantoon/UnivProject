@@ -824,10 +824,10 @@
 						var data = {
 							firstUID: firstTermID,
 							secondUID: secondTermID,
-							isHier: 0
+							isHier: true
 						};
 
-						$httpR.connectToServer(data, $httpR.TERMaddTermToTermRelation, function(success, error){
+						$httpR.connectToServer(data, $httpR.TERMaddTermToTermRelation, Globals, function(success, error){
 							if(error || !success){
 								console.error("error adding term to term relation: ", error);
 								callback(null, error);
@@ -859,7 +859,7 @@
 							secondUID: secondTermID
 						};
 
-						$httpR.connectToServer(data, $httpR.TERMremoveTermToTermRelation, function(success, error){
+						$httpR.connectToServer(data, $httpR.TERMremoveTermToTermRelation, Globals, function(success, error){
 							if(error || !success){
 								console.error("error removing term to term relation: ", error);
 								callback(null, error);
@@ -887,7 +887,7 @@
 						lang: 0
 					};
 
-					$httpR.connectToServer(data, $httpR.TERMgetAllTermsStrings, function(success, error){
+					$httpR.connectToServer(data, $httpR.TERMgetAllTermsStrings, Globals, function(success, error){
 						if(error || !success){
 							console.error("error getting all terms: ", error);
 							callback(null, error);
@@ -914,7 +914,7 @@
 							lang: 0
 						};
 
-						$httpR.connectToServer(data, $httpR.TERMgetRelatedTerms, function(success, error){
+						$httpR.connectToServer(data, $httpR.TERMgetRelatedTerms, Globals, function(success, error){
 							if(error || !success){
 								console.error("error getting related terms: ", error);
 								callback(null, error);
@@ -962,7 +962,7 @@
 							kbitUID: kbitID
 						};
 
-						$httpR.connectToServer(data, $httpR.KBITbeginEdit, function(success, error){
+						$httpR.connectToServer(data, $httpR.KBITbeginEdit, Globals, function(success, error){
 							if(error || !success){
 								console.log("error begining edit kbit: ", error);
 								callback(null, error);
@@ -992,7 +992,7 @@
 							kbitUID: kbitID
 						};
 
-						$httpR.connectToServer(data, $httpR.KBITcancelEdit, function(success, error){
+						$httpR.connectToServer(data, $httpR.KBITcancelEdit, Globals, function(success, error){
 							if(error || !success){
 								console.log("error canceling edit kbit: ", error);
 								callback(null, error);
@@ -1032,7 +1032,7 @@
 
 						}
 
-						$httpR.connectToServer(data, $httpR.KBITaddRelatedKbit, function(success, error){
+						$httpR.connectToServer(data, $httpR.KBITaddRelatedKbit, Globals, function(success, error){
 							if(error || !success){
 								console.log("error adding kbit to kbit relation ", error);
 								callback(null, error);
@@ -1064,7 +1064,7 @@
 							secondUID: secondKbitID
 						};
 
-						$httpR.connectToServer(data, $httpR.KBITremoveRelatedKbit, function(success, error){
+						$httpR.connectToServer(data, $httpR.KBITremoveRelatedKbit, Globals, function(success, error){
 							if(error || !success){
 								console.log("error removing kbit to kbit relation ", error);
 								callback(null, error);
@@ -1095,10 +1095,10 @@
 						var data = {
 							kbitUID: kbitID,
 							termUID: termID,
-							linkType: relation
+							linkType: " "
 						};
 
-						$httpR.connectToServer(data, $httpR.KBITaddTermByUID, function(success, error){
+						$httpR.connectToServer(data, $httpR.KBITaddTermByUID, Globals, function(success, error){
 							if(error || !success){
 								console.log("error adding term to kbit: ", error);
 								callback(null, error);
@@ -1130,10 +1130,10 @@
 						var data = {
 							kbitUID: kbitID,
 							termUID: termID,
-							linkType: relation
+							linkType: " "
 						};
 
-						$httpR.connectToServer(data, $httpR.KBITremoveTerm, function(success, error){
+						$httpR.connectToServer(data, $httpR.KBITremoveTerm, Globals, function(success, error){
 							if(error || !success){
 								console.error("error removing term from kbit: ", error);
 								callback(null, error);
@@ -1181,7 +1181,7 @@
 							deliveryUID: deliveryID
 						};
 
-						$httpR.connectToServer(data, $httpR.DELIVERYbeginEdit, function(success, error){
+						$httpR.connectToServer(data, $httpR.DELIVERYbeginEdit, Globals, function(success, error){
 							if(error || !success){
 								console.error("error starting edit delivery: ", error);
 								callback(null, error);
@@ -1211,7 +1211,7 @@
 							deliveryUID: deliveryID
 						};
 
-						$httpR.connectToServer(data, $httpR.DELIVERYcancelEdit, function(success, error){
+						$httpR.connectToServer(data, $httpR.DELIVERYcancelEdit, Globals, function(success, error){
 							if(error || !success){
 								console.error("error canceling edit delivery: ", error);
 								callback(null, error);
@@ -1241,7 +1241,7 @@
 							deliveryUID: deliveryID
 						};
 
-						$httpR.connectToServer(data, $httpR.DELIVERYpublish, function(success, error){
+						$httpR.connectToServer(data, $httpR.DELIVERYpublish, Globals, function(success, error){
 							if(error || !success){
 								console.error("error publishing delivery: ", error);
 								callback(null, error);
@@ -1278,7 +1278,7 @@
 							front: frontArr
 						};
 
-						$httpR.connectToServer(data, $httpR.DELIVERYupdate, function(success, error){
+						$httpR.connectToServer(data, $httpR.DELIVERYupdate, Globals, function(success, error){
 							if(error || !success){
 								console.error("error updating delivery: ", error);
 								callback(null, error);
@@ -1310,7 +1310,7 @@
 							secondUID: secondDeliveryID,
 							isHier: true
 						};
-						$httpR.connectToServer(data, $httpR.DELIVERYaddRelatedDelivery, function(success, error){
+						$httpR.connectToServer(data, $httpR.DELIVERYaddRelatedDelivery, Globals, function(success, error){
 							if(error || !success){
 								console.error("error adding delivery relation: ", error);
 								callback(null, error);
@@ -1341,7 +1341,7 @@
 							firstUID: firstDeliveryID,
 							secondUID: secondDeliveryID
 						};
-						$httpR.connectToServer(data, $httpR.DELIVERYremoveRelatedDelivery, function(success, error){
+						$httpR.connectToServer(data, $httpR.DELIVERYremoveRelatedDelivery, Globals, function(success, error){
 							if(error || !success){
 								console.error("error removing delivery relation: ", error);
 								callback(null, error);
@@ -1372,10 +1372,10 @@
 						var data = {
 							deliveryUID: deliveryID,
 							termUID: termID,
-							linkType: linkType
+							linkType: " "
 						};
 
-						$httpR.connectToServer(data, $httpR.DELIVERYaddTermByUID, function(success, error){
+						$httpR.connectToServer(data, $httpR.DELIVERYaddTermByUID, Globals, function(success, error){
 							if(error || !success){
 								console.error("error adding term to delivery relation: ", error);
 								callback(null, error);
@@ -1406,10 +1406,10 @@
 						var data = {
 							deliveryUID: deliveryID,
 							termUID: termID,
-							linkType: linkType
+							linkType: " "
 						};
 
-						$httpR.connectToServer(data, $httpR.DELIVERYremoveTerm, function(success, error){
+						$httpR.connectToServer(data, $httpR.DELIVERYremoveTerm, Globals, function(success, error){
 							if(error || !success){
 								console.error("error removing term to delivery relation: ", error);
 								callback(null, error);
@@ -1440,11 +1440,11 @@
 						var data = {
 							deliveryUID: deliveryID,
 							kbitUID: kbitID,
-							linkType: linkType,
+							linkType: " ",
 							linkWeight: linkWeight
 						};
 
-						$httpR.connectToServer(data, $httpR.DELIVERYaddRelatedKbit, function(success, error){
+						$httpR.connectToServer(data, $httpR.DELIVERYaddRelatedKbit, Globals, function(success, error){
 							if(error || !success){
 								console.error("error adding kbit to delivery relation: ", error);
 								callback(null, error);
@@ -1475,11 +1475,11 @@
 						var data = {
 							deliveryUID: deliveryID,
 							kbitUID: kbitID,
-							linkType: linkType,
+							linkType: " ",
 							linkWeight: linkWeight
 						};
 
-						$httpR.connectToServer(data, $httpR.DELIVERYremoveRelatedKbit, function(success, error){
+						$httpR.connectToServer(data, $httpR.DELIVERYremoveRelatedKbit, Globals, function(success, error){
 							if(error || !success){
 								console.error("error removing kbit from delivery relation: ", error);
 								callback(null, error);

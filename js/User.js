@@ -88,7 +88,7 @@
                         });
                     }
                 } catch (e) {
-                    console.error("error logging in: ", e);
+                    console.error("User.login: ", e);
                     callback(null, e);
                 }
             }
@@ -132,7 +132,7 @@
                         }
                     });
                 } catch (e) {
-                    console.error("error signing up: ", e);
+                    console.error("singup: ", e);
                     callback(null, e);
                 }
             }
@@ -177,8 +177,8 @@
                             }
                         });
                     } catch (e) {
-                        console.error("could not change password: ", e);
-                        callback(null, error);
+                        console.error("changePassword: ", e);
+                        callback(null, e);
                     }
                 },
 
@@ -191,13 +191,13 @@
                  * @param  {string}   role           role of the user
                  * @param  {Function} callback       callback function
                  */
-                updateUser: function(firstName, lastName, email, profilePicture, role, callback) {
+                updateUser: function(firstName, lastName, email, role, callback) {
                     try {
                         var data = {
                             firstName: firstName,
                             lastName: lastName,
                             email: email,
-                            profilePicture: profilePicture,
+                            profilePicture: this.profilePicture,
                             role: role
                         }
                         $httpR.connectToServer(data, $httpR.updateUser, Globals, function(success, error) {
@@ -208,13 +208,37 @@
                                 this.firstName = success["firstName"];
                                 this.lastName = success["lastName"];
                                 this.email = success["email"];
-                                this.profilePicture = success["profilePicture"];
                                 this.role = success["role"];
                                 callback(this);
                             }
                         });
                     } catch (e) {
-                        console.error("could not update data: ", error);
+                        console.error("updateUser: ", e);
+                        callback(null, e);
+                    }
+                },
+
+                updateProfilePicture: function(profilePicture, callback){
+                    try{
+                        var data = {
+                            firstName: this.firstName,
+                            lastName: this.lastName,
+                            email: this.email,
+                            profilePicture: profilePicture,
+                            role: this.role
+                        };
+
+                        $httpR.connectToServer(data, $httpR.updateUser, Globals, function(success, error){
+                            if(error || !success){
+                                console.error("could not update profile picture: ", error);
+                                callback(null, error);
+                            }else{
+                                this.profilePicture = success["profilePicture"];
+                                callback(this);
+                            }
+                        });
+                    }catch(e){
+                        console.error("updateProfilePicture: ", e);
                         callback(null, e);
                     }
                 },
