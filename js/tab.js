@@ -63,7 +63,7 @@
 				function Continue(passThis){
 					passThis.color = ((tempJson.color != undefined)?tempJson.color:"#0860A8");
 					if(tempJson.requestFrom == "restoreStep"){
-							if(tempJson.content != null && tempJson.content != null){
+							if(tempJson.content != null && tempJson.content != undefined){
 								var stor = new Storage();
 								stor.getElementById(tempJson.content, /* force last modefied */ true, /* force server pull */ false, function(dataFromStorage){
 									passThis.content = dataFromStorage;
@@ -73,7 +73,7 @@
 								tempJson.callback(passThis, tempJson.passindex, tempJson.passThis, tempJson.passTempJson);
 							}
 					}else{
-						if(tempJson.content != null && tempJson.content != null){
+						if(tempJson.content != null && tempJson.content != undefined){
 							var stor = new Storage();
 							stor.getElementById(tempJson.content, /* force last modefied */ true, /* force server pull */ false, function(dataFromStorage){
 								passThis.content = dataFromStorage;

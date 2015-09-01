@@ -1677,6 +1677,11 @@ var ngScope;
                 })
             }
 
+            $scope.getNewServerobj = function(){
+                var svr = new Server(null, $scope.isDummy);
+                return svr;
+            }
+
 
 
 

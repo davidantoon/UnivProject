@@ -64,11 +64,31 @@
         port: "8888",
         baseUrl: "/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/",
 
-
+        // API function
         logIn: "USERlogIn",
         signUp: "USERsignUp",
         changePassword: "USERchangePassword",
         updateUser: "USERupdateUser",
+        KBITremoveTerm: "KBITremoveTerm",
+        KBITaddTermByUID: "KBITaddTermByUID",
+        KVPsetKeyValuePair: "KVPsetKeyValuePair",
+        TERMsearchTerms: "TERMsearchTerms",
+        DELIVERYsearchDelivery: "DELIVERYsearchDelivery",
+        KBITsearchKbits: "KBITsearchKbits",
+        TERMremoveTermToTermRelation: "TERMremoveTermToTermRelation",
+        TERMgetAllTermsStrings: "TERMgetAllTermsStrings",
+        TERMgetRelatedTerms: "TERMgetRelatedTerms",
+        TERMaddTermToTermRelation: "TERMaddTermToTermRelation",
+        KBITbeginEdit: "KBITbeginEdit",
+        KBITcancelEdit: "KBITcancelEdit",
+        KBITaddRelatedKbit: "KBITaddRelatedKbit",
+        KBITremoveRelatedKbit: "KBITremoveRelatedKbit",
+        DELIVERYbeginEdit: "DELIVERYbeginEdit",
+        DELIVERYcancelEdit: "DELIVERYcancelEdit",
+        
+
+
+
         connectToServer: function(data, method, Globals, callback) {
 
             //data.serverHash = gethash();
