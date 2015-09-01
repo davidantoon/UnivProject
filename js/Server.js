@@ -741,7 +741,7 @@
 							return;
 						}
 					}else{
-						$httpR.connectToServer({Key:"Steps"}, $httpR.KVPsetKeyValuePair, Globals, callback);
+						$httpR.connectToServer({Key:"Steps"}, $httpR.KVPgetKeyValuePair, Globals, callback);
 					}
 				}catch(e){
 	                console.error("getSteps: ", e);
@@ -758,6 +758,7 @@
 					if(this.baseUrl == "dummy"){
 						callback();
 					}else{
+						debugger;
 						steps = strCompress(JSON.stringify(steps));
 						$httpR.connectToServer({Key:"Steps", value:steps}, $httpR.KVPsetKeyValuePair, Globals, callback);
 					}

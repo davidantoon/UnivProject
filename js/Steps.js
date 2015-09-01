@@ -24,7 +24,6 @@
 						ServerResquestComplete(null, passThis1);
 					}else{
 						try{
-							debugger;
 							var x =JSON.parse(strDecompress(result.OBJECT_VALUE));
 							ServerResquestComplete(x, passThis1);
 						}catch(e){

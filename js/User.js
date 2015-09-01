@@ -4,7 +4,6 @@
         function($rootScope, $http, Server, $httpR, Globals) {
 
             function User(tempJson, id, firstName, lastName, username, email, profilePicture, role, token) {
-                debugger;
                 if (tempJson) {
                     if(tempJson.UID){
                         this.id = tempJson.UID;

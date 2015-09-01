@@ -72,6 +72,7 @@
         KBITremoveTerm: "KBITremoveTerm",
         KBITaddTermByUID: "KBITaddTermByUID",
         KVPsetKeyValuePair: "KVPsetKeyValuePair",
+        KVPgetKeyValuePair: "KVPgetKeyValuePair",
         TERMsearchTerms: "TERMsearchTerms",
         DELIVERYsearchDelivery: "DELIVERYsearchDelivery",
         KBITsearchKbits: "KBITsearchKbits",
@@ -91,7 +92,6 @@
 
         connectToServer: function(data, method, Globals, callback) {
 
-            //data.serverHash = gethash();
             data.serverHash = "DAVIDAMEER";
             data.method = method;
             data.format = "json";
@@ -104,6 +104,9 @@
                 url: this.protocol+"://"+this.ip+":"+this.port+this.baseUrl,
                 data: data,
                 method: "POST",
+                header:{
+                    "Access-Control-Allow-Origin": "http://94.159.162.6:8888"
+                },
                 success: function(success) {
                     if (success.status == 200)
                         callback(success.data, null);

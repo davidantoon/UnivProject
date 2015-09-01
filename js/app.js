@@ -84,7 +84,7 @@ var ngScope;
                     localStorage.setItem("com.intel.Server.terms",JSON.stringify(json)); 
                 });
             }
-            // dummyData();
+            if($scope.isDummy) dummyData();
 
 
 
@@ -234,7 +234,7 @@ var ngScope;
                         $scope.updateMatrixLayout();
                         $scope.workSpaces.checkUserColorsInWorkspace();
                         
-                        $('#WorkFlowMatrix').css('min-width', "10000px").css('min-height', "10000px").css('width', "10000px").css('height', "10000px");
+                        $('#WorkFlowMatrix').css('min-width', "5000px").css('min-height', "5000px").css('width', "5000px").css('height', "5000px");
 
                         callbackFunction(true);
                     });
@@ -505,7 +505,7 @@ var ngScope;
                         }
                         // we are closing the only workflow we have ( which has only one tab), create new workflow after closing
                         if($scope.Workflow.length == 0){
-                            $scope.Workflow.push(new Workflow(null, 0, 12, 12, 13, 13));
+                            $scope.Workflow.push(new Workflow(null, 0, 7, 5, 8, 6));
                             $scope.workSpaces.selectedWorkflow = $scope.Workflow[0];
                             $timeout(function(){
                                 $scope.Steps.lastFocusedWorkflow = $scope.workSpaces.selectedWorkflow.ID;

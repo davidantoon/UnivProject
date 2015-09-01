@@ -3,7 +3,7 @@
 	angular.module('IntelLearner').factory('Workspace', ['$rootScope', 'Workflow', function($rootScope, Workflow){
 		function Workspace(scope) {
 			try{
-				var firstWorkflow = new Workflow(null, 0, 12, 12, 13, 13);
+				var firstWorkflow = new Workflow(null, 0, 7, 5, 8, 6);
 				this.workflows = [firstWorkflow];
 				this.coloredWorkflows = [];
 				this.lastWorkflowId = 0;
