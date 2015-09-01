@@ -6166,10 +6166,10 @@ div.vertical {
 
 #WorkFlowMatrix{
   position: relative;
-  width: 10000px;
-  height: 10000px;
-  min-width: 10000px;
-  min-height: 10000px;
+  width: 5590px;
+  height: 4390px;
+  min-width: 5590px;
+  min-height: 4390px;
   padding: 7px;
   overflow: hidden;
   background: rgb(249, 249, 249);
@@ -6580,11 +6580,11 @@ div.vertical {
 }
 
 .blured{
-    -webkit-filter: blur(6px);
+   /* -webkit-filter: blur(6px);
     -moz-filter: blur(6px);
     -o-filter: blur(6px);
     -ms-filter: blur(6px);
-    filter: blur(6px);
+    filter: blur(6px);*/
 }
 
 
@@ -6909,6 +6909,9 @@ div.vertical {
 .searchResultName{
   margin: 0;
   font-size: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .searchResultDescription{
   margin: 0;

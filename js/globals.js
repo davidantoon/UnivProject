@@ -45,52 +45,78 @@
             }
         }
     })
-        .value('TypeOf', {
-            init: function() {
-                Number.prototype.objectType = "number";
-                Array.prototype.objectType = "array";
-                String.prototype.objectType = "string";
-                (function() {}).prototype.objectType = "function";
-            },
-            get: function(obj) {
-                return obj.objectType;
+    .value('TypeOf', {
+        init: function() {
+            Number.prototype.objectType = "number";
+            Array.prototype.objectType = "array";
+            String.prototype.objectType = "string";
+            (function() {}).prototype.objectType = "function";
+        },
+        get: function(obj) {
+            return obj.objectType;
+        }
+    })
+    .value('ServerReq', "Not initialized")
+    .value('$httpR', {
+
+        protocol: "http",
+        ip: "94.159.162.6",
+        port: "8888",
+        baseUrl: "/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/",
+
+        // API function
+        logIn: "USERlogIn",
+        signUp: "USERsignUp",
+        changePassword: "USERchangePassword",
+        updateUser: "USERupdateUser",
+        KBITremoveTerm: "KBITremoveTerm",
+        KBITaddTermByUID: "KBITaddTermByUID",
+        KVPsetKeyValuePair: "KVPsetKeyValuePair",
+        KVPgetKeyValuePair: "KVPgetKeyValuePair",
+        TERMsearchTerms: "TERMsearchTerms",
+        DELIVERYsearchDelivery: "DELIVERYsearchDelivery",
+        KBITsearchKbits: "KBITsearchKbits",
+        TERMremoveTermToTermRelation: "TERMremoveTermToTermRelation",
+        TERMgetAllTermsStrings: "TERMgetAllTermsStrings",
+        TERMgetRelatedTerms: "TERMgetRelatedTerms",
+        TERMaddTermToTermRelation: "TERMaddTermToTermRelation",
+        KBITbeginEdit: "KBITbeginEdit",
+        KBITcancelEdit: "KBITcancelEdit",
+        KBITaddRelatedKbit: "KBITaddRelatedKbit",
+        KBITremoveRelatedKbit: "KBITremoveRelatedKbit",
+        DELIVERYbeginEdit: "DELIVERYbeginEdit",
+        DELIVERYcancelEdit: "DELIVERYcancelEdit",
+        
+
+
+
+        connectToServer: function(data, method, Globals, callback) {
+
+            data.serverHash = "DAVIDAMEER";
+            data.method = method;
+            data.format = "json";
+            if(Globals.CurrentUser && Globals.CurrentUser.id){
+                data.Token = Globals.CurrentUser.token;
             }
-        })
-        .value('ServerReq', "Not initialized")
-        .value('$httpR', {
 
-            protocol: "http",
-            ip: "109.160.254.78",
-            port: "8888",
-            baseUrl: "/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/",
-
-
-            logIn: "USERlogIn",
-            signUp: "USERsignUp",
-            changePassword: "USERchangePassword",
-            updateUser: "USERupdateUser",
-            connectToServer: function(data, method, callback) {
-                //data.serverHash = gethash();
-                data.serverHash = "DAVIDAMEER";
-                data.method = method;
-                data.format = "json";
-                //console.log( this.protocol + "://" + this.ip + ":" + this.port + this.baseUrl + "?" + "method="+method +"&format=json");
-
-                $.ajax({
-                    // url: "http://testserver-radjybaba.rhcloud.com/webservice.php/",
-                    url: this.protocol+"://"+this.ip+":"+this.port+this.baseUrl,
-                    data: data,
-                    method: "POST",
-                    success: function(success) {
-                        if (success.status == 200)
-                            callback(success.data, null);
-                        else
-                            callback(null, success);
-                    },
-                    error: function(error) {
-                        callback(null, JSON.parse(error.responseText).data.Message);
-                    }
-                });
-            }
-        });
+            $.ajax({
+                // url: "http://testserver-radjybaba.rhcloud.com/webservice.php/",
+                url: this.protocol+"://"+this.ip+":"+this.port+this.baseUrl,
+                data: data,
+                method: "POST",
+                header:{
+                    "Access-Control-Allow-Origin": "http://94.159.162.6:8888"
+                },
+                success: function(success) {
+                    if (success.status == 200)
+                        callback(success.data, null);
+                    else
+                        callback(null, success);
+                },
+                error: function(error) {
+                    callback(null, error);
+                }
+            });
+        }
+    });
 })(window.angular);

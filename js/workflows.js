@@ -36,8 +36,8 @@
                         this.name = tempJson.name;
                         this.tabsIds = tempJson.tabsIds;
                         this.tabs = [];
-
                         if(colored != null && colored == true){
+
                         }else{
                             // if we are adding new workflow from redo or undo or restoring steps
                             if(tempJson.requestFrom == "restoreStep"){
@@ -92,7 +92,7 @@
                     return null;
                 }
             }catch(e){
-                $rootScope.currentScope.Toast.show("Error!","There was an error in creating workflow", Toast.LONG, Toast.ERROR);
+                // $rootScope.currentScope.Toast.show("Error!","There was an error in creating workflow", Toast.LONG, Toast.ERROR);
                 console.error("Workflow: ", e);
                 return null;
              }        

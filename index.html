@@ -71,7 +71,7 @@
                   <ons-icon icon="ion-pinpoint" size="25px"></ons-icon>
                 </div>
               </ons-col>
-              <ons-col id="NotificationsButton3" ng-click="Steps.commitSteps();" width="85px" style="width:50px; position:relative;" class="{{'col ons-col-inner '+((Steps.savedInServer == false)?'clickable hoverOp':'opacityLow')}}">
+              <ons-col id="NotificationsButton3" ng-click="Steps.commitSteps(workSpaces);" width="85px" style="width:50px; position:relative;" class="{{'col ons-col-inner '+((Steps.savedInServer == false)?'clickable hoverOp':'opacityLow')}}">
                 <div class="TopTabbarButton" style="border-right:0;font-size: 13px;">
                   <ons-icon icon="ion-upload" size="25px"></ons-icon>
                   Save
@@ -674,6 +674,7 @@
   <script type="text/javascript" src="js/angularfire.min.js"></script>
   <script type="text/javascript" src="js/visible.js"></script>
 
+  <script type="text/javascript" src="js/compressString.js"></script>
   <script type="text/javascript" src="js/app.js"></script>
 
   <script type="text/javascript" src="js/User.js"></script>
