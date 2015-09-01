@@ -1144,10 +1144,14 @@ class interfaceAPI {
 		return keyValuePairAPI::remove_key_value_pair($serverHash, $Token, $key);
 	}
 	public static function KVPsetKeyValuePair($serverHash, $Token, $key, $value) {
+        debugLog::important_log($value);
+        
 		return keyValuePairAPI::set_key_value_pair($serverHash, $Token, $key, $value);
 	}
 	public static function KVPgetKeyValuePair($serverHash, $Token, $key) {
-		return keyValuePairAPI::get_key_value_pair($serverHash, $Token, $key);
+        $temp = keyValuePairAPI::get_key_value_pair($serverHash, $Token, $key);
+        debugLog::important_log("<i>[webservice.php:getting KVP]</i>" . dbAPI::print_json_s($temp, 0));
+		return $temp;
 	}
 
 
@@ -1182,6 +1186,9 @@ class interfaceAPI {
 
 
 
+    public static function getLanguages() {
+        return term::get_languages();
+    }
 
 
 
@@ -1209,6 +1216,7 @@ function deliver_response($format, $api_response)
     );
     header('HTTP/1.1 ' . $api_response['status'] . ' ' . $http_response_code[$api_response['status']]);
     if (strcasecmp($format, 'json') == 0) {
+        header('Access-Control-Allow-Origin: *');
         header('Content-Type: application/json; charset=utf-8');
         $json_response = json_encode($api_response);
         ob_end_clean();
@@ -1328,14 +1336,6 @@ ob_end_clean();
 deliver_response(/*$_GET['format']*/'json', $response);
 
 
-
-function getValue($string) {
-    return $string;
-    json_decode($string, true);
-    if(json_last_error() == JSON_ERROR_NONE)
-        return json_decode($string, true);
-    return $string;
-}
 ?>
 
 
