@@ -1190,7 +1190,7 @@
 							}
 						});
 					}else{
-						console.error("error starting edit delivery: ", error);
+						console.error("error starting edit delivery");
 						callback(null, "error editing delivery");
 					}
 				}catch(e){
@@ -1220,11 +1220,279 @@
 							}
 						});
 					}else{
-						console.error("error canceling edit deliver: ", error);
+						console.error("error canceling edit deliver");
 						callback(null, "error canceling edit deliver");
 					}
 				}catch(e){
 					console.error("CancelEditingDelivery: ", e);
+					callback(null, e);
+				}
+			},
+
+			/**
+			 * Publish delivery on server
+			 * @param  {Number}   deliveryID delivery id
+			 * @param  {Function} callback   callback function
+			 */
+			publishDelivery: function(deliveryID, callback){
+				try{
+					if(deliveryID){
+						var data = {
+							deliveryUID: deliveryID
+						};
+
+						$httpR.connectToServer(data, $httpR.DELIVERYpublish, function(success, error){
+							if(error || !success){
+								console.error("error publishing delivery: ", error);
+								callback(null, error);
+							}else{
+								callback(success, null);
+							}
+						});
+					}else{
+						console.error("error publishing deliver:");
+						callback(null, "error publishing deliver");
+					}
+					}
+				}catch(e){
+					console.error("publishDelivery: ", e);
+					callback(null, e);
+				}
+			},
+
+			/**
+			 * Updates delivery in server
+			 * @param  {Number}   deliveryID    delivery id
+			 * @param  {String}   deliveryTitle delivery title
+			 * @param  {String}   deliverydesc  delivery description
+			 * @param  {Array}   frontArr       content array
+			 * @param  {Function} callback      callback function
+			 */
+			updateDelivery:function(deliveryID, deliveryTitle, deliverydesc, frontArr, callback){
+				try{
+					if(deliveryID){
+						var data = {
+							deliveryUID: deliveryID,
+							title: deliveryTitle,
+							desc: deliverydesc,
+							front: frontArr
+						};
+
+						$httpR.connectToServer(data, $httpR.DELIVERYupdate, function(success, error){
+							if(error || !success){
+								console.error("error updating delivery: ", error);
+								callback(null, error);
+							}else{
+								callback(success, null);
+							}
+						});
+					}else{
+						console.error("error updating delivery");
+						callback(null, "error updating delivery");
+					}
+				}catch(e){
+					console.error("updateDelivery: ", e);
+					callback(null, e);
+				}
+			},
+
+			/**
+			 * Adds delivery to delivery relation
+			 * @param {Number}   firstDeliveryID  first delivery id
+			 * @param {Number}   secondDeliveryID second delivery id
+			 * @param {Function} callback         callback function
+			 */
+			addDeliverytoDeliveryRelation: function(firstDeliveryID, secondDeliveryID, callback){
+				try{
+					if(firstDeliveryID && secondDeliveryID){
+						var data = {
+							firstUID: firstDeliveryID,
+							secondUID: secondDeliveryID,
+							isHier: true
+						};
+						$httpR.connectToServer(data, $httpR.DELIVERYaddRelatedDelivery, function(success, error){
+							if(error || !success){
+								console.error("error adding delivery relation: ", error);
+								callback(null, error);
+							}else{
+								callback(success, null);
+							}
+						});
+					}else{
+						console.error("error adding delivery relation");
+						callback(null, "error adding delivery relation");
+					}
+				}catch(e){
+					console.error("addDeliverytoDeliveryRelation: ", e);
+					callback(null, e);
+				}
+			},
+
+			/**
+			 * Removes two deliveries relations
+			 * @param  {Number}   firstDeliveryID  first delivery id
+			 * @param  {Number}   secondDeliveryID second delivery id
+			 * @param  {Function} callback         callback function
+			 */
+			removeDeliveryFromDeliveryRelation: function(firstDeliveryID, secondDeliveryID, callback){
+				try{
+					if( firstDeliveryID && secondDeliveryID){
+						var data = {
+							firstUID: firstDeliveryID,
+							secondUID: secondDeliveryID
+						};
+						$httpR.connectToServer(data, $httpR.DELIVERYremoveRelatedDelivery, function(success, error){
+							if(error || !success){
+								console.error("error removing delivery relation: ", error);
+								callback(null, error);
+							}else{
+								callback(success, null);
+							}
+						});
+					}else{
+						console.error("error removing delivery relation");
+						callback(null, "error removing delivery relation");
+					}
+				}catch(e){
+					console.error("removeDeliveryFromDeliveryRelation: ", e);
+					callback(null, e);
+				}
+			},
+
+			/**
+			 * Adds term to delivery relation
+			 * @param {Number}   deliveryID delivery id
+			 * @param {Number}   termID     term id
+			 * @param {String}   linkType   Link type
+			 * @param {Function} callback   callback function
+			 */
+			addTermToDeliveryRelation: function(deliveryID, termID, linkType, callback){
+				try{
+					if(deliveryID && termID){
+						var data = {
+							deliveryUID: deliveryID,
+							termUID: termID,
+							linkType: linkType
+						};
+
+						$httpR.connectToServer(data, $httpR.DELIVERYaddTermByUID, function(success, error){
+							if(error || !success){
+								console.error("error adding term to delivery relation: ", error);
+								callback(null, error);
+							}else{
+								callback(success, null);
+							}
+						});
+					}else{
+						console.error("error adding term to delivery relation");
+						callback(null, "error adding term to delivery relation");
+					}
+				}catch(e){
+					console.error("addTermToDeliveryRelation: ", e);
+					callback(null, e);
+				}
+			},
+
+			/**
+			 * Removes term and delivery relation
+			 * @param  {Number}   deliveryID delivery id
+			 * @param  {Number}   termID     term id
+			 * @param  {String}   linkType   link type
+			 * @param  {Function} callback callback function
+			 */
+			removeTermFromDeliveryRelation: function(deliveryID, termID, linkType, callback){
+				try{
+					if(deliveryID && termID){
+						var data = {
+							deliveryUID: deliveryID,
+							termUID: termID,
+							linkType: linkType
+						};
+
+						$httpR.connectToServer(data, $httpR.DELIVERYremoveTerm, function(success, error){
+							if(error || !success){
+								console.error("error removing term to delivery relation: ", error);
+								callback(null, error);
+							}else{
+								callback(success, null);
+							}
+						});
+					}else{
+						console.error("error removing term to delivery relation");
+						callback(null, "error removing term to delivery relation");
+					}
+				}catch(e){
+					console.error("removeTermFromDeliveryRelation: ", e);
+					callback(null, e);
+				}
+			},
+
+			/**
+			 * Adds kbit to delivery relation
+			 * @param {Number}   deliveryID delivery id
+			 * @param {Number}   kbitID     kbit id
+			 * @param {String}   linkType   link type
+			 * @param {Float}    linkWeight link weight
+			 * @param {Function} callback   callback function
+			 */
+			addKbitToDeliveryRelation: function(deliveryID, kbitID, linkType, linkWeight, callback){
+				if(deliveryID && kbitID){
+						var data = {
+							deliveryUID: deliveryID,
+							kbitUID: kbitID,
+							linkType: linkType,
+							linkWeight: linkWeight
+						};
+
+						$httpR.connectToServer(data, $httpR.DELIVERYaddRelatedKbit, function(success, error){
+							if(error || !success){
+								console.error("error adding kbit to delivery relation: ", error);
+								callback(null, error);
+							}else{
+								callback(success, null);
+							}
+						});
+					}else{
+						console.error("error adding kbit to delivery relation");
+						callback(null, "error adding kbit to delivery relation");
+					}
+				}catch(e){
+					console.error("addKbitToDeliveryRelation: ", e);
+					callback(null, e);
+				}
+			},
+
+			/**
+			 * Removes kbit from delivery relation
+			 * @param  {Number}   deliveryID delivery id
+			 * @param  {Number}   kbitID     kbit id
+			 * @param  {String}   linkType   link type
+			 * @param  {Float}    linkWeight link weight
+			 * @param  {Function} callback   callback function
+			 */
+			removeKbitFromDeliveryRelation: function(deliveryID, kbitID, linkType, linkWeight, callback){
+				if(deliveryID && kbitID){
+						var data = {
+							deliveryUID: deliveryID,
+							kbitUID: kbitID,
+							linkType: linkType,
+							linkWeight: linkWeight
+						};
+
+						$httpR.connectToServer(data, $httpR.DELIVERYremoveRelatedKbit, function(success, error){
+							if(error || !success){
+								console.error("error removing kbit from delivery relation: ", error);
+								callback(null, error);
+							}else{
+								callback(success, null);
+							}
+						});
+					}else{
+						console.error("error removing kbit from delivery relation");
+						callback(null, "error removing kbit from delivery relation");
+					}
+				}catch(e){
+					console.error("removeKbitFromDeliveryRelation: ", e);
 					callback(null, e);
 				}
 			},

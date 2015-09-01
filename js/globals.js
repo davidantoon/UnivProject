@@ -86,6 +86,15 @@
         KBITremoveRelatedKbit: "KBITremoveRelatedKbit",
         DELIVERYbeginEdit: "DELIVERYbeginEdit",
         DELIVERYcancelEdit: "DELIVERYcancelEdit",
+        DELIVERYpublish: "DELIVERYpublish",
+        DELIVERYupdate: "DELIVERYupdate",
+        DELIVERYaddRelatedDelivery: "DELIVERYaddRelatedDelivery",
+        DELIVERYremoveRelatedDelivery: "DELIVERYremoveRelatedDelivery",
+        DELIVERYaddTermByUID: "DELIVERYaddTermByUID",
+        DELIVERYremoveTerm: "DELIVERYremoveTerm",
+        DELIVERYaddRelatedKbit: "DELIVERYaddRelatedKbit",
+        DELIVERYremoveRelatedKbit: "DELIVERYremoveRelatedKbit",
+        
         
 
 
