@@ -11,8 +11,9 @@
 					this.saveObjectQuery = "dummy";
 					this.TypeOfData = connectionType;
 				}else{
-					this.baseUrl = "http://192.168.1.4:8888/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/";
+					this.baseUrl = "http://94.159.162.6:8888/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/";
 					this.method = "POST";
+					this.TypeOfData = connectionType;
 					this.timeout = 10000;
 
 				}
@@ -26,7 +27,7 @@
 
 			/**
 			 * Search element in server
-			 * @param  {string}   dataToSearch The data that defines the search we are going to do
+			 * @param  {object}   dataToSearch Object contains the data we want to search
 			 * @param  {Function} callback     callback function
 			 */
 			search: function(dataToSearch, callback){
@@ -139,7 +140,7 @@
 						};
 						//Kbit
 						if(dataToSearch.dataType[0] == 1){
-							$httpR.connectToServer(data, "KBITsearchKbits", Globals, function(success, error){
+							$httpR.connectToServer(data, $httpR.KBITsearchKbits, Globals, function(success, error){
 								
 								var successModified = [];
 								if(error || !success){
@@ -210,7 +211,7 @@
 						}
 						// Delivery
 						if(dataToSearch.dataType[1] == 1){
-							$httpR.connectToServer(data, "DELIVERYsearchDelivery", Globals, function(success, error){
+							$httpR.connectToServer(data, $httpR.DELIVERYsearchDelivery, Globals, function(success, error){
 								
 								var successModified = [];
 								var lockingUser = {};
@@ -389,18 +390,18 @@
 							mergeData([], ++resultCounter);
 						}
 						// Term
+						debugger;
 						if(dataToSearch.dataType[2] == 1){
-							$httpR.connectToServer(data, "TERMsearchTerms", Globals, function(success, error){
+							data.lang = 0;
+							console.error("error in function in server");
+							$httpR.connectToServer(data, $httpR.TERMsearchTerms, Globals, function(success, error){
 								var successModified = [];
+								debugger;
 								if(error || !success){
-									console.error("error searching kbit is server: ", error);
+									console.error("error searching term is server: ", error);
 								}else{
 									console.log("search kbit in serve done: ", success);
-									// for(){
-									// 	successModified.push({
-									// 		// conten properties
-									// 	});
-									// }
+									
 									
 								}
 								mergeData(successModified, ++resultCounter);
@@ -436,7 +437,7 @@
 			// deleviry , settings, kbits,steps, 
 			saveElement: function(obj, callback){
 				try{
-					if(this.saveObjectQuery == "dummy"){
+					if(this.baseUrl == "dummy"){
 
 						switch (this.TypeOfData){
 							case "Deliveries":
@@ -479,7 +480,24 @@
 						}
 						console.warn("DUMMY REQUESTS");
 					}else{
-						// AJAX
+						switch (this.TypeOfData){
+							case "Deliveries":
+								
+							break;
+							case "kbits":
+								console.warn("add kbit update and kbit publish functions");
+							break;
+							case "settings":
+							break;
+							case "steps":
+							break;
+							case "Terms":
+
+							break;
+							default:
+							break;
+						}
+						
 					}
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in saving element", Toast.LONG, Toast.ERROR);
@@ -491,12 +509,12 @@
 			/**
 			 * Gets element from server by ID
 			 * @param  {Number}   objID    the ID of the object
-			 * @param  {Function} callback callback funtion
+			 * @param  {Function} callback callback Function
 			 * @return {object}            returns the objects we asked for
 			 */
-			getElementByID: function(objD, callback){
+			getElementByID: function(objID, callback){
 				try{	
-					if(saveObjectQuery == "dummy"){
+					if(this.baseUrl == "dummy"){
 					// 	return localStorage.getItem("dummy");
 					// }
 						switch (this.TypeOfData){
@@ -539,10 +557,43 @@
 							break;
 						}
 					}else{
-						// AJAAAXXX
+						// create data to search for using search method
+						var dataToSearch = {
+                            "text": objID.toString(),
+                            "dataType": [
+                                0, //  Kbits
+                                0, //  Deliveries
+                                0  //  Terms
+                            ],
+                            "searchBy": [
+                                0, //  Name
+                                0, //  Description
+                                1  //  ID
+                            ],
+                            "forceSearch": 'ServerPull'
+                        } ;
+
+						switch (this.TypeOfData){
+							case "delivery":
+								dataToSearch.dataType[1] = 1;
+								this.search(dataToSearch, callback);
+
+							break;
+							case "kbits":
+								dataToSearch.dataType[0] = 1;
+								this.search(dataToSearch, callback);
+							break;
+							case "term":
+								dataToSearch.dataType[2] = 1;
+								this.search(dataToSearch, callback);
+							break;
+							default:
+								callback(null, {"message":"Element type is not found in getting element by id","code":"404"});
+								return;
+							break;
+						}
 					}
 				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","There was an error in getting element", Toast.LONG, Toast.ERROR);
 	                console.error("getElementByID: ", e);
 	                callback(null,{"message":e.message,"code":e.code});
 				}
@@ -551,59 +602,86 @@
 			/**
 			 * Delete the element of the of the provided ID.
 			 * @param  {Number}   objID    the object ID
-			 * @param  {Function} callback callback funtion
+			 * @param  {Function} callback callback @function
 			 */
 			deleteElementByID: function(objID, callback){
 				try{
-					if(saveObjectQuery == "dummy"){
+					if(this.baseUrl == "dummy"){
 						localStorage.removeItem("dummy");
 						callback("success",{"message": "dummy has been removed","code" : ""});
-					}
-
-					switch(this.TypeOfData){
-						case "delivery":
-							var deliveryDB = JSON.parse(localStorage.getItem("com.intel.server.delivery"));
-							for(var i = 0; i < deliveryDB.length; i++){
-								if(deliveryDB[i].id == objID){
-									deliveryDB.splice(i,1);
-									localStorage.setItem("com.intel.server.delivery",deliveryDB);
-									callback({"message":"delivery has successfuly removed","code":""},null);
-									return;
+						switch(this.TypeOfData){
+							case "delivery":
+								var deliveryDB = JSON.parse(localStorage.getItem("com.intel.server.delivery"));
+								for(var i = 0; i < deliveryDB.length; i++){
+									if(deliveryDB[i].id == objID){
+										deliveryDB.splice(i,1);
+										localStorage.setItem("com.intel.server.delivery",deliveryDB);
+										callback({"message":"delivery has successfuly removed","code":""},null);
+										return;
+									}
 								}
-							}
-							callback(null,{"message":"could not remove delivery","code":""});
-							return;
-						break;
-						case "kbits":
-							var kbitsDB = JSON.parse(localStorage.getItem("com.intel.server.kbits"));
-							for(var i = 0; i < kbitsDB.length; i++){
-								if(kbitsDB[i].id == objID){
-									kbitsDB.splice(i,1);
-									localStorage.setItem("com.intel.server.kbits",kbitsDB);
-									callback({"message":"kbits has successfuly removed","code":""},null);
-									return;
+								callback(null,{"message":"could not remove delivery","code":""});
+								return;
+							break;
+							case "kbits":
+								var kbitsDB = JSON.parse(localStorage.getItem("com.intel.server.kbits"));
+								for(var i = 0; i < kbitsDB.length; i++){
+									if(kbitsDB[i].id == objID){
+										kbitsDB.splice(i,1);
+										localStorage.setItem("com.intel.server.kbits",kbitsDB);
+										callback({"message":"kbits has successfuly removed","code":""},null);
+										return;
+									}
 								}
-							}
-							callback(null,{"message":"could not remove kbits","code":""});
-							return;
-						break;
-						case "term":
-							var termsDB = JSON.parse(localStorage.getItem("com.intel.server.term"));
-							for(var i = 0; i < termsDB.length; i++){
-								if(termsDB[i].id == objID){
-									termsDB.splice(i,1);
-									localStorage.setItem("com.intel.server.term",termsDB);
-									callback({"message":"term has successfuly removed","code":""},null);
-									return;
+								callback(null,{"message":"could not remove kbits","code":""});
+								return;
+							break;
+							case "term":
+								var termsDB = JSON.parse(localStorage.getItem("com.intel.server.term"));
+								for(var i = 0; i < termsDB.length; i++){
+									if(termsDB[i].id == objID){
+										termsDB.splice(i,1);
+										localStorage.setItem("com.intel.server.term",termsDB);
+										callback({"message":"term has successfuly removed","code":""},null);
+										return;
+									}
 								}
-							}
-							callback(null,{"message":"could not remove term","code":""});
-							return;
-						break;
-						default:
-							callback(null, {"message":"Delete Element func Object is not found","code":"404"});
-							return;
-						break;
+								callback(null,{"message":"could not remove term","code":""});
+								return;
+							break;
+							default:
+								callback(null, {"message":"Delete Element func Object is not found","code":"404"});
+								return;
+							break;
+						}
+					}else{
+						
+						switch (this.TypeOfData){
+							case "delivery":
+							break;
+							case "kbits":
+								data.kbitUID = objID;
+								data.lang = 0;
+								console.warn("Delete kbit by id missing from API");
+								// $httpR.connectToServer(data, "TERMgetRelatedTerms", Globals, function(success, error){
+								// 	if(error || !(success)){
+								// 		console.log("error getting term by id: ", error);
+								// 	}else{
+								// 		console.log("term got by id from server: ", success);
+								// 	}
+								// });
+							break;
+							case "term":
+								data.kbitUID = objID;
+								data.lang = 0;
+								console.warn("Delete term by id missing from API");
+								
+							break;
+							default:
+								callback(null, {"message":"Save Element func Object is not found","code":"404"});
+								return;
+							break;
+						}
 					}
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in deleting element", Toast.LONG, Toast.ERROR);
@@ -615,13 +693,14 @@
 			/**
 			 * Gets the version of the provided ID
 			 * @param  {Number}   objID    the object ID
-			 * @param  {Function} callback callback funtion
+			 * @param  {Function} callback callback function
 			 * @return {object}            the object version we need
 			 */
 			getVersionsByID: function(objID, callback){
 				try{
 					callback(null, null);
 				}catch(e){
+					console.error("getVersionsByID: ", e);
 					callback(null, {"message":e.message,"code":e.code});
 				}
 			},
@@ -629,20 +708,21 @@
 			/**
 			 * Gets the versions list of the provided ID
 			 * @param  {Number}   objID    the object ID
-			 * @param  {Function} callback callback funtion
+			 * @param  {Function} callback callback function
 			 * @return {list}              the object versions.
 			 */
 			getVersionList: function(objID, callback){
 				try{
 					callback(null, null);
 				}catch(e){
+					console.error("getVersionList: ", e);
 					callback(null,{"message":e.message,"code":e.code});
 				}
 			},
 
 			/**
 			 * Gets the steps from server.
-			 * @param  {callback} callback callback funtion
+			 * @param  {callback} callback callback function
 			 * @return {json}              steps
 			 */
 			getSteps: function(callback){
@@ -661,8 +741,7 @@
 							return;
 						}
 					}else{
-
-						$httpR.connectToServer({Key:"Steps"},"KVPgetKeyValuePair", Globals, callback);
+						$httpR.connectToServer({Key:"Steps"}, $httpR.KVPsetKeyValuePair, Globals, callback);
 					}
 				}catch(e){
 	                console.error("getSteps: ", e);
@@ -679,9 +758,8 @@
 					if(this.baseUrl == "dummy"){
 						callback();
 					}else{
-						
 						steps = strCompress(JSON.stringify(steps));
-						$httpR.connectToServer({Key:"Steps", value:steps},"KVPsetKeyValuePair", Globals, callback);
+						$httpR.connectToServer({Key:"Steps", value:steps}, $httpR.KVPsetKeyValuePair, Globals, callback);
 					}
 				}catch(e){
 	                console.error("getSteps: ", e);
@@ -715,8 +793,409 @@
 				}
 			},
 
-			
 
+
+
+
+
+
+
+
+			/**
+			 * Adds term to term relation
+			 * @param {Number}   firstTermID  term id
+			 * @param {Number}   secondTermID term id
+			 * @param {Function} callback     callback function
+			 */
+			AddTermToTermRelation: function(firstTermID, secondTermID, callback){
+				try{
+					if((firstTermID !=null && firstTermID !=undefined) && (secondTermID != null && secondTermID !=undefined)){
+						var data = {
+							firstUID: firstTermID,
+							secondUID: secondTermID,
+							isHier: 0
+						};
+
+						$httpR.connectToServer(data, $httpR.TERMaddTermToTermRelation, function(success, error){
+							if(error || !success){
+								console.error("error adding term to term relation: ", error);
+								callback(null, error);
+							}else{
+								callback(success, null);
+							}
+						});
+					}else{
+						console.error("error adding term to term relation");
+						callback(null, "error adding term to term relation");
+					}
+				}catch(e){
+					console.error("AddTermToTermRelation: ", e);
+					callback(null, e);
+				}
+			},
+			
+			/**
+			 * Removes term to term relation
+			 * @param  {Number}   firstTermID  first term id
+			 * @param  {Number}   secondTermID second term id
+			 * @param  {Function} callback     callback function
+			 */
+			removeTermToTermRelation: function(firstTermID, secondTermID, callback){
+				try{
+					if((firstTermID !=null && firstTermID !=undefined) && (secondTermID != null && secondTermID !=undefined)){
+						var data = {
+							firstUID: firstTermID,
+							secondUID: secondTermID
+						};
+
+						$httpR.connectToServer(data, $httpR.TERMremoveTermToTermRelation, function(success, error){
+							if(error || !success){
+								console.error("error removing term to term relation: ", error);
+								callback(null, error);
+							}else{
+								callback(success, null);
+							}
+						});
+					}else{
+						console.error("error removing term to term relation");
+						callback(null, "error removing term to term relation");
+					}
+				}catch(e){
+					console.error("removeTermToTermRelation: ", e);
+					callback(null, e);
+				}
+			},
+
+			/**
+			 * Gets all terms from server
+			 * @param  {Function} callback callback function
+			 */
+			getAllTerms: function(callback){
+				try{
+					var data = {
+						lang: 0
+					};
+
+					$httpR.connectToServer(data, $httpR.TERMgetAllTermsStrings, function(success, error){
+						if(error || !success){
+							console.error("error getting all terms: ", error);
+							callback(null, error);
+						}else{
+							callback(success);
+						}
+					});
+				}catch(e){
+					console.error("getAllTerms: ", e);
+					callback(null, e);
+				}
+			},
+
+			/**
+			 * Gets all related term to specific term
+			 * @param  {Number}   termID   term id
+			 * @param  {Function} callback callback fucntion
+			 */
+			getRelatedTermsByID: function(termID, callback){
+				try{
+					if(termID){
+						var data = {
+							termUID: termID,
+							lang: 0
+						};
+
+						$httpR.connectToServer(data, $httpR.TERMgetRelatedTerms, function(success, error){
+							if(error || !success){
+								console.error("error getting related terms: ", error);
+								callback(null, error);
+							}else{
+								callback(success);
+							}
+						});
+					}else{
+						console.error("error getting related terms");
+						callback(null, "error getting related terms");
+					}
+				}catch(e){
+					console.error("getRelatedTermsByID: ", e);
+					callback(null, e);
+				}
+			},
+
+
+
+
+
+
+
+
+
+			/**
+			 * Start editing kbit ( lock )
+			 * @param {Number}   kbitID   kbit id
+			 * @param {Function} callback callback function
+			 */
+			StartEditingKbit: function(kbitID, callback){
+				try{
+					if(kbitID){
+						var data = {
+							kbitUID: kbitID
+						};
+
+						$httpR.connectToServer(data, $httpR.KBITbeginEdit, function(success, error){
+							if(error || !success){
+								console.log("error begining edit kbit: ", error);
+								callback(null, error);
+							}else{
+								callback(success, null);
+							}
+						});
+					}else{
+						console.log("error begining edit kbit");
+						callback(null, "error begining edit kbit");
+					}
+				}catch(e){
+					console.error("StartEditingKbit: ", e);
+					callback(null, e);
+				}
+			},
+
+			/**
+			 * Cancel editing kbit
+			 * @param {Number}   kbitID   kbit id
+			 * @param {Function} callback callback function
+			 */
+			CancelEditingKbit: function(kbitID, callback){
+				try{
+					if(kbitID){
+						var data = {
+							kbitUID: kbitID
+						};
+
+						$httpR.connectToServer(data, $httpR.KBITcancelEdit, function(success, error){
+							if(error || !success){
+								console.log("error canceling edit kbit: ", error);
+								callback(null, error);
+							}else{
+								callback(success, null);
+							}
+						});
+					}else
+						console.log("error canceling edit kbit");
+						callback(null, "error canceling editing kbit");
+					}
+				}catch(e){
+					console.error("CancelEditingKbit: ", e);
+					callback(null, e);
+				}
+			},
+
+			/**
+			 * Adds kbit to kbit relation
+			 * @param {Number}   firstKbitID  kbit id
+			 * @param {Number}   secondKbitID kbit id
+			 * @param {String}   relation     if the relation is needed or provided
+			 * @param {Function} callback     callback function
+			 */
+			AddKbitToKbit: function(firstKbitID, secondKbitID, relation, callback){
+				try{
+					if((firstKbitID !=null && firstKbitID !=undefined) && (secondKbitID != null && secondKbitID !=undefined)){
+						var data = {
+							firstUID: firstKbitID,
+							secondUID: secondKbitID
+						};
+						console.warn(" update needed or provided");
+						if(relation == "NEEDED"){
+
+						}
+						if(relation == "PROVIDED"){
+
+						}
+
+						$httpR.connectToServer(data, $httpR.KBITaddRelatedKbit, function(success, error){
+							if(error || !success){
+								console.log("error adding kbit to kbit relation ", error);
+								callback(null, error);
+							}else{
+								callback(success, null);
+							}
+						});
+					}else{
+						console.log("error adding kbit to kbit relation");
+						callback(null, "error adding kbit to kbit relation");
+					}
+				}catch(e){
+					console.error("AddKbitToKbit: ", e);
+					callback(null, e);
+				}
+			},
+
+			/**
+			 * Removes kbit to kbit relaition
+			 * @param {Number}   firstKbitID  kbit id
+			 * @param {Number}   secondKbitID kbit id
+			 * @param {Function} callback     callback function
+			 */
+			RemoveKbitToKbit: function(firstKbitID, secondKbitID, callback){
+				try{
+					if( (firstKbitID !=null && firstKbitID !=undefined) && (secondKbitID != null && secondKbitID !=undefined) ){
+						var data = {
+							firstUID: firstKbitID,
+							secondUID: secondKbitID
+						};
+
+						$httpR.connectToServer(data, $httpR.KBITremoveRelatedKbit, function(success, error){
+							if(error || !success){
+								console.log("error removing kbit to kbit relation ", error);
+								callback(null, error);
+							}else{
+								callback(success, null);
+							}
+						});
+					}else{
+						console.log("error removing kbit to kbit relation");
+						callback(null, "error removing kbit to kbit relation " );
+					}
+				}catch(e){
+					console.error("RemoveKbitToKbit: ", e);
+					callback(null, e);
+				}
+			},
+
+			/**
+			 * Adds term to kbit terms arrat
+			 * @param {number}   kbitID   kibt id
+			 * @param {number}   termID   term id
+			 * @param {String}   relation relation link
+			 * @param {Function} callback callback function
+			 */
+			addTermToKbit: function(kbitID, termID, relation, callback){
+				try{
+					if( (kbitID !=null && kbitID !=undefined) && (termID != null && termID !=undefined) && (relation != null && relation !=undefined) ){
+						var data = {
+							kbitUID: kbitID,
+							termUID: termID,
+							linkType: relation
+						};
+
+						$httpR.connectToServer(data, $httpR.KBITaddTermByUID, function(success, error){
+							if(error || !success){
+								console.log("error adding term to kbit: ", error);
+								callback(null, error);
+							}else{
+								callback(success, null);
+							}
+						});
+					}else{
+						console.log("error adding term to kbit");
+						callback(null, "error adding term to kbit");
+					}
+				}catch(e){
+					console.error("addTermToKbit: ", e);
+					callback(null, e);
+				}
+			},
+
+			/**
+			 * Removes relation between kbit and term
+			 * @param  {number}   kbitID   kbit id
+			 * @param  {number}   termID   term id
+			 * @param  {String}   relation link relation
+			 * @param  {Function} callback callback function
+			 */
+			removeTermFromKbit: function(kbitID, termID, relation, callback){
+				try{
+					if( (kbitID !=null && kbitID !=undefined) && (termID != null && termID !=undefined) && (relation != null && relation !=undefined) ){
+						var data = {
+							kbitUID: kbitID,
+							termUID: termID,
+							linkType: relation
+						};
+
+						$httpR.connectToServer(data, $httpR.KBITremoveTerm, function(success, error){
+							if(error || !success){
+								console.error("error removing term from kbit: ", error);
+								callback(null, error);
+							}else{
+								callback(success, null);
+							}
+						});
+					}else{
+						console.error("error removing term from kbit");
+						callback(null, "error removing term from kbit");
+					}
+				}catch(e){
+					console.error("addTermToKbit: ", e);
+					callback(null, e);
+				}
+			},
+
+
+
+
+
+
+
+
+
+			/**
+			 * Start editing delivery
+			 * @param {Number}   deliveryID delivery id
+			 * @param {Function} callback   callback function
+			 */
+			StartEditingDelivery: function(deliveryID, callback){
+				try{
+					if(deliveryID){
+						var data = {
+							deliveryUID: deliveryID
+						};
+
+						$httpR.connectToServer(data, $httpR.DELIVERYbeginEdit, function(success, error){
+							if(error || !success){
+								console.error("error starting edit delivery: ", error);
+								callback(null, error);
+							}else{
+								callback(success, null);
+							}
+						});
+					}else{
+						console.error("error starting edit delivery: ", error);
+						callback(null, "error editing delivery");
+					}
+				}catch(e){
+					console.error("StartEditingDelivery: ", e);
+					callback(null, e);
+				}
+			},
+
+			/**
+			 * Cancel editing delivery
+			 * @param {Number}   deliveryID delivery id
+			 * @param {Function} callback   callback function
+			 */
+			CancelEditingDelivery: function(deliveryID, callback){
+				try{
+					if(deliveryID){
+						var data = {
+							deliveryUID: deliveryID
+						};
+
+						$httpR.connectToServer(data, $httpR.DELIVERYcancelEdit, function(success, error){
+							if(error || !success){
+								console.error("error canceling edit delivery: ", error);
+								callback(null, error);
+							}else{
+								callback(success, null);
+							}
+						});
+					}else{
+						console.error("error canceling edit deliver: ", error);
+						callback(null, "error canceling edit deliver");
+					}
+				}catch(e){
+					console.error("CancelEditingDelivery: ", e);
+					callback(null, e);
+				}
+			},
 
 		}
 		return Server;
