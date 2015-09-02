@@ -29,7 +29,7 @@ var ngScope;
              // FOR Debugging
             var appElement = document.querySelector('[ng-controller=MainCtrl]');
             ngScope = angular.element(appElement).scope();
-            $scope.isDummy = false;
+            $scope.isDummy = true;
 
 
             $scope.AppStatus = 0;
@@ -1694,8 +1694,17 @@ var ngScope;
             }
 
 
-            $scope.finishEditing = function(){
-                
+            $scope.finishEditing = function(content, note){
+
+                $scope.InsertStepToLast10Steps();
+                content.save("", function(success, error){
+                    $scope.InsertStepToLast10Steps();
+                    if(error || !success){
+                        $scope.Toast.show("Error!","Unknown error occured while saving "+content.type, Toast.LONG, Toast.ERROR);
+                    }else{
+                        $scope.Toast.show("Success!",content.type+" has been saved.", Toast.LONG, Toast.SUCCESS);
+                    }
+                });
             }
 
 
