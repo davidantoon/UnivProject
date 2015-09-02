@@ -314,6 +314,32 @@ var ngScope;
             }
 
 
+            $scope.changePassword = function(){
+                var oldpassword = $('#profileOldPassword').val();
+                var newpassword = $('#profileNewPassword').val();
+                console.log("changePassword");
+                currentUser.changePassword(oldpassword, newpassword, function(success, error){
+                    if(error || !success){
+                        console.error("Could not change password: ", error);
+                    }else{
+                        console.warn("password change, what to do ? ");
+                    }
+                });
+            }
+
+            $scope.updateUser = function(){
+                var firstName = $('#profileFirstName').val();
+                var lastName = $('#proflieLastName').val();
+                var email = $('#profileEmail').val();
+                currentUser.updateUser(firstName, lastName, email, function(success, error){
+                    if(error || !success){
+                        console.error("Could not change password: ", error);
+                    }else{
+                        console.warn("password change, what to do ? ");
+                    }
+                });
+            }
+
 
 
 

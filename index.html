@@ -210,7 +210,7 @@
                     <!-- CREATE TAB HTML -->
                     <div class="{{((getSelectedTabType(wFlow) == 2)?'':'hidden')}}">
                       create
-                      <form><input type="file" id="newImageFileId" /></form>
+                      
                     </div>
                     <!-- EDIT TAB HTML -->
                     <div class="{{((getSelectedTabType(wFlow) == 3)?'':'hidden')}}">
@@ -736,13 +736,86 @@
         <div class="header">Profile Dialog</div>
         <div class="body">
           <ons-row>
-            <ons-col width="10px"></ons-col> <!-- Padding --> 
-            <ons-col width="150px">Username</ons-col>
+          <ons-col>
+          <img ng-src="{{currentUser.profilePicture}}">
+        </ons-col>
+        </ons-row>
+          <ons-row>
+           <ons-col width="10px"></ons-col> <!-- Padding --> 
+            <ons-col width="150px">First Name</ons-col>
             <ons-col>
-              <input type="text" />
+              <input type="text" id="profileFirstName"/>
             </ons-col>
             <ons-col width="10px"></ons-col> <!-- Padding --> 
           </ons-row>
+          <ons-row>
+            <ons-col width="10px"></ons-col> <!-- Padding --> 
+            <ons-col width="150px">Last Name</ons-col>
+            <ons-col>
+              <input type="text" id="profileLastName"/>
+            </ons-col>
+            <ons-col width="10px"></ons-col> <!-- Padding --> 
+          </ons-row>
+          <ons-row>
+            <ons-col width="10px"></ons-col> <!-- Padding --> 
+            <ons-col width="150px">Username</ons-col>
+            <ons-col>
+              <label for="Username">{{currentUser.username}}</label>
+            </ons-col>
+            <ons-col width="10px"></ons-col> <!-- Padding --> 
+          </ons-row>
+          <ons-row>
+            <ons-col width="10px"></ons-col> <!-- Padding --> 
+            <ons-col width="150px">Old Password</ons-col>
+            <ons-col>
+              <input type="password" id="profileOldPassword"/>
+            </ons-col>
+            <ons-col width="10px"></ons-col> <!-- Padding --> 
+          </ons-row>
+          <ons-row>
+          <ons-col width="10px"></ons-col> <!-- Padding --> 
+            <ons-col width="150px">Password</ons-col>
+            <ons-col>
+              <input type="password" id="profilePassword"/>
+            </ons-col>
+            <ons-col width="10px"></ons-col> <!-- Padding --> 
+        </ons-row>
+        <ons-row>
+            <ons-col width="10px"></ons-col> <!-- Padding --> 
+            <ons-col width="150px">Confirm Password</ons-col>
+            <ons-col>
+              <input type="password" id="profileNewPassword"/>
+            </ons-col>
+            <ons-col width="10px"></ons-col> <!-- Padding --> 
+          </ons-row>
+          <ons-row>
+            <ons-col width="10px"></ons-col> <!-- Padding --> 
+            <ons-col width="150px">Email</ons-col>
+            <ons-col>
+              <input type="text" id="profileEmail"/>
+            </ons-col>
+            <ons-col width="10px"></ons-col> <!-- Padding --> 
+          </ons-row>
+          <ons-row>
+            <ons-col width="10px"></ons-col> <!-- Padding --> 
+            <ons-col width="150px">Role</ons-col>
+            <ons-col>
+              <input type="text" id="profileRole"/>
+            </ons-col>
+            <ons-col width="10px"></ons-col> <!-- Padding --> 
+          </ons-row>
+        <ons-row>
+        <ons-col width="10px"></ons-col> <!-- Padding --> 
+            <ons-col width="150px">Profile Picutre</ons-col>
+          <ons-col>
+          <input type="file" id="newImageFileId" />
+        </ons-col>
+        </ons-row>
+          <ons-row>
+          <ons-col> <button ng-click="ChangePassword();">Change Password</button> </ons-col>
+          <ons-col> <button ng-click="UpdateProfile();">Update Profile</button> </ons-col>
+          <ons-col> <button ng-click="updateImageInSRV();">Upload Proflie Picture</button> </ons-col>
+        </ons-row>
         </div>
       </div>
     </div>
