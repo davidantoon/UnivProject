@@ -731,17 +731,17 @@
       <div class="ToastBody"></div>
 
     </div>
-    <div id="profileDialog">
+    <div id="profileDialog" style="display:block">
       <div class="profileContainer">
         <div class="header">Profile Dialog</div>
         <div class="body">
           <ons-row>
-          <ons-col>
-          <img ng-src="{{currentUser.profilePicture}}">
-        </ons-col>
-        </ons-row>
+            <ons-col>
+              <img ng-src="{{currentUser.profilePicture}}">
+            </ons-col>
+          </ons-row>
           <ons-row>
-           <ons-col width="10px"></ons-col> <!-- Padding --> 
+            <ons-col width="10px"></ons-col> <!-- Padding --> 
             <ons-col width="150px">First Name</ons-col>
             <ons-col>
               <input type="text" id="profileFirstName"/>
@@ -773,14 +773,14 @@
             <ons-col width="10px"></ons-col> <!-- Padding --> 
           </ons-row>
           <ons-row>
-          <ons-col width="10px"></ons-col> <!-- Padding --> 
+            <ons-col width="10px"></ons-col> <!-- Padding --> 
             <ons-col width="150px">Password</ons-col>
             <ons-col>
               <input type="password" id="profilePassword"/>
             </ons-col>
             <ons-col width="10px"></ons-col> <!-- Padding --> 
-        </ons-row>
-        <ons-row>
+          </ons-row>
+          <ons-row>
             <ons-col width="10px"></ons-col> <!-- Padding --> 
             <ons-col width="150px">Confirm Password</ons-col>
             <ons-col>
@@ -804,18 +804,18 @@
             </ons-col>
             <ons-col width="10px"></ons-col> <!-- Padding --> 
           </ons-row>
-        <ons-row>
-        <ons-col width="10px"></ons-col> <!-- Padding --> 
-            <ons-col width="150px">Profile Picutre</ons-col>
-          <ons-col>
-          <input type="file" id="newImageFileId" />
-        </ons-col>
-        </ons-row>
           <ons-row>
-          <ons-col> <button ng-click="ChangePassword();">Change Password</button> </ons-col>
-          <ons-col> <button ng-click="UpdateProfile();">Update Profile</button> </ons-col>
-          <ons-col> <button ng-click="updateImageInSRV();">Upload Proflie Picture</button> </ons-col>
-        </ons-row>
+            <ons-col width="10px"></ons-col> <!-- Padding --> 
+            <ons-col width="150px">Profile Picutre</ons-col>
+            <ons-col>
+              <input type="file" id="newImageFileId" />
+            </ons-col>
+          </ons-row>
+          <ons-row>
+            <ons-col> <button ng-click="changePassword();">Change Password</button> </ons-col>
+            <ons-col> <button ng-click="updateProfile();">Update Profile</button> </ons-col>
+            <ons-col> <button ng-click="updateImageInSRV();">Upload Proflie Picture</button> </ons-col>
+          </ons-row>
         </div>
       </div>
     </div>

@@ -318,7 +318,7 @@ var ngScope;
                 var oldpassword = $('#profileOldPassword').val();
                 var newpassword = $('#profileNewPassword').val();
                 console.log("changePassword");
-                currentUser.changePassword(oldpassword, newpassword, function(success, error){
+                $scope.currentUser.changePassword(oldpassword, newpassword, function(success, error){
                     if(error || !success){
                         console.error("Could not change password: ", error);
                     }else{
@@ -331,7 +331,7 @@ var ngScope;
                 var firstName = $('#profileFirstName').val();
                 var lastName = $('#proflieLastName').val();
                 var email = $('#profileEmail').val();
-                currentUser.updateUser(firstName, lastName, email, function(success, error){
+                $scope.currentUser.updateUser(firstName, lastName, email, function(success, error){
                     if(error || !success){
                         console.error("Could not change password: ", error);
                     }else{
