@@ -1,0 +1,1184 @@
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:57:36: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:58:31: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:58:31: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:58:31: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [searchWord] => 2
+    [searchFields] => Array
+        (
+            [0] => UID
+        )
+
+    [Token] => t47fbaMfB9gzU1sa1KNp1yimj0xv52py7xOiHAxiKOSEPkOR5Cg7bztuA1ZF3pebW3uEE2WoQO3G9SxevOlGoPaYQaEUAS5wWzaA
+    [serverHash] => DAVIDAMEER
+    [method] => DELIVERYsearchDelivery
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:58:33: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_token</font></i></u><ul><li>["t47fbaMfB9gzU1sa1KNp1yimj0xv52py7xOiHAxiKOSEPkOR5Cg7bztuA1ZF3pebW3uEE2WoQO3G9SxevOlGoPaYQaEUAS5wWzaA"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:58:33: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">serach_deliveries</font></i></u><ul><li>["2",["UID"],"1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:58:33: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Delivery_details</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:58:33: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:58:33: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_edited_Delivery_by_UID</font></i></u><ul><li>["1820"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:58:33: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["1820","DELIVERY_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:58:33: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Kbit_of_delivery</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:58:33: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_related_Kbits</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:58:33: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:58:33: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_Delivery</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:58:33: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:58:33: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_object</font></i></u><ul><li>[{"column_name":"DELIVERY_BASE_ID","value":"1820"},"user","R_LD2T",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:58:33: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:58:33: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Delivery</font></i></u><ul><li>["1820","DELIVERY_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:58:33: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_deliveries_of_delivery</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:58:33: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [method] => getLanguages
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:58:39: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_languages</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [method] => getLanguages
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:58:41: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_languages</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:58:53: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:58:53: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:58:53: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [hash] => DAVIDGALIT
+    [query] => {"searchtext":"Test3","elements":{"delivery":"false","d2k":"true","term":"true","scope":"true"},"field":{"title":"true","info":"false"}}
+    [method] => search
+    [token] => 7Qpv7KBEZVk3t67TARQqcEBITdZKb9EiZ3O7OpLOl6ROdZHORye4dQM63MQeVuxVyl2nLOb6V3V83CWUbbYo1Ku4xljsQRnodqLY
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:59:17: </b><ul class="trace"><li><b><u>webservice-content.php</u></b><ul><li><u><i><font color="#a381ff">search</font></i></u><ul><li>["DAVIDGALIT","{\"searchtext\":\"Test3\",\"elements\":{\"delivery\":\"false\",\"d2k\":\"true\",\"term\":\"true\",\"scope\":\"true\"},\"field\":{\"title\":\"true\",\"info\":\"false\"}}"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:59:17: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["Learner","davidGalitLearner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:59:17: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["Learner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:59:17: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:59:18: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:59:18: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:59:18: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:59:36: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:59:36: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 20:59:36: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => antoon91
+    [password] => 1234
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:01:10: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["antoon91","1234"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:01:10: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["antoon91"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:01:10: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [searchWord] => 1
+    [searchFields] => Array
+        (
+            [0] => UID
+        )
+
+    [Token] => bF6HlrswOzneWGVLW7NTCK0qwLGfNkYYZ4Glw9RkJezFUuqRCdLfYMFvxmKlGIkGN01j9SDS7cy2HZTkdEzcreHYBsjibDYYDZhN
+    [lang] => 0
+    [serverHash] => DAVIDAMEER
+    [method] => TERMsearchTerms
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:01:17: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_token</font></i></u><ul><li>["bF6HlrswOzneWGVLW7NTCK0qwLGfNkYYZ4Glw9RkJezFUuqRCdLfYMFvxmKlGIkGN01j9SDS7cy2HZTkdEzcreHYBsjibDYYDZhN"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:01:17: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">serach_scopes</font></i></u><ul><li>["1",["UID"],""]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => antoon91
+    [password] => 1234
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:01:28: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["antoon91","1234"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:01:28: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["antoon91"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:01:28: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [searchWord] => 1
+    [searchFields] => Array
+        (
+            [0] => UID
+        )
+
+    [Token] => JkjcNraRDrRSpUFggvGL7xc489QpxZpgkJs7bDYP4PHuJnK0SrLZZY388UxGUXWeGplR2kG69oATLlTENFDNEHVMCtsxqpL6P7XR
+    [lang] => 0
+    [serverHash] => DAVIDAMEER
+    [method] => TERMsearchTerms
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:01:37: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_token</font></i></u><ul><li>["JkjcNraRDrRSpUFggvGL7xc489QpxZpgkJs7bDYP4PHuJnK0SrLZZY388UxGUXWeGplR2kG69oATLlTENFDNEHVMCtsxqpL6P7XR"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:01:37: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">serach_scopes</font></i></u><ul><li>["1",["UID"],""]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [hash] => DAVIDGALIT
+    [query] => {"searchtext":"Test3","elements":{"delivery":"false","d2k":"true","term":"true","scope":"true"},"field":{"title":"true","info":"false"}}
+    [method] => search
+    [token] => 7Qpv7KBEZVk3t67TARQqcEBITdZKb9EiZ3O7OpLOl6ROdZHORye4dQM63MQeVuxVyl2nLOb6V3V83CWUbbYo1Ku4xljsQRnodqLY
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:01:48: </b><ul class="trace"><li><b><u>webservice-content.php</u></b><ul><li><u><i><font color="#a381ff">search</font></i></u><ul><li>["DAVIDGALIT","{\"searchtext\":\"Test3\",\"elements\":{\"delivery\":\"false\",\"d2k\":\"true\",\"term\":\"true\",\"scope\":\"true\"},\"field\":{\"title\":\"true\",\"info\":\"false\"}}"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:01:48: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["Learner","davidGalitLearner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:01:48: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["Learner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:01:48: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<br><font color='#f92772'><b><hr style='border-color:#f92772'>
+31-08-15 09:01:48: </b><i>[webservice-content.php:query]</i> param: Test3
+<hr style='border-color:#f92772'></font>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => antoon91
+    [password] => 1234
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:01:50: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["antoon91","1234"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:01:50: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["antoon91"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:01:50: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [hash] => DAVIDGALIT
+    [query] => {"searchtext":"Test3","elements":{"delivery":"false","d2k":"true","term":"true","scope":"true"},"field":{"title":"true","info":"false"}}
+    [method] => search
+    [token] => 7Qpv7KBEZVk3t67TARQqcEBITdZKb9EiZ3O7OpLOl6ROdZHORye4dQM63MQeVuxVyl2nLOb6V3V83CWUbbYo1Ku4xljsQRnodqLY
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:02:12: </b><ul class="trace"><li><b><u>webservice-content.php</u></b><ul><li><u><i><font color="#a381ff">search</font></i></u><ul><li>["DAVIDGALIT","{\"searchtext\":\"Test3\",\"elements\":{\"delivery\":\"false\",\"d2k\":\"true\",\"term\":\"true\",\"scope\":\"true\"},\"field\":{\"title\":\"true\",\"info\":\"false\"}}"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:02:12: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["Learner","davidGalitLearner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:02:12: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["Learner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:02:12: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<br><font color='#f92772'><b><hr style='border-color:#f92772'>
+31-08-15 09:02:12: </b><i>[webservice-content.php:query]</i> param: Test3
+<hr style='border-color:#f92772'></font>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [hash] => DAVIDGALIT
+    [query] => {"searchtext":"Test3","elements":{"delivery":"false","d2k":"true","term":"true","scope":"true"},"field":{"title":"true","info":"false"}}
+    [method] => search
+    [token] => 7Qpv7KBEZVk3t67TARQqcEBITdZKb9EiZ3O7OpLOl6ROdZHORye4dQM63MQeVuxVyl2nLOb6V3V83CWUbbYo1Ku4xljsQRnodqLY
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:02:13: </b><ul class="trace"><li><b><u>webservice-content.php</u></b><ul><li><u><i><font color="#a381ff">search</font></i></u><ul><li>["DAVIDGALIT","{\"searchtext\":\"Test3\",\"elements\":{\"delivery\":\"false\",\"d2k\":\"true\",\"term\":\"true\",\"scope\":\"true\"},\"field\":{\"title\":\"true\",\"info\":\"false\"}}"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:02:13: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["Learner","davidGalitLearner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:02:13: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["Learner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:02:13: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<br><font color='#f92772'><b><hr style='border-color:#f92772'>
+31-08-15 09:02:13: </b><i>[webservice-content.php:query]</i> param: Test3
+<hr style='border-color:#f92772'></font>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [searchWord] => 1
+    [searchFields] => Array
+        (
+            [0] => UID
+        )
+
+    [Token] => rEYB2zuOVosJ46wIOrvqVYXloJrdRp4i43U6DpUyOmhSsNAgf6Ha4FvspXFgnKzrOtyrSs0GPhzi59zkfgvkW1NlZtBmdaO2Emtx
+    [lang] => 0
+    [serverHash] => DAVIDAMEER
+    [method] => TERMsearchTerms
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:02:46: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_token</font></i></u><ul><li>["rEYB2zuOVosJ46wIOrvqVYXloJrdRp4i43U6DpUyOmhSsNAgf6Ha4FvspXFgnKzrOtyrSs0GPhzi59zkfgvkW1NlZtBmdaO2Emtx"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:02:46: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">serach_scopes</font></i></u><ul><li>["1",["UID"],""]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:03:01: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:03:01: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:03:01: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:03:42: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:03:42: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:03:42: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => antoon91
+    [password] => 1234
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:04:03: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["antoon91","1234"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:04:03: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["antoon91"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:04:03: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [searchWord] => 1
+    [searchFields] => Array
+        (
+            [0] => UID
+        )
+
+    [Token] => SUF07e2OdW8rAID1Xk0yMjQXXPWBOdoH84HfiJ4wFdXgVAiSVjrICiGA7CbWPzDYDleW4isKwp1s0kkWDMEg5kQcW18MAMKe7Zac
+    [lang] => 0
+    [serverHash] => DAVIDAMEER
+    [method] => TERMsearchTerms
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:05:07: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_token</font></i></u><ul><li>["SUF07e2OdW8rAID1Xk0yMjQXXPWBOdoH84HfiJ4wFdXgVAiSVjrICiGA7CbWPzDYDleW4isKwp1s0kkWDMEg5kQcW18MAMKe7Zac"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:05:07: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">serach_scopes</font></i></u><ul><li>["1",["UID"],""]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:05:11: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:05:11: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:05:11: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:06:03: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:06:03: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:06:03: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [searchWord] => 1
+    [searchFields] => Array
+        (
+            [0] => UID
+        )
+
+    [Token] => 7GWdLdFjzlCbiCtjmc0gSWzIQlwPXL55r1idfYxPj90CLuV8GWozTYhKjOzhzEn1GFfVEMLXVLAHgvQXsfwldO5xDFOckce0StWw
+    [lang] => 0
+    [serverHash] => DAVIDAMEER
+    [method] => TERMsearchTerms
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:06:13: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_token</font></i></u><ul><li>["7GWdLdFjzlCbiCtjmc0gSWzIQlwPXL55r1idfYxPj90CLuV8GWozTYhKjOzhzEn1GFfVEMLXVLAHgvQXsfwldO5xDFOckce0StWw"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:06:13: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">serach_scopes</font></i></u><ul><li>["1",["UID"],""]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:06:15: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:06:15: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:06:15: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:07: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:07: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:07: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:21: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:21: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:21: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [searchWord] => 2
+    [searchFields] => Array
+        (
+            [0] => UID
+        )
+
+    [Token] => jHVDDCfrtgYFi8O0Q0KgQYWYieVeQXKaFFNji3LLjJrCRfCIfmY5lV4DaZS0XDaCjYWB1HnlqOYi4A0kXZqjUuX5tP5rtg4Mf0oh
+    [serverHash] => DAVIDAMEER
+    [method] => DELIVERYsearchDelivery
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:37: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_token</font></i></u><ul><li>["jHVDDCfrtgYFi8O0Q0KgQYWYieVeQXKaFFNji3LLjJrCRfCIfmY5lV4DaZS0XDaCjYWB1HnlqOYi4A0kXZqjUuX5tP5rtg4Mf0oh"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:37: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">serach_deliveries</font></i></u><ul><li>["2",["UID"],"1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:37: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Delivery_details</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:37: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:37: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_edited_Delivery_by_UID</font></i></u><ul><li>["1820"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:37: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["1820","DELIVERY_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:37: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_Kbit_of_delivery</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:37: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_related_Kbits</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:37: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:37: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_Delivery</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:37: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:37: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_object</font></i></u><ul><li>[{"column_name":"DELIVERY_BASE_ID","value":"1820"},"user","R_LD2T",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:37: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:37: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Delivery</font></i></u><ul><li>["1820","DELIVERY_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:37: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">get_deliveries_of_delivery</font></i></u><ul><li>["1820","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:37: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1820","DELIVERY_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:41: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:41: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:41: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:50: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:50: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:50: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:56: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:56: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:07:56: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:08:37: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:08:37: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:08:37: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:08:38: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:08:38: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:08:38: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [searchWord] => 1
+    [searchFields] => Array
+        (
+            [0] => UID
+        )
+
+    [Token] => Y7ADfyAV2ZrCKaAv5yz5fC6Cn3xXQ97PhHtwg3si3TVN3vj94TejvlWTotQfDX5UFzrVDTeGNauRGO0KHe3dA06YtXe7Vj1AStwv
+    [serverHash] => DAVIDAMEER
+    [method] => KBITsearchKbits
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:08:46: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_token</font></i></u><ul><li>["Y7ADfyAV2ZrCKaAv5yz5fC6Cn3xXQ97PhHtwg3si3TVN3vj94TejvlWTotQfDX5UFzrVDTeGNauRGO0KHe3dA06YtXe7Vj1AStwv"]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [hash] => DAVIDGALIT
+    [query] => Array
+        (
+            [searchtext] => Test3
+            [elements] => Array
+                (
+                    [delivery] => false
+                    [d2k] => true
+                    [term] => true
+                    [scope] => true
+                )
+
+        )
+
+    [method] => search
+    [token] => 7Qpv7KBEZVk3t67TARQqcEBITdZKb9EiZ3O7OpLOl6ROdZHORye4dQM63MQeVuxVyl2nLOb6V3V83CWUbbYo1Ku4xljsQRnodqLY
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:09:29: </b><ul class="trace"><li><b><u>webservice-content.php</u></b><ul><li><u><i><font color="#a381ff">search</font></i></u><ul><li>["DAVIDGALIT",{"searchtext":"Test3","elements":{"delivery":"false","d2k":"true","term":"true","scope":"true"}}]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:09:29: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["Learner","davidGalitLearner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:09:29: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["Learner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:09:29: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => antoon91
+    [password] => 1234
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:09:52: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["antoon91","1234"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:09:52: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["antoon91"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:09:52: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [searchWord] => 1
+    [searchFields] => Array
+        (
+            [0] => UID
+        )
+
+    [Token] => hoyKXOHyRSYotdwEhrLbeTZBWt5FLcy2B7NzVv7Nn6bRkHvB9hMoaMZ7f5N0hm2TtPsplAcIHnA155DfmqDxcDFrIsr0PuTikmHF
+    [serverHash] => DAVIDAMEER
+    [method] => KBITsearchKbits
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:10:01: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_token</font></i></u><ul><li>["hoyKXOHyRSYotdwEhrLbeTZBWt5FLcy2B7NzVv7Nn6bRkHvB9hMoaMZ7f5N0hm2TtPsplAcIHnA155DfmqDxcDFrIsr0PuTikmHF"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:10:01: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">serach_kbits</font></i></u><ul><li>["1",["UID"],"1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:10:01: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_Kbit_details</font></i></u><ul><li>["1","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:10:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","KBIT_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:10:01: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_kbit_by_UID</font></i></u><ul><li>["1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:10:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["1","KBIT_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:10:01: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_front_kbit_with_user</font></i></u><ul><li>["1","KBIT_FRONT","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:10:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","KBIT_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:10:01: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Kbit</font></i></u><ul><li>["1","KBIT_FRONT","CMSdb"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:10:01: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_Kbit</font></i></u><ul><li>["1","1",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:10:01: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","KBIT_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:10:01: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_object</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"1"},"content","R_LK2T",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:10:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_full_term_by_UID</font></i></u><ul><li>["2",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:10:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_connection_by_UID</font></i></u><ul><li>["2"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:10:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_by_UID</font></i></u><ul><li>["2",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:10:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_by_UID_in_all_languages</font></i></u><ul><li>["2"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:10:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_meaning_by_UID</font></i></u><ul><li>["2",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:10:01: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_meaning_by_UID_in_all_languages</font></i></u><ul><li>["2"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:10:01: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">get_scope_by_UID</font></i></u><ul><li>["0"]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [searchWord] => 1
+    [searchFields] => Array
+        (
+            [0] => UID
+        )
+
+    [Token] => hoyKXOHyRSYotdwEhrLbeTZBWt5FLcy2B7NzVv7Nn6bRkHvB9hMoaMZ7f5N0hm2TtPsplAcIHnA155DfmqDxcDFrIsr0PuTikmHF
+    [lang] => 0
+    [serverHash] => DAVIDAMEER
+    [method] => TERMsearchTerms
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:10:36: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_token</font></i></u><ul><li>["hoyKXOHyRSYotdwEhrLbeTZBWt5FLcy2B7NzVv7Nn6bRkHvB9hMoaMZ7f5N0hm2TtPsplAcIHnA155DfmqDxcDFrIsr0PuTikmHF"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:10:36: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">serach_scopes</font></i></u><ul><li>["1",["UID"],""]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => antoon91
+    [password] => 1234
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:11:14: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["antoon91","1234"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:11:14: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["antoon91"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:11:14: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [searchWord] => 1
+    [searchFields] => Array
+        (
+            [0] => UID
+        )
+
+    [Token] => 8bcGiy8OWAQOLw7HIq1r6YxYpBW8aqtiCGZUe7JaIzYt66aOwcgDaOBzpxIzYcRBSQv7YfhGPg9VnkKTx0wHO8hdG0MFcEg5uMct
+    [lang] => 0
+    [serverHash] => DAVIDAMEER
+    [method] => TERMsearchTerms
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:11:20: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_token</font></i></u><ul><li>["8bcGiy8OWAQOLw7HIq1r6YxYpBW8aqtiCGZUe7JaIzYt66aOwcgDaOBzpxIzYcRBSQv7YfhGPg9VnkKTx0wHO8hdG0MFcEg5uMct"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:11:20: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">serach_scopes</font></i></u><ul><li>["1",["UID"],""]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => antoon91
+    [password] => 1234
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:11:29: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["antoon91","1234"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:11:29: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["antoon91"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:11:29: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [hash] => DAVIDGALIT
+    [query] => {"searchtext":"Test3","elements":{"delivery":"false","d2k":"true","term":"true","scope":"true"},"field":{"title":"true","info":"false"}}
+    [method] => search
+    [token] => 7Qpv7KBEZVk3t67TARQqcEBITdZKb9EiZ3O7OpLOl6ROdZHORye4dQM63MQeVuxVyl2nLOb6V3V83CWUbbYo1Ku4xljsQRnodqLY
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:11:43: </b><ul class="trace"><li><b><u>webservice-content.php</u></b><ul><li><u><i><font color="#a381ff">search</font></i></u><ul><li>["DAVIDGALIT","{\"searchtext\":\"Test3\",\"elements\":{\"delivery\":\"false\",\"d2k\":\"true\",\"term\":\"true\",\"scope\":\"true\"},\"field\":{\"title\":\"true\",\"info\":\"false\"}}"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:11:43: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["Learner","davidGalitLearner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:11:43: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["Learner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:11:43: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [hash] => DAVIDGALIT
+    [query] => Array
+        (
+            [searchtext] => Test3
+            [elements] => Array
+                (
+                    [delivery] => false
+                    [d2k] => true
+                    [term] => true
+                    [scope] => true
+                )
+
+        )
+
+    [method] => search
+    [token] => 7Qpv7KBEZVk3t67TARQqcEBITdZKb9EiZ3O7OpLOl6ROdZHORye4dQM63MQeVuxVyl2nLOb6V3V83CWUbbYo1Ku4xljsQRnodqLY
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:11:48: </b><ul class="trace"><li><b><u>webservice-content.php</u></b><ul><li><u><i><font color="#a381ff">search</font></i></u><ul><li>["DAVIDGALIT",{"searchtext":"Test3","elements":{"delivery":"false","d2k":"true","term":"true","scope":"true"}}]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:11:48: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["Learner","davidGalitLearner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:11:48: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["Learner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:11:48: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [searchWord] => 1
+    [searchFields] => Array
+        (
+            [0] => UID
+        )
+
+    [Token] => rTxzRMa7geIEGHMdJeiGImEb9kvbtwhVpPugBFoSU6wANjOwx6dgtSrCdXNHt5CTU79wMxoGEVhre5YLcc2F4tiiq5ZUaCN5JXBv
+    [lang] => 0
+    [serverHash] => DAVIDAMEER
+    [method] => TERMsearchTerms
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:12:07: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_token</font></i></u><ul><li>["rTxzRMa7geIEGHMdJeiGImEb9kvbtwhVpPugBFoSU6wANjOwx6dgtSrCdXNHt5CTU79wMxoGEVhre5YLcc2F4tiiq5ZUaCN5JXBv"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:12:07: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">serach_scopes</font></i></u><ul><li>["1",["UID"],""]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:12:45: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:12:45: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:12:45: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:12:56: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:12:56: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:12:56: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [hash] => DAVIDGALIT
+    [query] => Array
+        (
+            [searchtext] => Test3
+            [elements] => Array
+                (
+                    [delivery] => false
+                    [d2k] => true
+                    [term] => true
+                    [scope] => true
+                )
+
+            [field] => Array
+                (
+                    [title] => true
+                    [info] => false
+                )
+
+        )
+
+    [method] => search
+    [token] => 7Qpv7KBEZVk3t67TARQqcEBITdZKb9EiZ3O7OpLOl6ROdZHORye4dQM63MQeVuxVyl2nLOb6V3V83CWUbbYo1Ku4xljsQRnodqLY
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:13:06: </b><ul class="trace"><li><b><u>webservice-content.php</u></b><ul><li><u><i><font color="#a381ff">search</font></i></u><ul><li>["DAVIDGALIT",{"searchtext":"Test3","elements":{"delivery":"false","d2k":"true","term":"true","scope":"true"},"field":{"title":"true","info":"false"}}]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:13:06: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["Learner","davidGalitLearner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:13:06: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["Learner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:13:06: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [searchWord] => 1
+    [searchFields] => Array
+        (
+            [0] => UID
+        )
+
+    [Token] => rTxzRMa7geIEGHMdJeiGImEb9kvbtwhVpPugBFoSU6wANjOwx6dgtSrCdXNHt5CTU79wMxoGEVhre5YLcc2F4tiiq5ZUaCN5JXBv
+    [lang] => 0
+    [serverHash] => DAVIDAMEER
+    [method] => TERMsearchTerms
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:14:21: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_token</font></i></u><ul><li>["rTxzRMa7geIEGHMdJeiGImEb9kvbtwhVpPugBFoSU6wANjOwx6dgtSrCdXNHt5CTU79wMxoGEVhre5YLcc2F4tiiq5ZUaCN5JXBv"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:14:21: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">serach_scopes</font></i></u><ul><li>["1",["UID"],""]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [hash] => DAVIDGALIT
+    [query] => Array
+        (
+            [searchtext] => Test3
+            [elements] => Array
+                (
+                    [delivery] => false
+                    [d2k] => true
+                    [term] => true
+                    [scope] => true
+                )
+
+            [field] => Array
+                (
+                    [title] => true
+                    [info] => false
+                )
+
+        )
+
+    [method] => search
+    [token] => 7Qpv7KBEZVk3t67TARQqcEBITdZKb9EiZ3O7OpLOl6ROdZHORye4dQM63MQeVuxVyl2nLOb6V3V83CWUbbYo1Ku4xljsQRnodqLY
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:14:31: </b><ul class="trace"><li><b><u>webservice-content.php</u></b><ul><li><u><i><font color="#a381ff">search</font></i></u><ul><li>["DAVIDGALIT",{"searchtext":"Test3","elements":{"delivery":"false","d2k":"true","term":"true","scope":"true"},"field":{"title":"true","info":"false"}}]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:14:31: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["Learner","davidGalitLearner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:14:31: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["Learner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:14:31: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<br><font color='#f92772'><b><hr style='border-color:#f92772'>
+31-08-15 09:14:31: </b><i>[webservice-content.php:]</i> <br/><hr>{"code":0,"status":500,"data":"Test3"}<hr><br/>
+<hr style='border-color:#f92772'></font>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => antoon91
+    [password] => 1234
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:14:39: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["antoon91","1234"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:14:39: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["antoon91"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:14:39: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [hash] => DAVIDGALIT
+    [query] => Array
+        (
+            [searchtext] => Test3
+            [elements] => Array
+                (
+                    [delivery] => false
+                    [d2k] => true
+                    [term] => true
+                    [scope] => true
+                )
+
+            [field] => Array
+                (
+                    [title] => true
+                    [info] => false
+                )
+
+        )
+
+    [method] => search
+    [token] => 7Qpv7KBEZVk3t67TARQqcEBITdZKb9EiZ3O7OpLOl6ROdZHORye4dQM63MQeVuxVyl2nLOb6V3V83CWUbbYo1Ku4xljsQRnodqLY
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:15:08: </b><ul class="trace"><li><b><u>webservice-content.php</u></b><ul><li><u><i><font color="#a381ff">search</font></i></u><ul><li>["DAVIDGALIT",{"searchtext":"Test3","elements":{"delivery":"false","d2k":"true","term":"true","scope":"true"},"field":{"title":"true","info":"false"}}]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:15:08: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["Learner","davidGalitLearner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:15:08: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["Learner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:15:08: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<br><font color='#f92772'><b><hr style='border-color:#f92772'>
+31-08-15 09:15:08: </b><i>[webservice-content.php:]</i> <br/><hr>{"code":"T","status":null,"data":"Test3"}<hr><br/>
+<hr style='border-color:#f92772'></font>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => antoon91
+    [password] => 1234
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:15:26: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["antoon91","1234"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:15:26: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["antoon91"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:15:26: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [searchWord] => 1
+    [searchFields] => Array
+        (
+            [0] => UID
+        )
+
+    [Token] => UEGewKbg3anp6nU0EVWdJqA6l22LOeLISsXpd8Fgi2GoqBp4xligLSm7VpSJDErw6oVkwABPDie3TE8qZqGLj3SesLX6poCwNxQk
+    [lang] => 0
+    [serverHash] => DAVIDAMEER
+    [method] => TERMsearchTerms
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:15:51: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_token</font></i></u><ul><li>["UEGewKbg3anp6nU0EVWdJqA6l22LOeLISsXpd8Fgi2GoqBp4xligLSm7VpSJDErw6oVkwABPDie3TE8qZqGLj3SesLX6poCwNxQk"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:15:51: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">serach_scopes</font></i></u><ul><li>["1",["UID"],""]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [hash] => DAVIDGALIT
+    [query] => Array
+        (
+            [searchtext] => Test3
+            [elements] => Array
+                (
+                    [delivery] => false
+                    [d2k] => true
+                    [term] => true
+                    [scope] => true
+                )
+
+            [field] => Array
+                (
+                    [title] => true
+                    [info] => false
+                )
+
+        )
+
+    [method] => search
+    [token] => 7Qpv7KBEZVk3t67TARQqcEBITdZKb9EiZ3O7OpLOl6ROdZHORye4dQM63MQeVuxVyl2nLOb6V3V83CWUbbYo1Ku4xljsQRnodqLY
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:20:42: </b><ul class="trace"><li><b><u>webservice-content.php</u></b><ul><li><u><i><font color="#a381ff">search</font></i></u><ul><li>["DAVIDGALIT",{"searchtext":"Test3","elements":{"delivery":"false","d2k":"true","term":"true","scope":"true"},"field":{"title":"true","info":"false"}}]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:20:42: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["Learner","davidGalitLearner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:20:42: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["Learner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:20:42: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<br><font color='#f92772'><b><hr style='border-color:#f92772'>
+31-08-15 09:20:42: </b><i>[webservice-content.php:]</i> <br/><hr>{"code":"T","status":null,"data":"Test3"}<hr><br/>
+<hr style='border-color:#f92772'></font>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [hash] => DAVIDGALIT
+    [query] => Array
+        (
+            [searchtext] => Test3
+            [elements] => Array
+                (
+                    [delivery] => false
+                    [d2k] => true
+                    [term] => true
+                    [scope] => true
+                )
+
+            [field] => Array
+                (
+                    [title] => true
+                    [info] => false
+                )
+
+        )
+
+    [method] => search
+    [token] => 7Qpv7KBEZVk3t67TARQqcEBITdZKb9EiZ3O7OpLOl6ROdZHORye4dQM63MQeVuxVyl2nLOb6V3V83CWUbbYo1Ku4xljsQRnodqLY
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:20:51: </b><ul class="trace"><li><b><u>webservice-content.php</u></b><ul><li><u><i><font color="#a381ff">search</font></i></u><ul><li>["DAVIDGALIT",{"searchtext":"Test3","elements":{"delivery":"false","d2k":"true","term":"true","scope":"true"},"field":{"title":"true","info":"false"}}]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:20:51: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["Learner","davidGalitLearner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:20:51: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["Learner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:20:51: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<br><font color='#f92772'><b><hr style='border-color:#f92772'>
+31-08-15 09:20:51: </b><i>[webservice-content.php:]</i> <br/><hr>{"code":"T","status":null,"data":"Test3"}<hr><br/>
+<hr style='border-color:#f92772'></font>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [hash] => DAVIDGALIT
+    [query] => Array
+        (
+            [searchtext] => Test3
+            [elements] => Array
+                (
+                    [delivery] => false
+                    [d2k] => true
+                    [term] => true
+                    [scope] => true
+                )
+
+            [field] => Array
+                (
+                    [title] => true
+                    [info] => false
+                )
+
+        )
+
+    [method] => search
+    [token] => 7Qpv7KBEZVk3t67TARQqcEBITdZKb9EiZ3O7OpLOl6ROdZHORye4dQM63MQeVuxVyl2nLOb6V3V83CWUbbYo1Ku4xljsQRnodqLY
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:21:49: </b><ul class="trace"><li><b><u>webservice-content.php</u></b><ul><li><u><i><font color="#a381ff">search</font></i></u><ul><li>["DAVIDGALIT",{"searchtext":"Test3","elements":{"delivery":"false","d2k":"true","term":"true","scope":"true"},"field":{"title":"true","info":"false"}}]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:21:49: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["Learner","davidGalitLearner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:21:49: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["Learner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:21:49: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<br><font color='#f92772'><b><hr style='border-color:#f92772'>
+31-08-15 09:21:49: </b><i>[webservice-content.php:]</i> <br/><hr>{"code":"T","status":null,"data":"Test3"}<hr><br/>
+<hr style='border-color:#f92772'></font>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [hash] => DAVIDGALIT
+    [query] => Array
+        (
+            [searchtext] => Test3
+            [elements] => Array
+                (
+                    [delivery] => false
+                    [d2k] => true
+                    [term] => true
+                    [scope] => true
+                )
+
+            [field] => Array
+                (
+                    [title] => true
+                    [info] => false
+                )
+
+        )
+
+    [method] => search
+    [token] => 7Qpv7KBEZVk3t67TARQqcEBITdZKb9EiZ3O7OpLOl6ROdZHORye4dQM63MQeVuxVyl2nLOb6V3V83CWUbbYo1Ku4xljsQRnodqLY
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:22:41: </b><ul class="trace"><li><b><u>webservice-content.php</u></b><ul><li><u><i><font color="#a381ff">search</font></i></u><ul><li>["DAVIDGALIT",{"searchtext":"Test3","elements":{"delivery":"false","d2k":"true","term":"true","scope":"true"},"field":{"title":"true","info":"false"}}]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:22:41: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["Learner","davidGalitLearner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:22:41: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["Learner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:22:41: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<br><font color='#f92772'><b><hr style='border-color:#f92772'>
+31-08-15 09:22:41: </b><i>[webservice-content.php:]</i> <br/><hr>{"code":"T","status":null,"data":"Test3"}<hr><br/>
+<hr style='border-color:#f92772'></font>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [hash] => DAVIDGALIT
+    [query] => Array
+        (
+            [searchtext] => Test3
+            [elements] => Array
+                (
+                    [delivery] => false
+                    [d2k] => true
+                    [term] => true
+                    [scope] => true
+                )
+
+            [field] => Array
+                (
+                    [title] => true
+                    [info] => false
+                )
+
+        )
+
+    [method] => search
+    [token] => 7Qpv7KBEZVk3t67TARQqcEBITdZKb9EiZ3O7OpLOl6ROdZHORye4dQM63MQeVuxVyl2nLOb6V3V83CWUbbYo1Ku4xljsQRnodqLY
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:22:59: </b><ul class="trace"><li><b><u>webservice-content.php</u></b><ul><li><u><i><font color="#a381ff">search</font></i></u><ul><li>["DAVIDGALIT",{"searchtext":"Test3","elements":{"delivery":"false","d2k":"true","term":"true","scope":"true"},"field":{"title":"true","info":"false"}}]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:22:59: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["Learner","davidGalitLearner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:22:59: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["Learner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:22:59: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<br><font color='#f92772'><b><hr style='border-color:#f92772'>
+31-08-15 09:22:59: </b><i>[webservice-content.php:]</i> <br/><hr>{"code":"T","status":null,"data":"Test3"}<hr><br/>
+<hr style='border-color:#f92772'></font>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [hash] => DAVIDGALIT
+    [query] => Array
+        (
+            [searchtext] => Test3
+            [elements] => Array
+                (
+                    [delivery] => false
+                    [d2k] => true
+                    [term] => true
+                    [scope] => true
+                )
+
+            [field] => Array
+                (
+                    [title] => true
+                    [info] => false
+                )
+
+        )
+
+    [method] => search
+    [token] => 7Qpv7KBEZVk3t67TARQqcEBITdZKb9EiZ3O7OpLOl6ROdZHORye4dQM63MQeVuxVyl2nLOb6V3V83CWUbbYo1Ku4xljsQRnodqLY
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:23:28: </b><ul class="trace"><li><b><u>webservice-content.php</u></b><ul><li><u><i><font color="#a381ff">search</font></i></u><ul><li>["DAVIDGALIT",{"searchtext":"Test3","elements":{"delivery":"false","d2k":"true","term":"true","scope":"true"},"field":{"title":"true","info":"false"}}]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:23:28: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["Learner","davidGalitLearner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:23:28: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["Learner"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:23:28: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<br><font color='#f92772'><b><hr style='border-color:#f92772'>
+31-08-15 09:23:28: </b><i>[webservice-content.php:]</i> <br/><hr>{"code":"T","status":null,"data":"Test3"}<hr><br/>
+<hr style='border-color:#f92772'></font>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:23:37: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:23:37: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:23:37: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:23:54: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:23:54: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">create_new_token</font></i></u><ul><li>["rajibaba"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:23:54: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">generateRandomString</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [username] => rajibaba
+    [password] => my_password
+    [serverHash] => DAVIDAMEER
+    [method] => USERlogIn
+    [format] => json
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-08-31 21:25:39: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_username_password</font></i></u><ul><li>["rajibaba","my_password"]</li></ul></li></ul></li></ul></font></div>

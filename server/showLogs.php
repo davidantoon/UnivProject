@@ -15,14 +15,15 @@ include("phpFileTree/php_file_tree.php");
 
 		<title>CMS - log files</title>
 		<style>
-			/*div.floating-menu {position:fixed;background:#fff4c8;padding:5px;;width:250px;z-index:100;}*/
-			/*div.floating-menu a, div.floating-menu h3 {display:block;margin:0 0.5em;}*/
-						section {
+				.floating-menu {
 			    width: 80%;
 			    /*height: 200px;*/
 			    background: aqua;
 			    margin: auto;
 			    padding: 10px;
+			    position: absolute;
+			    height: 88%;
+			    overflow: scroll;
 			}
 			div#one {
 				position:fixed;background:#fff4c8;
@@ -44,6 +45,7 @@ include("phpFileTree/php_file_tree.php");
 		<script src="phpFileTree/php_file_tree.js" type="text/javascript"></script>
 		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 		<script>
+			var timerRunning = 1;
 			$(document).ready(function(){
 			    $("#hide").click(function(){
 			        $('.trace').hide();
@@ -57,12 +59,26 @@ include("phpFileTree/php_file_tree.php");
 			    $("#showdb").click(function(){
 			        $('.db').show();
 			    });
+			    $("#stopStartTimer").click(function(){
+			        timerRunning = 1 - timerRunning;
+			    });
 
 			});
 
+
+			var global_u = "";
 			function showLogFile(u) {
-			    $("#two").load(u);
+			    global_u = u;
+			    $("#two").load(global_u);
 			}
+			setInterval(function(){
+				if(timerRunning == 1) {
+					if(global_u != ''){
+						$("#two").load(global_u);
+					}
+				}
+			},500);
+
 		</script>
 	</head>
 
@@ -77,6 +93,8 @@ include("phpFileTree/php_file_tree.php");
 		<button id="show">Show trace</button>
 		<button id="hidedb">Hide db</button>
 		<button id="showdb">Show db</button>
+		<button id="stopStartTimer">Run/Stop timer</button>
+		
 		<hr>
 		<?php
 				

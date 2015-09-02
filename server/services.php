@@ -22,8 +22,20 @@
 	
 	// $temp = users::validate_username_password('rajibaba', 'my_password');
 
-	$url= 'http://localhost:8888/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php'; // url + file.php
-	$data = array('serverHash' => 'DAVIDAMEER', 'searchWord' => ' ' , 'searchFields' => array(''), 'method'  => "DELIVERYsearchDelivery", 'token' => '7Qpv7KBEZVk3t67TARQqcEBITdZKb9EiZ3O7OpLOl6ROdZHORye4dQM63MQeVuxVyl2nLOb6V3V83CWUbbYo1Ku4xljsQRnodqLY' );
+	$url= 'http://localhost:8888/mopdqwompoaskdqomdiasjdiowqe/server/webservice-content.php'; // url + file.php
+	$token = '7Qpv7KBEZVk3t67TARQqcEBITdZKb9EiZ3O7OpLOl6ROdZHORye4dQM63MQeVuxVyl2nLOb6V3V83CWUbbYo1Ku4xljsQRnodqLY';
+
+	// $method = 'DELIVERYsearchDelivery';
+	$method = 'search';
+
+	$data_to_transfer = $query = '{"searchtext":"Test3","elements":{"delivery":"false","d2k":"true","term":"true","scope":"true"},"field":{"title":"true","info":"false"}}';
+	$data_to_transfer = array('searchtext'=>'c', 'elements' => array('delivery'=>'false','d2k'=>'true','term'=>'true','scope'=>'true'), "field"=> array('title'=>'true','info'=>'false'));
+
+
+
+
+	$data = array('hash' => 'DAVIDGALIT', 'query' => $data_to_transfer, 'method'  => $method, 'token' => $token );
+	// $data = array('method'  => 'getLanguages' );
 
 	// use key 'http' even if you send the request to https://...
 	$options = array(
@@ -35,7 +47,6 @@
 	);
 	$context  = stream_context_create($options);
 	$result = file_get_contents($url, false, $context);
-
 ?> 
 
 

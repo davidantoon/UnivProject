@@ -93,7 +93,9 @@ class Lock {
 		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
 		if(count($results) > 0) {
 			$usr = $results[0];
-			$usr["PASSWORD"] = '********';
+			unset($usr["PASSWORD"]);
+			unset($usr["token"]);
+			unset($usr["id"]);
 			return $usr;
 		}
 		return null;

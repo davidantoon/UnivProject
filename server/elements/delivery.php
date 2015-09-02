@@ -623,6 +623,7 @@ class Delivery {
 		// get related deliveries
 		$Delivery["RELATEED_DELIVERIES"] = Delivery::get_deliveries_of_delivery($UID, $user);
 
+		unset($Delivery["id"]);
 		return $Delivery;
 	}
 
@@ -660,7 +661,10 @@ class Delivery {
 
 		$dbObj = new dbAPI();
 		for($i=0; $i<count($search_fields); $i++) {
-			$search_fields[$i] = "UPPER(" . $search_fields[$i] . ") LIKE UPPER('%" . $search_word . "%') "; 
+			if(strtoupper($search_fields[$i]) == strtoupper('ID'))
+				$search_fields[$i] = " " . $search_fields[$i] . " = " . $search_word . " "; 
+			else	
+				$search_fields[$i] = "UPPER(" . $search_fields[$i] . ") LIKE UPPER('%" . $search_word . "%') "; 
 		}
 		$search_sttmnt = implode(" OR ", $search_fields);
 		$where_sttmnt = '';
@@ -686,8 +690,27 @@ class Delivery {
 
 		$dbObj = new dbAPI();
 
-		$query = "SELECT * FROM DELIVERY_BASE where  ENABLED = '1' AND (". $search_sttmnt .")";
+		$query = "SELECT * FROM DELIVERY_BASE where  ENABLED = '1' AND (". $where_sttmnt .")";
 		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
+		if(count($results) == 0)
+			return array();
+
+		for($i=0; $i<count($results); $i++) {
+			$results[$i] = Delivery::get_Delivery_details($results[$i]["UID"], $user);
+		}
+		
+		return $results;	
+	}
+
+
+	public static function serach_deliveries_BASE_FRONT_by_query($where_sttmnt, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
+		$dbObj = new dbAPI();
+		$d = $dbObj->db_get_contentDB();
+		$query = "(SELECT UID FROM ". $d . ".DELIVERY_BASE where  ENABLED = '1' AND (". $where_sttmnt ."))";
+		$results = $dbObj->db_select_query('', $query);
 		if(count($results) == 0)
 			return array();
 
