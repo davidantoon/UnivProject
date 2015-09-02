@@ -18,6 +18,7 @@
 				this.type = ((conData != undefined)?conData.type:null);
 				this.connectToDataBase = ((this.type && new Server(this.type, $rootScope.currentScope.isDummy)) || null);
 				this.progressWizard = ((conData != undefined)?conData.progressWizard:{});
+				this.newData = ((conData != undefined)?conData.newData:null);
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","There was an error in creating new Content", Toast.LONG, Toast.ERROR);
 	            console.error("Content: ", e);
@@ -34,15 +35,49 @@
 			 */
 			lock: function(callback){
 				try{
-					var dataToSend = {
-						"Token": Globals.currentUser.token,
-					}
+					var dataToSend = {};
 					dataToSend[this.type.toLowerCase()+"UID"] = this.id;
-					$httpR.connectToServer(dataToSend, this.type.toUpperCase() + "beginEdit", callback);
+					var passThis = this;
+					$httpR.connectToServer(dataToSend, this.type.toUpperCase() + "beginEdit", Globals, function(success, error){
+						if(error && !success){
+							callback(null, error);
+						}else{
+							passThis.locked = true;
+							passThis.lockedBy = Globals.CurrentUser;
+							callback(success, null);
+						}
+					});
 				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","There was an error in locking content", Toast.LONG, Toast.ERROR);
 	           		console.error("lock: ", e);
 	           		callback(null, e);
+				}
+			},
+
+			/**
+			 * Create copy of object to begin editing
+			 */
+			createTempData: function(){
+				this.newData = {
+					"name": this.name,
+					"description": this.description,
+					"url": this.url,
+					"kBitsNeeded": [],
+					"kBitsProvided": [],
+					"terms": []
+				};
+				if(this.type == "Delivery"){
+					// loop in kBitsNeeded
+					for(var i=0; i<this.kBitsNeeded.length; i++){
+						this.newData.kBitsNeeded.push(this.kBitsNeeded[i]);
+					}
+					// loop in kBitsProvided
+					for(var i=0; i<this.kBitsProvided.length; i++){
+						this.newData.kBitsProvided.push(this.kBitsProvided[i]);
+					}
+				}
+				// loop in terms
+				for(var i=0; i<this.terms.length; i++){
+					this.newData.terms.push(this.terms[i]);
 				}
 			},
 
@@ -54,7 +89,6 @@
 				try{
 
 				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","There was an error in unlocking content", Toast.LONG, Toast.ERROR);
 	           		console.error("unlock: ", e);
 				}
 			},
@@ -196,7 +230,8 @@
 						"inProgress": this.inProgress,
 						"type": this.type,
 						"objectType": this.objectType,
-						"progressWizard": this.progressWizard
+						"progressWizard": this.progressWizard,
+						"newData": this.newData
 					}
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in converting to JSON", Toast.LONG, Toast.ERROR);

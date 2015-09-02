@@ -243,7 +243,6 @@
 								"CurrentUser": currentUser
 							};
 						}
-						console.log(data);
 						localStorage.setItem("com.intel.userdata", JSON.stringify(data));
 						callback(true, null);
 					});

@@ -390,9 +390,10 @@
 							mergeData([], ++resultCounter);
 						}
 						// Term
-						debugger;
 						if(dataToSearch.dataType[2] == 1){
-							data.lang = 0;
+
+							data.lang = 'en';
+							debugger;
 							console.error("error in function in server");
 							$httpR.connectToServer(data, $httpR.TERMsearchTerms, Globals, function(success, error){
 								var successModified = [];
@@ -758,7 +759,6 @@
 					if(this.baseUrl == "dummy"){
 						callback();
 					}else{
-						debugger;
 						steps = strCompress(JSON.stringify(steps));
 						$httpR.connectToServer({Key:"Steps", value:steps}, $httpR.KVPsetKeyValuePair, Globals, callback);
 					}

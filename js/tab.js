@@ -46,7 +46,7 @@
 					this.dataHolding = tempJson.dataHolding;
 					loopResults(0, this.dataHolding.results, []);
 					function loopResults(index, results, dataToReturn){
-						if(index < results.length){
+						if(results && index < results.length){
 							var stor = new Storage();
 							stor.getElementById(results[index], /* force last modefied */ true, /* force server pull */ false, function(dataFromStorage){
 								dataToReturn.push(dataFromStorage);

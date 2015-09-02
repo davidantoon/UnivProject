@@ -107,22 +107,31 @@
             if(Globals.CurrentUser && Globals.CurrentUser.id){
                 data.Token = Globals.CurrentUser.token;
             }
-
+            debugger;
             $.ajax({
                 // url: "http://testserver-radjybaba.rhcloud.com/webservice.php/",
                 url: this.protocol+"://"+this.ip+":"+this.port+this.baseUrl,
                 data: data,
                 method: "POST",
                 header:{
-                    "Access-Control-Allow-Origin": "http://94.159.162.6:8888"
+                    "Access-Control-Allow-Origin": "http://31.154.152.220:8888"
                 },
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain : true,
                 success: function(success) {
+                    debugger;
                     if (success.status == 200)
                         callback(success.data, null);
-                    else
+                    else{
+                        console.log(success);
                         callback(null, success);
+                    }
                 },
                 error: function(error) {
+                    debugger;
+                    console.error(error);
                     callback(null, error);
                 }
             });
