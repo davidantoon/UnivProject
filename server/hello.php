@@ -141,7 +141,7 @@
 		  $u.'.R_LD2K', $c.'.R_LD2K',
 		  $c.'.TERMS', $c.'.TERM_STRING', $c.'.TERM_MEAN', $c.'.SCOPE',
 		  $c.'.R_LS2S', $c.'.R_LT2T',
-		  $c.'.CONTENT_LOCK');
+		  $c.'.CONTENT_LOCK', $u.'.USERS');
 	dbAPI::delete_all($tempArr);
 
 
@@ -165,6 +165,10 @@
 	$termArr = array();
 	$scopeArr = array();
 	$langArr = term::get_languages();
+
+	// create users
+	users::add_new_user('geryes', 'moussa', 'geryes', 'my_password', 'geryes@gmail.com', 'ss', '1');
+	users::add_new_user('anton', 'anton', 'antoon91', '1234', 'geryes@gmail.com', 'ss', '1');
 
 	// creating terms and scopes
 	for($i=0; $i< 8; $i++) {
