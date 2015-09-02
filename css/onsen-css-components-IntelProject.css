@@ -7277,10 +7277,40 @@ selectable{
 }
 
 
+#profileDialog{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: rgba(0,0,0,.5);
+  z-index: 10;
+}
 
+#profileDialog .profileContainer{
+  width: 500px;
+  height: 400px;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: whitesmoke;
+  border-radius: 14px;
+  overflow: hidden;
+}
 
+#profileDialog .profileContainer .header{
+  border-bottom: 1px solid rgba(0,0,0,.2);
+  padding: 8px;
+  text-align: center;
+  font-size: 19px;
+  background-color: white;
+  color: rgb(80,80,80);
+}
 
+#profileDialog .profileContainer .body{
 
+}
 
 
 

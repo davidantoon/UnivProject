@@ -1514,6 +1514,7 @@ var ngScope;
                         wFlow.selectedTab.content.inProgress = true;
                         wFlow.selectedTab.content.createTempData();
                         $scope.workSpaces.deleteChildTabIds(wFlow.selectedTab.dataHolding.parentTab, false);
+                        $scope.InsertStepToLast10Steps();
                     }else{
                         $scope.Toast.show("Cannot Lock Content", "Content locked by "+wFlow.selectedTab.content.lockedBy.firstName+" "+wFlow.selectedTab.content.lockedBy.lastName+".", Toast.LONG, Toast.ERROR);
                     }
@@ -1525,7 +1526,6 @@ var ngScope;
                     };
                     wFlow.selectedTab.content.inProgress = true;
                     wFlow.selectedTab.content.lock(function(success, error){
-                        debugger;
                         $timeout(function(){
                             if(error || !success){
                                 $scope.Toast.show("Cannot Lock Content", "Content locked by another user.", Toast.LONG, Toast.ERROR);
@@ -1535,6 +1535,7 @@ var ngScope;
                                 wFlow.selectedTab.content.progressWizard.spinner = false;
                                 wFlow.selectedTab.content.createTempData();
                                 $scope.workSpaces.deleteChildTabIds(wFlow.selectedTab.dataHolding.parentTab, false);
+                                $scope.InsertStepToLast10Steps();
                             }
                         },200);
 
@@ -1673,6 +1674,7 @@ var ngScope;
                         }
                     }
                 }
+                InsertStepToLast10Steps();
             }
 
 
@@ -1683,11 +1685,12 @@ var ngScope;
                         break;
                     }
                 }
+                InsertStepToLast10Steps();
             }
 
 
             $scope.finishEditing = function(){
-
+                
             }
 
 
