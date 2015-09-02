@@ -408,6 +408,21 @@ class D2KRelation {
 	}
 
 
+	public static function get_all_D2K_relations() {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
+		$dbObj = new dbAPI();
+		// where statement
+		$query = "SELECT * FROM ". dbAPI::get_db_name('content') .".R_LD2K ";
+	
+		$results = $dbObj->db_select_query('', $query);
+		if(count($results) == 0) {
+			return null;
+		}
+		return $results[0];	
+	}
+
 
 	/**
 	 * returns list of terms that are related to object

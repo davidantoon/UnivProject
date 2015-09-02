@@ -250,6 +250,9 @@
 	debugLog::log("<i>[hello.php:testing relation between delivery (4) and kbit(6)]</i> result: ". dbAPI::print_json_s(Delivery::add_Kbit_to_delivery($kbitArr[6]["UID"], $delArr[4]["UID"], 'PROVIDED', 0, 0), 0));
 
 
+	// publishing deliveries
+	for($i=0; $i< 7; $i++) 
+		debugLog::log("<i>[hello.php:Publishing deliveries]</i> result: ". dbAPI::print_json_s(Delivery::publish_changes($delArr[$i]["UID"], 0), 0));
 
 
 	// $deliveryfront1 = array('FRONT_TYPE'=>'DELIVERY_FRONT', 'PATH'=>'http://youtube1.com');

@@ -887,6 +887,20 @@ class Delivery {
 
 		return D2KRelation::get_related_deliveries($Delivery_UID, $user);
 	}
+
+
+	public static function get_tree() {
+
+		$tempArr = array();
+		$root = array();
+
+		$edges = D2KRelation::get_all_D2K_relations();
+		if(count($edges) == 0)
+			return $root;
+
+		
+
+	}
 }
 
 ?>

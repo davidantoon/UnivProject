@@ -151,7 +151,11 @@ class termsAPI {
         if($user == null)
             return array('ErrorCode' => 3, 'Message' => "Expired Token");
         try {
-            return scope::serach_scopes($searchWord, $searchFields, $lang);
+            // return scope::serach_scopes($searchWord, $searchFields, $lang);
+            $temp = term::get_all_terms_full($searchWord);
+            // debugLog::important_log("<i>[webservice.php:aa]</i> ". dbAPI::print_json_s($temp, 0));
+            
+            return $temp;
         }
         catch (Exception $e) {
             return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -1055,7 +1059,7 @@ class interfaceAPI {
 // ====================================================================
     
     public static function TERMsearchTerms($serverHash, $Token, $searchWord, $searchFields, $lang = '') {
-        return termsAPI::searchTerms($serverHash, $Token, $searchWord, $searchFields, $lang = '');
+        return termsAPI::searchTerms($serverHash, $Token, $searchWord, $searchFields, $lang);
     }
     public static function TERMaddTermToTermRelation($serverHash, $Token, $firstUID, $secondUID, $isHier) {
         return termsAPI::addTermToTermRelation($serverHash, $Token, $firstUID, $secondUID, $isHier);
@@ -1064,13 +1068,13 @@ class interfaceAPI {
         return termsAPI::removeTermToTermRelation($serverHash, $Token, $firstUID, $secondUID);
     }
     public static function TERMgetRelatedTerms($serverHash, $Token, $termUID, $lang = '') {
-        return termsAPI::getRelatedTerms($serverHash, $Token, $termUID, $lang = '');
+        return termsAPI::getRelatedTerms($serverHash, $Token, $termUID, $lang);
     }
     public static function TERMgetAllTermsStrings($serverHash, $Token, $lang = '') {
-        return termsAPI::getAllTermsStrings($serverHash, $Token, $lang = '');
+        return termsAPI::getAllTermsStrings($serverHash, $Token, $lang);
     }
     public static function TERMgetTermById($serverHash, $Token, $UIDs, $lang = ''){
-        return termsAPI::getTermById($serverHash, $Token, $UIDs, $lang = '');
+        return termsAPI::getTermById($serverHash, $Token, $UIDs, $lang);
     }
     
     
