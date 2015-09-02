@@ -5,8 +5,8 @@ var ngScope;
 (function(angular) {
     // 'use strict';
     angular.module('IntelLearner', ['onsen', 'firebase', 'dndLists']);
-    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope",  "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast","User", "$httpR",
-        function($rootScope, $scope,  $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast, User, $httpR) {
+    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope",  "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast","User", "$httpR", "Content",
+        function($rootScope, $scope,  $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast, User, $httpR, Content) {
 
 
             // PRIM COLOR = rgb(8,96,168)
@@ -252,13 +252,13 @@ var ngScope;
 
             /*******************************************************
             *                                                      *
-              000     000     00000     00000000000  000000000    
-              000     000   000   000   000          000      00  
-              000     000   00          000          000      00  
-              000     000    0000000    00000000000  000000000    
-              000     000          00   000          000 000      
-              000     000   000   000   000          000   000    
-               000000000      00000     00000000000  000     000  
+            *  000     000     00000     00000000000  000000000    *
+            *  000     000   000   000   000          000      00  *
+            *  000     000   00          000          000      00  *
+            *  000     000    0000000    00000000000  000000000    *
+            *  000     000          00   000          000 000      *
+            *  000     000   000   000   000          000   000    *
+            *   000000000      00000     00000000000  000     000  *
             *                                                      *
             *******************************************************/
 
@@ -1544,6 +1544,7 @@ var ngScope;
 
 
             $scope.draggingItems = function(item){
+
                 var CashedObjectsKeys = Object.keys(Globals.CashedObjects);
                 for(var i=0; i<CashedObjectsKeys.length; i++){
                     var tempObj = Globals.CashedObjects[CashedObjectsKeys[i]];
@@ -1553,15 +1554,86 @@ var ngScope;
                             case "Delivery":
                                 switch(tempObj.progressWizard.index){
                                     case 2:
+                                        // Accept Kbits
                                         // loop for kbits needed
+                                        for(var j=0; j<tempObj.newData.kBitsNeeded.length; j++){
+                                            // find new dropped object
+                                            if(tempObj.newData.kBitsNeeded[j].lock == undefined){
+                                                if(tempObj.newData.kBitsNeeded[j].type == "Kbit"){
+                                                    var alreadyExist = false;
+                                                    for(var m=0; m<tempObj.newData.kBitsNeeded.length; m++){
+                                                        if(tempObj.newData.kBitsNeeded[m].lock != undefined && tempObj.newData.kBitsNeeded[j].id == tempObj.newData.kBitsNeeded[m].id){
+                                                            alreadyExist = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                    if(alreadyExist){
+                                                        tempObj.newData.kBitsNeeded.splice(j,1);
+                                                        $scope.Toast.show("Error!","Kbit already exists", Toast.LONG, Toast.ERROR);
+                                                    }else
+                                                        tempObj.newData.kBitsNeeded[j] = new Content(tempObj.newData.kBitsNeeded[j]);
+                                                }else{
+                                                    tempObj.newData.kBitsNeeded.splice(j,1);
+                                                    $scope.Toast.show("Error!","Drop zone accepts only kbits", Toast.LONG, Toast.ERROR);
+                                                }
+                                                break;
+                                            }
+                                        }
                                         // loop for kbits provided
+                                        for(var j=0; j<tempObj.newData.kBitsProvided.length; j++){
+                                            // find new dropped object
+                                            if(tempObj.newData.kBitsProvided[j].lock == undefined){
+                                                if(tempObj.newData.kBitsProvided[j].type == "Kbit"){
+
+                                                    var alreadyExist = false;
+                                                    for(var m=0; m<tempObj.newData.kBitsProvided.length; m++){
+                                                        if(tempObj.newData.kBitsProvided[m].lock != undefined && tempObj.newData.kBitsProvided[j].id == tempObj.newData.kBitsProvided[m].id){
+                                                            alreadyExist = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                    if(alreadyExist){
+                                                        tempObj.newData.kBitsProvided.splice(j,1);
+                                                        $scope.Toast.show("Error!","Kbit already exists", Toast.LONG, Toast.ERROR);
+                                                    }else
+                                                        tempObj.newData.kBitsProvided[j] = new Content(tempObj.newData.kBitsProvided[j]);
+
+                                                }else{
+                                                    tempObj.newData.kBitsProvided.splice(j,1);
+                                                    $scope.Toast.show("Error!","Drop zone accepts only kbits", Toast.LONG, Toast.ERROR);
+                                                }
+                                                break;
+                                            }
+                                        }
                                     break;
                                     case 3:
                                         // Accept Terms
                                         // loop for terms
+                                        for(var j=0; j<tempObj.newData.terms.length; j++){
+                                            // find new dropped object
+                                            if(tempObj.newData.terms[j].lock == undefined){
+                                                if(tempObj.newData.terms[j].type == "Term"){
+                                                    var alreadyExist = false;
+                                                    for(var m=0; m<tempObj.newData.terms.length; m++){
+                                                        if(tempObj.newData.terms[m].lock != undefined && tempObj.newData.terms[j].id == tempObj.newData.terms[m].id){
+                                                            alreadyExist = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                    if(alreadyExist){
+                                                        tempObj.newData.terms.splice(j,1);
+                                                        $scope.Toast.show("Error!","Term already exists", Toast.LONG, Toast.ERROR);
+                                                    }else
+                                                        tempObj.newData.terms[j] = new Content(tempObj.newData.terms[j]);
+                                                }else{
+                                                    tempObj.newData.terms.splice(j,1);
+                                                    $scope.Toast.show("Error!","Drop zone accepts only terms", Toast.LONG, Toast.ERROR);
+                                                }
+                                                break;
+                                            }
+                                        }
                                     break;
                                     default:
-                                        // Delete Object Desiplay Toast
                                     break;
 
                                 }
@@ -1570,12 +1642,44 @@ var ngScope;
                                 case 2:
                                     // Accept Terms
                                     // loop for terms
+                                    for(var j=0; j<tempObj.newData.terms.length; j++){
+                                        // find new dropped object
+                                        if(tempObj.newData.terms[j].lock == undefined){
+                                            if(tempObj.newData.terms[j].type == "Term"){
+                                                var alreadyExist = false;
+                                                for(var m=0; m<tempObj.newData.terms.length; m++){
+                                                    if(tempObj.newData.terms[m].lock != undefined && tempObj.newData.terms[j].id == tempObj.newData.terms[m].id){
+                                                        alreadyExist = true;
+                                                        break;
+                                                    }
+                                                }
+                                                if(alreadyExist){
+                                                    tempObj.newData.terms.splice(j,1);
+                                                    $scope.Toast.show("Error!","Term already exists", Toast.LONG, Toast.ERROR);
+                                                }else
+                                                    tempObj.newData.terms[j] = new Content(tempObj.newData.terms[j]);
+                                            }else{
+                                                tempObj.newData.terms.splice(j,1);
+                                                $scope.Toast.show("Error!","Drop zone accepts only terms", Toast.LONG, Toast.ERROR);
+                                            }
+                                            break;
+                                        }
+                                    }
                                 break;
                                 default:
-                                    // Delete Object Desiplay Toast
                                 break;
                             break;
                         }
+                    }
+                }
+            }
+
+
+            $scope.removeObjectFromContent = function(array, item){
+                for(var i=0; i<array.length; i++){
+                    if(array[i].id == item.id){
+                        array.splice(i,1);
+                        break;
                     }
                 }
             }
