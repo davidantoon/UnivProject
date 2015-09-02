@@ -21,12 +21,15 @@
 				var svr = new Server(this.objectType, $rootScope.currentScope.isDummy);
 				svr.getSteps(function(result, error){
 					if(error || !result){
+						debugger;
 						ServerResquestComplete(null, passThis1);
 					}else{
 						try{
+							debugger;
 							var x =JSON.parse(strDecompress(result.OBJECT_VALUE));
 							ServerResquestComplete(x, passThis1);
 						}catch(e){
+							debugger;
 							ServerResquestComplete(null, passThis1);
 						}
 					}

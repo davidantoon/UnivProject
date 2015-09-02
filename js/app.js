@@ -166,7 +166,7 @@ var ngScope;
             }
 
             $scope.login = function(){
-                var username = "rajibaba"; var password = "my_password"; // Jeries Mousa
+                var username = "geryes"; var password = "my_password"; // Jeries Mousa
                 var username1 = "antoon91"; var password1 = "1234"; // Antoon Antoon
 
                 User.login(username1, password1, function(succes, error){
@@ -1503,6 +1503,7 @@ var ngScope;
 
 
             $scope.editContent = function(wFlow){
+                
                 if(wFlow.selectedTab.content.locked){
                     if(wFlow.selectedTab.content.lockedBy.id == Globals.CurrentUser.id){
                         wFlow.selectedTab.content.progressWizard = {
@@ -1512,6 +1513,7 @@ var ngScope;
                         };
                         wFlow.selectedTab.content.inProgress = true;
                         wFlow.selectedTab.content.createTempData();
+                        $scope.workSpaces.deleteChildTabIds(wFlow.selectedTab.dataHolding.parentTab, false);
                     }else{
                         $scope.Toast.show("Cannot Lock Content", "Content locked by "+wFlow.selectedTab.content.lockedBy.firstName+" "+wFlow.selectedTab.content.lockedBy.lastName+".", Toast.LONG, Toast.ERROR);
                     }
@@ -1523,6 +1525,7 @@ var ngScope;
                     };
                     wFlow.selectedTab.content.inProgress = true;
                     wFlow.selectedTab.content.lock(function(success, error){
+                        debugger;
                         $timeout(function(){
                             if(error || !success){
                                 $scope.Toast.show("Cannot Lock Content", "Content locked by another user.", Toast.LONG, Toast.ERROR);
@@ -1531,6 +1534,7 @@ var ngScope;
                             }else{
                                 wFlow.selectedTab.content.progressWizard.spinner = false;
                                 wFlow.selectedTab.content.createTempData();
+                                $scope.workSpaces.deleteChildTabIds(wFlow.selectedTab.dataHolding.parentTab, false);
                             }
                         },200);
 
@@ -1682,6 +1686,11 @@ var ngScope;
             }
 
 
+            $scope.finishEditing = function(){
+
+            }
+
+
 
 
 
@@ -1706,58 +1715,61 @@ var ngScope;
                 }
             },1000);
             $interval(function() {
-                if ($scope.lastZoomIn != $('#ZoomRange').val()) {
+                if(Globals.CurrentUser){
+                    if ($scope.lastZoomIn != $('#ZoomRange').val()) {
 
-                    $scope.lastZoomIn = $('#ZoomRange').val();
-                    var tempZoom = ((($scope.lastZoomIn / 100) * (2.0 - 0.3)) + 0.3) / 2;
+                        $scope.lastZoomIn = $('#ZoomRange').val();
+                        var tempZoom = ((($scope.lastZoomIn / 100) * (2.0 - 0.3)) + 0.3) / 2;
 
-                    $("#WorkFlowMatrix").animate({
-                        'zoom': tempZoom
-                    }, {
-                        duration: 0,
-                        queue: false
-                    });
+                        $("#WorkFlowMatrix").animate({
+                            'zoom': tempZoom
+                        }, {
+                            duration: 0,
+                            queue: false
+                        });
 
-                    if (Number($('#ZoomRange').val()) < 20) {
-                        $('.WorkFlowBlock.Available').css('box-shadow', '1px 0px 0px 5px rgba(0,0,0,.2) inset');
-                    } else if (Number($('#ZoomRange').val()) < 50) {
-                        $('.WorkFlowBlock.Available').css('box-shadow', '1px 0px 0px 3px rgba(0,0,0,.2) inset');
-                    } else {
-                        $('.WorkFlowBlock.Available').css('box-shadow', '1px 0px 0px 2px rgba(0,0,0,.2) inset');
+                        if (Number($('#ZoomRange').val()) < 20) {
+                            $('.WorkFlowBlock.Available').css('box-shadow', '1px 0px 0px 5px rgba(0,0,0,.2) inset');
+                        } else if (Number($('#ZoomRange').val()) < 50) {
+                            $('.WorkFlowBlock.Available').css('box-shadow', '1px 0px 0px 3px rgba(0,0,0,.2) inset');
+                        } else {
+                            $('.WorkFlowBlock.Available').css('box-shadow', '1px 0px 0px 2px rgba(0,0,0,.2) inset');
+                        }
+
+
+                        var wWidth = $(window).width();
+                        var wHeight = $(window).height();
+                        var blockPosL = Number($('#WorkFlowMatrix').css('zoom')) * $('#pointToZoom').position().left;
+                        var sLeft = blockPosL - ((wWidth) / 2);
+                        var blockPosT = Number($('#WorkFlowMatrix').css('zoom')) * $('#pointToZoom').position().top;
+                        var sTop = blockPosT - ((wHeight) / 2);
+                        $("#BodyRow").animate({
+                            scrollTop: sTop,
+                            scrollLeft: sLeft
+                        }, {
+                            duration: 0,
+                            queue: false
+                        });
+
+                        // setTimeout(function(){
+                        // if($scope.lastZoomIn == $('#ZoomRange').val()){
+                        // $scope.Workflow[0].scrollTo();
+                        // }
+                        // },400);
                     }
-
-                    var wWidth = $(window).width();
-                    var wHeight = $(window).height();
-                    var blockPosL = Number($('#WorkFlowMatrix').css('zoom')) * $('#pointToZoom').position().left;
-                    var sLeft = blockPosL - ((wWidth) / 2);
-                    var blockPosT = Number($('#WorkFlowMatrix').css('zoom')) * $('#pointToZoom').position().top;
-                    var sTop = blockPosT - ((wHeight) / 2);
-                    $("#BodyRow").animate({
-                        scrollTop: sTop,
-                        scrollLeft: sLeft
-                    }, {
-                        duration: 0,
-                        queue: false
-                    });
-
-                    // setTimeout(function(){
-                    // if($scope.lastZoomIn == $('#ZoomRange').val()){
-                    // $scope.Workflow[0].scrollTo();
-                    // }
-                    // },400);
-                }
-                // console.log((((($scope.lastZoomIn/100) * (2.0-0.3))+0.3)/2) * $('#BodyRow').scrollLeft(), $('#BodyRow').scrollLeft());
-                if (zoomingIn == false) {
-                    var pointToZoomRate = ((($('#ZoomRange').val() / 100) * (2.0 - 0.3)) + 0.3) / 2;
-                    $('#pointToZoom').css('left', ((1 / pointToZoomRate) * (($('#BodyRow').width() / 2) + $('#BodyRow').scrollLeft())) + "px");
-                    $('#pointToZoom').css('top', ((1 / pointToZoomRate) * (($('#BodyRow').height() / 2) + $('#BodyRow').scrollTop())) + "px");
-                }
-                if($('#ZoomRange').val() <= 45){
-                    if($scope.clickToMaximize != true)
-                        $scope.clickToMaximize = true;
-                }else{
-                    if($scope.clickToMaximize != false)
-                        $scope.clickToMaximize = false;
+                    // console.log((((($scope.lastZoomIn/100) * (2.0-0.3))+0.3)/2) * $('#BodyRow').scrollLeft(), $('#BodyRow').scrollLeft());
+                    if (zoomingIn == false) {
+                        var pointToZoomRate = ((($('#ZoomRange').val() / 100) * (2.0 - 0.3)) + 0.3) / 2;
+                        $('#pointToZoom').css('left', ((1 / pointToZoomRate) * (($('#BodyRow').width() / 2) + $('#BodyRow').scrollLeft())) + "px");
+                        $('#pointToZoom').css('top', ((1 / pointToZoomRate) * (($('#BodyRow').height() / 2) + $('#BodyRow').scrollTop())) + "px");
+                    }
+                    if($('#ZoomRange').val() <= 45){
+                        if($scope.clickToMaximize != true)
+                            $scope.clickToMaximize = true;
+                    }else{
+                        if($scope.clickToMaximize != false)
+                            $scope.clickToMaximize = false;
+                    }
                 }
             }, 50);
             $interval(function() {

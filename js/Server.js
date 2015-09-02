@@ -124,6 +124,8 @@
 						callback(searchResults, null);
 						return;
 					}else{
+
+						debugger;
 						var searchFields = [];
 						var mergeResult = [];
 						var resultCounter = 0;
@@ -428,7 +430,6 @@
 
 					}
 				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","There was an error in search in server", Toast.LONG, Toast.ERROR);
 	                console.error("search: ", e);
 	                callback(null,{"message":e.message,"code":e.code});
 				}
@@ -506,7 +507,6 @@
 						
 					}
 				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","There was an error in saving element", Toast.LONG, Toast.ERROR);
 	                console.error("saveElement: ", e);
 	                callback(null,{"message":e.message,"code":e.code});
 				}
@@ -690,7 +690,6 @@
 						}
 					}
 				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","There was an error in deleting element", Toast.LONG, Toast.ERROR);
 	                console.error("deleteElementByID: ", e);
 	                callback(null,{"message":e.message,"code":e.code});
 				}
