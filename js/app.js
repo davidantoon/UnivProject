@@ -169,7 +169,7 @@ var ngScope;
                 var username = "rajibaba"; var password = "my_password"; // Jeries Mousa
                 var username1 = "antoon91"; var password1 = "1234"; // Antoon Antoon
 
-                User.login(username, password, function(succes, error){
+                User.login(username1, password1, function(succes, error){
                     if(error || !succes)
                         $scope.logout();
                     else{
@@ -1272,6 +1272,7 @@ var ngScope;
                                             stor.getElementById(originalData[index], holdingRequestTab.dataHolding.forceLastModifed, holdingRequestTab.dataHolding.forceServerPull, function(resultO){
                                                 if(resultO != undefined)
                                                     resultData.push(resultO);
+                                                debugger;
                                                 loopResults(Number(index)+1, originalData, resultData);
                                             });    
                                         }else{

@@ -139,7 +139,6 @@
 							"searchFields": searchFields
 						};
 						//Kbit
-						debugger;
 						if(dataToSearch.dataType[0] == 1){
 							$httpR.connectToServer(data, $httpR.KBITsearchKbits, Globals, function(success, error){
 								
@@ -394,16 +393,20 @@
 						if(dataToSearch.dataType[2] == 1){
 
 							data.lang = 'en';
-							debugger;
-							console.error("error in function in server");
 							$httpR.connectToServer(data, $httpR.TERMsearchTerms, Globals, function(success, error){
 								var successModified = [];
 								debugger;
 								if(error || !success){
 									console.error("error searching term is server: ", error);
 								}else{
-									console.log("search kbit in serve done: ", success);
-									
+									for(var i=0; i<success.length; i++){
+										successModified.push({
+											id: success[i].UID,
+											name: success[i].TERM_STRING,
+											description: success[i].TERM_MEANING + " Language: " +success[i].LANG,
+											type: "Term"
+										});
+									}
 									
 								}
 								mergeData(successModified, ++resultCounter);
