@@ -1253,7 +1253,6 @@
 						console.error("error publishing deliver:");
 						callback(null, "error publishing deliver");
 					}
-					}
 				}catch(e){
 					console.error("publishDelivery: ", e);
 					callback(null, e);
@@ -1436,7 +1435,8 @@
 			 * @param {Function} callback   callback function
 			 */
 			addKbitToDeliveryRelation: function(deliveryID, kbitID, linkType, linkWeight, callback){
-				if(deliveryID && kbitID){
+				try{
+					if(deliveryID && kbitID){
 						var data = {
 							deliveryUID: deliveryID,
 							kbitUID: kbitID,
@@ -1471,7 +1471,8 @@
 			 * @param  {Function} callback   callback function
 			 */
 			removeKbitFromDeliveryRelation: function(deliveryID, kbitID, linkType, linkWeight, callback){
-				if(deliveryID && kbitID){
+				try{
+					if(deliveryID && kbitID){
 						var data = {
 							deliveryUID: deliveryID,
 							kbitUID: kbitID,

@@ -60,7 +60,7 @@
     .value('$httpR', {
 
         protocol: "http",
-        ip: "94.159.162.6",
+        ip: "31.154.152.220",
         port: "8888",
         baseUrl: "/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/",
 
@@ -94,7 +94,7 @@
         DELIVERYremoveTerm: "DELIVERYremoveTerm",
         DELIVERYaddRelatedKbit: "DELIVERYaddRelatedKbit",
         DELIVERYremoveRelatedKbit: "DELIVERYremoveRelatedKbit",
-        
+
         
 
 

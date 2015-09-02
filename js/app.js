@@ -247,6 +247,78 @@ var ngScope;
 
 
 
+
+
+
+
+            /*******************************************************
+            *                                                      *
+              000     000     00000     00000000000  000000000    
+              000     000   000   000   000          000      00  
+              000     000   00          000          000      00  
+              000     000    0000000    00000000000  000000000    
+              000     000          00   000          000 000      
+              000     000   000   000   000          000   000    
+               000000000      00000     00000000000  000     000  
+            *                                                      *
+            *******************************************************/
+
+
+
+
+
+            $scope.updateImageInSRV = function() {
+                // if($('#newImageFileId').val() == ''){
+                // $scope.alert('לא נבחרה תמונה');
+                // }else{
+                var reader = new FileReader();
+                reader.onloadend = function() {
+                    if (reader.result) {
+                        var image = new Image();
+                        image.onload = function() {
+                            var canvas = document.createElement('canvas');
+                            if (image.height > 200) {
+                                image.width *= 200 / image.height;
+                                image.height = 200;
+                            }
+                            var ctx = canvas.getContext("2d");
+                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                            canvas.width = image.width;
+                            canvas.height = image.height;
+                            ctx.drawImage(image, 0, 0, image.width, image.height);
+                            var base64NewImage = canvas.toDataURL();
+                            console.log(base64NewImage);
+
+                            /// BAASEEE 64 IMAGE
+                            // Globals.currentUser.updateProfilePicture(base64NewImage, function(succes, error){
+                            //     if(error || !succes){
+                            //         console.error("could not update profile picture: ", error);
+                            //     }else{
+                            //         console.log("profile picture change: ", succes);
+                            //     }
+                            // });
+                        };
+                        image.src = reader.result;
+                       
+                    } else {
+                        console.error("there was a problem uploading image");
+                        // $scope.alert('אריעה שגיאה במהלך העלאת התמונה');
+                    }
+                }
+                reader.readAsDataURL($('#newImageFileId')[0].files[0]);
+                // }
+            }
+
+
+
+
+
+
+
+
+
+
+
             /********************************************************************************************************************
              *                                                                                                                   *
              *  000     000  000      00  000000000       00000              000000000    00000000000  000000000       00000     *

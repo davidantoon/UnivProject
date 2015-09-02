@@ -220,6 +220,7 @@
 
                 updateProfilePicture: function(profilePicture, callback){
                     try{
+                        
                         var data = {
                             firstName: this.firstName,
                             lastName: this.lastName,
@@ -291,3 +292,25 @@
         }
     ]);
 })(window.angular);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

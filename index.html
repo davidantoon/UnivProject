@@ -22,6 +22,7 @@
     <!-- <div class="DebugMessage">
       {{bodyScrolling}}
     </div> -->
+
     <div id="MainDiv" class="{{((blurAllWindow == true)?'blured':'')}}" ng-switch="AppStatus" style="display:none">
       <div class="AppPage" ng-switch-when="2" style="">  
         <ons-page>
@@ -208,6 +209,7 @@
                     <!-- CREATE TAB HTML -->
                     <div class="{{((getSelectedTabType(wFlow) == 2)?'':'hidden')}}">
                       create
+                      <form><input type="file" id="newImageFileId" /></form>
                     </div>
                     <!-- EDIT TAB HTML -->
                     <div class="{{((getSelectedTabType(wFlow) == 3)?'':'hidden')}}">
@@ -651,6 +653,7 @@
     <div id="ToastMessage" class="ToastContainer BOTTOM">
       <div class="ToastTitle"></div>
       <div class="ToastBody"></div>
+
     </div>
 
     <div id="LoadingScreen" style="z-index: 100000;display:block;position: fixed;width: 100%;height: 100%;background: rgb(8,96,168);">
