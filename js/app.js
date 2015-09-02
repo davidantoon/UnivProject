@@ -4,16 +4,15 @@ var ngScope;
 
 (function(angular) {
     // 'use strict';
-    angular.module('IntelLearner', ['onsen', 'firebase']);
-    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope",  "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast","User", "$httpR",
-        function($rootScope, $scope,  $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast, User, $httpR) {
+    angular.module('IntelLearner', ['onsen', 'firebase', 'dndLists']);
+    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope",  "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast","User", "$httpR", "Content",
+        function($rootScope, $scope,  $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast, User, $httpR, Content) {
 
 
             // PRIM COLOR = rgb(8,96,168)
+            
 
 
-            console.warn("Check duplicated steps");
-            // David antoon
 
             /*********************************************************************************
              *                                                                                *
@@ -30,7 +29,7 @@ var ngScope;
              // FOR Debugging
             var appElement = document.querySelector('[ng-controller=MainCtrl]');
             ngScope = angular.element(appElement).scope();
-            $scope.isDummy = false;
+            $scope.isDummy = true;
 
 
             $scope.AppStatus = 0;
@@ -170,7 +169,7 @@ var ngScope;
                 var username = "rajibaba"; var password = "my_password"; // Jeries Mousa
                 var username1 = "antoon91"; var password1 = "1234"; // Antoon Antoon
 
-                User.login(username1, password1, function(succes, error){
+                User.login(username, password, function(succes, error){
                     if(error || !succes)
                         $scope.logout();
                     else{
@@ -240,6 +239,78 @@ var ngScope;
                     });
                 });
             }
+
+
+
+
+
+
+
+
+
+
+
+            /*******************************************************
+            *                                                      *
+            *  000     000     00000     00000000000  000000000    *
+            *  000     000   000   000   000          000      00  *
+            *  000     000   00          000          000      00  *
+            *  000     000    0000000    00000000000  000000000    *
+            *  000     000          00   000          000 000      *
+            *  000     000   000   000   000          000   000    *
+            *   000000000      00000     00000000000  000     000  *
+            *                                                      *
+            *******************************************************/
+
+
+
+
+
+            $scope.updateImageInSRV = function() {
+                // if($('#newImageFileId').val() == ''){
+                // $scope.alert('לא נבחרה תמונה');
+                // }else{
+                var reader = new FileReader();
+                reader.onloadend = function() {
+                    if (reader.result) {
+                        var image = new Image();
+                        image.onload = function() {
+                            var canvas = document.createElement('canvas');
+                            if (image.height > 200) {
+                                image.width *= 200 / image.height;
+                                image.height = 200;
+                            }
+                            var ctx = canvas.getContext("2d");
+                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                            canvas.width = image.width;
+                            canvas.height = image.height;
+                            ctx.drawImage(image, 0, 0, image.width, image.height);
+                            var base64NewImage = canvas.toDataURL();
+                            console.log(base64NewImage);
+
+                            /// BAASEEE 64 IMAGE
+                            // Globals.currentUser.updateProfilePicture(base64NewImage, function(succes, error){
+                            //     if(error || !succes){
+                            //         console.error("could not update profile picture: ", error);
+                            //     }else{
+                            //         console.log("profile picture change: ", succes);
+                            //     }
+                            // });
+                        };
+                        image.src = reader.result;
+                       
+                    } else {
+                        console.error("there was a problem uploading image");
+                        // $scope.alert('אריעה שגיאה במהלך העלאת התמונה');
+                    }
+                }
+                reader.readAsDataURL($('#newImageFileId')[0].files[0]);
+                // }
+            }
+
+
+
+
 
 
 
@@ -577,7 +648,13 @@ var ngScope;
 
 
 
-
+            $scope.refocusMe = function(workflow){
+                $timeout(function(){
+                    $scope.Steps.lastFocusedWorkflow = workflow.ID;
+                    $scope.refocusLastWorkflow();
+                    $scope.InsertStepToLast10Steps();
+                },100);
+            }
 
 
 
@@ -1257,7 +1334,7 @@ var ngScope;
 
 
             $scope.displayContent = function(wFlow,result){
-                if(result.type == "Delivery"){
+                // if(result.type == "Delivery"){
                     var stor = new Storage();
                     stor.getElementById(result, false, false, function(res){
                         result = res;
@@ -1278,44 +1355,48 @@ var ngScope;
                             $scope.displayContentNewTab(wFlow, result);
                         }
                     });
-                }else{
-                    $scope.displaySmallContentNewTab(wFlow, result, true);
-                }
+                // }else{
+                //     $scope.displaySmallContent(wFlow, result);
+                // }
             }
 
             $scope.displayContentNewTab = function(wFlow,result){
-                var holdingDisplayObjectData = result;
-                var holdingRequestTab = wFlow.selectedTab;
-                $scope.workSpaces.updateNewWorkflowButtons(2);
-                $timeout(function(){
-                    $scope.displayNewWorkflowTabButtons = false;
-                    $scope.displayNewWorkflowButtons = true;
-                    $scope.holdingNewWorkflowData = {"selectedTab":holdingRequestTab, "Action":"DisplayObject", "data" :result};
-                    $scope.selectColorFilter(0);
-                    var holdNumberOfChilds = holdingRequestTab.dataHolding.childTab.length;
-                    var waitForUserResponse = $interval(function(){
-                        if($scope.displayNewWorkflowButtons == false){
-                            $interval.cancel(waitForUserResponse);
-                            if(holdNumberOfChilds == holdingRequestTab.dataHolding.childTab.length){
-                                // new workflow canceled
-                                $scope.holdingNewWorkflowData = null;
-                                $scope.displayNewWorkflowButtons = false;
-                            }else{
-                                $timeout(function(){
-                                    $scope.Steps.lastFocusedWorkflow = holdingRequestTab.dataHolding.childTab[holdingRequestTab.dataHolding.childTab.length-1].workflowId;
-                                    $scope.refocusLastWorkflow();
+                // if(result.type == "Delivery"){
+                    var holdingDisplayObjectData = result;
+                    var holdingRequestTab = wFlow.selectedTab;
+                    $scope.workSpaces.updateNewWorkflowButtons(2);
+                    $timeout(function(){
+                        $scope.displayNewWorkflowTabButtons = false;
+                        $scope.displayNewWorkflowButtons = true;
+                        $scope.holdingNewWorkflowData = {"selectedTab":holdingRequestTab, "Action":"DisplayObject", "data" :result};
+                        $scope.selectColorFilter(0);
+                        var holdNumberOfChilds = holdingRequestTab.dataHolding.childTab.length;
+                        var waitForUserResponse = $interval(function(){
+                            if($scope.displayNewWorkflowButtons == false){
+                                $interval.cancel(waitForUserResponse);
+                                if(holdNumberOfChilds == holdingRequestTab.dataHolding.childTab.length){
+                                    // new workflow canceled
+                                    $scope.holdingNewWorkflowData = null;
+                                    $scope.displayNewWorkflowButtons = false;
+                                }else{
                                     $timeout(function(){
-                                        $scope.Steps.lastFocusedWorkflow = holdingRequestTab.parentWF.ID;
-                                        $scope.focusingLastWorkflow = false;
-                                    },600);
-                                },300);
-                                $timeout(function(){
-                                    $scope.InsertStepToLast10Steps();
-                                },500);
+                                        $scope.Steps.lastFocusedWorkflow = holdingRequestTab.dataHolding.childTab[holdingRequestTab.dataHolding.childTab.length-1].workflowId;
+                                        $scope.refocusLastWorkflow();
+                                        $timeout(function(){
+                                            $scope.Steps.lastFocusedWorkflow = holdingRequestTab.parentWF.ID;
+                                            $scope.focusingLastWorkflow = false;
+                                        },600);
+                                    },300);
+                                    $timeout(function(){
+                                        $scope.InsertStepToLast10Steps();
+                                    },500);
+                                }
                             }
-                        }
-                    },500);
-                },200);
+                        },500);
+                    },200);
+                // }else{
+                //     $scope.displaySmallContentNewTab(wFlow, result, true);
+                // }
             }
             $scope.displaySmallContent = function(wFlow,result){
                 
@@ -1336,7 +1417,7 @@ var ngScope;
                         $scope.workSpaces.replaceSearchChildContent(dataHolding.childTab, result);
                         $scope.workSpaces.selectTabAfterSearch(dataHolding.childTab);
                     }else{
-                        $scope.displaySmallContentNewTab(wFlow, result);
+                        $scope.displaySmallContentNewTab(wFlow, result, true);
                     }
                 });
             }
@@ -1433,6 +1514,7 @@ var ngScope;
                             spinner:false
                         };
                         wFlow.selectedTab.content.inProgress = true;
+                        wFlow.selectedTab.content.createTempData();
                     }else{
                         $scope.Toast.show("Cannot Lock Content", "Content locked by "+wFlow.selectedTab.content.lockedBy.firstName+" "+wFlow.selectedTab.content.lockedBy.lastName+".", Toast.LONG, Toast.ERROR);
                     }
@@ -1451,6 +1533,7 @@ var ngScope;
                                 wFlow.selectedTab.content.inProgress = false;
                             }else{
                                 wFlow.selectedTab.content.progressWizard.spinner = false;
+                                wFlow.selectedTab.content.createTempData();
                             }
                         },200);
 
@@ -1459,6 +1542,147 @@ var ngScope;
             }
 
 
+
+            $scope.draggingItems = function(item){
+
+                var CashedObjectsKeys = Object.keys(Globals.CashedObjects);
+                for(var i=0; i<CashedObjectsKeys.length; i++){
+                    var tempObj = Globals.CashedObjects[CashedObjectsKeys[i]];
+                    // loop for inprogress Contents
+                    if(tempObj.inProgress){
+                        switch(tempObj.type){
+                            case "Delivery":
+                                switch(tempObj.progressWizard.index){
+                                    case 2:
+                                        // Accept Kbits
+                                        // loop for kbits needed
+                                        for(var j=0; j<tempObj.newData.kBitsNeeded.length; j++){
+                                            // find new dropped object
+                                            if(tempObj.newData.kBitsNeeded[j].lock == undefined){
+                                                if(tempObj.newData.kBitsNeeded[j].type == "Kbit"){
+                                                    var alreadyExist = false;
+                                                    for(var m=0; m<tempObj.newData.kBitsNeeded.length; m++){
+                                                        if(tempObj.newData.kBitsNeeded[m].lock != undefined && tempObj.newData.kBitsNeeded[j].id == tempObj.newData.kBitsNeeded[m].id){
+                                                            alreadyExist = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                    if(alreadyExist){
+                                                        tempObj.newData.kBitsNeeded.splice(j,1);
+                                                        $scope.Toast.show("Error!","Kbit already exists", Toast.LONG, Toast.ERROR);
+                                                    }else
+                                                        tempObj.newData.kBitsNeeded[j] = new Content(tempObj.newData.kBitsNeeded[j]);
+                                                }else{
+                                                    tempObj.newData.kBitsNeeded.splice(j,1);
+                                                    $scope.Toast.show("Error!","Drop zone accepts only kbits", Toast.LONG, Toast.ERROR);
+                                                }
+                                                break;
+                                            }
+                                        }
+                                        // loop for kbits provided
+                                        for(var j=0; j<tempObj.newData.kBitsProvided.length; j++){
+                                            // find new dropped object
+                                            if(tempObj.newData.kBitsProvided[j].lock == undefined){
+                                                if(tempObj.newData.kBitsProvided[j].type == "Kbit"){
+
+                                                    var alreadyExist = false;
+                                                    for(var m=0; m<tempObj.newData.kBitsProvided.length; m++){
+                                                        if(tempObj.newData.kBitsProvided[m].lock != undefined && tempObj.newData.kBitsProvided[j].id == tempObj.newData.kBitsProvided[m].id){
+                                                            alreadyExist = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                    if(alreadyExist){
+                                                        tempObj.newData.kBitsProvided.splice(j,1);
+                                                        $scope.Toast.show("Error!","Kbit already exists", Toast.LONG, Toast.ERROR);
+                                                    }else
+                                                        tempObj.newData.kBitsProvided[j] = new Content(tempObj.newData.kBitsProvided[j]);
+
+                                                }else{
+                                                    tempObj.newData.kBitsProvided.splice(j,1);
+                                                    $scope.Toast.show("Error!","Drop zone accepts only kbits", Toast.LONG, Toast.ERROR);
+                                                }
+                                                break;
+                                            }
+                                        }
+                                    break;
+                                    case 3:
+                                        // Accept Terms
+                                        // loop for terms
+                                        for(var j=0; j<tempObj.newData.terms.length; j++){
+                                            // find new dropped object
+                                            if(tempObj.newData.terms[j].lock == undefined){
+                                                if(tempObj.newData.terms[j].type == "Term"){
+                                                    var alreadyExist = false;
+                                                    for(var m=0; m<tempObj.newData.terms.length; m++){
+                                                        if(tempObj.newData.terms[m].lock != undefined && tempObj.newData.terms[j].id == tempObj.newData.terms[m].id){
+                                                            alreadyExist = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                    if(alreadyExist){
+                                                        tempObj.newData.terms.splice(j,1);
+                                                        $scope.Toast.show("Error!","Term already exists", Toast.LONG, Toast.ERROR);
+                                                    }else
+                                                        tempObj.newData.terms[j] = new Content(tempObj.newData.terms[j]);
+                                                }else{
+                                                    tempObj.newData.terms.splice(j,1);
+                                                    $scope.Toast.show("Error!","Drop zone accepts only terms", Toast.LONG, Toast.ERROR);
+                                                }
+                                                break;
+                                            }
+                                        }
+                                    break;
+                                    default:
+                                    break;
+
+                                }
+                            break;
+                            case "Kbit":
+                                case 2:
+                                    // Accept Terms
+                                    // loop for terms
+                                    for(var j=0; j<tempObj.newData.terms.length; j++){
+                                        // find new dropped object
+                                        if(tempObj.newData.terms[j].lock == undefined){
+                                            if(tempObj.newData.terms[j].type == "Term"){
+                                                var alreadyExist = false;
+                                                for(var m=0; m<tempObj.newData.terms.length; m++){
+                                                    if(tempObj.newData.terms[m].lock != undefined && tempObj.newData.terms[j].id == tempObj.newData.terms[m].id){
+                                                        alreadyExist = true;
+                                                        break;
+                                                    }
+                                                }
+                                                if(alreadyExist){
+                                                    tempObj.newData.terms.splice(j,1);
+                                                    $scope.Toast.show("Error!","Term already exists", Toast.LONG, Toast.ERROR);
+                                                }else
+                                                    tempObj.newData.terms[j] = new Content(tempObj.newData.terms[j]);
+                                            }else{
+                                                tempObj.newData.terms.splice(j,1);
+                                                $scope.Toast.show("Error!","Drop zone accepts only terms", Toast.LONG, Toast.ERROR);
+                                            }
+                                            break;
+                                        }
+                                    }
+                                break;
+                                default:
+                                break;
+                            break;
+                        }
+                    }
+                }
+            }
+
+
+            $scope.removeObjectFromContent = function(array, item){
+                for(var i=0; i<array.length; i++){
+                    if(array[i].id == item.id){
+                        array.splice(i,1);
+                        break;
+                    }
+                }
+            }
 
 
 
@@ -1541,11 +1765,11 @@ var ngScope;
             }, 50);
             $interval(function() {
                 $('#BodyRow').css('height', ($(window).height() - 50) + "px");
-
                 $('#FullScreenDiv').css('height', ($(window).height() - 50) + "px");
             }, 100);
             $interval(function() {
                 $scope.updateMatrixLayout();
+                $scope.updateAllTabName();
             }, 200);
 
             $interval(function() {

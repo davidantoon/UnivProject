@@ -390,9 +390,10 @@
 							mergeData([], ++resultCounter);
 						}
 						// Term
-						debugger;
 						if(dataToSearch.dataType[2] == 1){
-							data.lang = 0;
+
+							data.lang = 'en';
+							debugger;
 							console.error("error in function in server");
 							$httpR.connectToServer(data, $httpR.TERMsearchTerms, Globals, function(success, error){
 								var successModified = [];
@@ -758,7 +759,6 @@
 					if(this.baseUrl == "dummy"){
 						callback();
 					}else{
-						debugger;
 						steps = strCompress(JSON.stringify(steps));
 						$httpR.connectToServer({Key:"Steps", value:steps}, $httpR.KVPsetKeyValuePair, Globals, callback);
 					}
@@ -824,10 +824,10 @@
 						var data = {
 							firstUID: firstTermID,
 							secondUID: secondTermID,
-							isHier: 0
+							isHier: true
 						};
 
-						$httpR.connectToServer(data, $httpR.TERMaddTermToTermRelation, function(success, error){
+						$httpR.connectToServer(data, $httpR.TERMaddTermToTermRelation, Globals, function(success, error){
 							if(error || !success){
 								console.error("error adding term to term relation: ", error);
 								callback(null, error);
@@ -859,7 +859,7 @@
 							secondUID: secondTermID
 						};
 
-						$httpR.connectToServer(data, $httpR.TERMremoveTermToTermRelation, function(success, error){
+						$httpR.connectToServer(data, $httpR.TERMremoveTermToTermRelation, Globals, function(success, error){
 							if(error || !success){
 								console.error("error removing term to term relation: ", error);
 								callback(null, error);
@@ -887,7 +887,7 @@
 						lang: 0
 					};
 
-					$httpR.connectToServer(data, $httpR.TERMgetAllTermsStrings, function(success, error){
+					$httpR.connectToServer(data, $httpR.TERMgetAllTermsStrings, Globals, function(success, error){
 						if(error || !success){
 							console.error("error getting all terms: ", error);
 							callback(null, error);
@@ -914,7 +914,7 @@
 							lang: 0
 						};
 
-						$httpR.connectToServer(data, $httpR.TERMgetRelatedTerms, function(success, error){
+						$httpR.connectToServer(data, $httpR.TERMgetRelatedTerms, Globals, function(success, error){
 							if(error || !success){
 								console.error("error getting related terms: ", error);
 								callback(null, error);
@@ -962,7 +962,7 @@
 							kbitUID: kbitID
 						};
 
-						$httpR.connectToServer(data, $httpR.KBITbeginEdit, function(success, error){
+						$httpR.connectToServer(data, $httpR.KBITbeginEdit, Globals, function(success, error){
 							if(error || !success){
 								console.log("error begining edit kbit: ", error);
 								callback(null, error);
@@ -992,7 +992,7 @@
 							kbitUID: kbitID
 						};
 
-						$httpR.connectToServer(data, $httpR.KBITcancelEdit, function(success, error){
+						$httpR.connectToServer(data, $httpR.KBITcancelEdit, Globals, function(success, error){
 							if(error || !success){
 								console.log("error canceling edit kbit: ", error);
 								callback(null, error);
@@ -1032,7 +1032,7 @@
 
 						}
 
-						$httpR.connectToServer(data, $httpR.KBITaddRelatedKbit, function(success, error){
+						$httpR.connectToServer(data, $httpR.KBITaddRelatedKbit, Globals, function(success, error){
 							if(error || !success){
 								console.log("error adding kbit to kbit relation ", error);
 								callback(null, error);
@@ -1064,7 +1064,7 @@
 							secondUID: secondKbitID
 						};
 
-						$httpR.connectToServer(data, $httpR.KBITremoveRelatedKbit, function(success, error){
+						$httpR.connectToServer(data, $httpR.KBITremoveRelatedKbit, Globals, function(success, error){
 							if(error || !success){
 								console.log("error removing kbit to kbit relation ", error);
 								callback(null, error);
@@ -1095,10 +1095,10 @@
 						var data = {
 							kbitUID: kbitID,
 							termUID: termID,
-							linkType: relation
+							linkType: " "
 						};
 
-						$httpR.connectToServer(data, $httpR.KBITaddTermByUID, function(success, error){
+						$httpR.connectToServer(data, $httpR.KBITaddTermByUID, Globals, function(success, error){
 							if(error || !success){
 								console.log("error adding term to kbit: ", error);
 								callback(null, error);
@@ -1130,10 +1130,10 @@
 						var data = {
 							kbitUID: kbitID,
 							termUID: termID,
-							linkType: relation
+							linkType: " "
 						};
 
-						$httpR.connectToServer(data, $httpR.KBITremoveTerm, function(success, error){
+						$httpR.connectToServer(data, $httpR.KBITremoveTerm, Globals, function(success, error){
 							if(error || !success){
 								console.error("error removing term from kbit: ", error);
 								callback(null, error);
@@ -1181,7 +1181,7 @@
 							deliveryUID: deliveryID
 						};
 
-						$httpR.connectToServer(data, $httpR.DELIVERYbeginEdit, function(success, error){
+						$httpR.connectToServer(data, $httpR.DELIVERYbeginEdit, Globals, function(success, error){
 							if(error || !success){
 								console.error("error starting edit delivery: ", error);
 								callback(null, error);
@@ -1190,7 +1190,7 @@
 							}
 						});
 					}else{
-						console.error("error starting edit delivery: ", error);
+						console.error("error starting edit delivery");
 						callback(null, "error editing delivery");
 					}
 				}catch(e){
@@ -1211,7 +1211,7 @@
 							deliveryUID: deliveryID
 						};
 
-						$httpR.connectToServer(data, $httpR.DELIVERYcancelEdit, function(success, error){
+						$httpR.connectToServer(data, $httpR.DELIVERYcancelEdit, Globals, function(success, error){
 							if(error || !success){
 								console.error("error canceling edit delivery: ", error);
 								callback(null, error);
@@ -1220,11 +1220,280 @@
 							}
 						});
 					}else{
-						console.error("error canceling edit deliver: ", error);
+						console.error("error canceling edit deliver");
 						callback(null, "error canceling edit deliver");
 					}
 				}catch(e){
 					console.error("CancelEditingDelivery: ", e);
+					callback(null, e);
+				}
+			},
+
+			/**
+			 * Publish delivery on server
+			 * @param  {Number}   deliveryID delivery id
+			 * @param  {Function} callback   callback function
+			 */
+			publishDelivery: function(deliveryID, callback){
+				try{
+					if(deliveryID){
+						var data = {
+							deliveryUID: deliveryID
+						};
+
+						$httpR.connectToServer(data, $httpR.DELIVERYpublish, Globals, function(success, error){
+							if(error || !success){
+								console.error("error publishing delivery: ", error);
+								callback(null, error);
+							}else{
+								callback(success, null);
+							}
+						});
+					}else{
+						console.error("error publishing deliver:");
+						callback(null, "error publishing deliver");
+					}
+				}catch(e){
+					console.error("publishDelivery: ", e);
+					callback(null, e);
+				}
+			},
+
+			/**
+			 * Updates delivery in server
+			 * @param  {Number}   deliveryID    delivery id
+			 * @param  {String}   deliveryTitle delivery title
+			 * @param  {String}   deliverydesc  delivery description
+			 * @param  {Array}   frontArr       content array
+			 * @param  {Function} callback      callback function
+			 */
+			updateDelivery:function(deliveryID, deliveryTitle, deliverydesc, frontArr, callback){
+				try{
+					if(deliveryID){
+						var data = {
+							deliveryUID: deliveryID,
+							title: deliveryTitle,
+							desc: deliverydesc,
+							front: frontArr
+						};
+
+						$httpR.connectToServer(data, $httpR.DELIVERYupdate, Globals, function(success, error){
+							if(error || !success){
+								console.error("error updating delivery: ", error);
+								callback(null, error);
+							}else{
+								callback(success, null);
+							}
+						});
+					}else{
+						console.error("error updating delivery");
+						callback(null, "error updating delivery");
+					}
+				}catch(e){
+					console.error("updateDelivery: ", e);
+					callback(null, e);
+				}
+			},
+
+			/**
+			 * Adds delivery to delivery relation
+			 * @param {Number}   firstDeliveryID  first delivery id
+			 * @param {Number}   secondDeliveryID second delivery id
+			 * @param {Function} callback         callback function
+			 */
+			addDeliverytoDeliveryRelation: function(firstDeliveryID, secondDeliveryID, callback){
+				try{
+					if(firstDeliveryID && secondDeliveryID){
+						var data = {
+							firstUID: firstDeliveryID,
+							secondUID: secondDeliveryID,
+							isHier: true
+						};
+						$httpR.connectToServer(data, $httpR.DELIVERYaddRelatedDelivery, Globals, function(success, error){
+							if(error || !success){
+								console.error("error adding delivery relation: ", error);
+								callback(null, error);
+							}else{
+								callback(success, null);
+							}
+						});
+					}else{
+						console.error("error adding delivery relation");
+						callback(null, "error adding delivery relation");
+					}
+				}catch(e){
+					console.error("addDeliverytoDeliveryRelation: ", e);
+					callback(null, e);
+				}
+			},
+
+			/**
+			 * Removes two deliveries relations
+			 * @param  {Number}   firstDeliveryID  first delivery id
+			 * @param  {Number}   secondDeliveryID second delivery id
+			 * @param  {Function} callback         callback function
+			 */
+			removeDeliveryFromDeliveryRelation: function(firstDeliveryID, secondDeliveryID, callback){
+				try{
+					if( firstDeliveryID && secondDeliveryID){
+						var data = {
+							firstUID: firstDeliveryID,
+							secondUID: secondDeliveryID
+						};
+						$httpR.connectToServer(data, $httpR.DELIVERYremoveRelatedDelivery, Globals, function(success, error){
+							if(error || !success){
+								console.error("error removing delivery relation: ", error);
+								callback(null, error);
+							}else{
+								callback(success, null);
+							}
+						});
+					}else{
+						console.error("error removing delivery relation");
+						callback(null, "error removing delivery relation");
+					}
+				}catch(e){
+					console.error("removeDeliveryFromDeliveryRelation: ", e);
+					callback(null, e);
+				}
+			},
+
+			/**
+			 * Adds term to delivery relation
+			 * @param {Number}   deliveryID delivery id
+			 * @param {Number}   termID     term id
+			 * @param {String}   linkType   Link type
+			 * @param {Function} callback   callback function
+			 */
+			addTermToDeliveryRelation: function(deliveryID, termID, linkType, callback){
+				try{
+					if(deliveryID && termID){
+						var data = {
+							deliveryUID: deliveryID,
+							termUID: termID,
+							linkType: " "
+						};
+
+						$httpR.connectToServer(data, $httpR.DELIVERYaddTermByUID, Globals, function(success, error){
+							if(error || !success){
+								console.error("error adding term to delivery relation: ", error);
+								callback(null, error);
+							}else{
+								callback(success, null);
+							}
+						});
+					}else{
+						console.error("error adding term to delivery relation");
+						callback(null, "error adding term to delivery relation");
+					}
+				}catch(e){
+					console.error("addTermToDeliveryRelation: ", e);
+					callback(null, e);
+				}
+			},
+
+			/**
+			 * Removes term and delivery relation
+			 * @param  {Number}   deliveryID delivery id
+			 * @param  {Number}   termID     term id
+			 * @param  {String}   linkType   link type
+			 * @param  {Function} callback callback function
+			 */
+			removeTermFromDeliveryRelation: function(deliveryID, termID, linkType, callback){
+				try{
+					if(deliveryID && termID){
+						var data = {
+							deliveryUID: deliveryID,
+							termUID: termID,
+							linkType: " "
+						};
+
+						$httpR.connectToServer(data, $httpR.DELIVERYremoveTerm, Globals, function(success, error){
+							if(error || !success){
+								console.error("error removing term to delivery relation: ", error);
+								callback(null, error);
+							}else{
+								callback(success, null);
+							}
+						});
+					}else{
+						console.error("error removing term to delivery relation");
+						callback(null, "error removing term to delivery relation");
+					}
+				}catch(e){
+					console.error("removeTermFromDeliveryRelation: ", e);
+					callback(null, e);
+				}
+			},
+
+			/**
+			 * Adds kbit to delivery relation
+			 * @param {Number}   deliveryID delivery id
+			 * @param {Number}   kbitID     kbit id
+			 * @param {String}   linkType   link type
+			 * @param {Float}    linkWeight link weight
+			 * @param {Function} callback   callback function
+			 */
+			addKbitToDeliveryRelation: function(deliveryID, kbitID, linkType, linkWeight, callback){
+				try{
+					if(deliveryID && kbitID){
+						var data = {
+							deliveryUID: deliveryID,
+							kbitUID: kbitID,
+							linkType: " ",
+							linkWeight: linkWeight
+						};
+
+						$httpR.connectToServer(data, $httpR.DELIVERYaddRelatedKbit, Globals, function(success, error){
+							if(error || !success){
+								console.error("error adding kbit to delivery relation: ", error);
+								callback(null, error);
+							}else{
+								callback(success, null);
+							}
+						});
+					}else{
+						console.error("error adding kbit to delivery relation");
+						callback(null, "error adding kbit to delivery relation");
+					}
+				}catch(e){
+					console.error("addKbitToDeliveryRelation: ", e);
+					callback(null, e);
+				}
+			},
+
+			/**
+			 * Removes kbit from delivery relation
+			 * @param  {Number}   deliveryID delivery id
+			 * @param  {Number}   kbitID     kbit id
+			 * @param  {String}   linkType   link type
+			 * @param  {Float}    linkWeight link weight
+			 * @param  {Function} callback   callback function
+			 */
+			removeKbitFromDeliveryRelation: function(deliveryID, kbitID, linkType, linkWeight, callback){
+				try{
+					if(deliveryID && kbitID){
+						var data = {
+							deliveryUID: deliveryID,
+							kbitUID: kbitID,
+							linkType: " ",
+							linkWeight: linkWeight
+						};
+
+						$httpR.connectToServer(data, $httpR.DELIVERYremoveRelatedKbit, Globals, function(success, error){
+							if(error || !success){
+								console.error("error removing kbit from delivery relation: ", error);
+								callback(null, error);
+							}else{
+								callback(success, null);
+							}
+						});
+					}else{
+						console.error("error removing kbit from delivery relation");
+						callback(null, "error removing kbit from delivery relation");
+					}
+				}catch(e){
+					console.error("removeKbitFromDeliveryRelation: ", e);
 					callback(null, e);
 				}
 			},

@@ -8,49 +8,55 @@
   <!-- <link rel="icon" href="img/favicon.ico" type="image/x-icon"/> -->
   <!-- <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon"/> -->
   <title></title>
-  
-  <link rel="stylesheet" href="css/app.css"> 
+   
   <link rel="stylesheet" href="css/bootstrap-datepicker3.css"> 
   <link rel="stylesheet" href="css/onsenui.css">
   <link rel="stylesheet" href="css/onsen-css-components-IntelProject.css">
   <link rel="stylesheet" href="css/app.css">
   
+  <style type="text/css">
 
+  </style>
 </head>
 <body ng-controller="MainCtrl">
 
+      <ul>
+          <!-- The toolbox only allows to copy objects, not move it. After a new
+               element was created, dnd-copied is invoked and we generate the next id -->
+          <li ng-repeat="item in listItems"
+              dnd-draggable="item"
+              dnd-copied="buildItem()"
+              dnd-effect-allowed="copy"
+              style="display: block;">
+              {{item.type}}
+          </li>
+      </ul>
 
-  <table class="friend">
-    <tr>
-      <th>Name</th>
-      <th>Phone Number</th>
-      <th>Age</th>
-    </tr>
-    <tr ng-repeat="friend in friends | orderBy:'-age'">
-      <td>{{friend.name}}</td>
-      <td>{{friend.phone}}</td>
-      <td>{{friend.age}}</td>
-    </tr>
-  </table>
+
+  <div class="david2 dropzone" style="    width: 100px;height: 100px;display: block;background-color: gray;">
+    <ul dnd-list="list" style="    min-height: 42px;margin: 0px;padding-left: 0px;">
+        <li ng-repeat="item in list">
+          {{item}}
+        </li>
+    </ul>
+  </div>
 
   <script type="text/javascript" src="js/angular/angular.js"></script>
+  <script type="text/javascript" src="js/angular/angular-route.min.js"></script>
   <script type="text/javascript" src="js/onsenui.js"></script> 
   <script type="text/javascript" src="js/jquery.js"></script>
   <script type="text/javascript" src="js/jquery.maskedinput.js"></script>
+  <script type="text/javascript" src="js/jquery.soap.js"></script>
   <script type="text/javascript" src="js/xmlToJson.js"></script>
   <script type="text/javascript" src="js/bootstrap-datepicker.js"></script>
   <script type="text/javascript" src="js/bootstrap-datepicker.he.js"></script>
   <script type="text/javascript" src="js/firebase.js"></script>
   <script type="text/javascript" src="js/angularfire.min.js"></script>
   <script type="text/javascript" src="js/visible.js"></script>
+  <script type="text/javascript" src="js/angular-drag-and-drop-lists.min.js"></script>
 
   <script type="text/javascript" src="js/app2.js"></script>
-  <script type="text/javascript" src="js/globals.js"></script>
-  <script type="text/javascript" src="js/svrData.js"></script>
-  <script type="text/javascript" src="js/content.js"></script>
-  <script type="text/javascript" src="js/tab.js"></script>
-  <script type="text/javascript" src="js/workflows.js"></script>
-  <script type="text/javascript" src="js/workspace.js"></script>
+
   
 
 </body>
