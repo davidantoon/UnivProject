@@ -29,7 +29,7 @@ var ngScope;
              // FOR Debugging
             var appElement = document.querySelector('[ng-controller=MainCtrl]');
             ngScope = angular.element(appElement).scope();
-            $scope.isDummy = true;
+            $scope.isDummy = false;
 
 
             $scope.AppStatus = 0;
@@ -1235,22 +1235,20 @@ var ngScope;
                                                 $scope.Toast.show("Server Error", error.message, Toast.LONG, Toast.ERROR);
                                                 $scope.InsertStepToLast10Steps();
                                             }else{
-                                                $timeout(function(){
-                                                    var stor = new Storage();
-                                                    loopResults(0, result, []);
-                                                    function loopResults(index, originalData, resultData){
-                                                        if(index < originalData.length){
-                                                            stor.getElementById(originalData[index], holdingRequestTab.dataHolding.forceLastModifed, holdingRequestTab.dataHolding.forceServerPull, function(resultO){
-                                                                if(resultO != undefined)
-                                                                    resultData.push(resultO);
-                                                                loopResults(Number(index)+1, originalData, resultData);
-                                                            });    
-                                                        }else{
-                                                            $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, resultData);
-                                                            $scope.InsertStepToLast10Steps();
-                                                        }
+                                                var stor = new Storage();
+                                                loopResults(0, result, []);
+                                                function loopResults(index, originalData, resultData){
+                                                    if(index < originalData.length){
+                                                        stor.getElementById(originalData[index], holdingRequestTab.dataHolding.forceLastModifed, holdingRequestTab.dataHolding.forceServerPull, function(resultO){
+                                                            if(resultO != undefined)
+                                                                resultData.push(resultO);
+                                                            loopResults(Number(index)+1, originalData, resultData);
+                                                        });    
+                                                    }else{
+                                                        $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, resultData);
+                                                        $scope.InsertStepToLast10Steps();
                                                     }
-                                                },1500);
+                                                }
                                             }
                                         });
                                     }
@@ -1267,22 +1265,20 @@ var ngScope;
                                     $scope.Toast.show("Server Error", error.message, Toast.LONG, Toast.ERROR);
                                     $scope.InsertStepToLast10Steps();
                                 }else{
-                                    $timeout(function(){
-                                        var stor = new Storage();
-                                        loopResults(0, result, []);
-                                        function loopResults(index, originalData, resultData){
-                                            if(index < originalData.length){
-                                                stor.getElementById(originalData[index], holdingRequestTab.dataHolding.forceLastModifed, holdingRequestTab.dataHolding.forceServerPull, function(resultO){
-                                                    if(resultO != undefined)
-                                                        resultData.push(resultO);
-                                                    loopResults(Number(index)+1, originalData, resultData);
-                                                });    
-                                            }else{
-                                                $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, resultData);
-                                                $scope.InsertStepToLast10Steps();
-                                            }
+                                    var stor = new Storage();
+                                    loopResults(0, result, []);
+                                    function loopResults(index, originalData, resultData){
+                                        if(index < originalData.length){
+                                            stor.getElementById(originalData[index], holdingRequestTab.dataHolding.forceLastModifed, holdingRequestTab.dataHolding.forceServerPull, function(resultO){
+                                                if(resultO != undefined)
+                                                    resultData.push(resultO);
+                                                loopResults(Number(index)+1, originalData, resultData);
+                                            });    
+                                        }else{
+                                            $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, resultData);
+                                            $scope.InsertStepToLast10Steps();
                                         }
-                                    },1500);
+                                    }
                                 }
                             });
                             $timeout(function(){

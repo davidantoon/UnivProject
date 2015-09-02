@@ -120,6 +120,7 @@
                     withCredentials: true
                 },
                 crossDomain : true,
+                timeout: 10000,
                 success: function(success) {
                     debugger;
                     if (success.status == 200)

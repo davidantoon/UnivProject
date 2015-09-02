@@ -402,7 +402,7 @@
                                       <div class="dropDiv" style="border-right: 1px solid rgba(0,0,0,.4);width: 370px;">Drop kbits needed here</div>
                                       <ul class="draggedItem" dnd-list="wFlow.selectedTab.content.newData.kBitsNeeded">
                                         <li  ng-repeat="kbit in wFlow.selectedTab.content.newData.kBitsNeeded">
-                                          {{kbit.name}}
+                                          <span class="clickable hoverOp" ng-click="displayContentNewTab(wFlow,kbit);" dnd-draggable="kbit" dnd-effect-allowed="copy"  dnd-copied="draggingItems(kbit);">{{kbit.name}}</span>
                                           <ons-icon ng-click="removeObjectFromContent(wFlow.selectedTab.content.newData.kBitsNeeded, kbit)" icon="ion-android-cancel" size="20px"></ons-icon>
                                         </li>
                                       </ul>
@@ -411,7 +411,7 @@
                                       <div class="dropDiv">Drop kbits provided here</div>
                                       <ul class="draggedItem" dnd-list="wFlow.selectedTab.content.newData.kBitsProvided">
                                         <li  ng-repeat="kbit in wFlow.selectedTab.content.newData.kBitsProvided">
-                                          {{kbit.name}}
+                                          <span class="clickable hoverOp" ng-click="displayContentNewTab(wFlow,kbit);" dnd-draggable="kbit" dnd-effect-allowed="copy"  dnd-copied="draggingItems(kbit);">{{kbit.name}}</span>
                                           <ons-icon ng-click="removeObjectFromContent(wFlow.selectedTab.content.newData.kBitsProvided, kbit)" icon="ion-android-cancel" size="20px"></ons-icon>
                                         </li>
                                       </ul>
@@ -449,7 +449,7 @@
                                       <div class="dropDiv" style="width: 766px;">Drop terms here</div>
                                       <ul class="draggedItem" style="width: 766px;" dnd-list="wFlow.selectedTab.content.newData.terms">
                                         <li  ng-repeat="term in wFlow.selectedTab.content.newData.terms">
-                                          {{term.name}}
+                                          <span class="clickable hoverOp" ng-click="displayContentNewTab(wFlow,term);" dnd-draggable="term" dnd-effect-allowed="copy"  dnd-copied="draggingItems(term);">{{term.name}}</span>
                                           <ons-icon ng-click="removeObjectFromContent(wFlow.selectedTab.content.newData.terms, term)" icon="ion-android-cancel" size="20px"></ons-icon>
                                         </li>
                                       </ul>
@@ -490,7 +490,7 @@
                                       <div class="dropDiv" style="width: 766px;">Drop terms here</div>
                                       <ul class="draggedItem" style="width: 766px;" dnd-list="wFlow.selectedTab.content.newData.terms">
                                         <li  ng-repeat="term in wFlow.selectedTab.content.newData.terms">
-                                          {{term.name}}
+                                          <span class="clickable hoverOp" ng-click="displayContentNewTab(wFlow,term);" dnd-draggable="term" dnd-effect-allowed="copy"  dnd-copied="draggingItems(term);">{{term.name}}</span>
                                           <ons-icon ng-click="removeObjectFromContent(wFlow.selectedTab.content.newData.terms, term)" icon="ion-android-cancel" size="20px"></ons-icon>
                                         </li>
                                       </ul>

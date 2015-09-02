@@ -303,8 +303,8 @@
 											passThis.getElementById(termsArray[index],objectToAdd.forceLastmodefied,objectToAdd.forceServerPull,function(resultTerm){
 												if(resultTerm != undefined && resultTerm != null){
 													termResults.push(resultTerm);
-													loopTerms(Number(index)+1,termsArray,termResults);
 												}
+												loopTerms(Number(index)+1,termsArray,termResults);
 											});
 										}else{
 											// loop over kbits needed and add them to object
@@ -315,8 +315,8 @@
 													passThis.getElementById(kbitsNeededArray[index], objectToAdd.forceLastmodefied, objectToAdd.forceServerPull,function(kbitsResults){
 														if(kbitsResults != undefined && kbitsResults != null){
 															kbitsNeededResults.push(kbitsResults);
-															loopKbitsNeeded(Number(index)+1, kbitsNeededArray,kbitsNeededResults);
 														}
+														loopKbitsNeeded(Number(index)+1, kbitsNeededArray,kbitsNeededResults);
 													});
 												}else{
 													// loop over kbits provided and add them to object
@@ -327,8 +327,8 @@
 															passThis.getElementById(kbitsProvidedArray[index], objectToAdd.forceLastmodefied, objectToAdd.forceServerPull, function(kbitsResult){
 																if(kbitsResult != undefined && kbitsResult != null){
 																	KbitsProvidedResutls.push(kbitsResult);
-																	loopKbitsProvided(Number(index)+1, kbitsProvidedArray, KbitsProvidedResutls);
 																}
+																loopKbitsProvided(Number(index)+1, kbitsProvidedArray, KbitsProvidedResutls);
 															});
 														}else{
 															objectToAdd.kBitsProvided = KbitsProvidedResutls;
@@ -349,8 +349,8 @@
 											passThis.getElementById(termsArray[index], objectToAdd.forceLastmodefied, objectToAdd.forceServerPull, function(resultTerm){
 												if(resultTerm != undefined && resultTerm != null){
 													termResults.push(resultTerm);
-													loopTerms2(Number(index)+1, termsArray, termResults);
 												}
+												loopTerms2(Number(index)+1, termsArray, termResults);
 											});
 										}else{
 											objectToAdd.terms =	termResults;
