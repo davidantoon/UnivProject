@@ -33,7 +33,7 @@ class users {
 		}
 		$dbObj = new dbAPI();
 
-		$UID = $dbObj->get_latest_UID($dbObj->db_get_usersDB(), 'users');
+		$UID = $dbObj->get_latest_UID($dbObj->db_get_usersDB(), 'USERS');
 		$UID++;
 
 		$query = "INSERT INTO USERS (UID, FIRST_NAME, LAST_NAME, USERNAME, PASSWORD, EMAIL, PROFILE_PICTURE, ROLE, CREATION_DATE) VALUES (". $UID . ", '". $first_name . "', '" . $last_name ."', '". $username ."', '". $password ."', '". $email ."', '". $profile_picture . "', '". $role ."','". date("Y-m-d H:i:s") ."')";
