@@ -112,6 +112,28 @@
                     callback(null, e);
                 }
             }
+
+            /**
+             * logout
+             * @param  {Function} callback callback function
+             */
+            User.logout = function(callback){
+                try{
+                    $httpR.connectToServer({},$httpR.USERlogout, Globals, function(result, error){
+                        if(error || !success){
+                            console.error('Could not log out');
+                            callback(null, error);
+                        }else{
+                            callback(success);
+                        }
+                    });
+                }catch(e){
+                    console.error("logout: ", e);
+                    callback(null, e);
+                }
+            }
+
+
             User.prototype = {
 
                 

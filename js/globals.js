@@ -94,6 +94,7 @@
         DELIVERYremoveTerm: "DELIVERYremoveTerm",
         DELIVERYaddRelatedKbit: "DELIVERYaddRelatedKbit",
         DELIVERYremoveRelatedKbit: "DELIVERYremoveRelatedKbit",
+        USERlogout: "USERlogout",
 
         
 

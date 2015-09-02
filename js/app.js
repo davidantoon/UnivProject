@@ -147,14 +147,19 @@ var ngScope;
                 $('#LoadingScreen').show();
 
                 // LOGOUT
-
-                $scope.clearData();
-                $timeout(function() {
-                    $scope.$apply(function() {
-                        $scope.AppStatus = 1;
-                        $('#LoadingScreen').hide();
-                    });
-                }, 1000);
+                User.logout(function(success, error){
+                    if(error || !success){
+                        console.error("Error logging out");
+                    }else{
+                        $scope.clearData();
+                        $timeout(function() {
+                            $scope.$apply(function() {
+                                $scope.AppStatus = 1;
+                                $('#LoadingScreen').hide();
+                            });
+                        }, 1000);
+                    }
+                });
             }
             $scope.clearData = function() {
 
