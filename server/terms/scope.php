@@ -10,7 +10,7 @@ class scope {
 		
 		$dbObj = new dbAPI();
 		// get new UID
-		$UID = $dbObj->get_latest_UID($dbObj->db_get_contentDB(), 'scope');
+		$UID = $dbObj->get_latest_UID($dbObj->db_get_contentDB(), 'SCOPE');
 		$UID++;
 		// add record to database
 		$query = "INSERT INTO SCOPE (UID, TITLE, DESCRIPTION, ENABLED, USER_ID, CREATION_DATE) VALUES (".
