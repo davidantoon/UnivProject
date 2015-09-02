@@ -139,6 +139,7 @@
 							"searchFields": searchFields
 						};
 						//Kbit
+						debugger;
 						if(dataToSearch.dataType[0] == 1){
 							$httpR.connectToServer(data, $httpR.KBITsearchKbits, Globals, function(success, error){
 								
@@ -413,6 +414,7 @@
 						
 
 						function mergeData(result, index){
+							debugger;
 							mergeResult = mergeResult.concat(result);
 							if(index == 3)
 								callback(mergeResult);
@@ -1017,12 +1019,14 @@
 			 * @param {String}   relation     if the relation is needed or provided
 			 * @param {Function} callback     callback function
 			 */
-			AddKbitToKbit: function(firstKbitID, secondKbitID, relation, callback){
+			
+			AddKbitToKbit: function(firstKbitID, secondKbitID, isHier, callback){
 				try{
 					if((firstKbitID !=null && firstKbitID !=undefined) && (secondKbitID != null && secondKbitID !=undefined)){
 						var data = {
 							firstUID: firstKbitID,
-							secondUID: secondKbitID
+							secondUID: secondKbitID,
+							isHier: true
 						};
 						console.warn(" update needed or provided");
 						if(relation == "NEEDED"){
@@ -1086,12 +1090,12 @@
 			 * Adds term to kbit terms arrat
 			 * @param {number}   kbitID   kibt id
 			 * @param {number}   termID   term id
-			 * @param {String}   relation relation link
+			 * @param {String}   linkType type link
 			 * @param {Function} callback callback function
 			 */
-			addTermToKbit: function(kbitID, termID, relation, callback){
+			addTermToKbit: function(kbitID, termID, linkType, callback){
 				try{
-					if( (kbitID !=null && kbitID !=undefined) && (termID != null && termID !=undefined) && (relation != null && relation !=undefined) ){
+					if( (kbitID !=null && kbitID !=undefined) && (termID != null && termID !=undefined) && (linkType != null && linkType !=undefined) ){
 						var data = {
 							kbitUID: kbitID,
 							termUID: termID,
@@ -1303,6 +1307,7 @@
 			 */
 			addDeliverytoDeliveryRelation: function(firstDeliveryID, secondDeliveryID, callback){
 				try{
+					debugger;
 					if(firstDeliveryID && secondDeliveryID){
 						var data = {
 							firstUID: firstDeliveryID,
@@ -1311,7 +1316,7 @@
 						};
 						$httpR.connectToServer(data, $httpR.DELIVERYaddRelatedDelivery, Globals, function(success, error){
 							if(error || !success){
-								console.error("error adding delivery relation: ", error);
+								console.error("error adding delivery relation: ", success, error);
 								callback(null, error);
 							}else{
 								callback(success, null);

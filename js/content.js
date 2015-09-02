@@ -26,6 +26,8 @@
 			}
 		}
 
+		
+
 		Content.prototype = {
 
 			objectType: "Content",
@@ -238,6 +240,64 @@
 	           		console.error("toJson: ", e);
 	           		return null;
 				}
+			},
+
+			/**
+			 * Gets difference in kbits needed
+			 * @param  {ArraY} oldArray old kbits needed array
+			 * @param  {Array} newArray new kbits needed array
+			 * @return {object}         object contains the deleted and inserted
+			 */
+			getDiffKbitsNeeded: function(){
+				return {
+	                "deleted":(this.kBitsNeeded.filter(function(a) {
+	                    var found = false;
+	                    for(var i=0; i<this.newData.length ;i++){
+	                        if(this.newData[i].id == a.id){
+	                            found = true;
+	                        }
+	                    }
+	                    return (!found);
+	                })),
+	                "inserted":(this.newData.filter(function(a) {
+	                    var found = false;
+	                    for(var i=0; i<this.kBitsNeeded.length ;i++){
+	                        if(this.kBitsNeeded[i].id == a.id){
+	                            found = true;
+	                        }
+	                    }
+	                    return (!found);
+	                }))
+            	}
+			},
+
+			/**
+			 * Gets difference in kbits provided
+			 * @param  {ArraY} oldArray old kbits needed array
+			 * @param  {Array} newArray new kbits needed array
+			 * @return {object}         object contains the deleted and inserted
+			 */
+			getDiffKbitsProvided: function(){
+				return {
+	                "deleted":(this.kBitsProvided.filter(function(a) {
+	                    var found = false;
+	                    for(var i=0; i<this.newData.length ;i++){
+	                        if(this.newData[i].id == a.id){
+	                            found = true;
+	                        }
+	                    }
+	                    return (!found);
+	                })),
+	                "inserted":(this.newData.filter(function(a) {
+	                    var found = false;
+	                    for(var i=0; i<this.kBitsProvided.length ;i++){
+	                        if(this.kBitsProvided[i].id == a.id){
+	                            found = true;
+	                        }
+	                    }
+	                    return (!found);
+	                }))
+            	}
 			}
 
 		}
