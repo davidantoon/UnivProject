@@ -15,14 +15,15 @@ include("phpFileTree/php_file_tree.php");
 
 		<title>CMS - log files</title>
 		<style>
-			/*div.floating-menu {position:fixed;background:#fff4c8;padding:5px;;width:250px;z-index:100;}*/
-			/*div.floating-menu a, div.floating-menu h3 {display:block;margin:0 0.5em;}*/
-						section {
+				.floating-menu {
 			    width: 80%;
 			    /*height: 200px;*/
 			    background: aqua;
 			    margin: auto;
 			    padding: 10px;
+			    position: absolute;
+			    height: 88%;
+			    overflow: scroll;
 			}
 			div#one {
 				position:fixed;background:#fff4c8;

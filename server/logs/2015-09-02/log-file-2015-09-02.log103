@@ -1,0 +1,536 @@
+<hr style='border-color:orange'></font>
+<br><font color='#f92772'><b><hr style='border-color:orange'>
+02-09-15 08:10:11: </b>START
+<hr style='border-color:orange'></font>
+<br><font color='#f92772'><b><hr style='border-color:#f92772'>
+02-09-15 08:10:11: </b>[DBobject.php:run_query] 
+ SQL ERROR:  
+ Query: 
+DELETE FROM CMSdbTERMS 
+ object(mysqli)#3 (19) {
+  ["affected_rows"]=>
+  int(-1)
+  ["client_info"]=>
+  string(6) "5.5.38"
+  ["client_version"]=>
+  int(50538)
+  ["connect_errno"]=>
+  int(0)
+  ["connect_error"]=>
+  NULL
+  ["errno"]=>
+  int(1146)
+  ["error"]=>
+  string(44) "Table 'cms_usersdb.cmsdbterms' doesn't exist"
+  ["error_list"]=>
+  array(1) {
+    [0]=>
+    array(3) {
+      ["errno"]=>
+      int(1146)
+      ["sqlstate"]=>
+      string(5) "42S02"
+      ["error"]=>
+      string(44) "Table 'cms_usersdb.cmsdbterms' doesn't exist"
+    }
+  }
+  ["field_count"]=>
+  int(0)
+  ["host_info"]=>
+  string(25) "Localhost via UNIX socket"
+  ["info"]=>
+  NULL
+  ["insert_id"]=>
+  int(0)
+  ["server_info"]=>
+  string(6) "5.5.38"
+  ["server_version"]=>
+  int(50538)
+  ["stat"]=>
+  string(138) "Uptime: 330830  Threads: 3  Questions: 49995  Slow queries: 0  Opens: 482  Flush tables: 1  Open tables: 86  Queries per second avg: 0.151"
+  ["sqlstate"]=>
+  string(5) "00000"
+  ["protocol_version"]=>
+  int(10)
+  ["thread_id"]=>
+  int(19903)
+  ["warning_count"]=>
+  int(0)
+}
+
+<hr style='border-color:#f92772'></font>
+<br><font color='#f92772'><b><hr style='border-color:#f92772'>
+02-09-15 08:10:11: </b>[DBobject.php:run_query] 
+ SQL ERROR:  
+ Query: 
+DELETE FROM CMSdbTERM_STRING 
+ object(mysqli)#3 (19) {
+  ["affected_rows"]=>
+  int(-1)
+  ["client_info"]=>
+  string(6) "5.5.38"
+  ["client_version"]=>
+  int(50538)
+  ["connect_errno"]=>
+  int(0)
+  ["connect_error"]=>
+  NULL
+  ["errno"]=>
+  int(1146)
+  ["error"]=>
+  string(50) "Table 'cms_usersdb.cmsdbterm_string' doesn't exist"
+  ["error_list"]=>
+  array(1) {
+    [0]=>
+    array(3) {
+      ["errno"]=>
+      int(1146)
+      ["sqlstate"]=>
+      string(5) "42S02"
+      ["error"]=>
+      string(50) "Table 'cms_usersdb.cmsdbterm_string' doesn't exist"
+    }
+  }
+  ["field_count"]=>
+  int(0)
+  ["host_info"]=>
+  string(25) "Localhost via UNIX socket"
+  ["info"]=>
+  NULL
+  ["insert_id"]=>
+  int(0)
+  ["server_info"]=>
+  string(6) "5.5.38"
+  ["server_version"]=>
+  int(50538)
+  ["stat"]=>
+  string(138) "Uptime: 330830  Threads: 3  Questions: 49998  Slow queries: 0  Opens: 482  Flush tables: 1  Open tables: 86  Queries per second avg: 0.151"
+  ["sqlstate"]=>
+  string(5) "00000"
+  ["protocol_version"]=>
+  int(10)
+  ["thread_id"]=>
+  int(19904)
+  ["warning_count"]=>
+  int(0)
+}
+
+<hr style='border-color:#f92772'></font>
+<br><font color='#f92772'><b><hr style='border-color:#f92772'>
+02-09-15 08:10:11: </b>[DBobject.php:run_query] 
+ SQL ERROR:  
+ Query: 
+DELETE FROM CMSdbTERM_MEAN 
+ object(mysqli)#3 (19) {
+  ["affected_rows"]=>
+  int(-1)
+  ["client_info"]=>
+  string(6) "5.5.38"
+  ["client_version"]=>
+  int(50538)
+  ["connect_errno"]=>
+  int(0)
+  ["connect_error"]=>
+  NULL
+  ["errno"]=>
+  int(1146)
+  ["error"]=>
+  string(48) "Table 'cms_usersdb.cmsdbterm_mean' doesn't exist"
+  ["error_list"]=>
+  array(1) {
+    [0]=>
+    array(3) {
+      ["errno"]=>
+      int(1146)
+      ["sqlstate"]=>
+      string(5) "42S02"
+      ["error"]=>
+      string(48) "Table 'cms_usersdb.cmsdbterm_mean' doesn't exist"
+    }
+  }
+  ["field_count"]=>
+  int(0)
+  ["host_info"]=>
+  string(25) "Localhost via UNIX socket"
+  ["info"]=>
+  NULL
+  ["insert_id"]=>
+  int(0)
+  ["server_info"]=>
+  string(6) "5.5.38"
+  ["server_version"]=>
+  int(50538)
+  ["stat"]=>
+  string(138) "Uptime: 330830  Threads: 3  Questions: 50001  Slow queries: 0  Opens: 482  Flush tables: 1  Open tables: 86  Queries per second avg: 0.151"
+  ["sqlstate"]=>
+  string(5) "00000"
+  ["protocol_version"]=>
+  int(10)
+  ["thread_id"]=>
+  int(19905)
+  ["warning_count"]=>
+  int(0)
+}
+
+<hr style='border-color:#f92772'></font>
+<br><font color='#f92772'><b><hr style='border-color:#f92772'>
+02-09-15 08:10:11: </b>[DBobject.php:run_query] 
+ SQL ERROR:  
+ Query: 
+DELETE FROM CMSdbSCOPE 
+ object(mysqli)#3 (19) {
+  ["affected_rows"]=>
+  int(-1)
+  ["client_info"]=>
+  string(6) "5.5.38"
+  ["client_version"]=>
+  int(50538)
+  ["connect_errno"]=>
+  int(0)
+  ["connect_error"]=>
+  NULL
+  ["errno"]=>
+  int(1146)
+  ["error"]=>
+  string(44) "Table 'cms_usersdb.cmsdbscope' doesn't exist"
+  ["error_list"]=>
+  array(1) {
+    [0]=>
+    array(3) {
+      ["errno"]=>
+      int(1146)
+      ["sqlstate"]=>
+      string(5) "42S02"
+      ["error"]=>
+      string(44) "Table 'cms_usersdb.cmsdbscope' doesn't exist"
+    }
+  }
+  ["field_count"]=>
+  int(0)
+  ["host_info"]=>
+  string(25) "Localhost via UNIX socket"
+  ["info"]=>
+  NULL
+  ["insert_id"]=>
+  int(0)
+  ["server_info"]=>
+  string(6) "5.5.38"
+  ["server_version"]=>
+  int(50538)
+  ["stat"]=>
+  string(138) "Uptime: 330830  Threads: 3  Questions: 50004  Slow queries: 0  Opens: 482  Flush tables: 1  Open tables: 86  Queries per second avg: 0.151"
+  ["sqlstate"]=>
+  string(5) "00000"
+  ["protocol_version"]=>
+  int(10)
+  ["thread_id"]=>
+  int(19906)
+  ["warning_count"]=>
+  int(0)
+}
+
+<hr style='border-color:#f92772'></font>
+<br><font color='#f92772'><b><hr style='border-color:#f92772'>
+02-09-15 08:10:11: </b>/**********************************************************************************************
+							*                                                                                             *
+							*  00000000000  00000000000     00000     00000000000  00000000000  000      00     00000     *
+							*      000      000           000   000       000          000      0000     00   000   000   *
+							*      000      000           00              000          000      00 00    00  000          *
+							*      000      00000000000    0000000        000          000      00  000  00  00   000000  *
+							*      000      000                  00       000          000      00    00 00  000     00   *
+							*      000      000           000   000       000          000      00     0000   000   000   *
+							*      000      00000000000     00000         000      00000000000  00      000     00000     *
+							*                                                                                             *
+							**********************************************************************************************/
+<hr style='border-color:#f92772'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_languages</font></i></u><ul><li>[]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">add_new_scope</font></i></u><ul><li>["scope title 0","scope description 0",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">get_scope_by_UID</font></i></u><ul><li>[73]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">add_new_term_with_scope_and_meaning</font></i></u><ul><li>["term 0","en",0,0,"term meaning 0"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">add_new_term</font></i></u><ul><li>["term 0","en",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_by_UID</font></i></u><ul><li>[92,"en"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">get_scope_by_UID</font></i></u><ul><li>[0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">add_meaning</font></i></u><ul><li>["term meaning 0","en",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_meaning_by_UID</font></i></u><ul><li>[65,"en"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_connection_by_UID</font></i></u><ul><li>[59]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:function]</i></font><font color ='white'> adding term: <br/><hr>{"id":"59","UID":"59","ID_TERM_MEAN":"65","ID_SCOPE":"0","ID_TERM_STRING":"92","ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11"}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">add_new_scope</font></i></u><ul><li>["scope title 1","scope description 1",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">get_scope_by_UID</font></i></u><ul><li>[74]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">add_new_term_with_scope_and_meaning</font></i></u><ul><li>["term 1","en",0,1,"term meaning 1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">add_new_term</font></i></u><ul><li>["term 1","en",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_by_UID</font></i></u><ul><li>[93,"en"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">get_scope_by_UID</font></i></u><ul><li>[1]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">add_meaning</font></i></u><ul><li>["term meaning 1","en",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_meaning_by_UID</font></i></u><ul><li>[66,"en"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_connection_by_UID</font></i></u><ul><li>[60]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:function]</i></font><font color ='white'> adding term: <br/><hr>{"id":"60","UID":"60","ID_TERM_MEAN":"66","ID_SCOPE":"1","ID_TERM_STRING":"93","ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11"}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">add_new_scope</font></i></u><ul><li>["scope title 2","scope description 2",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">get_scope_by_UID</font></i></u><ul><li>[75]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">add_new_term_with_scope_and_meaning</font></i></u><ul><li>["term 2","en",0,2,"term meaning 2"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">add_new_term</font></i></u><ul><li>["term 2","en",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_by_UID</font></i></u><ul><li>[94,"en"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">get_scope_by_UID</font></i></u><ul><li>[2]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">add_meaning</font></i></u><ul><li>["term meaning 2","en",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_meaning_by_UID</font></i></u><ul><li>[67,"en"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_connection_by_UID</font></i></u><ul><li>[61]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:function]</i></font><font color ='white'> adding term: <br/><hr>{"id":"61","UID":"61","ID_TERM_MEAN":"67","ID_SCOPE":"2","ID_TERM_STRING":"94","ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11"}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">add_new_scope</font></i></u><ul><li>["scope title 3","scope description 3",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">get_scope_by_UID</font></i></u><ul><li>[76]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">add_new_term_with_scope_and_meaning</font></i></u><ul><li>["term 3","en",0,3,"term meaning 3"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">add_new_term</font></i></u><ul><li>["term 3","en",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_by_UID</font></i></u><ul><li>[95,"en"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">get_scope_by_UID</font></i></u><ul><li>[3]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">add_meaning</font></i></u><ul><li>["term meaning 3","en",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_meaning_by_UID</font></i></u><ul><li>[68,"en"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_connection_by_UID</font></i></u><ul><li>[62]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:function]</i></font><font color ='white'> adding term: <br/><hr>{"id":"62","UID":"62","ID_TERM_MEAN":"68","ID_SCOPE":"3","ID_TERM_STRING":"95","ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11"}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">add_new_scope</font></i></u><ul><li>["scope title 4","scope description 4",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">get_scope_by_UID</font></i></u><ul><li>[77]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">add_new_term_with_scope_and_meaning</font></i></u><ul><li>["term 4","en",0,4,"term meaning 4"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">add_new_term</font></i></u><ul><li>["term 4","en",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_by_UID</font></i></u><ul><li>[96,"en"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">get_scope_by_UID</font></i></u><ul><li>[4]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">add_meaning</font></i></u><ul><li>["term meaning 4","en",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_meaning_by_UID</font></i></u><ul><li>[69,"en"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_connection_by_UID</font></i></u><ul><li>[63]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:function]</i></font><font color ='white'> adding term: <br/><hr>{"id":"63","UID":"63","ID_TERM_MEAN":"69","ID_SCOPE":"4","ID_TERM_STRING":"96","ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11"}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">add_new_scope</font></i></u><ul><li>["scope title 5","scope description 5",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">get_scope_by_UID</font></i></u><ul><li>[78]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">add_new_term_with_scope_and_meaning</font></i></u><ul><li>["term 5","en",0,5,"term meaning 5"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">add_new_term</font></i></u><ul><li>["term 5","en",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_by_UID</font></i></u><ul><li>[97,"en"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">get_scope_by_UID</font></i></u><ul><li>[5]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b>could not locate scope "5"</font>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:function]</i></font><font color ='white'> adding term: <br/><hr>null<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">add_new_scope</font></i></u><ul><li>["scope title 6","scope description 6",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">get_scope_by_UID</font></i></u><ul><li>[79]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">add_new_term_with_scope_and_meaning</font></i></u><ul><li>["term 6","en",0,6,"term meaning 6"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">add_new_term</font></i></u><ul><li>["term 6","en",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_by_UID</font></i></u><ul><li>[98,"en"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">get_scope_by_UID</font></i></u><ul><li>[6]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b>could not locate scope "6"</font>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:function]</i></font><font color ='white'> adding term: <br/><hr>null<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">add_new_scope</font></i></u><ul><li>["scope title 7","scope description 7",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">get_scope_by_UID</font></i></u><ul><li>[80]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">add_new_term_with_scope_and_meaning</font></i></u><ul><li>["term 7","en",0,7,"term meaning 7"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">add_new_term</font></i></u><ul><li>["term 7","en",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_by_UID</font></i></u><ul><li>[99,"en"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">get_scope_by_UID</font></i></u><ul><li>[7]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b>could not locate scope "7"</font>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:function]</i></font><font color ='white'> adding term: <br/><hr>null<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_Kbit_in_edit_mode</font></i></u><ul><li>["Kbit title 0","Kbit description 0",0,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google0.com"}]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">acquire_lock</font></i></u><ul><li>[1,"KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked</font></i></u><ul><li>[1,"KBIT_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_edit_for_kbit</font></i></u><ul><li>[1,"Kbit title 0","Kbit description 0",0,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google0.com"}]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>[1,"KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[Kbits.php:add_new_edit_for_kbit]</i></font><font color ='white'> fronttt: KBIT_FRONT</font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">disable_base_and_front</font></i></u><ul><li>[1]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_kbit_by_UID</font></i></u><ul><li>[1]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">disable_all_kbit_info</font></i></u><ul><li>[1,"content"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_base_Kbit</font></i></u><ul><li>[1,"user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_front</font></i></u><ul><li>[1,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google0.com"},0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_KBIT_FRONT</font></i></u><ul><li>[1,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google0.com"},0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_new_Revision_and_disbale_old_ones</font></i></u><ul><li>[1,"KBIT_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Kbit</font></i></u><ul><li>[1,"KBIT_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:function]</i></font><font color ='white'> adding kbit: <br/><hr>{"id":"788","UID":"1","REVISION":"1","TITLE":"Kbit title 0","DESCRIPTION":"Kbit description 0","ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11","FRONT_TYPE":"KBIT_FRONT","FRONT_KBIT":{"id":"788","UID":"1","REVISION":"1","PATH":"http:\/\/google0.com","PARAM1":null,"PARAM2":null,"ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11","FRONT_TYPE":"KBIT_FRONT"}}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_K2T_relation</font></i></u><ul><li>["1",7,"link type",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">add_O2T_relation</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"1"},7,"link type",0,"R_LK2T","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">remove_O2T_relation</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"1"},7,"link type","R_LK2T","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_O2T_relation</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"1"},7,"link type","R_LK2T","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:testing relation K2T (0=>7)]</i></font><font color ='white'> result: <br/><hr>{"id":"229","KBIT_BASE_ID":"1","TERM_ID":"7","LINK_TYPE":"link type","ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11","REVISION":"1"}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_Kbit_in_edit_mode</font></i></u><ul><li>["Kbit title 1","Kbit description 1",0,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google1.com"}]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">acquire_lock</font></i></u><ul><li>[888,"KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked</font></i></u><ul><li>[888,"KBIT_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_edit_for_kbit</font></i></u><ul><li>[888,"Kbit title 1","Kbit description 1",0,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google1.com"}]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>[888,"KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[Kbits.php:add_new_edit_for_kbit]</i></font><font color ='white'> fronttt: KBIT_FRONT</font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">disable_base_and_front</font></i></u><ul><li>[888]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_kbit_by_UID</font></i></u><ul><li>[888]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">disable_all_kbit_info</font></i></u><ul><li>[888,"content"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_base_Kbit</font></i></u><ul><li>[888,"user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_front</font></i></u><ul><li>[888,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google1.com"},0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_KBIT_FRONT</font></i></u><ul><li>[888,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google1.com"},0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_new_Revision_and_disbale_old_ones</font></i></u><ul><li>[888,"KBIT_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Kbit</font></i></u><ul><li>[888,"KBIT_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:function]</i></font><font color ='white'> adding kbit: <br/><hr>{"id":"789","UID":"888","REVISION":"1","TITLE":"Kbit title 1","DESCRIPTION":"Kbit description 1","ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11","FRONT_TYPE":"KBIT_FRONT","FRONT_KBIT":{"id":"789","UID":"888","REVISION":"1","PATH":"http:\/\/google1.com","PARAM1":null,"PARAM2":null,"ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11","FRONT_TYPE":"KBIT_FRONT"}}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_K2T_relation</font></i></u><ul><li>["888",6,"link type",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["888","KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">add_O2T_relation</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"888"},6,"link type",0,"R_LK2T","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">remove_O2T_relation</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"888"},6,"link type","R_LK2T","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_O2T_relation</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"888"},6,"link type","R_LK2T","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:testing relation K2T (1=>6)]</i></font><font color ='white'> result: <br/><hr>{"id":"230","KBIT_BASE_ID":"888","TERM_ID":"6","LINK_TYPE":"link type","ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11","REVISION":"1"}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_Kbit_in_edit_mode</font></i></u><ul><li>["Kbit title 2","Kbit description 2",0,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google2.com"}]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">acquire_lock</font></i></u><ul><li>[889,"KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked</font></i></u><ul><li>[889,"KBIT_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_edit_for_kbit</font></i></u><ul><li>[889,"Kbit title 2","Kbit description 2",0,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google2.com"}]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>[889,"KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[Kbits.php:add_new_edit_for_kbit]</i></font><font color ='white'> fronttt: KBIT_FRONT</font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">disable_base_and_front</font></i></u><ul><li>[889]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_kbit_by_UID</font></i></u><ul><li>[889]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">disable_all_kbit_info</font></i></u><ul><li>[889,"content"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_base_Kbit</font></i></u><ul><li>[889,"user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_front</font></i></u><ul><li>[889,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google2.com"},0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_KBIT_FRONT</font></i></u><ul><li>[889,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google2.com"},0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_new_Revision_and_disbale_old_ones</font></i></u><ul><li>[889,"KBIT_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Kbit</font></i></u><ul><li>[889,"KBIT_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:function]</i></font><font color ='white'> adding kbit: <br/><hr>{"id":"790","UID":"889","REVISION":"1","TITLE":"Kbit title 2","DESCRIPTION":"Kbit description 2","ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11","FRONT_TYPE":"KBIT_FRONT","FRONT_KBIT":{"id":"790","UID":"889","REVISION":"1","PATH":"http:\/\/google2.com","PARAM1":null,"PARAM2":null,"ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11","FRONT_TYPE":"KBIT_FRONT"}}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_K2T_relation</font></i></u><ul><li>["889",5,"link type",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["889","KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">add_O2T_relation</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"889"},5,"link type",0,"R_LK2T","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">remove_O2T_relation</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"889"},5,"link type","R_LK2T","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_O2T_relation</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"889"},5,"link type","R_LK2T","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:testing relation K2T (2=>5)]</i></font><font color ='white'> result: <br/><hr>{"id":"231","KBIT_BASE_ID":"889","TERM_ID":"5","LINK_TYPE":"link type","ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11","REVISION":"1"}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_Kbit_in_edit_mode</font></i></u><ul><li>["Kbit title 3","Kbit description 3",0,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google3.com"}]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">acquire_lock</font></i></u><ul><li>[890,"KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked</font></i></u><ul><li>[890,"KBIT_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_edit_for_kbit</font></i></u><ul><li>[890,"Kbit title 3","Kbit description 3",0,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google3.com"}]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>[890,"KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[Kbits.php:add_new_edit_for_kbit]</i></font><font color ='white'> fronttt: KBIT_FRONT</font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">disable_base_and_front</font></i></u><ul><li>[890]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_kbit_by_UID</font></i></u><ul><li>[890]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">disable_all_kbit_info</font></i></u><ul><li>[890,"content"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_base_Kbit</font></i></u><ul><li>[890,"user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_front</font></i></u><ul><li>[890,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google3.com"},0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_KBIT_FRONT</font></i></u><ul><li>[890,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google3.com"},0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_new_Revision_and_disbale_old_ones</font></i></u><ul><li>[890,"KBIT_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Kbit</font></i></u><ul><li>[890,"KBIT_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:function]</i></font><font color ='white'> adding kbit: <br/><hr>{"id":"791","UID":"890","REVISION":"1","TITLE":"Kbit title 3","DESCRIPTION":"Kbit description 3","ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11","FRONT_TYPE":"KBIT_FRONT","FRONT_KBIT":{"id":"791","UID":"890","REVISION":"1","PATH":"http:\/\/google3.com","PARAM1":null,"PARAM2":null,"ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11","FRONT_TYPE":"KBIT_FRONT"}}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_K2T_relation</font></i></u><ul><li>["890",4,"link type",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["890","KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">add_O2T_relation</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"890"},4,"link type",0,"R_LK2T","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">remove_O2T_relation</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"890"},4,"link type","R_LK2T","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_O2T_relation</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"890"},4,"link type","R_LK2T","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:testing relation K2T (3=>4)]</i></font><font color ='white'> result: <br/><hr>{"id":"232","KBIT_BASE_ID":"890","TERM_ID":"4","LINK_TYPE":"link type","ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11","REVISION":"1"}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_Kbit_in_edit_mode</font></i></u><ul><li>["Kbit title 4","Kbit description 4",0,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google4.com"}]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">acquire_lock</font></i></u><ul><li>[891,"KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked</font></i></u><ul><li>[891,"KBIT_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_edit_for_kbit</font></i></u><ul><li>[891,"Kbit title 4","Kbit description 4",0,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google4.com"}]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>[891,"KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[Kbits.php:add_new_edit_for_kbit]</i></font><font color ='white'> fronttt: KBIT_FRONT</font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">disable_base_and_front</font></i></u><ul><li>[891]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_kbit_by_UID</font></i></u><ul><li>[891]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">disable_all_kbit_info</font></i></u><ul><li>[891,"content"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_base_Kbit</font></i></u><ul><li>[891,"user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_front</font></i></u><ul><li>[891,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google4.com"},0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_KBIT_FRONT</font></i></u><ul><li>[891,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google4.com"},0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_new_Revision_and_disbale_old_ones</font></i></u><ul><li>[891,"KBIT_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Kbit</font></i></u><ul><li>[891,"KBIT_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:function]</i></font><font color ='white'> adding kbit: <br/><hr>{"id":"792","UID":"891","REVISION":"1","TITLE":"Kbit title 4","DESCRIPTION":"Kbit description 4","ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11","FRONT_TYPE":"KBIT_FRONT","FRONT_KBIT":{"id":"792","UID":"891","REVISION":"1","PATH":"http:\/\/google4.com","PARAM1":null,"PARAM2":null,"ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11","FRONT_TYPE":"KBIT_FRONT"}}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_K2T_relation</font></i></u><ul><li>["891",3,"link type",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["891","KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">add_O2T_relation</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"891"},3,"link type",0,"R_LK2T","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">remove_O2T_relation</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"891"},3,"link type","R_LK2T","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_O2T_relation</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"891"},3,"link type","R_LK2T","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:testing relation K2T (4=>3)]</i></font><font color ='white'> result: <br/><hr>{"id":"233","KBIT_BASE_ID":"891","TERM_ID":"3","LINK_TYPE":"link type","ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11","REVISION":"1"}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_Kbit_in_edit_mode</font></i></u><ul><li>["Kbit title 5","Kbit description 5",0,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google5.com"}]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">acquire_lock</font></i></u><ul><li>[892,"KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked</font></i></u><ul><li>[892,"KBIT_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_edit_for_kbit</font></i></u><ul><li>[892,"Kbit title 5","Kbit description 5",0,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google5.com"}]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>[892,"KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[Kbits.php:add_new_edit_for_kbit]</i></font><font color ='white'> fronttt: KBIT_FRONT</font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">disable_base_and_front</font></i></u><ul><li>[892]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_kbit_by_UID</font></i></u><ul><li>[892]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">disable_all_kbit_info</font></i></u><ul><li>[892,"content"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_base_Kbit</font></i></u><ul><li>[892,"user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_front</font></i></u><ul><li>[892,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google5.com"},0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_KBIT_FRONT</font></i></u><ul><li>[892,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google5.com"},0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_new_Revision_and_disbale_old_ones</font></i></u><ul><li>[892,"KBIT_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Kbit</font></i></u><ul><li>[892,"KBIT_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:function]</i></font><font color ='white'> adding kbit: <br/><hr>{"id":"793","UID":"892","REVISION":"1","TITLE":"Kbit title 5","DESCRIPTION":"Kbit description 5","ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11","FRONT_TYPE":"KBIT_FRONT","FRONT_KBIT":{"id":"793","UID":"892","REVISION":"1","PATH":"http:\/\/google5.com","PARAM1":null,"PARAM2":null,"ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11","FRONT_TYPE":"KBIT_FRONT"}}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_K2T_relation</font></i></u><ul><li>["892",2,"link type",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["892","KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">add_O2T_relation</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"892"},2,"link type",0,"R_LK2T","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">remove_O2T_relation</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"892"},2,"link type","R_LK2T","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_O2T_relation</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"892"},2,"link type","R_LK2T","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:testing relation K2T (5=>2)]</i></font><font color ='white'> result: <br/><hr>{"id":"234","KBIT_BASE_ID":"892","TERM_ID":"2","LINK_TYPE":"link type","ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11","REVISION":"1"}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_Kbit_in_edit_mode</font></i></u><ul><li>["Kbit title 6","Kbit description 6",0,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google6.com"}]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">acquire_lock</font></i></u><ul><li>[893,"KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked</font></i></u><ul><li>[893,"KBIT_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_edit_for_kbit</font></i></u><ul><li>[893,"Kbit title 6","Kbit description 6",0,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google6.com"}]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>[893,"KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[Kbits.php:add_new_edit_for_kbit]</i></font><font color ='white'> fronttt: KBIT_FRONT</font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">disable_base_and_front</font></i></u><ul><li>[893]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_kbit_by_UID</font></i></u><ul><li>[893]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">disable_all_kbit_info</font></i></u><ul><li>[893,"content"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_base_Kbit</font></i></u><ul><li>[893,"user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_front</font></i></u><ul><li>[893,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google6.com"},0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_KBIT_FRONT</font></i></u><ul><li>[893,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google6.com"},0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_new_Revision_and_disbale_old_ones</font></i></u><ul><li>[893,"KBIT_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Kbit</font></i></u><ul><li>[893,"KBIT_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:function]</i></font><font color ='white'> adding kbit: <br/><hr>{"id":"794","UID":"893","REVISION":"1","TITLE":"Kbit title 6","DESCRIPTION":"Kbit description 6","ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11","FRONT_TYPE":"KBIT_FRONT","FRONT_KBIT":{"id":"794","UID":"893","REVISION":"1","PATH":"http:\/\/google6.com","PARAM1":null,"PARAM2":null,"ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11","FRONT_TYPE":"KBIT_FRONT"}}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_K2T_relation</font></i></u><ul><li>["893",1,"link type",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["893","KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">add_O2T_relation</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"893"},1,"link type",0,"R_LK2T","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">remove_O2T_relation</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"893"},1,"link type","R_LK2T","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_O2T_relation</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"893"},1,"link type","R_LK2T","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:testing relation K2T (6=>1)]</i></font><font color ='white'> result: <br/><hr>{"id":"235","KBIT_BASE_ID":"893","TERM_ID":"1","LINK_TYPE":"link type","ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11","REVISION":"1"}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_Kbit_in_edit_mode</font></i></u><ul><li>["Kbit title 7","Kbit description 7",0,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google7.com"}]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">acquire_lock</font></i></u><ul><li>[894,"KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked</font></i></u><ul><li>[894,"KBIT_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_edit_for_kbit</font></i></u><ul><li>[894,"Kbit title 7","Kbit description 7",0,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google7.com"}]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>[894,"KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[Kbits.php:add_new_edit_for_kbit]</i></font><font color ='white'> fronttt: KBIT_FRONT</font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">disable_base_and_front</font></i></u><ul><li>[894]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_kbit_by_UID</font></i></u><ul><li>[894]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">disable_all_kbit_info</font></i></u><ul><li>[894,"content"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_base_Kbit</font></i></u><ul><li>[894,"user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_front</font></i></u><ul><li>[894,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google7.com"},0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_new_KBIT_FRONT</font></i></u><ul><li>[894,{"FRONT_TYPE":"KBIT_FRONT","PATH":"http:\/\/google7.com"},0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_new_Revision_and_disbale_old_ones</font></i></u><ul><li>[894,"KBIT_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Kbit</font></i></u><ul><li>[894,"KBIT_FRONT","user"]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:function]</i></font><font color ='white'> adding kbit: <br/><hr>{"id":"795","UID":"894","REVISION":"1","TITLE":"Kbit title 7","DESCRIPTION":"Kbit description 7","ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11","FRONT_TYPE":"KBIT_FRONT","FRONT_KBIT":{"id":"795","UID":"894","REVISION":"1","PATH":"http:\/\/google7.com","PARAM1":null,"PARAM2":null,"ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11","FRONT_TYPE":"KBIT_FRONT"}}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_K2T_relation</font></i></u><ul><li>["894",0,"link type",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["894","KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">add_O2T_relation</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"894"},0,"link type",0,"R_LK2T","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">remove_O2T_relation</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"894"},0,"link type","R_LK2T","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_O2T_relation</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"894"},0,"link type","R_LK2T","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:testing relation K2T (7=>0)]</i></font><font color ='white'> result: <br/><hr>{"id":"236","KBIT_BASE_ID":"894","TERM_ID":"0","LINK_TYPE":"link type","ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11","REVISION":"1"}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_K2K_relation</font></i></u><ul><li>["888","1",true,0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["888","KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["888","KBIT_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["1","KBIT_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">add_relation_to_object</font></i></u><ul><li>["888","1",true,0,"R_LK2K","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">remove_relation</font></i></u><ul><li>["888","1","R_LK2K","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_objects_relation</font></i></u><ul><li>["888","1","R_LK2K","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_objects_relation</font></i></u><ul><li>["888","1","R_LK2K","user"]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:testing relation K2K KBIT (1=>0)]</i></font><font color ='white'> result: <br/><hr>{"id":"148","REVISION":"2","HIER":"1","PARENT_ID":"888","CHILD_ID":"1","LINK_TYPE":null,"PARAM1":null,"PARAM2":null,"ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11"}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_K2K_relation</font></i></u><ul><li>["893","891",true,0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["893","KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["893","KBIT_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["891","KBIT_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">add_relation_to_object</font></i></u><ul><li>["893","891",true,0,"R_LK2K","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">remove_relation</font></i></u><ul><li>["893","891","R_LK2K","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_objects_relation</font></i></u><ul><li>["893","891","R_LK2K","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_objects_relation</font></i></u><ul><li>["893","891","R_LK2K","user"]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:testing relation K2K KBIT (6=>4)]</i></font><font color ='white'> result: <br/><hr>{"id":"149","REVISION":"2","HIER":"1","PARENT_ID":"893","CHILD_ID":"891","LINK_TYPE":null,"PARAM1":null,"PARAM2":null,"ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11"}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_K2K_relation</font></i></u><ul><li>["889","893",true,0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["889","KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["889","KBIT_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["893","KBIT_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">add_relation_to_object</font></i></u><ul><li>["889","893",true,0,"R_LK2K","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">remove_relation</font></i></u><ul><li>["889","893","R_LK2K","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_objects_relation</font></i></u><ul><li>["889","893","R_LK2K","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_objects_relation</font></i></u><ul><li>["889","893","R_LK2K","user"]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:testing relation K2K KBIT (2=>6)]</i></font><font color ='white'> result: <br/><hr>{"id":"150","REVISION":"2","HIER":"1","PARENT_ID":"889","CHILD_ID":"893","LINK_TYPE":null,"PARAM1":null,"PARAM2":null,"ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11"}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_K2K_relation</font></i></u><ul><li>["1","890",true,0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["1","KBIT_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["890","KBIT_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">add_relation_to_object</font></i></u><ul><li>["1","890",true,0,"R_LK2K","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">remove_relation</font></i></u><ul><li>["1","890","R_LK2K","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_objects_relation</font></i></u><ul><li>["1","890","R_LK2K","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_objects_relation</font></i></u><ul><li>["1","890","R_LK2K","user"]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:testing relation K2K KBIT (0=>3)]</i></font><font color ='white'> result: <br/><hr>{"id":"151","REVISION":"2","HIER":"1","PARENT_ID":"1","CHILD_ID":"890","LINK_TYPE":null,"PARAM1":null,"PARAM2":null,"ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:10:11"}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">publish_changes</font></i></u><ul><li>["1",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_edited_kbit_by_UID</font></i></u><ul><li>["1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">disable_all_kbit_info</font></i></u><ul><li>["1","content"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_front_table_name</font></i></u><ul><li>["KBIT_FRONT"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">disable_all_kbit_info</font></i></u><ul><li>["1","user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">release_lock</font></i></u><ul><li>["1","KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked</font></i></u><ul><li>["1","KBIT_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:10:11: </font></b><font color='#a6e22d'><i>[hello.php:Publishing kbit]</i></font><font color ='white'> result: <br/><hr>true<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">publish_changes</font></i></u><ul><li>["888",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:10:11: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["888","KBIT_BASE",0]</li></ul></li></ul></li></ul></font></div>

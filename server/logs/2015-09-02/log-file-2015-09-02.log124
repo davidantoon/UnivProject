@@ -1,4 +1,104 @@
-82 37 36 20 60 08 02 ce 4c e0 60 00 8c 32 60 0a
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:33:35: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["997","KBIT_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:33:35: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">add_D2K_relation</font></i></u><ul><li>["997","1907","PROVIDED",0,0,"user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:33:35: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">remove_D2K_relation</font></i></u><ul><li>["997","1907","PROVIDED","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:33:35: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_D2K_relation</font></i></u><ul><li>["997","1907","PROVIDED","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:33:35: </font></b><font color='#a6e22d'><i>[hello.php:testing relation between delivery (6) and kbit(5)]</i></font><font color ='white'> result: <br/><hr>{"id":"319","REVISION":"1","KBIT_BASE_ID":"997","DELIVERY_BASE_ID":"1907","LINK_TYPE":"PROVIDED","PARAM1":null,"PARAM2":null,"LINK_WEIGHT":"0","ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:33:35"}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:33:35: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">add_Kbit_to_delivery</font></i></u><ul><li>["999","1906","PROVIDED",0,0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:33:35: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1906","DELIVERY_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:33:35: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["999","KBIT_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:33:35: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">add_D2K_relation</font></i></u><ul><li>["999","1906","PROVIDED",0,0,"user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:33:35: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">remove_D2K_relation</font></i></u><ul><li>["999","1906","PROVIDED","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:33:35: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_D2K_relation</font></i></u><ul><li>["999","1906","PROVIDED","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:33:35: </font></b><font color='#a6e22d'><i>[hello.php:testing relation between delivery (5) and kbit(7)]</i></font><font color ='white'> result: <br/><hr>{"id":"320","REVISION":"1","KBIT_BASE_ID":"999","DELIVERY_BASE_ID":"1906","LINK_TYPE":"PROVIDED","PARAM1":null,"PARAM2":null,"LINK_WEIGHT":"0","ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:33:35"}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:33:35: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">add_Kbit_to_delivery</font></i></u><ul><li>["998","1906","PROVIDED",0,0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:33:35: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1906","DELIVERY_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:33:35: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["998","KBIT_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:33:35: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">add_D2K_relation</font></i></u><ul><li>["998","1906","PROVIDED",0,0,"user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:33:35: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">remove_D2K_relation</font></i></u><ul><li>["998","1906","PROVIDED","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:33:35: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_D2K_relation</font></i></u><ul><li>["998","1906","PROVIDED","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:33:35: </font></b><font color='#a6e22d'><i>[hello.php:testing relation between delivery (5) and kbit(6)]</i></font><font color ='white'> result: <br/><hr>{"id":"321","REVISION":"1","KBIT_BASE_ID":"998","DELIVERY_BASE_ID":"1906","LINK_TYPE":"PROVIDED","PARAM1":null,"PARAM2":null,"LINK_WEIGHT":"0","ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:33:35"}<hr><br/></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:33:35: </b><ul class="trace"><li><b><u>delivery.php</u></b><ul><li><u><i><font color="#a381ff">add_Kbit_to_delivery</font></i></u><ul><li>["998","1905","PROVIDED",0,0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:33:35: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1905","DELIVERY_BASE",0]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:33:35: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["998","KBIT_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:33:35: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">add_D2K_relation</font></i></u><ul><li>["998","1905","PROVIDED",0,0,"user"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:33:35: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">remove_D2K_relation</font></i></u><ul><li>["998","1905","PROVIDED","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:33:35: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_D2K_relation</font></i></u><ul><li>["998","1905","PROVIDED","CMS_USERSdb"]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:33:35: </font></b><font color='#a6e22d'><i>[hello.php:testing relation between delivery (4) and kbit(6)]</i></font><font color ='white'> result: <br/><hr>{"id":"322","REVISION":"1","KBIT_BASE_ID":"998","DELIVERY_BASE_ID":"1905","LINK_TYPE":"PROVIDED","PARAM1":null,"PARAM2":null,"LINK_WEIGHT":"0","ENABLED":"1","USER_ID":"0","CREATION_DATE":"2015-09-02 20:33:35"}<hr><br/></font>
+<br><font color='#f92772'><b><hr style='border-color:orange'>
+02-09-15 08:33:35: </b>DONE
+<hr style='border-color:orange'></font>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [kbitUID] => 1
+    [termUID] => 2
+    [linkType] =>  
+    [serverHash] => DAVIDAMEER
+    [method] => KBITaddTermByUID
+    [format] => json
+    [Token] => 8WzmKzTyeNErmjZvSrE1gLfWL7bCFrNNnna8W3GbQlDdFDIx5nzm9OiUWuwCVkpjHArED8QutuI87qGcOfyX4RR1moDhI3ApD24h
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:34:21: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_token</font></i></u><ul><li>["8WzmKzTyeNErmjZvSrE1gLfWL7bCFrNNnna8W3GbQlDdFDIx5nzm9OiUWuwCVkpjHArED8QutuI87qGcOfyX4RR1moDhI3ApD24h"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:34:21: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_K2T_relation</font></i></u><ul><li>["1","2"," ","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:34:21: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","KBIT_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:34:21: </font></b><font color='#a6e22d'><i>[Kbits.php:add_K2T_relation]</i></font><font color ='white'> Kbit (1) is not locked by the user (1)</font>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [searchWord] => 1
+    [searchFields] => Array
+        (
+            [0] => UID
+        )
+
+    [serverHash] => DAVIDAMEER
+    [method] => KBITsearchKbits
+    [format] => json
+    [Token] => 8WzmKzTyeNErmjZvSrE1gLfWL7bCFrNNnna8W3GbQlDdFDIx5nzm9OiUWuwCVkpjHArED8QutuI87qGcOfyX4RR1moDhI3ApD24h
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:34:50: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_token</font></i></u><ul><li>["8WzmKzTyeNErmjZvSrE1gLfWL7bCFrNNnna8W3GbQlDdFDIx5nzm9OiUWuwCVkpjHArED8QutuI87qGcOfyX4RR1moDhI3ApD24h"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:34:50: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">serach_kbits</font></i></u><ul><li>["1",["UID"],"1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:34:50: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_Kbit_details</font></i></u><ul><li>["1","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:34:50: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","KBIT_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:34:50: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_kbit_by_UID</font></i></u><ul><li>["1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:34:50: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">get_locking_user</font></i></u><ul><li>["1","KBIT_BASE"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:34:50: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_front_kbit_with_user</font></i></u><ul><li>["1","KBIT_FRONT","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:34:50: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","KBIT_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:34:50: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_front_Kbit</font></i></u><ul><li>["1","KBIT_FRONT","CMSdb"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:34:50: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_Kbit</font></i></u><ul><li>["1","1",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:34:50: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","KBIT_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:34:50: </b><ul class="trace"><li><b><u>relations.php</u></b><ul><li><u><i><font color="#a381ff">get_terms_of_object</font></i></u><ul><li>[{"column_name":"KBIT_BASE_ID","value":"1"},"content","R_LK2T",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:34:50: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_full_term_by_UID</font></i></u><ul><li>["7",""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:34:50: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_connection_by_UID</font></i></u><ul><li>["7"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:34:50: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_by_UID</font></i></u><ul><li>[null,""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:34:50: </b><ul class="trace"><li><b><u>term.php</u></b><ul><li><u><i><font color="#a381ff">get_term_meaning_by_UID</font></i></u><ul><li>[null,""]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:34:50: </b><ul class="trace"><li><b><u>scope.php</u></b><ul><li><u><i><font color="#a381ff">get_scope_by_UID</font></i></u><ul><li>[null]</li></ul></li></ul></li></ul></font></div>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [kbitUID] => 1
+    [termUID] => 2
+    [linkType] =>  
+    [serverHash] => DAVIDAMEER
+    [method] => KBITaddTermByUID
+    [format] => json
+    [Token] => 8WzmKzTyeNErmjZvSrE1gLfWL7bCFrNNnna8W3GbQlDdFDIx5nzm9OiUWuwCVkpjHArED8QutuI87qGcOfyX4RR1moDhI3ApD24h
+)
+
+<hr style='border-color:orange'></font>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:53:50: </b><ul class="trace"><li><b><u>users.php</u></b><ul><li><u><i><font color="#a381ff">validate_token</font></i></u><ul><li>["8WzmKzTyeNErmjZvSrE1gLfWL7bCFrNNnna8W3GbQlDdFDIx5nzm9OiUWuwCVkpjHArED8QutuI87qGcOfyX4RR1moDhI3ApD24h"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:53:50: </b><ul class="trace"><li><b><u>Kbits.php</u></b><ul><li><u><i><font color="#a381ff">add_K2T_relation</font></i></u><ul><li>["1","2"," ","1"]</li></ul></li></ul></li></ul></font></div>
+<div class="trace"><br><font color = "#dadb74" size="2"><b>2015-09-02 20:53:50: </b><ul class="trace"><li><b><u>lock.php</u></b><ul><li><u><i><font color="#a381ff">is_locked_by_user</font></i></u><ul><li>["1","KBIT_BASE","1"]</li></ul></li></ul></li></ul></font></div>
+<br><b><font color='#66d9ef'>2015-09-02 20:53:50: </font></b><font color='#a6e22d'><i>[Kbits.php:add_K2T_relation]</i></font><font color ='white'> Kbit (1) is not locked by the user (1)</font>
+<font color='orange'><hr style='border-color:orange'>
+API REQUEST: <br>Array
+(
+    [Key] => Steps
+    [value] => 82 37 36 20 60 08 02 ce 4c e0 60 00 8c 32 60 0a
 28 07 5c 80 d5 06 f6 00 38 01 6a 02 28 91 b6 65
 30 02 42 03 61 04 3a 80 03 b1 06 58 01 26 b8 03
 20 0c 1d 40 11 9a 43 d4 03 e0 00 a2 80 24 69 11
@@ -1646,3 +1746,9 @@ b9 6f 33 f5 46 ec fe 7a e3 1e 4a 2e 5f 5e 69 bd
 e1 34 0b a2 02 31 dc 00 6d 84 d0 0f 40 09 01 20
 04 a4 19 80 84 00 58 03 43 5c 99 12 04 38 1f 1a
 12 68 f4 00 b3 20 10 8e 00 20
+    [serverHash] => DAVIDAMEER
+    [method] => KVPsetKeyValuePair
+    [format] => json
+    [Token] => 8WzmKzTyeNErmjZvSrE1gLfWL7bCFrNNnna8W3GbQlDdFDIx5nzm9OiUWuwCVkpjHArED8QutuI87qGcOfyX4RR1moDhI3ApD24h
+)
+

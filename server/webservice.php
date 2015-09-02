@@ -1269,10 +1269,6 @@ class interfaceAPI {
         return term::get_languages();
     }
 
-    public static function getLanguages() {
-        return term::get_languages();
-    }
-
 
 
     public static function hello($hash) {
@@ -1300,6 +1296,7 @@ function deliver_response($format, $api_response)
     header('HTTP/1.1 ' . $api_response['status'] . ' ' . $http_response_code[$api_response['status']]);
     if (strcasecmp($format, 'json') == 0) {
         header('Access-Control-Allow-Origin: *');
+        // header('Accept: */*');
         header('Content-Type: application/json; charset=utf-8');
         $json_response = json_encode($api_response);
         ob_end_clean();
@@ -1397,6 +1394,14 @@ try {
     if(is_null($response['data']['ErrorCode'])){
         $response['code']   = 1;
         $response['status'] = $api_response_code[$response['code']]['HTTP Response'];
+        
+        // handle null errors
+        if($response['data'] == null) {
+            $response['code']        = 5;
+            $response['status'] = $api_response_code[$response['code']]['HTTP Response'];
+            $response['data']        = array('ErrorCode' => 5, "Message" => "Null pointer");
+        }
+
     }else{
         $response['code']   = $response['data']['ErrorCode'];
         $response['status'] = $api_response_code[$response['code']]['HTTP Response'];
