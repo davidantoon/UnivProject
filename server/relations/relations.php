@@ -316,7 +316,6 @@ class O2TRelation {
 
 
 
-
 // D2K
 class D2KRelation {
 
@@ -512,7 +511,70 @@ class D2KRelation {
 
 		$temp = array("PARENTS" => $parents, "CHILDREN" => $children);
 		return $temp;
+	}
 
+	private static function get_all_entities($column_name) {
+
+		$cdb = dbAPI::get_db_name('content');
+		$query = "select DISTINCT ". $column_name ." AS name from ". $cdb .".R_LD2K where enabled = 1";
+		$dbObj = new dbAPI();
+		return $dbObj->db_select_query('', $query);
+	}
+
+	// retrieves all relations tree from the database
+	public static function get_deliveries_relations_tree() {
+
+		
+		$cdb = dbAPI::get_db_name('content');
+		$query = "select KBIT_BASE_ID, DELIVERY_BASE_ID, LINK_TYPE from ". $cdb .".R_LD2K where enabled = 1";
+		$dbObj = new dbAPI();
+		$results = $dbObj->db_select_query('', $query);
+
+		$kbitsArr = D2KRelation::get_all_entities("KBIT_BASE_ID");
+		for($i=0; $i<count($kbitsArr); $i++) {
+			
+			$kbitsArr[$i]["name"] = "k". $kbitsArr[$i]["name"];
+			$kbitsArr[$i]["children"] = array();
+			$kbitsArr[$i]["parent"] = array();
+			$kbitsArr[$i]["type"] = 'k';
+
+			for($j = 0; $j < count($results); $j++) {
+				if("k".$results[$j]["KBIT_BASE_ID"] == $kbitsArr[$i]["name"]) {
+					if($results[$j]["LINK_TYPE"] == "NEEDED") //&& array_key_exists("d".$results[$j]["DELIVERY_BASE_ID"] , $kbitsArr[$i]["parent"]))
+						array_push($kbitsArr[$i]["parent"], "d".$results[$j]["DELIVERY_BASE_ID"]);
+					else
+						array_push($kbitsArr[$i]["children"], "d".$results[$j]["DELIVERY_BASE_ID"]); 
+
+				}
+			}
+
+			$kbitsArr[$i]["parent"] = implode(',', $kbitsArr[$i]["parent"]);
+			$kbitsArr[$i]["children"] = implode(',', $kbitsArr[$i]["children"]);
+		}
+		
+		$deliveriesArr = D2KRelation::get_all_entities("DELIVERY_BASE_ID");
+		for($i=0; $i<count($deliveriesArr); $i++) {
+
+			$deliveriesArr[$i]["name"] = "d". $deliveriesArr[$i]["name"];
+			$deliveriesArr[$i]["children"] = array();
+			$deliveriesArr[$i]["parent"] = array();
+			$deliveriesArr[$i]["type"] = 'd';
+
+			for($j = 0; $j < count($results); $j++) {
+				if("d".$results[$j]["DELIVERY_BASE_ID"] == $deliveriesArr[$i]["name"]) {
+					if($results[$j]["LINK_TYPE"] == "NEEDED")// && array_key_exists("k".$results[$j]["KBIT_BASE_ID"] , $deliveriesArr[$i]["parent"]))
+						array_push($deliveriesArr[$i]["children"], "k".$results[$j]["KBIT_BASE_ID"]);
+					else
+						array_push($deliveriesArr[$i]["parent"], "k".$results[$j]["KBIT_BASE_ID"]); 
+
+				}
+			}
+
+			$deliveriesArr[$i]["parent"] = implode(',', $deliveriesArr[$i]["parent"]);
+			$deliveriesArr[$i]["children"] = implode(',', $deliveriesArr[$i]["children"]);
+		}
+
+		return array_merge($deliveriesArr, $kbitsArr);
 	}
 }
 ?>
