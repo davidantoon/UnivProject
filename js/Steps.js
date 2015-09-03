@@ -21,12 +21,15 @@
 				var svr = new Server(this.objectType, $rootScope.currentScope.isDummy);
 				svr.getSteps(function(result, error){
 					if(error || !result){
+						debugger;
 						ServerResquestComplete(null, passThis1);
 					}else{
 						try{
+							debugger;
 							var x =JSON.parse(strDecompress(result.OBJECT_VALUE));
 							ServerResquestComplete(x, passThis1);
 						}catch(e){
+							debugger;
 							ServerResquestComplete(null, passThis1);
 						}
 					}
@@ -188,7 +191,7 @@
 		            	for(var j1=0; j1<DiffObjects.inserted.length; j1++){
 		                	workspace.workflows.push(new Workflow(DiffObjects.inserted[j1]));
 		                }
-
+		                
 		                // update workflow tabs contents
 		                for (var i1 = 0; i1 < tempJsonWorkflows.length; i1++) {
 		                	for(var i2=0; i2< workspace.workflows.length; i2++){
@@ -314,7 +317,10 @@
 		                'allWorkFlowContents': tempWorkflowArray,
 		                'allProgressLines': JSON.stringify(workspace.progressLines)
 		            }
-		            this.last20Steps.unshift(InsData);
+		            if(this.last20Steps.length > 0)
+			            if(tempWorkflowArray == this.last20Steps[0].allWorkFlowContents) return;
+	            	else
+			            this.last20Steps.unshift(InsData);
 		            this.last20Steps = this.last20Steps.slice(0, 20);
 		            for (var i = 0; i < this.last20Steps.length; i++) {
 		                this.last20Steps[i].orderSteps = (i + 1);

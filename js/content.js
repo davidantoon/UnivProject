@@ -5,26 +5,33 @@
 		function Content(conData, forceLastmodefied, forceServerPull){
 			try{
 				this.id = ((conData != undefined)?conData.id:'');
-				this.name = ((conData != undefined)?conData.name:'');
+				this.name = ((conData != undefined)?conData.name:''); // Term STRING
 				this.kBitsNeeded = ((conData != undefined)?conData.kBitsNeeded:[]);
 				this.kBitsProvided = ((conData != undefined)?conData.kBitsProvided:[]);
 				this.terms = ((conData != undefined)?conData.terms:[]);
 				this.description = ((conData != undefined)?conData.description:'');
-				this.url = ((conData != undefined)?conData.url:'');
+				this.url = ((conData != undefined)?conData.url:'');  // Term MEANING
 				this.locked = ((conData != undefined)?conData.locked:false);
 				this.lockedBy = ((conData != undefined)?conData.lockedBy:null);
 				this.lastModified = ((conData != undefined)?conData.lastModified:null);
 				this.inProgress = ((conData != undefined)?conData.inProgress:false);
 				this.type = ((conData != undefined)?conData.type:null);
+				this.termScope = ((conData !=undefined)?conData.termScope: null);
 				this.connectToDataBase = ((this.type && new Server(this.type, $rootScope.currentScope.isDummy)) || null);
 				this.progressWizard = ((conData != undefined)?conData.progressWizard:{});
 				this.newData = ((conData != undefined)?conData.newData:null);
+				if(!this.progressWizard){
+					this.progressWizard = {};
+				}
+				this.progressWizard.spinner = false;
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","There was an error in creating new Content", Toast.LONG, Toast.ERROR);
 	            console.error("Content: ", e);
 	            return null;
 			}
 		}
+
+		
 
 		Content.prototype = {
 
@@ -81,15 +88,26 @@
 				}
 			},
 
-			/**
-			 * Unlock Object in the server to enable others to edit
-			 * @param  {Function} callback Function called after execute object method. Return success/error result
-			 */
-			unlock: function(callback){
-				try{
 
-				}catch(e){
-	           		console.error("unlock: ", e);
+
+			modifyContent: function(keepSpinner){
+				switch(this.type){
+					case "Delivery":
+						this.name = this.newData.name;
+						this.description = this.newData.description;
+						this.url = this.newData.url;
+						this.kBitsNeeded = this.newData.kBitsNeeded;
+						this.kBitsProvided = this.newData.kBitsProvided;
+						this.terms = this.newData.terms;
+					break;
+					case "Kbit":
+						this.name = this.newData.name;
+						this.description = this.newData.description;
+						this.url = this.newData.url;
+						this.terms = this.newData.terms;
+					break;
+					default:
+					break;
 				}
 			},
 
@@ -100,18 +118,18 @@
 			 */
 			save: function(versionNotes, callback){
 				try{
+					debugger;
+					this.modifyContent();
 					var mThis = this;
-					this.connectToDataBase.Save(mThis, function(res){
-						if(res != "Error"){
-							mThis.lastModified = res.lastModified;
-							mThis.inProgress = false;
-							callback(true);
-						}else
+					this.connectToDataBase.saveElement(mThis, function(success, error){
+						if(error || !success){
 							callback(false);
+						}else{
+							callback(true);
+						}
 					});
 				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","There was an error in saving Content", Toast.LONG, Toast.ERROR);
-	            	console.error("save: ", e);
+					console.error("content.save: ", error);
 	            	callback(null,{"message":e.message,"code":e.code});
 	            }
 			},
@@ -229,6 +247,7 @@
 						"lastModified": this.lastModified,
 						"inProgress": this.inProgress,
 						"type": this.type,
+						"termScope": this.termScope,
 						"objectType": this.objectType,
 						"progressWizard": this.progressWizard,
 						"newData": this.newData
@@ -238,6 +257,64 @@
 	           		console.error("toJson: ", e);
 	           		return null;
 				}
+			},
+
+			/**
+			 * Gets difference in kbits needed
+			 * @param  {ArraY} oldArray old kbits needed array
+			 * @param  {Array} newArray new kbits needed array
+			 * @return {object}         object contains the deleted and inserted
+			 */
+			getDiffKbitsNeeded: function(){
+				return {
+	                "deleted":(this.kBitsNeeded.filter(function(a) {
+	                    var found = false;
+	                    for(var i=0; i<this.newData.length ;i++){
+	                        if(this.newData[i].id == a.id){
+	                            found = true;
+	                        }
+	                    }
+	                    return (!found);
+	                })),
+	                "inserted":(this.newData.filter(function(a) {
+	                    var found = false;
+	                    for(var i=0; i<this.kBitsNeeded.length ;i++){
+	                        if(this.kBitsNeeded[i].id == a.id){
+	                            found = true;
+	                        }
+	                    }
+	                    return (!found);
+	                }))
+            	}
+			},
+
+			/**
+			 * Gets difference in kbits provided
+			 * @param  {ArraY} oldArray old kbits needed array
+			 * @param  {Array} newArray new kbits needed array
+			 * @return {object}         object contains the deleted and inserted
+			 */
+			getDiffKbitsProvided: function(){
+				return {
+	                "deleted":(this.kBitsProvided.filter(function(a) {
+	                    var found = false;
+	                    for(var i=0; i<this.newData.length ;i++){
+	                        if(this.newData[i].id == a.id){
+	                            found = true;
+	                        }
+	                    }
+	                    return (!found);
+	                })),
+	                "inserted":(this.newData.filter(function(a) {
+	                    var found = false;
+	                    for(var i=0; i<this.kBitsProvided.length ;i++){
+	                        if(this.kBitsProvided[i].id == a.id){
+	                            found = true;
+	                        }
+	                    }
+	                    return (!found);
+	                }))
+            	}
 			}
 
 		}

@@ -60,7 +60,7 @@
     .value('$httpR', {
 
         protocol: "http",
-        ip: "31.154.152.220",
+        ip: "109.160.151.65",
         port: "8888",
         baseUrl: "/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/",
 
@@ -94,6 +94,7 @@
         DELIVERYremoveTerm: "DELIVERYremoveTerm",
         DELIVERYaddRelatedKbit: "DELIVERYaddRelatedKbit",
         DELIVERYremoveRelatedKbit: "DELIVERYremoveRelatedKbit",
+        USERlogout: "USERlogout",
 
         
 
@@ -120,12 +121,13 @@
                     withCredentials: true
                 },
                 crossDomain : true,
+                timeout: 10000,
                 success: function(success) {
                     debugger;
                     if (success.status == 200)
                         callback(success.data, null);
                     else{
-                        console.log(success);
+                        console.error(success);
                         callback(null, success);
                     }
                 },
@@ -136,5 +138,97 @@
                 }
             });
         }
+    }).value('checkChangesInStepsAffectsOnlyNewData', function(before, after){
+
+        /**********************************************************************************************************************/
+        /* Gett all changed values stored in object {changes:"status", value}, Modified by David to support this application. */
+        /**********************************************************************************************************************/
+        function diff(a, b) {
+            if (a === b) {
+                return {
+                    changed: 'equal',
+                    value: a
+                }
+            }
+            var value = {};
+            var equal = true;
+
+            for (var key in a) {
+                if (key in b) {
+                    if (a[key] === b[key]) {
+                    } else {
+                        var typeA = typeof a[key];
+                        var typeB = typeof b[key];
+                        if (a[key] && b[key] && (typeA == 'object' || typeA == 'function') && (typeB == 'object' || typeB == 'function')) {
+                            var valueDiff = diff(a[key], b[key]);
+                            if (valueDiff.changed == 'equal') {
+                                
+                            } else {
+                                equal = false;
+                                value[key] = valueDiff;
+                            }
+                        } else {
+                            debugger;
+                            equal = false;
+                            value[key] = {
+                                changed: 'primitive change',
+                                removed: a[key],
+                                added: b[key]
+                            }
+                        }
+                    }
+                } else {
+                    equal = false;
+                    value[key] = {
+                        changed: 'removed',
+                        value: a[key]
+                    }
+                }
+            }
+
+            for (key in b) {
+                if (!(key in a)) {
+                    equal = false;
+                    value[key] = {
+                        changed: 'added',
+                        value: b[key]
+                    }
+                }
+            }
+
+            if (equal) {
+                return {
+                    changed: 'equal',
+                    value: a
+                }
+            } else {
+                return {
+                    changed: 'object change',
+                    value: value
+                }
+            }
+        }
+        
+        /*************************************************************************/
+        /* Get All changed pathes, Modified by David to support this application */
+        /*************************************************************************/
+        function objectToPaths(data) {var validId = /^[a-z_$][a-z0-9_$]*$/i;var result = [];doIt(data, "");return result;function doIt(data, s) {if (data && typeof data === "object") {if (Array.isArray(data)) {for (var i = 0; i < data.length; i++) {doIt(data[i], s + "[" + i + "]");}} else {for (var p in data) {if (validId.test(p)) {if(p != "changed" && p != "removed" && p != "added")doIt(data[p], s + "." + p);else{doIt(data[p], s);}} else {doIt(data[p], s + "[\"" + p + "\"]");}}}} else {if(data !="object change")result.push(s);}}}
+
+        /**************************************************************************/
+        /* Get unique array values, Modified by David. Support only string values */
+        /**************************************************************************/
+        function getUniqueStringValues(array){var flags = {};var unique = [];for( i=0; i< array.length; i++) {if( flags[array[i]]) continue;flags[array[i]] = true;unique.push(array[i]);} return unique;}
+
+        var diffData = diff(before, after);
+        if(diffData.changed == "equal")
+            return true;
+        diffData = objectToPaths(diffData);
+        diffData = getUniqueStringValues(diffData);
+        for(var i=0; i<diffData.length; i++){
+            if(diffData[i].indexOf("newData") == -1)
+                return false
+        }
+        return true;
+
     });
 })(window.angular);

@@ -6,19 +6,11 @@
 			try{
 				if(dummy){
 					this.baseUrl = "dummy";
-					this.searchQuery = "dummy";
-					this.getElemQuery = "dummy";
-					this.saveObjectQuery = "dummy";
-					this.TypeOfData = connectionType;
 				}else{
-					this.baseUrl = "http://94.159.162.6:8888/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/";
-					this.method = "POST";
-					this.TypeOfData = connectionType;
-					this.timeout = 10000;
-
+					this.baseUrl = "";
 				}
+				this.TypeOfData = connectionType;
 			}catch(e){
-				$rootScope.currentScope.Toast.show("Error!","There was an error in creating connection to server", Toast.LONG, Toast.ERROR);
 	            console.error("server: ", e);
 			}
 		}
@@ -124,6 +116,7 @@
 						callback(searchResults, null);
 						return;
 					}else{
+						
 						var searchFields = [];
 						var mergeResult = [];
 						var resultCounter = 0;
@@ -393,16 +386,20 @@
 						if(dataToSearch.dataType[2] == 1){
 
 							data.lang = 'en';
-							debugger;
-							console.error("error in function in server");
 							$httpR.connectToServer(data, $httpR.TERMsearchTerms, Globals, function(success, error){
 								var successModified = [];
 								debugger;
 								if(error || !success){
 									console.error("error searching term is server: ", error);
 								}else{
-									console.log("search kbit in serve done: ", success);
-									
+									for(var i=0; i<success.length; i++){
+										successModified.push({
+											id: success[i].UID,
+											name: success[i].TERM_STRING,
+											description: success[i].TERM_MEANING + " Language: " +success[i].LANG,
+											type: "Term"
+										});
+									}
 									
 								}
 								mergeData(successModified, ++resultCounter);
@@ -413,6 +410,7 @@
 						
 
 						function mergeData(result, index){
+							debugger;
 							mergeResult = mergeResult.concat(result);
 							if(index == 3)
 								callback(mergeResult);
@@ -423,7 +421,6 @@
 
 					}
 				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","There was an error in search in server", Toast.LONG, Toast.ERROR);
 	                console.error("search: ", e);
 	                callback(null,{"message":e.message,"code":e.code});
 				}
@@ -435,7 +432,7 @@
 			 * @param {Function} callback callback function
 			 */
 			
-			// deleviry , settings, kbits,steps, 
+			// delivery , settings, kbits,steps, 
 			saveElement: function(obj, callback){
 				try{
 					if(this.baseUrl == "dummy"){
@@ -482,26 +479,23 @@
 						console.warn("DUMMY REQUESTS");
 					}else{
 						switch (this.TypeOfData){
-							case "Deliveries":
-								
-							break;
-							case "kbits":
-								console.warn("add kbit update and kbit publish functions");
-							break;
-							case "settings":
-							break;
-							case "steps":
-							break;
-							case "Terms":
+							case "Delivery":
+								console.warn("Add Delivery update and Delivery publish functions");
+								callback(true, null);
 
+								// call new method to save delivery and kbits relations
+							break;
+							case "Kbit":
+								console.warn("Add Kbit update and kbit publish functions");
+								callback(true, null);
+
+								// call new method to save kbit and terms relations
 							break;
 							default:
 							break;
 						}
-						
 					}
 				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","There was an error in saving element", Toast.LONG, Toast.ERROR);
 	                console.error("saveElement: ", e);
 	                callback(null,{"message":e.message,"code":e.code});
 				}
@@ -516,14 +510,13 @@
 			getElementByID: function(objID, callback){
 				try{	
 					if(this.baseUrl == "dummy"){
-					// 	return localStorage.getItem("dummy");
-					// }
+
 						switch (this.TypeOfData){
 							case "delivery":
 								var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
 								for(var i = 0; deliveryDB.length; i++){
-									if(deleviry[i].id == objID){
-										callback(deleviry[i], null);
+									if(deliveryDB[i].id == objID){
+										callback(deliveryDB[i], null);
 										return;
 									}
 								}
@@ -685,7 +678,6 @@
 						}
 					}
 				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","There was an error in deleting element", Toast.LONG, Toast.ERROR);
 	                console.error("deleteElementByID: ", e);
 	                callback(null,{"message":e.message,"code":e.code});
 				}
@@ -811,71 +803,6 @@
 
 
 
-
-			/**
-			 * Adds term to term relation
-			 * @param {Number}   firstTermID  term id
-			 * @param {Number}   secondTermID term id
-			 * @param {Function} callback     callback function
-			 */
-			AddTermToTermRelation: function(firstTermID, secondTermID, callback){
-				try{
-					if((firstTermID !=null && firstTermID !=undefined) && (secondTermID != null && secondTermID !=undefined)){
-						var data = {
-							firstUID: firstTermID,
-							secondUID: secondTermID,
-							isHier: true
-						};
-
-						$httpR.connectToServer(data, $httpR.TERMaddTermToTermRelation, Globals, function(success, error){
-							if(error || !success){
-								console.error("error adding term to term relation: ", error);
-								callback(null, error);
-							}else{
-								callback(success, null);
-							}
-						});
-					}else{
-						console.error("error adding term to term relation");
-						callback(null, "error adding term to term relation");
-					}
-				}catch(e){
-					console.error("AddTermToTermRelation: ", e);
-					callback(null, e);
-				}
-			},
-			
-			/**
-			 * Removes term to term relation
-			 * @param  {Number}   firstTermID  first term id
-			 * @param  {Number}   secondTermID second term id
-			 * @param  {Function} callback     callback function
-			 */
-			removeTermToTermRelation: function(firstTermID, secondTermID, callback){
-				try{
-					if((firstTermID !=null && firstTermID !=undefined) && (secondTermID != null && secondTermID !=undefined)){
-						var data = {
-							firstUID: firstTermID,
-							secondUID: secondTermID
-						};
-
-						$httpR.connectToServer(data, $httpR.TERMremoveTermToTermRelation, Globals, function(success, error){
-							if(error || !success){
-								console.error("error removing term to term relation: ", error);
-								callback(null, error);
-							}else{
-								callback(success, null);
-							}
-						});
-					}else{
-						console.error("error removing term to term relation");
-						callback(null, "error removing term to term relation");
-					}
-				}catch(e){
-					console.error("removeTermToTermRelation: ", e);
-					callback(null, e);
-				}
-			},
 
 			/**
 			 * Gets all terms from server
@@ -1010,88 +937,18 @@
 				}
 			},
 
-			/**
-			 * Adds kbit to kbit relation
-			 * @param {Number}   firstKbitID  kbit id
-			 * @param {Number}   secondKbitID kbit id
-			 * @param {String}   relation     if the relation is needed or provided
-			 * @param {Function} callback     callback function
-			 */
-			AddKbitToKbit: function(firstKbitID, secondKbitID, relation, callback){
-				try{
-					if((firstKbitID !=null && firstKbitID !=undefined) && (secondKbitID != null && secondKbitID !=undefined)){
-						var data = {
-							firstUID: firstKbitID,
-							secondUID: secondKbitID
-						};
-						console.warn(" update needed or provided");
-						if(relation == "NEEDED"){
-
-						}
-						if(relation == "PROVIDED"){
-
-						}
-
-						$httpR.connectToServer(data, $httpR.KBITaddRelatedKbit, Globals, function(success, error){
-							if(error || !success){
-								console.log("error adding kbit to kbit relation ", error);
-								callback(null, error);
-							}else{
-								callback(success, null);
-							}
-						});
-					}else{
-						console.log("error adding kbit to kbit relation");
-						callback(null, "error adding kbit to kbit relation");
-					}
-				}catch(e){
-					console.error("AddKbitToKbit: ", e);
-					callback(null, e);
-				}
-			},
-
-			/**
-			 * Removes kbit to kbit relaition
-			 * @param {Number}   firstKbitID  kbit id
-			 * @param {Number}   secondKbitID kbit id
-			 * @param {Function} callback     callback function
-			 */
-			RemoveKbitToKbit: function(firstKbitID, secondKbitID, callback){
-				try{
-					if( (firstKbitID !=null && firstKbitID !=undefined) && (secondKbitID != null && secondKbitID !=undefined) ){
-						var data = {
-							firstUID: firstKbitID,
-							secondUID: secondKbitID
-						};
-
-						$httpR.connectToServer(data, $httpR.KBITremoveRelatedKbit, Globals, function(success, error){
-							if(error || !success){
-								console.log("error removing kbit to kbit relation ", error);
-								callback(null, error);
-							}else{
-								callback(success, null);
-							}
-						});
-					}else{
-						console.log("error removing kbit to kbit relation");
-						callback(null, "error removing kbit to kbit relation " );
-					}
-				}catch(e){
-					console.error("RemoveKbitToKbit: ", e);
-					callback(null, e);
-				}
-			},
+			
 
 			/**
 			 * Adds term to kbit terms arrat
 			 * @param {number}   kbitID   kibt id
 			 * @param {number}   termID   term id
-			 * @param {String}   relation relation link
+			 * @param {String}   linkType type link
 			 * @param {Function} callback callback function
 			 */
-			addTermToKbit: function(kbitID, termID, relation, callback){
+			addTermToKbit: function(kbitID, termID, linkType, callback){
 				try{
-					if( (kbitID !=null && kbitID !=undefined) && (termID != null && termID !=undefined) && (relation != null && relation !=undefined) ){
+					if( (kbitID !=null && kbitID !=undefined) && (termID != null && termID !=undefined) && (linkType != null && linkType !=undefined) ){
 						var data = {
 							kbitUID: kbitID,
 							termUID: termID,
@@ -1169,65 +1026,7 @@
 
 
 
-			/**
-			 * Start editing delivery
-			 * @param {Number}   deliveryID delivery id
-			 * @param {Function} callback   callback function
-			 */
-			StartEditingDelivery: function(deliveryID, callback){
-				try{
-					if(deliveryID){
-						var data = {
-							deliveryUID: deliveryID
-						};
 
-						$httpR.connectToServer(data, $httpR.DELIVERYbeginEdit, Globals, function(success, error){
-							if(error || !success){
-								console.error("error starting edit delivery: ", error);
-								callback(null, error);
-							}else{
-								callback(success, null);
-							}
-						});
-					}else{
-						console.error("error starting edit delivery");
-						callback(null, "error editing delivery");
-					}
-				}catch(e){
-					console.error("StartEditingDelivery: ", e);
-					callback(null, e);
-				}
-			},
-
-			/**
-			 * Cancel editing delivery
-			 * @param {Number}   deliveryID delivery id
-			 * @param {Function} callback   callback function
-			 */
-			CancelEditingDelivery: function(deliveryID, callback){
-				try{
-					if(deliveryID){
-						var data = {
-							deliveryUID: deliveryID
-						};
-
-						$httpR.connectToServer(data, $httpR.DELIVERYcancelEdit, Globals, function(success, error){
-							if(error || !success){
-								console.error("error canceling edit delivery: ", error);
-								callback(null, error);
-							}else{
-								callback(success, null);
-							}
-						});
-					}else{
-						console.error("error canceling edit deliver");
-						callback(null, "error canceling edit deliver");
-					}
-				}catch(e){
-					console.error("CancelEditingDelivery: ", e);
-					callback(null, e);
-				}
-			},
 
 			/**
 			 * Publish delivery on server
@@ -1243,14 +1042,12 @@
 
 						$httpR.connectToServer(data, $httpR.DELIVERYpublish, Globals, function(success, error){
 							if(error || !success){
-								console.error("error publishing delivery: ", error);
 								callback(null, error);
 							}else{
 								callback(success, null);
 							}
 						});
 					}else{
-						console.error("error publishing deliver:");
 						callback(null, "error publishing deliver");
 					}
 				}catch(e){
@@ -1279,14 +1076,12 @@
 
 						$httpR.connectToServer(data, $httpR.DELIVERYupdate, Globals, function(success, error){
 							if(error || !success){
-								console.error("error updating delivery: ", error);
 								callback(null, error);
 							}else{
 								callback(success, null);
 							}
 						});
 					}else{
-						console.error("error updating delivery");
 						callback(null, "error updating delivery");
 					}
 				}catch(e){
@@ -1295,68 +1090,6 @@
 				}
 			},
 
-			/**
-			 * Adds delivery to delivery relation
-			 * @param {Number}   firstDeliveryID  first delivery id
-			 * @param {Number}   secondDeliveryID second delivery id
-			 * @param {Function} callback         callback function
-			 */
-			addDeliverytoDeliveryRelation: function(firstDeliveryID, secondDeliveryID, callback){
-				try{
-					if(firstDeliveryID && secondDeliveryID){
-						var data = {
-							firstUID: firstDeliveryID,
-							secondUID: secondDeliveryID,
-							isHier: true
-						};
-						$httpR.connectToServer(data, $httpR.DELIVERYaddRelatedDelivery, Globals, function(success, error){
-							if(error || !success){
-								console.error("error adding delivery relation: ", error);
-								callback(null, error);
-							}else{
-								callback(success, null);
-							}
-						});
-					}else{
-						console.error("error adding delivery relation");
-						callback(null, "error adding delivery relation");
-					}
-				}catch(e){
-					console.error("addDeliverytoDeliveryRelation: ", e);
-					callback(null, e);
-				}
-			},
-
-			/**
-			 * Removes two deliveries relations
-			 * @param  {Number}   firstDeliveryID  first delivery id
-			 * @param  {Number}   secondDeliveryID second delivery id
-			 * @param  {Function} callback         callback function
-			 */
-			removeDeliveryFromDeliveryRelation: function(firstDeliveryID, secondDeliveryID, callback){
-				try{
-					if( firstDeliveryID && secondDeliveryID){
-						var data = {
-							firstUID: firstDeliveryID,
-							secondUID: secondDeliveryID
-						};
-						$httpR.connectToServer(data, $httpR.DELIVERYremoveRelatedDelivery, Globals, function(success, error){
-							if(error || !success){
-								console.error("error removing delivery relation: ", error);
-								callback(null, error);
-							}else{
-								callback(success, null);
-							}
-						});
-					}else{
-						console.error("error removing delivery relation");
-						callback(null, "error removing delivery relation");
-					}
-				}catch(e){
-					console.error("removeDeliveryFromDeliveryRelation: ", e);
-					callback(null, e);
-				}
-			},
 
 			/**
 			 * Adds term to delivery relation
@@ -1376,14 +1109,12 @@
 
 						$httpR.connectToServer(data, $httpR.DELIVERYaddTermByUID, Globals, function(success, error){
 							if(error || !success){
-								console.error("error adding term to delivery relation: ", error);
 								callback(null, error);
 							}else{
 								callback(success, null);
 							}
 						});
 					}else{
-						console.error("error adding term to delivery relation");
 						callback(null, "error adding term to delivery relation");
 					}
 				}catch(e){
@@ -1410,14 +1141,12 @@
 
 						$httpR.connectToServer(data, $httpR.DELIVERYremoveTerm, Globals, function(success, error){
 							if(error || !success){
-								console.error("error removing term to delivery relation: ", error);
 								callback(null, error);
 							}else{
 								callback(success, null);
 							}
 						});
 					}else{
-						console.error("error removing term to delivery relation");
 						callback(null, "error removing term to delivery relation");
 					}
 				}catch(e){
@@ -1446,14 +1175,12 @@
 
 						$httpR.connectToServer(data, $httpR.DELIVERYaddRelatedKbit, Globals, function(success, error){
 							if(error || !success){
-								console.error("error adding kbit to delivery relation: ", error);
 								callback(null, error);
 							}else{
 								callback(success, null);
 							}
 						});
 					}else{
-						console.error("error adding kbit to delivery relation");
 						callback(null, "error adding kbit to delivery relation");
 					}
 				}catch(e){

@@ -112,6 +112,28 @@
                     callback(null, e);
                 }
             }
+
+            /**
+             * logout
+             * @param  {Function} callback callback function
+             */
+            User.logout = function(callback){
+                try{
+                    $httpR.connectToServer({},$httpR.USERlogout, Globals, function(result, error){
+                        if(error || !success){
+                            console.error('Could not log out');
+                            callback(null, error);
+                        }else{
+                            callback(success);
+                        }
+                    });
+                }catch(e){
+                    console.error("logout: ", e);
+                    callback(null, e);
+                }
+            }
+
+
             User.prototype = {
 
                 
@@ -149,14 +171,13 @@
                  * @param  {string}   role           role of the user
                  * @param  {Function} callback       callback function
                  */
-                updateUser: function(firstName, lastName, email, role, callback) {
+                updateUser: function(firstName, lastName, email, callback) {
                     try {
                         var data = {
                             firstName: firstName,
                             lastName: lastName,
                             email: email,
-                            profilePicture: this.profilePicture,
-                            role: role
+                            profilePicture: this.profilePicture
                         }
                         $httpR.connectToServer(data, $httpR.updateUser, Globals, function(success, error) {
                             if (error || !success) {
@@ -166,7 +187,6 @@
                                 this.firstName = success["firstName"];
                                 this.lastName = success["lastName"];
                                 this.email = success["email"];
-                                this.role = success["role"];
                                 callback(this);
                             }
                         });

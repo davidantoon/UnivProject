@@ -74,6 +74,7 @@
 							}
 					}else{
 						if(tempJson.content != null && tempJson.content != undefined){
+							debugger;
 							var stor = new Storage();
 							stor.getElementById(tempJson.content, /* force last modefied */ true, /* force server pull */ false, function(dataFromStorage){
 								passThis.content = dataFromStorage;

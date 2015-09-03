@@ -5,8 +5,8 @@ var ngScope;
 (function(angular) {
     // 'use strict';
     angular.module('IntelLearner', ['onsen', 'firebase', 'dndLists']);
-    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope",  "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast","User", "$httpR", "Content",
-        function($rootScope, $scope,  $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast, User, $httpR, Content) {
+    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope",  "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast","User", "$httpR", "Content", "checkChangesInStepsAffectsOnlyNewData",
+        function($rootScope, $scope,  $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast, User, $httpR, Content, checkChangesInStepsAffectsOnlyNewData) {
 
 
             // PRIM COLOR = rgb(8,96,168)
@@ -29,8 +29,11 @@ var ngScope;
              // FOR Debugging
             var appElement = document.querySelector('[ng-controller=MainCtrl]');
             ngScope = angular.element(appElement).scope();
-            $scope.isDummy = true;
+            $scope.isDummy = false;
 
+
+            console.warn("AFTER SAVE OR CANCEL EDITING OBJECT REMOVE ALL STEPS THAT AFFECTS ONLY (newData) PROPERTY IN CONTENTS");
+            console.warn("UPDAE EDITING BUTTONS TO SUPPORT REDO/UNDO EVENTS");
 
             $scope.AppStatus = 0;
             $scope.currentUser = {};
@@ -147,14 +150,19 @@ var ngScope;
                 $('#LoadingScreen').show();
 
                 // LOGOUT
-
-                $scope.clearData();
-                $timeout(function() {
-                    $scope.$apply(function() {
-                        $scope.AppStatus = 1;
-                        $('#LoadingScreen').hide();
-                    });
-                }, 1000);
+                User.logout(function(success, error){
+                    if(error || !success){
+                        console.error("Error logging out");
+                    }else{
+                        $scope.clearData();
+                        $timeout(function() {
+                            $scope.$apply(function() {
+                                $scope.AppStatus = 1;
+                                $('#LoadingScreen').hide();
+                            });
+                        }, 1000);
+                    }
+                });
             }
             $scope.clearData = function() {
 
@@ -166,10 +174,10 @@ var ngScope;
             }
 
             $scope.login = function(){
-                var username = "rajibaba"; var password = "my_password"; // Jeries Mousa
+                var username = "geryes"; var password = "my_password"; // Jeries Mousa
                 var username1 = "antoon91"; var password1 = "1234"; // Antoon Antoon
 
-                User.login(username, password, function(succes, error){
+                User.login(username1, password1, function(succes, error){
                     if(error || !succes)
                         $scope.logout();
                     else{
@@ -308,6 +316,54 @@ var ngScope;
                 // }
             }
 
+
+            $scope.changePassword = function(){
+                var oldpassword = $('#profileOldPassword').val();
+                var newpassword = $('#profileNewPassword').val();
+                if(oldpassword == "" || newpassword == ""){
+                    console.error("changePassword: some inputs are invalid values");
+                }else{
+                    $scope.currentUser.changePassword(oldpassword, newpassword, function(success, error){
+                        if(error || !success){
+                            console.error("Could not change password: ", error);
+                        }else{
+                            console.warn("password change, what to do ? ");
+                        }
+                    });
+                }
+            }
+
+            $scope.updateUser = function(){
+                var firstName = $('#profileFirstName').val();
+                var lastName = $('#proflieLastName').val();
+                var email = $('#profileEmail').val();
+                if(firstName == "" || lastName == "" || email == ""){
+                    console.error("updateUser: some inputs are invalid values");
+                }else{
+                    $scope.currentUser.updateUser(firstName, lastName, email, function(success, error){
+                        if(error || !success){
+                            console.error("Could not change password: ", error);
+                        }else{
+                            console.warn("password change, what to do ? ");
+                        }
+                    });
+                }
+            }
+
+
+            $scope.checkPasswords = function(){
+                var password1 = $('#profileNewPassword').val();
+                var confirmPassword = $('#profileConfirmPassword').val();
+                if(password1 == "" || confirmPassword == ""){
+                    console.error("checkPasswords: some inputs are invalid values");
+                }else{
+                    if(password1 != confirmPassword){
+                        return false;
+                    }else{
+                        return true;
+                    }
+                }
+            }
 
 
 
@@ -979,8 +1035,8 @@ var ngScope;
                         $timeout(function(){
                             $scope.Steps.lastFocusedWorkflow = lastFocusedWorkflow;
                         },200);
-                    },200);
-                },200);
+                    },300);
+                },300);
 
             }
 
@@ -1235,22 +1291,20 @@ var ngScope;
                                                 $scope.Toast.show("Server Error", error.message, Toast.LONG, Toast.ERROR);
                                                 $scope.InsertStepToLast10Steps();
                                             }else{
-                                                $timeout(function(){
-                                                    var stor = new Storage();
-                                                    loopResults(0, result, []);
-                                                    function loopResults(index, originalData, resultData){
-                                                        if(index < originalData.length){
-                                                            stor.getElementById(originalData[index], holdingRequestTab.dataHolding.forceLastModifed, holdingRequestTab.dataHolding.forceServerPull, function(resultO){
-                                                                if(resultO != undefined)
-                                                                    resultData.push(resultO);
-                                                                loopResults(Number(index)+1, originalData, resultData);
-                                                            });    
-                                                        }else{
-                                                            $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, resultData);
-                                                            $scope.InsertStepToLast10Steps();
-                                                        }
+                                                var stor = new Storage();
+                                                loopResults(0, result, []);
+                                                function loopResults(index, originalData, resultData){
+                                                    if(index < originalData.length){
+                                                        stor.getElementById(originalData[index], holdingRequestTab.dataHolding.forceLastModifed, holdingRequestTab.dataHolding.forceServerPull, function(resultO){
+                                                            if(resultO != undefined)
+                                                                resultData.push(resultO);
+                                                            loopResults(Number(index)+1, originalData, resultData);
+                                                        });    
+                                                    }else{
+                                                        $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, resultData);
+                                                        $scope.InsertStepToLast10Steps();
                                                     }
-                                                },1500);
+                                                }
                                             }
                                         });
                                     }
@@ -1267,22 +1321,21 @@ var ngScope;
                                     $scope.Toast.show("Server Error", error.message, Toast.LONG, Toast.ERROR);
                                     $scope.InsertStepToLast10Steps();
                                 }else{
-                                    $timeout(function(){
-                                        var stor = new Storage();
-                                        loopResults(0, result, []);
-                                        function loopResults(index, originalData, resultData){
-                                            if(index < originalData.length){
-                                                stor.getElementById(originalData[index], holdingRequestTab.dataHolding.forceLastModifed, holdingRequestTab.dataHolding.forceServerPull, function(resultO){
-                                                    if(resultO != undefined)
-                                                        resultData.push(resultO);
-                                                    loopResults(Number(index)+1, originalData, resultData);
-                                                });    
-                                            }else{
-                                                $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, resultData);
-                                                $scope.InsertStepToLast10Steps();
-                                            }
+                                    var stor = new Storage();
+                                    loopResults(0, result, []);
+                                    function loopResults(index, originalData, resultData){
+                                        if(index < originalData.length){
+                                            stor.getElementById(originalData[index], holdingRequestTab.dataHolding.forceLastModifed, holdingRequestTab.dataHolding.forceServerPull, function(resultO){
+                                                if(resultO != undefined)
+                                                    resultData.push(resultO);
+                                                debugger;
+                                                loopResults(Number(index)+1, originalData, resultData);
+                                            });    
+                                        }else{
+                                            $scope.workSpaces.updateDataInTab(holdingRequestTab.dataHolding.childTab, resultData);
+                                            $scope.InsertStepToLast10Steps();
                                         }
-                                    },1500);
+                                    }
                                 }
                             });
                             $timeout(function(){
@@ -1334,7 +1387,7 @@ var ngScope;
 
 
             $scope.displayContent = function(wFlow,result){
-                // if(result.type == "Delivery"){
+                if(result.type == "Delivery" || result.type == "Kbit"){
                     var stor = new Storage();
                     stor.getElementById(result, false, false, function(res){
                         result = res;
@@ -1355,9 +1408,9 @@ var ngScope;
                             $scope.displayContentNewTab(wFlow, result);
                         }
                     });
-                // }else{
-                //     $scope.displaySmallContent(wFlow, result);
-                // }
+                }else{
+                    $scope.displaySmallContentNewTab(wFlow, result);
+                }
             }
 
             $scope.displayContentNewTab = function(wFlow,result){
@@ -1410,9 +1463,7 @@ var ngScope;
                         $timeout(function(){
                             $scope.Steps.lastFocusedWorkflow = holdingRequestTab.dataHolding.childTab.workflowId;
                             $scope.refocusLastWorkflow();
-                            $timeout(function(){
-                                $scope.InsertStepToLast10Steps();
-                            },500);
+                            $scope.InsertStepToLast10Steps();
                         },300);
                         $scope.workSpaces.replaceSearchChildContent(dataHolding.childTab, result);
                         $scope.workSpaces.selectTabAfterSearch(dataHolding.childTab);
@@ -1448,9 +1499,7 @@ var ngScope;
                                         $scope.focusingLastWorkflow = false;
                                     },600);
                                 },300);
-                                $timeout(function(){
-                                    $scope.InsertStepToLast10Steps();
-                                },500);
+                                $scope.InsertStepToLast10Steps();
                             }
                         }
                     },500);
@@ -1506,38 +1555,84 @@ var ngScope;
 
 
             $scope.editContent = function(wFlow){
-                if(wFlow.selectedTab.content.locked){
-                    if(wFlow.selectedTab.content.lockedBy.id == Globals.CurrentUser.id){
+                if($scope.isDummy){
+                    console.warn("Dummy lock object");
+                    if(wFlow.selectedTab.content.locked){
+                        if(wFlow.selectedTab.content.lockedBy.id == Globals.CurrentUser.id){
+                            wFlow.selectedTab.content.progressWizard = {
+                                header:wFlow.selectedTab.content.type +' Details',
+                                index:1,
+                                spinner:false
+                            };
+                            wFlow.selectedTab.content.inProgress = true;
+                            wFlow.selectedTab.content.createTempData();
+                            $scope.workSpaces.deleteChildTabIds(wFlow.selectedTab.dataHolding.parentTab, false);
+                            $timeout(function(){
+                                $scope.InsertStepToLast10Steps();
+                            },500);
+                        }else{
+                            $scope.Toast.show("Cannot Lock Content", "Content locked by "+wFlow.selectedTab.content.lockedBy.firstName+" "+wFlow.selectedTab.content.lockedBy.lastName+".", Toast.LONG, Toast.ERROR);
+                        }
+                    }else{
                         wFlow.selectedTab.content.progressWizard = {
                             header:wFlow.selectedTab.content.type +' Details',
                             index:1,
-                            spinner:false
+                            spinner:true
                         };
                         wFlow.selectedTab.content.inProgress = true;
-                        wFlow.selectedTab.content.createTempData();
-                    }else{
-                        $scope.Toast.show("Cannot Lock Content", "Content locked by "+wFlow.selectedTab.content.lockedBy.firstName+" "+wFlow.selectedTab.content.lockedBy.lastName+".", Toast.LONG, Toast.ERROR);
+                        $timeout(function(){
+                            wFlow.selectedTab.content.locked = true;
+                            wFlow.selectedTab.content.lockedBy = Globals.CurrentUser;
+                            wFlow.selectedTab.content.progressWizard.spinner = false;
+                            wFlow.selectedTab.content.createTempData();
+                            $scope.workSpaces.deleteChildTabIds(wFlow.selectedTab.dataHolding.parentTab, false);
+                            $timeout(function(){
+                                $scope.InsertStepToLast10Steps();
+                            },500);
+                        },1000);
                     }
                 }else{
-                    wFlow.selectedTab.content.progressWizard = {
-                        header:wFlow.selectedTab.content.type +' Details',
-                        index:1,
-                        spinner:true
-                    };
-                    wFlow.selectedTab.content.inProgress = true;
-                    wFlow.selectedTab.content.lock(function(success, error){
-                        $timeout(function(){
-                            if(error || !success){
-                                $scope.Toast.show("Cannot Lock Content", "Content locked by another user.", Toast.LONG, Toast.ERROR);
-                                wFlow.selectedTab.content.progressWizard.spinner = {};
-                                wFlow.selectedTab.content.inProgress = false;
-                            }else{
-                                wFlow.selectedTab.content.progressWizard.spinner = false;
-                                wFlow.selectedTab.content.createTempData();
-                            }
-                        },200);
+                    if(wFlow.selectedTab.content.locked){
+                        if(wFlow.selectedTab.content.lockedBy.id == Globals.CurrentUser.id){
+                            wFlow.selectedTab.content.progressWizard = {
+                                header:wFlow.selectedTab.content.type +' Details',
+                                index:1,
+                                spinner:false
+                            };
+                            wFlow.selectedTab.content.inProgress = true;
+                            wFlow.selectedTab.content.createTempData();
+                            $scope.workSpaces.deleteChildTabIds(wFlow.selectedTab.dataHolding.parentTab, false);
+                            $timeout(function(){
+                                $scope.InsertStepToLast10Steps();
+                            },500);
+                        }else{
+                            $scope.Toast.show("Cannot Lock Content", "Content locked by "+wFlow.selectedTab.content.lockedBy.firstName+" "+wFlow.selectedTab.content.lockedBy.lastName+".", Toast.LONG, Toast.ERROR);
+                        }
+                    }else{
+                        wFlow.selectedTab.content.progressWizard = {
+                            header:wFlow.selectedTab.content.type +' Details',
+                            index:1,
+                            spinner:true
+                        };
+                        wFlow.selectedTab.content.inProgress = true;
+                        wFlow.selectedTab.content.lock(function(success, error){
+                            $timeout(function(){
+                                if(error || !success){
+                                    $scope.Toast.show("Cannot Lock Content", "Content locked by another user.", Toast.LONG, Toast.ERROR);
+                                    wFlow.selectedTab.content.progressWizard.spinner = {};
+                                    wFlow.selectedTab.content.inProgress = false;
+                                }else{
+                                    wFlow.selectedTab.content.progressWizard.spinner = false;
+                                    wFlow.selectedTab.content.createTempData();
+                                    $scope.workSpaces.deleteChildTabIds(wFlow.selectedTab.dataHolding.parentTab, false);
+                                    $timeout(function(){
+                                        $scope.InsertStepToLast10Steps();
+                                    },500);
+                                }
+                            },200);
 
-                    })
+                        });
+                    }
                 }
             }
 
@@ -1672,6 +1767,9 @@ var ngScope;
                         }
                     }
                 }
+                $timeout(function(){
+                    $scope.InsertStepToLast10Steps();
+                },500);
             }
 
 
@@ -1682,6 +1780,108 @@ var ngScope;
                         break;
                     }
                 }
+                $timeout(function(){
+                    $scope.InsertStepToLast10Steps();
+                },500);
+            }
+
+
+            $scope.finishEditing = function(content, note){
+
+                console.warn("Remove redo/undo steps if that has been added by editing");
+                content.progressWizard.spinner = true;
+                if($scope.isDummy){
+                    console.warn("Dummy save object");
+                    $timeout(function(){
+                        content.modifyContent();
+                        content.progressWizard = {};
+                        content.lastModified = +(new Date());
+                        content.inProgress = false;
+                        content.newData = {};
+                        $timeout(function(){
+                            $scope.InsertStepToLast10Steps();
+                        },500);
+                        $scope.Toast.show("Success!",content.type+" has been saved.", Toast.LONG, Toast.SUCCESS);
+                    },1000);
+                }else{
+
+                    content.save("", function(success, error){
+                        if(error || !success){
+                            content.progressWizard.spinner = false;
+                            $scope.Toast.show("Error!","Unknown error occured while saving "+content.type, Toast.LONG, Toast.ERROR);
+                        }else{
+                            content.progressWizard = {};
+                            content.lastModified = +(new Date());
+                            content.inProgress = false;
+                            content.newData = {};
+                            $scope.Toast.show("Success!",content.type+" has been saved.", Toast.LONG, Toast.SUCCESS);
+                        }
+                        $timeout(function(){
+                            $scope.InsertStepToLast10Steps();
+                        },500);
+                    });
+                }
+            }
+
+
+            $scope.publishButton = function(content){
+
+                content.progressWizard.spinner = true
+                if($scope.isDummy){
+                    console.log("Dummy publish object");
+                    $timeout(function(){
+                        content.lastModified = +(new Date());
+                        content.locked = false;
+                        content.lockedBy = {};
+                        content.progressWizard = {};
+                        $timeout(function(){
+                            $scope.InsertStepToLast10Steps();
+                        },500);
+                        $scope.Toast.show("Success!",content.type+" has been published.", Toast.LONG, Toast.SUCCESS);
+                    },1000);
+                }else{
+
+                    content.release("", function(success, error){
+                        if(error || !success){
+                            content.progressWizard = {};
+                            $scope.Toast.show("Error!","Unknown error occured while releasing "+content.type, Toast.LONG, Toast.ERROR);
+                        }else{
+                            content.lastModified = +(new Date());
+                            content.locked = false;
+                            content.lockedBy = {};
+                            content.progressWizard = {};
+                            $scope.Toast.show("Success!",content.type+" has been published.", Toast.LONG, Toast.SUCCESS);
+                        }
+                        $timeout(function(){
+                            $scope.InsertStepToLast10Steps();
+                        },500);
+                    });
+                }
+            }
+
+            $scope.nextButton = function(content){
+                // content.lastModified = +(new Date());
+                content.progressWizard.index++;
+                $timeout(function(){
+                    $scope.InsertStepToLast10Steps();
+                },500);
+            }
+            $scope.backButton = function(content){
+                content.progressWizard.index--;
+                // content.lastModified = +(new Date());
+                $timeout(function(){
+                    $scope.InsertStepToLast10Steps();
+                },500);
+            }
+
+            $scope.cancelButton = function(content){
+                content.progressWizard = {};
+                content.inProgress = false;
+                // content.lastModified = +(new Date());
+                console.warn("Remove redo/undo steps if that has been added by editing");
+                $timeout(function(){
+                    $scope.InsertStepToLast10Steps();
+                },500);
             }
 
 
@@ -1709,58 +1909,56 @@ var ngScope;
                 }
             },1000);
             $interval(function() {
-                if ($scope.lastZoomIn != $('#ZoomRange').val()) {
+                if(Globals.CurrentUser){
+                    if ($scope.lastZoomIn != $('#ZoomRange').val()) {
 
-                    $scope.lastZoomIn = $('#ZoomRange').val();
-                    var tempZoom = ((($scope.lastZoomIn / 100) * (2.0 - 0.3)) + 0.3) / 2;
+                        $scope.lastZoomIn = $('#ZoomRange').val();
+                        var tempZoom = ((($scope.lastZoomIn / 100) * (2.0 - 0.3)) + 0.3) / 2;
 
-                    $("#WorkFlowMatrix").animate({
-                        'zoom': tempZoom
-                    }, {
-                        duration: 0,
-                        queue: false
-                    });
+                        $("#WorkFlowMatrix").animate({
+                            'zoom': tempZoom
+                        }, {
+                            duration: 0,
+                            queue: false
+                        });
 
-                    if (Number($('#ZoomRange').val()) < 20) {
-                        $('.WorkFlowBlock.Available').css('box-shadow', '1px 0px 0px 5px rgba(0,0,0,.2) inset');
-                    } else if (Number($('#ZoomRange').val()) < 50) {
-                        $('.WorkFlowBlock.Available').css('box-shadow', '1px 0px 0px 3px rgba(0,0,0,.2) inset');
-                    } else {
-                        $('.WorkFlowBlock.Available').css('box-shadow', '1px 0px 0px 2px rgba(0,0,0,.2) inset');
+                        if (Number($('#ZoomRange').val()) < 20) {
+                            $('.WorkFlowBlock.Available').css('box-shadow', '1px 0px 0px 5px rgba(0,0,0,.2) inset');
+                        } else if (Number($('#ZoomRange').val()) < 50) {
+                            $('.WorkFlowBlock.Available').css('box-shadow', '1px 0px 0px 3px rgba(0,0,0,.2) inset');
+                        } else {
+                            $('.WorkFlowBlock.Available').css('box-shadow', '1px 0px 0px 2px rgba(0,0,0,.2) inset');
+                        }
+
+
+                        var wWidth = $(window).width();
+                        var wHeight = $(window).height();
+                        var blockPosL = Number($('#WorkFlowMatrix').css('zoom')) * $('#pointToZoom').position().left;
+                        var sLeft = blockPosL - ((wWidth) / 2);
+                        var blockPosT = Number($('#WorkFlowMatrix').css('zoom')) * $('#pointToZoom').position().top;
+                        var sTop = blockPosT - ((wHeight) / 2);
+                        $("#BodyRow").animate({
+                            scrollTop: sTop,
+                            scrollLeft: sLeft
+                        }, {
+                            duration: 0,
+                            queue: false
+                        });
+
                     }
 
-                    var wWidth = $(window).width();
-                    var wHeight = $(window).height();
-                    var blockPosL = Number($('#WorkFlowMatrix').css('zoom')) * $('#pointToZoom').position().left;
-                    var sLeft = blockPosL - ((wWidth) / 2);
-                    var blockPosT = Number($('#WorkFlowMatrix').css('zoom')) * $('#pointToZoom').position().top;
-                    var sTop = blockPosT - ((wHeight) / 2);
-                    $("#BodyRow").animate({
-                        scrollTop: sTop,
-                        scrollLeft: sLeft
-                    }, {
-                        duration: 0,
-                        queue: false
-                    });
-
-                    // setTimeout(function(){
-                    // if($scope.lastZoomIn == $('#ZoomRange').val()){
-                    // $scope.Workflow[0].scrollTo();
-                    // }
-                    // },400);
-                }
-                // console.log((((($scope.lastZoomIn/100) * (2.0-0.3))+0.3)/2) * $('#BodyRow').scrollLeft(), $('#BodyRow').scrollLeft());
-                if (zoomingIn == false) {
-                    var pointToZoomRate = ((($('#ZoomRange').val() / 100) * (2.0 - 0.3)) + 0.3) / 2;
-                    $('#pointToZoom').css('left', ((1 / pointToZoomRate) * (($('#BodyRow').width() / 2) + $('#BodyRow').scrollLeft())) + "px");
-                    $('#pointToZoom').css('top', ((1 / pointToZoomRate) * (($('#BodyRow').height() / 2) + $('#BodyRow').scrollTop())) + "px");
-                }
-                if($('#ZoomRange').val() <= 45){
-                    if($scope.clickToMaximize != true)
-                        $scope.clickToMaximize = true;
-                }else{
-                    if($scope.clickToMaximize != false)
-                        $scope.clickToMaximize = false;
+                    if (zoomingIn == false) {
+                        var pointToZoomRate = ((($('#ZoomRange').val() / 100) * (2.0 - 0.3)) + 0.3) / 2;
+                        $('#pointToZoom').css('left', ((1 / pointToZoomRate) * (($('#BodyRow').width() / 2) + $('#BodyRow').scrollLeft())) + "px");
+                        $('#pointToZoom').css('top', ((1 / pointToZoomRate) * (($('#BodyRow').height() / 2) + $('#BodyRow').scrollTop())) + "px");
+                    }
+                    if($('#ZoomRange').val() <= 45){
+                        if($scope.clickToMaximize != true)
+                            $scope.clickToMaximize = true;
+                    }else{
+                        if($scope.clickToMaximize != false)
+                            $scope.clickToMaximize = false;
+                    }
                 }
             }, 50);
             $interval(function() {
@@ -1905,8 +2103,11 @@ var ngScope;
 
 
 
+            $scope.testArray = function(before, after){
+                console.log(checkChangesInStepsAffectsOnlyNewData(before, after));
+            }
 
-
+            
 
 
 
