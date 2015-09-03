@@ -317,27 +317,49 @@ var ngScope;
             $scope.changePassword = function(){
                 var oldpassword = $('#profileOldPassword').val();
                 var newpassword = $('#profileNewPassword').val();
-                console.log("changePassword");
-                $scope.currentUser.changePassword(oldpassword, newpassword, function(success, error){
-                    if(error || !success){
-                        console.error("Could not change password: ", error);
-                    }else{
-                        console.warn("password change, what to do ? ");
-                    }
-                });
+                if(oldpassword == "" || newpassword == ""){
+                    console.error("changePassword: some inputs are invalid values");
+                }else{
+                    $scope.currentUser.changePassword(oldpassword, newpassword, function(success, error){
+                        if(error || !success){
+                            console.error("Could not change password: ", error);
+                        }else{
+                            console.warn("password change, what to do ? ");
+                        }
+                    });
+                }
             }
 
             $scope.updateUser = function(){
                 var firstName = $('#profileFirstName').val();
                 var lastName = $('#proflieLastName').val();
                 var email = $('#profileEmail').val();
-                $scope.currentUser.updateUser(firstName, lastName, email, function(success, error){
-                    if(error || !success){
-                        console.error("Could not change password: ", error);
+                if(firstName == "" || lastName == "" || email == ""){
+                    console.error("updateUser: some inputs are invalid values");
+                }else{
+                    $scope.currentUser.updateUser(firstName, lastName, email, function(success, error){
+                        if(error || !success){
+                            console.error("Could not change password: ", error);
+                        }else{
+                            console.warn("password change, what to do ? ");
+                        }
+                    });
+                }
+            }
+
+
+            $scope.checkPasswords = function(){
+                var password1 = $('#profileNewPassword').val();
+                var confirmPassword = $('#profileConfirmPassword').val();
+                if(password1 == "" || confirmPassword == ""){
+                    console.error("checkPasswords: some inputs are invalid values");
+                }else{
+                    if(password1 != confirmPassword){
+                        return false;
                     }else{
-                        console.warn("password change, what to do ? ");
+                        return true;
                     }
-                });
+                }
             }
 
 
