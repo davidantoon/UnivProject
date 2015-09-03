@@ -108,7 +108,6 @@
             if(Globals.CurrentUser && Globals.CurrentUser.id){
                 data.Token = Globals.CurrentUser.token;
             }
-            debugger;
             $.ajax({
                 // url: "http://testserver-radjybaba.rhcloud.com/webservice.php/",
                 url: this.protocol+"://"+this.ip+":"+this.port+this.baseUrl,
@@ -123,7 +122,6 @@
                 crossDomain : true,
                 timeout: 10000,
                 success: function(success) {
-                    debugger;
                     if (success.status == 200)
                         callback(success.data, null);
                     else{
@@ -132,7 +130,6 @@
                     }
                 },
                 error: function(error) {
-                    debugger;
                     console.error(error);
                     callback(null, error);
                 }

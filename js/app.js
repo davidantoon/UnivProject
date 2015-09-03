@@ -276,7 +276,7 @@ var ngScope;
 
             $scope.updateImageInSRV = function() {
                 if($('#newImageFileId').val() == ''){
-                // $scope.alert('לא נבחרה תמונה');
+                $scope.Toast.show("Error!","Could not upload image", Toast.LONG, Toast.ERROR);
                 }else{
                     var reader = new FileReader();
                     reader.onloadend = function() {
@@ -1355,7 +1355,6 @@ var ngScope;
                                             stor.getElementById(originalData[index], holdingRequestTab.dataHolding.forceLastModifed, holdingRequestTab.dataHolding.forceServerPull, function(resultO){
                                                 if(resultO != undefined)
                                                     resultData.push(resultO);
-                                                debugger;
                                                 loopResults(Number(index)+1, originalData, resultData);
                                             });    
                                         }else{

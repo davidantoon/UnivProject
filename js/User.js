@@ -173,7 +173,6 @@
                  */
                 updateUser: function(firstName, lastName, email, profilePicture, callback) {
                     try {
-                        debugger;
                         var data = {
                             firstName: firstName,
                             lastName: lastName,
@@ -183,12 +182,10 @@
                         };
                         var passThis = this;
                         $httpR.connectToServer(data, $httpR.updateUser, Globals, function(success, error) {
-                            if (error || !success) {
-                                debugger;
+                            if (error || !success){
                                 console.error("could not update data: ", error);
                                 callback(null, error);
-                            } else {
-                                debugger;
+                            }else{
                                 passThis.firstName = success["FIRST_NAME"];
                                 passThis.lastName = success["LAST_NAME"];
                                 passThis.email = success["EMAIL"];
