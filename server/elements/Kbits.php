@@ -643,6 +643,8 @@ class Kbit {
 		if($terms != null)
 			$kbit["TERMS"] = $terms;
 
+		unset($kbit["id"]);
+
 		return $kbit;
 	}
 
@@ -654,6 +656,9 @@ class Kbit {
 		$dbObj = new dbAPI();
 
 		for($i=0; $i<count($search_fields); $i++) {
+			if(strtoupper($search_fields[$i]) == strtoupper('ID'))
+				$search_fields[$i] = " " . $search_fields[$i] . " = " . $search_word . " "; 
+			else	
 			$search_fields[$i] = "UPPER(" . $search_fields[$i] . ") LIKE UPPER('%" . $search_word . "%') "; 
 		}
 		$search_sttmnt = implode(" OR ", $search_fields);
