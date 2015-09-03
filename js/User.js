@@ -189,6 +189,7 @@
                                 passThis.firstName = success["FIRST_NAME"];
                                 passThis.lastName = success["LAST_NAME"];
                                 passThis.email = success["EMAIL"];
+                                passThis.profilePicture = success["PROFILE_PICTURE"];
                                 callback(passThis);
                             }
                         });

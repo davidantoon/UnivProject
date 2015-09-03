@@ -295,7 +295,7 @@ var ngScope;
                                 ctx.drawImage(image, 0, 0, image.width, image.height);
                                 var base64NewImage = canvas.toDataURL();
                                 console.log(base64NewImage);
-                                updateProfilePicture(base64NewImage);
+                                $scope.updateUser(base64NewImage);
                                 /// BAASEEE 64 IMAGE
                                 // Globals.currentUser.updateProfilePicture(base64NewImage, function(success, error){
                                 //     if(error || !success){
@@ -333,6 +333,7 @@ var ngScope;
             }
 
             $scope.updateUser = function(profilePicture){
+                debugger;
                 if(profilePicture == "" || profilePicture == undefined || profilePicture == null){
                     var firstName = $('#profileFirstName').val();
                     var lastName = $('#profileLastName').val();
