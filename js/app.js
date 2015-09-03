@@ -147,14 +147,13 @@ var ngScope;
              *                                                                   *
              ********************************************************************/
             $scope.logout = function() {
-                
+                $('#LoadingScreen').show();
 
                 // LOGOUT
                 User.logout(function(success, error){
                     if(error || !success){
                         console.error("Error logging out");
                     }else{
-                        $('#LoadingScreen').show();
                         $scope.clearData();
                         $timeout(function() {
                             $scope.$apply(function() {
