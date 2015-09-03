@@ -147,13 +147,14 @@ var ngScope;
              *                                                                   *
              ********************************************************************/
             $scope.logout = function() {
-                $('#LoadingScreen').show();
+                
 
                 // LOGOUT
                 User.logout(function(success, error){
                     if(error || !success){
                         console.error("Error logging out");
                     }else{
+                        $('#LoadingScreen').show();
                         $scope.clearData();
                         $timeout(function() {
                             $scope.$apply(function() {
@@ -175,13 +176,13 @@ var ngScope;
 
             $scope.login = function(){
                 var username = "geryes"; var password = "my_password"; // Jeries Mousa
-                var username1 = "antoon91"; var password1 = "1234"; // Antoon Antoon
+                var username1 = "antoon91"; var password1 = "123"; // Antoon Antoon
 
-                User.login(username1, password1, function(succes, error){
-                    if(error || !succes)
+                User.login(username1, password1, function(success, error){
+                    if(error || !success)
                         $scope.logout();
                     else{
-                        Globals.CurrentUser = succes;
+                        Globals.CurrentUser = success;
                         var stor = new Storage();
 
                         stor.setWorkspaceData(null, null, Globals.CurrentUser, function(){});
@@ -275,47 +276,50 @@ var ngScope;
 
 
             $scope.updateImageInSRV = function() {
-                // if($('#newImageFileId').val() == ''){
+                if($('#newImageFileId').val() == ''){
                 // $scope.alert('לא נבחרה תמונה');
-                // }else{
-                var reader = new FileReader();
-                reader.onloadend = function() {
-                    if (reader.result) {
-                        var image = new Image();
-                        image.onload = function() {
-                            var canvas = document.createElement('canvas');
-                            if (image.height > 200) {
-                                image.width *= 200 / image.height;
-                                image.height = 200;
-                            }
-                            var ctx = canvas.getContext("2d");
-                            ctx.clearRect(0, 0, canvas.width, canvas.height);
-                            canvas.width = image.width;
-                            canvas.height = image.height;
-                            ctx.drawImage(image, 0, 0, image.width, image.height);
-                            var base64NewImage = canvas.toDataURL();
-                            console.log(base64NewImage);
-
-                            /// BAASEEE 64 IMAGE
-                            // Globals.currentUser.updateProfilePicture(base64NewImage, function(succes, error){
-                            //     if(error || !succes){
-                            //         console.error("could not update profile picture: ", error);
-                            //     }else{
-                            //         console.log("profile picture change: ", succes);
-                            //     }
-                            // });
-                        };
-                        image.src = reader.result;
-                       
-                    } else {
-                        console.error("there was a problem uploading image");
-                        // $scope.alert('אריעה שגיאה במהלך העלאת התמונה');
+                }else{
+                    var reader = new FileReader();
+                    reader.onloadend = function() {
+                        if (reader.result) {
+                            var image = new Image();
+                            image.onload = function() {
+                                var canvas = document.createElement('canvas');
+                                if (image.height > 100) {
+                                    image.width *= 100 / image.height;
+                                    image.height = 100;
+                                }
+                                var ctx = canvas.getContext("2d");
+                                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                                canvas.width = image.width;
+                                canvas.height = image.height;
+                                ctx.drawImage(image, 0, 0, image.width, image.height);
+                                var base64NewImage = canvas.toDataURL();
+                                console.log(base64NewImage);
+                                updateProfilePicture(base64NewImage);
+                                /// BAASEEE 64 IMAGE
+                                // Globals.currentUser.updateProfilePicture(base64NewImage, function(success, error){
+                                //     if(error || !success){
+                                //         console.error("could not update profile picture: ", error);
+                                //     }else{
+                                //         console.log("profile picture change: ", success);
+                                //     }
+                                // });
+                            };
+                            image.src = reader.result;
+                           
+                        } else {
+                            console.error("there was a problem uploading image");
+                            // $scope.alert('אריעה שגיאה במהלך העלאת התמונה');
+                        }
                     }
+                    reader.readAsDataURL($('#newImageFileId')[0].files[0]);
                 }
-                reader.readAsDataURL($('#newImageFileId')[0].files[0]);
-                // }
             }
 
+            $scope.updateProfilePicture(newPicture){
+
+            }
 
             $scope.changePassword = function(){
                 var oldpassword = $('#profileOldPassword').val();
@@ -333,20 +337,44 @@ var ngScope;
                 }
             }
 
-            $scope.updateUser = function(){
-                var firstName = $('#profileFirstName').val();
-                var lastName = $('#proflieLastName').val();
-                var email = $('#profileEmail').val();
-                if(firstName == "" || lastName == "" || email == ""){
-                    console.error("updateUser: some inputs are invalid values");
+            $scope.updateUser = function(profilePicture){
+                if(profilePicture == "" || profilePicture == undefined || profilePicture == null){
+                    var firstName = $('#profileFirstName').val();
+                    var lastName = $('#profileLastName').val();
+                    var email = $('#profileEmail').val();
+                    console.log(firstName+ ',' +lastName+',' +email);
+                    if(firstName == "" || lastName == "" || email == ""){
+                        console.error("updateUser: some inputs are invalid values");
+                    }else{
+                        $scope.currentUser.updateUser(firstName, lastName, email, $scope.currentUser.profilePicture, function(success, error){
+                            if(error || !success){
+                                console.error("Could not update profile: ", error);
+                            }else{
+                                console.warn("profile updated, what to do ? ", success);
+                                var stor = new Storage();
+
+                                stor.setWorkspaceData(null, null, Globals.CurrentUser, function(){});
+                            }
+                        });
+                    }
                 }else{
-                    $scope.currentUser.updateUser(firstName, lastName, email, function(success, error){
-                        if(error || !success){
-                            console.error("Could not change password: ", error);
-                        }else{
-                            console.warn("password change, what to do ? ");
-                        }
-                    });
+                    var firstName = $('#profileFirstName').val();
+                    var lastName = $('#profileLastName').val();
+                    var email = $('#profileEmail').val();
+                    if(firstName == "" || lastName == "" || email == ""){
+                        console.error("updateUser: some inputs are invalid values");
+                    }else{
+                        $scope.currentUser.updateUser(firstName, lastName, email, profilePicture, function(success, error){
+                            if(error || !success){
+                                console.error("Could not update profile: ", error);
+                            }else{
+                                console.warn("profile updated, what to do ? ", success);
+                                var stor = new Storage();
+
+                                stor.setWorkspaceData(null, null, Globals.CurrentUser, function(){});
+                            }
+                        });
+                    }
                 }
             }
 

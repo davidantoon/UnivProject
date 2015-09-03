@@ -749,7 +749,7 @@
             <ons-col width="10px"></ons-col> <!-- Padding --> 
             <ons-col width="150px">First Name</ons-col>
             <ons-col>
-              <input type="text" ng-model="currentUser.firstName" id="profileFirstName"/>
+              <input type="text" value="{{currentUser.firstName}}" id="profileFirstName"/>
             </ons-col>
             <ons-col width="10px"></ons-col> <!-- Padding --> 
           </ons-row>
@@ -757,7 +757,7 @@
             <ons-col width="10px"></ons-col> <!-- Padding --> 
             <ons-col width="150px">Last Name</ons-col>
             <ons-col>
-              <input type="text" ng-model="currentUser.lastName" id="profileLastName"/>
+              <input type="text" value="{{currentUser.lastName}}" id="profileLastName"/>
             </ons-col>
             <ons-col width="10px"></ons-col> <!-- Padding --> 
           </ons-row>
@@ -797,7 +797,7 @@
             <ons-col width="10px"></ons-col> <!-- Padding --> 
             <ons-col width="150px">Email</ons-col>
             <ons-col>
-              <input type="text" ng-model="currentUser.email" id="profileEmail"/>
+              <input type="text" value="{{currentUser.email}}" id="profileEmail"/>
             </ons-col>
             <ons-col width="10px"></ons-col> <!-- Padding --> 
           </ons-row>
@@ -805,7 +805,7 @@
             <ons-col width="10px"></ons-col> <!-- Padding --> 
             <ons-col width="150px">Role</ons-col>
             <ons-col>
-              <input type="text" ng-model="currentUser.role" id="profileRole"/>
+              <label id="profileRole">{{currentUs.role}}</label>
             </ons-col>
             <ons-col width="10px"></ons-col> <!-- Padding --> 
           </ons-row>
@@ -818,7 +818,7 @@
           </ons-row>
           <ons-row>
             <ons-col> <button ng-click="((checkPasswords() == true)?changePassword():console.error('Passwords are not indentical'))">Change Password</button> </ons-col>
-            <ons-col> <button ng-click="updateProfile();">Update Profile</button> </ons-col>
+            <ons-col> <button ng-click="updateUser();">Update Profile</button> </ons-col>
             <ons-col> <button ng-click="updateImageInSRV();">Upload Proflie Picture</button> </ons-col>
           </ons-row>
         </div>

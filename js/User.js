@@ -171,23 +171,28 @@
                  * @param  {string}   role           role of the user
                  * @param  {Function} callback       callback function
                  */
-                updateUser: function(firstName, lastName, email, callback) {
+                updateUser: function(firstName, lastName, email, profilePicture, callback) {
                     try {
+                        debugger;
                         var data = {
                             firstName: firstName,
                             lastName: lastName,
                             email: email,
-                            profilePicture: this.profilePicture
-                        }
+                            profilePicture: profilePicture,
+                            role: this.role
+                        };
+                        var passThis = this;
                         $httpR.connectToServer(data, $httpR.updateUser, Globals, function(success, error) {
                             if (error || !success) {
+                                debugger;
                                 console.error("could not update data: ", error);
                                 callback(null, error);
                             } else {
-                                this.firstName = success["firstName"];
-                                this.lastName = success["lastName"];
-                                this.email = success["email"];
-                                callback(this);
+                                debugger;
+                                passThis.firstName = success["FIRST_NAME"];
+                                passThis.lastName = success["LAST_NAME"];
+                                passThis.email = success["EMAIL"];
+                                callback(passThis);
                             }
                         });
                     } catch (e) {
@@ -206,14 +211,14 @@
                             profilePicture: profilePicture,
                             role: this.role
                         };
-
+                        var passThis = this;
                         $httpR.connectToServer(data, $httpR.updateUser, Globals, function(success, error){
                             if(error || !success){
                                 console.error("could not update profile picture: ", error);
                                 callback(null, error);
                             }else{
-                                this.profilePicture = success["profilePicture"];
-                                callback(this);
+                                passThis.profilePicture = success["PROFILE_PICTURE"];
+                                callback(passThis);
                             }
                         });
                     }catch(e){
