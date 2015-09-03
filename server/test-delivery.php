@@ -1,10 +1,24 @@
-	<html>
+	<html ng-app="IntelLearner">
  <head>
  <meta charset="utf-8">
   <title>PHP Test</title>
- </head>
- <body>
+ <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <link rel="icon" href="img/favicon.ico" type="image/x-icon"/> -->
+  <!-- <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon"/> -->
+  
+  <link rel="stylesheet" href="../css/app.css"> 
+  <link rel="stylesheet" href="../css/bootstrap-datepicker3.css"> 
+  <link rel="stylesheet" href="../css/onsenui.css">
+  <link rel="stylesheet" href="../css/onsen-css-components-IntelProject.css">
+  <link rel="stylesheet" href="../css/app.css">
 
+		</head>
+ <body ng-controller="MainCtrl">
+
+ 
 <?php 
 	include 'app_config.php';
 // 	$dbObj = new dbAPI();
@@ -77,11 +91,30 @@
 // 	debugLog::log("<i>[hello.php:testing publish delivery1]</i> result: ". dbAPI::print_json_s(Delivery::publish_changes($delivery2["UID"], 1), 0));
 // 	// 
 // 	// 
-	dbAPI::print_json_s(D2KRelation::get_deliveries_relations_tree());
-	debugLog::important_log("<i>[testing tree]</i>: " . dbAPI::print_json_s(D2KRelation::get_deliveries_relations_tree(), 0));
+	$result = json_encode(D2KRelation::get_deliveries_relations_tree());
+	echo "<pre style='-webkit-user-select: initial;-moz-user-select: initial;-ms-user-select: initial;user-select: initial;' ng-init='david=". $result ."'>{{ david | json:4}}</pre>";
+	echo "<script>console.log(". $result .")<"."/script>";
+	// debugLog::important_log("<i>[testing tree]</i>: " . dbAPI::print_json_s(D2KRelation::get_deliveries_relations_tree(), 0));
 ?>
-
+<script type="text/javascript" src="../js/angular/angular.js"></script>
+  <script type="text/javascript" src="../js/onsenui.js"></script> 
+  <script type="text/javascript" src="../js/jquery.js"></script>
+  <script type="text/javascript" src="../js/jquery.maskedinput.js"></script>
+  <script type="text/javascript" src="../js/firebase.js"></script>
+  <script type="text/javascript" src="../js/angularfire.min.js"></script>
+  <script type="text/javascript" src="../js/visible.js"></script>
+  <script type="text/javascript" src="../js/serverapp.js"></script>
 	 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
 
 
