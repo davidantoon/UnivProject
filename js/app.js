@@ -316,10 +316,6 @@ var ngScope;
                 }
             }
 
-            $scope.updateProfilePicture(newPicture){
-
-            }
-
             $scope.changePassword = function(){
                 var oldpassword = $('#profileOldPassword').val();
                 var newpassword = $('#profileNewPassword').val();
