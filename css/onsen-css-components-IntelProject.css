@@ -7313,6 +7313,9 @@ selectable{
 
 }
 
-
+.nolink{
+  color: rgb(80,80,80);
+  padding: 2px 9px;
+}
 
 

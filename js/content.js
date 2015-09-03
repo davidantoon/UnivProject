@@ -20,7 +20,10 @@
 				this.connectToDataBase = ((this.type && new Server(this.type, $rootScope.currentScope.isDummy)) || null);
 				this.progressWizard = ((conData != undefined)?conData.progressWizard:{});
 				this.newData = ((conData != undefined)?conData.newData:null);
-
+				if(!this.progressWizard){
+					this.progressWizard = {};
+				}
+				this.progressWizard.spinner = false;
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","There was an error in creating new Content", Toast.LONG, Toast.ERROR);
 	            console.error("Content: ", e);
@@ -85,20 +88,9 @@
 				}
 			},
 
-			/**
-			 * Unlock Object in the server to enable others to edit
-			 * @param  {Function} callback Function called after execute object method. Return success/error result
-			 */
-			unlock: function(callback){
-				try{
-
-				}catch(e){
-	           		console.error("unlock: ", e);
-				}
-			},
 
 
-			modifyContent: function(){
+			modifyContent: function(keepSpinner){
 				switch(this.type){
 					case "Delivery":
 						this.name = this.newData.name;
@@ -117,9 +109,6 @@
 					default:
 					break;
 				}
-				this.lastModified = +(new Date());
-				this.inProgress = false;
-				this.progressWizard = {};
 			},
 
 			/**
@@ -129,20 +118,18 @@
 			 */
 			save: function(versionNotes, callback){
 				try{
+					debugger;
 					this.modifyContent();
 					var mThis = this;
-					this.connectToDataBase.saveElement(mThis, function(res){
-						if(res != "Error"){
-							mThis.lastModified = res.lastModified;
-							mThis.inProgress = false;
-							callback(true);
-						}else{
+					this.connectToDataBase.saveElement(mThis, function(success, error){
+						if(error || !success){
 							callback(false);
+						}else{
+							callback(true);
 						}
 					});
 				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","There was an error in saving Content", Toast.LONG, Toast.ERROR);
-	            	console.error("save: ", e);
+					console.error("content.save: ", error);
 	            	callback(null,{"message":e.message,"code":e.code});
 	            }
 			},

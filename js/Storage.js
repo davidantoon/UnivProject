@@ -276,7 +276,7 @@
 						if(cashedObject == null)
 							createObjects(jsonObject, callback, this);
 						else{
-							if(jsonObject.lastModified > cashedObject.lastmodified){
+							if(jsonObject.lastModified >= cashedObject.lastModified){
 								Globals.pop(cashedObject.id, cashedObject.type);							
 								createObjects(jsonObject, callback, this);
 							}

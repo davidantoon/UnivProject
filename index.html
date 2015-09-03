@@ -332,7 +332,7 @@
                             <ons-col>
                               <ons-row class="header" ng-click="refocusMe(wFlow);">
 
-                                <ons-col width="110px" ng-click="wFlow.selectedTab.content.progressWizard = {}; wFlow.selectedTab.content.inProgress = false;InsertStepToLast10Steps();" class="backButton buttons clickable">
+                                <ons-col width="110px" ng-click="cancelButton(wFlow.selectedTab.content);" class="backButton buttons clickable">
                                   <ons-icon icon="ion-android-cancel" size="25px"></ons-icon>
                                   <p>Cancel</p>
                                 </ons-col>
@@ -340,7 +340,7 @@
                                 <div class="title">
                                   {{wFlow.selectedTab.content.progressWizard.header}}
                                 </div>
-                                <ons-col width="110px" ng-click="wFlow.selectedTab.content.progressWizard.index=wFlow.selectedTab.content.progressWizard.index+1; InsertStepToLast10Steps();" class="backButton buttons clickable">
+                                <ons-col width="110px" ng-click="nextButton(wFlow.selectedTab.content);" class="backButton buttons clickable">
                                   <p>Next</p>
                                   <ons-icon icon="ion-android-arrow-dropright-circle" size="25px"></ons-icon>
                                 </ons-col>
@@ -379,7 +379,7 @@
                                 <ons-col>
                                   <ons-row class="header" ng-click="refocusMe(wFlow);">
 
-                                    <ons-col width="110px" ng-click="wFlow.selectedTab.content.progressWizard.index=wFlow.selectedTab.content.progressWizard.index-1; InsertStepToLast10Steps();" class="backButton buttons clickable">
+                                    <ons-col width="110px" ng-click="backButton(wFlow.selectedTab.content);" class="backButton buttons clickable">
                                       <ons-icon icon="ion-android-arrow-dropleft-circle" size="25px"></ons-icon>
                                       <p>Back</p>
                                     </ons-col>
@@ -387,7 +387,7 @@
                                     <div class="title">
                                      Delivery Kbits Needed & Provided
                                     </div>
-                                    <ons-col width="110px" ng-click="wFlow.selectedTab.content.progressWizard.index=wFlow.selectedTab.content.progressWizard.index+1; InsertStepToLast10Steps();" class="backButton buttons clickable">
+                                    <ons-col width="110px" ng-click="nextButton(wFlow.selectedTab.content);" class="backButton buttons clickable">
                                       <p>Next</p>
                                       <ons-icon icon="ion-android-arrow-dropright-circle" size="25px"></ons-icon>
                                     </ons-col>
@@ -425,7 +425,7 @@
                                 <ons-col>
                                   <ons-row class="header" ng-click="refocusMe(wFlow);">
 
-                                    <ons-col width="110px" ng-click="wFlow.selectedTab.content.progressWizard.index=wFlow.selectedTab.content.progressWizard.index-1;" class="backButton buttons clickable">
+                                    <ons-col width="110px" ng-click="backButton(wFlow.selectedTab.content);" class="backButton buttons clickable">
                                       <ons-icon icon="ion-android-arrow-dropleft-circle" size="25px"></ons-icon>
                                       <p>Back</p>
                                     </ons-col>
@@ -466,7 +466,7 @@
                                 <ons-col>
                                   <ons-row class="header" ng-click="refocusMe(wFlow);">
 
-                                    <ons-col width="110px" ng-click="wFlow.selectedTab.content.progressWizard.index=wFlow.selectedTab.content.progressWizard.index-1;" class="backButton buttons clickable">
+                                    <ons-col width="110px" ng-click="backButton(wFlow.selectedTab.content);" class="backButton buttons clickable">
                                       <ons-icon icon="ion-android-arrow-dropleft-circle" size="25px"></ons-icon>
                                       <p>Back</p>
                                     </ons-col>
@@ -523,7 +523,7 @@
                             Revoke
                           </ons-col>
                         </ons-row>
-                        <ons-row class="hoverOp clickable">
+                        <ons-row class="hoverOp clickable" ng-click="publishButton(wFlow.selectedTab.content)">
                           <ons-col class="optionIcon" width="34px">
                             <ons-icon icon="ion-social-dropbox" size="18px"></ons-icon>
                           </ons-col>
@@ -560,10 +560,13 @@
                         <ons-col class="title" width="50px">
                           Path
                         </ons-col>
-                        <ons-col class="link">
+                        <ons-col class="{{'col ons-col-inner link '+((wFlow.selectedTab.content.url == undefined || wFlow.selectedTab.content.url == '')?'hidden':'')}}" >
                           <selectable>
-                            {{((wFlow.selectedTab.content.url != "")?wFlow.selectedTab.content.url:"Not specified")}}
+                            <a href="{{wFlow.selectedTab.content.url}}" target="_blank">{{wFlow.selectedTab.content.url.toLowerCase()}}</a>
                           </selectable>
+                        </ons-col>
+                        <ons-col class="{{'col ons-col-inner nolink '+((wFlow.selectedTab.content.url == undefined || wFlow.selectedTab.content.url == '')?'':'hidden')}}" >
+                          Not Specified
                         </ons-col>
                       </ons-row>
                       <ons-row class="{{'contentDetails row ons-row-inner '+((wFlow.selectedTab.content.type == 'Term')?'hidden':'')}}">
@@ -580,7 +583,7 @@
                                     </ons-row>
                                     <ons-row class="listItems">
                                       <ons-col>
-                                        <ons-row class="listItem" ng-click="displaySmallContent(wFlow,Term);" ng-repeat="Term in wFlow.selectedTab.content.terms" dnd-draggable="Term" dnd-effect-allowed="copy" dnd-copied="draggingItems(Term);">
+                                        <ons-row class="listItem" ng-click="displayContent(wFlow,Term);" ng-repeat="Term in wFlow.selectedTab.content.terms" dnd-draggable="Term" dnd-effect-allowed="copy" dnd-copied="draggingItems(Term);">
                                           {{Term.name}}
                                         </ons-row>
                                       </ons-col>
@@ -594,7 +597,7 @@
                                     </ons-row>
                                     <ons-row class="listItems">
                                       <ons-col>
-                                        <ons-row class="listItem" ng-click="displaySmallContent(wFlow,Kbits);" ng-repeat="Kbits in wFlow.selectedTab.content.kBitsNeeded" dnd-draggable="Kbits" dnd-effect-allowed="copy" dnd-copied="draggingItems(Kbits);">
+                                        <ons-row class="listItem" ng-click="displayContent(wFlow,Kbits);" ng-repeat="Kbits in wFlow.selectedTab.content.kBitsNeeded" dnd-draggable="Kbits" dnd-effect-allowed="copy" dnd-copied="draggingItems(Kbits);">
                                           {{Kbits.name}}
                                         </ons-row>
                                       </ons-col>
@@ -608,7 +611,7 @@
                                     </ons-row>
                                     <ons-row class="listItems">
                                       <ons-col>
-                                        <ons-row class="listItem" ng-click="displaySmallContent(wFlow,Kbits);" ng-repeat="Kbits in wFlow.selectedTab.content.kBitsProvided" dnd-draggable="Kbits" dnd-effect-allowed="copy" dnd-copied="draggingItems(Kbits);">
+                                        <ons-row class="listItem" ng-click="displayContent(wFlow,Kbits);" ng-repeat="Kbits in wFlow.selectedTab.content.kBitsProvided" dnd-draggable="Kbits" dnd-effect-allowed="copy" dnd-copied="draggingItems(Kbits);">
                                           {{Kbits.name}}
                                         </ons-row>
                                       </ons-col>
@@ -628,7 +631,7 @@
                                     </ons-row>
                                     <ons-row class="listItems">
                                       <ons-col>
-                                        <ons-row class="listItem" ng-click="displaySmallContent(wFlow,Term);" ng-repeat="Term in wFlow.selectedTab.content.terms" dnd-draggable="Term" dnd-effect-allowed="copy" dnd-copied="draggingItems(Term);">
+                                        <ons-row class="listItem" ng-click="displayContent(wFlow,Term);" ng-repeat="Term in wFlow.selectedTab.content.terms" dnd-draggable="Term" dnd-effect-allowed="copy" dnd-copied="draggingItems(Term);">
                                           {{Term.name}}
                                         </ons-row>
                                       </ons-col>

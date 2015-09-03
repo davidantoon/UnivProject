@@ -116,8 +116,7 @@
 						callback(searchResults, null);
 						return;
 					}else{
-
-						debugger;
+						
 						var searchFields = [];
 						var mergeResult = [];
 						var resultCounter = 0;
@@ -480,16 +479,21 @@
 						console.warn("DUMMY REQUESTS");
 					}else{
 						switch (this.TypeOfData){
-							case "Deliveries":
-								console.warn("add kbit Delivery and Delivery publish functions");
+							case "Delivery":
+								console.warn("Add Delivery update and Delivery publish functions");
+								callback(true, null);
+
+								// call new method to save delivery and kbits relations
 							break;
-							case "kbits":
-								console.warn("add kbit update and kbit publish functions");
+							case "Kbit":
+								console.warn("Add Kbit update and kbit publish functions");
+								callback(true, null);
+
+								// call new method to save kbit and terms relations
 							break;
 							default:
 							break;
 						}
-						
 					}
 				}catch(e){
 	                console.error("saveElement: ", e);
@@ -506,8 +510,7 @@
 			getElementByID: function(objID, callback){
 				try{	
 					if(this.baseUrl == "dummy"){
-					// 	return localStorage.getItem("dummy");
-					// }
+
 						switch (this.TypeOfData){
 							case "delivery":
 								var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
