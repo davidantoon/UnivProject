@@ -1,6 +1,7 @@
 (function(angular) {
     // 'use strict';
-	angular.module('IntelLearner').factory('Steps', ["$rootScope", "Workflow", "Workspace", "Server", "Toast", "Storage", function($rootScope, Workflow, Workspace, Server, Toast, Storage){
+	angular.module('IntelLearner').factory('Steps', ["$rootScope", "Workflow", "Workspace", "Server", "Toast", "Storage","Globals", 
+		function($rootScope, Workflow, Workspace, Server, Toast, Storage, Globals){
 
 		function Steps(){
 
@@ -378,6 +379,25 @@
 			        			loopDiffObjectsDone();
 			        		}
 			        	}
+			        	// check new -> if locked by me, take from cashe, else pull from server
+			        	function updateCashedContents(){
+
+			        		Globals.getMinimized(function(result){
+			        			if(result.length == 0){
+			        				loopDiffObjectsDone();
+			        			}else{
+			        				var svr = new Server();
+			        				svr.getFromServer(result, function(success, error){
+			        					if(error || !success){
+			        						callback(null, error);
+			        					}else{
+			        						loopDiffObjectsDone(success);
+			        					}
+			        				});
+			        			}
+			        		});
+			        	}
+
 			        	function loopDiffObjectsDone(){
 			        		callback();
 			        	}

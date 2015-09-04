@@ -788,6 +788,22 @@
 
 
 
+
+			getFromServer: function(objectsArray, callback){
+				try{
+					if(objectsArray.length == 0){
+						callback(null, "objects Array is empty");
+					}else{
+						// send array to server and get the objects
+						callback();
+					}
+				}catch(e){
+					console.error("getFromServer: ", e);
+					callback(null, e);
+				}
+			},
+
+
 			/********************************************************************
 			*                                                                   *
 			  00000000000  00000000000  000000000    000     000     00000     
