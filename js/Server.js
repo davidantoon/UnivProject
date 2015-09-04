@@ -388,7 +388,6 @@
 							data.lang = 'en';
 							$httpR.connectToServer(data, $httpR.TERMsearchTerms, Globals, function(success, error){
 								var successModified = [];
-								debugger;
 								if(error || !success){
 									console.error("error searching term is server: ", error);
 								}else{
@@ -396,7 +395,9 @@
 										successModified.push({
 											id: success[i].UID,
 											name: success[i].TERM_STRING,
-											description: success[i].TERM_MEANING + " Language: " +success[i].LANG,
+											description: success[i].TERM_MEANING,
+											lang: success[i].LANG,
+
 											type: "Term"
 										});
 									}
@@ -410,7 +411,6 @@
 						
 
 						function mergeData(result, index){
-							debugger;
 							mergeResult = mergeResult.concat(result);
 							if(index == 3)
 								callback(mergeResult);
