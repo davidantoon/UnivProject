@@ -376,7 +376,7 @@
 			        			workflowsToBuild[index].workflowsToBuild = workflowsToBuild;
 			        			var tempWorkflow = new Workflow(workflowsToBuild[index]);
 			        		}else{
-			        			loopDiffObjectsDone();
+			        			updateCashedContents();
 			        		}
 			        	}
 			        	// check new -> if locked by me, take from cashe, else pull from server
@@ -388,16 +388,85 @@
 			        			}else{
 			        				var svr = new Server();
 			        				svr.getFromServer(result, function(success, error){
-			        					if(error || !success){
-			        						callback(null, error);
-			        					}else{
-			        						loopDiffObjectsDone(success);
+			        					for(var i=0; i<success.length; i++){
+			        						for(var j=0; j< Globals.CashedObjects.length; j++){
+			        							if(success[i].id == Globals.CashedObjects[j].id){
+			        								if(success[i].type == Globals.CashedObjects[j].type){
+			        									Globals.set(success[i]);
+			        								}
+			        							}
+			        						}
 			        					}
+			        					refreshObjectsInheritence();
 			        				});
 			        			}
 			        		});
 			        	}
 
+			        	function refreshObjectsInheritence(){
+			        		//loop on cahsed objects 
+			        			//if ( del..)
+			        			//	loop all arays and get elem..
+			        		var str = new Storage();
+			        		loopGlobalObjects(0, Globals.CashedObjects);
+			        		function loopGlobalObjects(Index, CashedObjects){
+			        			if(Index < CashedObjects.length){
+				        			switch(Globals.CashedObjects[Index].type){
+				        				case "Delivery":
+				        					// loop over terms
+				        					loopTerms(0, Globals.CashedObjects[Index].terms);
+				        					function loopTerms(index, termsArray){
+				        						if(index < termsArray.length){
+				        							str.getElementById(termsArray[index], false, false, function(result){
+				        								loopTerms(Number(index)+1, termsArray);
+				        							});
+				        						}else{
+				        							loopKbitsNeeded(0, Globals.CashedObjects[i].kBitsNeeded);
+				        						}
+				        					}
+				        					// loop over kbits needed
+				        					function loopKbitsNeeded(index, KbitsNeededArray){
+				        						if(index < KbitsNeededArray.length){
+				        							str.getElementById(KbitsNeededArray[index], false, false, function(result){
+				        								loopKbitsNeeded(Number(index)+1, KbitsNeededArray);
+				        							});
+				        						}else{
+				        							loopKbitsProvided(0, Globals.CashedObjects[i].kbitProvided);
+				        						}
+				        					}
+				        					// loop over kbits provided
+				        					function loopKbitsProvided(index, kbitsProvidedArray){
+				        						if(index < kbitsProvidedArray.length){
+				        							str.getElementById(kbitsProvidedArray[index], false, false, function(result){
+				        								loopKbitsProvided(Number(index)+1, kbitsProvidedArray);
+				        							});
+				        						}else{
+				        							loopGlobalObjects(Number(Index)+1, CashedObjects);
+				        						}
+				        					}
+				        				break;
+				        				case "Term":
+
+				        				break;
+				        				case "Kbit":
+				        					//loop terms
+				        					loopTerms(0, Globals.CashedObjects[Index].terms);
+				        					function loopTerms(index, termsArray){
+				        						if(index < termsArray.length){
+				        							str.getElementById(termsArray[index], false, false, function(result){
+				        								loopTerms(Number(index)+1, termsArray);
+				        							});
+				        						}else{
+				        							loopGlobalObjects(Number(Index)+1, CashedObjects);
+				        						}
+				        					}
+				        				break;
+				        				default:
+				        				break;
+				        			}
+				        		}
+			        		}
+			        	}
 			        	function loopDiffObjectsDone(){
 			        		callback();
 			        	}
