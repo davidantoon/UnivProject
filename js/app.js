@@ -133,7 +133,6 @@ var ngScope;
                     var stor = new Storage();
                     stor.getWorkspaceData(false, function(data){
                         if(data.CurrentUser.id){
-                            debugger;
                             Globals.CurrentUser = new User(data.CurrentUser);
                             $scope.currentUser = Globals.CurrentUser;
                             $scope.loadUserData();
@@ -358,7 +357,6 @@ var ngScope;
             }
 
             $scope.updateUser = function(profilePicture){
-                debugger;
                 if(profilePicture == "" || profilePicture == undefined || profilePicture == null){
                     var firstName = $('#profileFirstName').val();
                     var lastName = $('#profileLastName').val();

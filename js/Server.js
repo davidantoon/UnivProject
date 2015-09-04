@@ -392,6 +392,7 @@
 									console.error("error searching term is server: ", error);
 								}else{
 									for(var i=0; i<success.length; i++){
+										console.log("Term in server: ", success);
 										successModified.push({
 											id: success[i].UID,
 											name: success[i].TERM_STRING,
