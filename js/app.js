@@ -132,7 +132,8 @@ var ngScope;
                     TypeOf.init();
                     var stor = new Storage();
                     stor.getWorkspaceData(false, function(data){
-                        if(data.CurrentUser){
+                        if(data.CurrentUser.id){
+                            debugger;
                             Globals.CurrentUser = new User(data.CurrentUser);
                             $scope.currentUser = Globals.CurrentUser;
                             $scope.loadUserData();
@@ -1961,7 +1962,7 @@ var ngScope;
                 }
             },1000);
             $interval(function() {
-                if(Globals.CurrentUser.id){
+                if(Globals.CurrentUser.id && $('#pointToZoom').position()){
                     if ($scope.lastZoomIn != $('#ZoomRange').val()) {
 
                         $scope.lastZoomIn = $('#ZoomRange').val();

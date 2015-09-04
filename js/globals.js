@@ -110,6 +110,7 @@
         DELIVERYaddRelatedKbit: "DELIVERYaddRelatedKbit",
         DELIVERYremoveRelatedKbit: "DELIVERYremoveRelatedKbit",
         USERlogout: "USERlogout",
+        USERvalidateToken: "USERvalidateToken",
 
         
 

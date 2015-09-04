@@ -152,14 +152,15 @@
                             new_password: newPassword
                         }
                         $httpR.connectToServer(data, $httpR.changePassword, Globals, function(success, error) {
+                            debugger;
                             if (error || !success) {
                                 console.error("could not change password: ", error);
                                 callback(null, error);
                             } else {
-                                callback(success);
+                                callback(success, null);
                             }
                         });
-                    } catch (e) {
+                    }catch(e){
                         console.error("changePassword: ", e);
                         callback(null, e);
                     }
@@ -229,12 +230,16 @@
                 },
 
                 checkValidToken: function(callback){
-                    
-                    setTimeout(function(){ // emulate server call
 
-                        callback(true);
+                    var data = {};
 
-                    },1000);
+                    $httpR.connectToServer(data, $httpR.USERvalidateToken, Globals, function(success, error){
+                        if(error || !success){
+                            callback(false);
+                        }else{
+                            callback(true);
+                        }
+                    });
                 },
 
                 toJSON: function() {

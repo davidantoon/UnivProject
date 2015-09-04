@@ -166,6 +166,7 @@
 			 */
 			scrollToLastWorkflow: function(Steps){
 				try{
+					debugger;
 					var indexOfScroll = 0;
 					if(this.selectedColors.length == 0){
 						// loop of ID to locate last focused workflow
