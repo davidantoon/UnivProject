@@ -26,9 +26,9 @@
 					}else{
 						try{
 							var x =JSON.parse(strDecompress(result.OBJECT_VALUE));
-							// if(x.last20Steps.length == 0)
-								// ServerResquestComplete(null, passThis1);
-							// else	
+							if(x.last20Steps.length == 0)
+								ServerResquestComplete(null, passThis1);
+							else
 								ServerResquestComplete(x, passThis1);
 						}catch(e){
 							ServerResquestComplete(null, passThis1);
@@ -40,6 +40,8 @@
 						var stor = new Storage();
 						stor.getWorkspaceData(false,function(dataFromLocalStorage, error){
 							dataFromLocalStorage = ((dataFromLocalStorage)?dataFromLocalStorage.Steps:null);
+							if(dataFromLocalStorage != null && dataFromLocalStorage.length == 0)
+								dataFromLocalStorage = null;
 							// init workspace
 							if(serverSteps){
 								if(dataFromLocalStorage != null){
@@ -327,7 +329,7 @@
 	            	else{
 			            this.last20Steps = [InsData];
 	            	}
-		            this.last20Steps = this.last20Steps.slice(0, 20);
+		            this.last20Steps = this.last20Steps.slice(0, 50);
 		            for (var i = 0; i < this.last20Steps.length; i++) {
 		                this.last20Steps[i].orderSteps = (i + 1);
 		            }
@@ -382,7 +384,8 @@
 			        			workflowsToBuild[index].workflowsToBuild = workflowsToBuild;
 			        			var tempWorkflow = new Workflow(workflowsToBuild[index]);
 			        		}else{
-			        			updateCashedContents();
+			        			// updateCashedContents();
+			        			loopDiffObjectsDone();
 			        		}
 			        	}
 			        	// check new -> if locked by me, take from cashe, else pull from server

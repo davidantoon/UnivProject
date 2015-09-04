@@ -43,6 +43,20 @@
             } else {
                 callback([]);
             }
+        },
+        getRecentObjects: function(type){
+            if (this.CurrentUser.id != undefined) {
+                var dataToRetrun = [];
+                var CashedObjectsKeys = Object.keys(this.CashedObjects);
+                for (var i = 0; i < CashedObjectsKeys.length; i++) {
+                    if(this.CashedObjects[CashedObjectsKeys[i]].type == type){
+                        dataToRetrun.push(this.CashedObjects[CashedObjectsKeys[i]]);
+                    }
+                }
+                return dataToRetrun;
+            }else{
+                return [];
+            }
         }
     })
     .value('TypeOf', {
@@ -60,7 +74,7 @@
     .value('$httpR', {
 
         protocol: "http",
-        ip: "109.160.151.65",
+        ip: "109.160.241.160",
         port: "8888",
         baseUrl: "/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/",
 
@@ -176,10 +190,11 @@
                                             value[key] = valueDiff;    
                                         }
                                     }else if(key == "dataHolding"){
-                                        debugger;
                                         if(valueDiff && valueDiff.value && valueDiff.value.results && valueDiff.value.results.value){
-                                            valueDiff.contentId = a.dataHolding.results[Object.keys(valueDiff.value.results.value)[0]].id;
-                                            valueDiff.contentType = a.dataHolding.results[Object.keys(valueDiff.value.results.value)[0]].type;
+                                            if(Object.keys(valueDiff.value.results.value).length != undefined && Object.keys(valueDiff.value.results.value).length > 0){
+                                                valueDiff.contentId = a.dataHolding.results[Object.keys(valueDiff.value.results.value)[0]].id;
+                                                valueDiff.contentType = a.dataHolding.results[Object.keys(valueDiff.value.results.value)[0]].type;
+                                            }
                                         }
                                         equal = false;
                                         value[key] = valueDiff;
@@ -283,15 +298,15 @@
         diffData = getUniqueStringValues(diffData);
         console.log(diffData);
         for(var i=0; i<diffData.length; i++){
-            if(diffData[i].indexOf("newData") == -1 && diffData[i].indexOf("progressWizard") == -1 && diffData[i].indexOf(").lastModified") == -1 && diffData[i].indexOf(").inProgress") == -1 && diffData[i].indexOf("dataHolding") == -1)
-                return false
-            else{
-                var s = diffData[i];
+            var s = diffData[i];
+            if(s.indexOf("(id=") != -1 && s.indexOf("&type=") != -1){
                 var contentId = (s.substring(s.indexOf('(id=')+4)).substring(0,(s.substring(s.indexOf('(id=')+4)).indexOf('&'));
                 var contentType = (s.substring(s.indexOf('&type=')+6)).substring(0,(s.substring(s.indexOf('&type=')+6)).indexOf(')'));
                 if(content.id != contentId || content.type != contentType){
                     return false;
                 }
+            }else{
+                return false;
             }
         }
         return true;

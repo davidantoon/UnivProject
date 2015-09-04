@@ -225,7 +225,14 @@
                     }
                 },
 
-                
+                checkValidToken: function(callback){
+                    
+                    setTimeout(function(){ // emulate server call
+
+                        callback(true);
+
+                    },1000);
+                },
 
                 toJSON: function() {
                     try {

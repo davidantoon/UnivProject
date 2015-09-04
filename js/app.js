@@ -32,8 +32,8 @@ var ngScope;
             $scope.isDummy = false;
 
 
-            console.warn("01) Fix after \"SAVE\" editing object REMOVE all steps that affects only (newData) property in contents and check the modified data");
-            console.warn("02) Create property of GLOBALS to get recent cashed objects with specific type");
+            // console.warn("01) Fix after \"SAVE\" editing object REMOVE all steps that affects only (newData) property in contents and check the modified data");
+            // console.warn("02) Create property of GLOBALS to get recent cashed objects with specific type");
             console.warn("03) Add LOGOUT event when server respond with TOKEN-EXPIRED");
             console.warn("04) Check if (AMEER) restoreSteps function correct!");
             console.warn("05) Add layout and functions to CREATE | EDIT");
@@ -195,7 +195,7 @@ var ngScope;
                 var username = "geryes"; var password = "my_password"; // Jeries Mousa
                 var username1 = "antoon91"; var password1 = "123"; // Antoon Antoon
 
-                User.login(username1, password1, function(success, error){
+                User.login(username, password, function(success, error){
                     if(error || !success)
                         $scope.logout();
                     else{
@@ -210,13 +210,20 @@ var ngScope;
 
             $scope.loadUserData = function() {
                 var loadedAmmount = 0;
-                $scope.loadDataFromSRV(function(e) {
-                    AllDataLoaded(++loadedAmmount);
+                Globals.CurrentUser.checkValidToken(function(validToken){
+                    if(validToken){
+                        AllDataLoaded(++loadedAmmount);
+                        $scope.loadDataFromSRV(function(e) {
+                            AllDataLoaded(++loadedAmmount);
+                        });
+                    }else{
+                        $scope.logout();     
+                    }
                 });
                 AllDataLoaded(++loadedAmmount);
                 function AllDataLoaded(finished) {
-                    $('.StatusBarPerc').css('width', ((finished / 2) * 100) + "%");
-                    if (finished == 2) {
+                    $('.StatusBarPerc').css('width', ((finished / 3) * 100) + "%");
+                    if (finished == 3) {
                         $timeout(function() {
                             $scope.$apply(function() {
                                 $scope.AppStatus = 2;
