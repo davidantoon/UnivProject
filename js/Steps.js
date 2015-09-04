@@ -390,14 +390,12 @@
 			        	}
 			        	// check new -> if locked by me, take from cashe, else pull from server
 			        	function updateCashedContents(){
-			        		debugger;
 			        		Globals.getMinimized(function(result){
 			        			if(result.length == 0){
 			        				loopDiffObjectsDone();
 			        			}else{
 			        				var svr = new Server();
 			        				svr.getFromServer(result, function(success, error){
-			        					debugger;
 			        					for(var i=0; i<success.length; i++){
 			        						for(var j=0; j< Globals.CashedObjects.length; j++){
 			        							if(success[i].id == Globals.CashedObjects[j].id){
