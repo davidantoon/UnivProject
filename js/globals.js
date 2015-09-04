@@ -31,7 +31,7 @@
                 var dataToRetrun = [];
                 var CashedObjectsKeys = Object.keys(this.CashedObjects);
                 for (var i = 0; i < CashedObjectsKeys.length; i++) {
-                    if (this.CashedObjects[CashedObjectsKeys[i]].inProgress != true && this.CashedObjects[CashedObjectsKeys[i]].lockedBy.id == CurrentUser.id) {
+                    if (this.CashedObjects[CashedObjectsKeys[i]].inProgress == false && this.CashedObjects[CashedObjectsKeys[i]].lockedBy.id != CurrentUser.id) {
                         dataToRetrun.push({
                             "id": this.CashedObjects[CashedObjectsKeys[i]].id,
                             "type": this.CashedObjects[CashedObjectsKeys[i]].type,
