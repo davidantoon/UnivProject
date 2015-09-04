@@ -11,6 +11,7 @@
         },
         clear: function() {
             this.CashedObjects = {};
+            this.CurrentUser = {};
         },
         allObjectsaved: function() {
             console.warn("allObjectsaved not implemented!");
@@ -128,7 +129,7 @@
                 data: data,
                 method: "POST",
                 header:{
-                    "Access-Control-Allow-Origin": "http://31.154.152.220:8888"
+                    "Access-Control-Allow-Origin": "http://"+this.ip+":8888"
                 },
                 xhrFields: {
                     withCredentials: true
@@ -139,13 +140,25 @@
                     if (success.status == 200)
                         callback(success.data, null);
                     else{
-                        console.error(success);
-                        callback(null, success);
+                    
+                        if(success.status == 401){
+                            ngScope.logout();
+                            callback(null, error); 
+                        }else{
+                            console.error(success);
+                            callback(null, success);
+                        }
                     }
                 },
                 error: function(error) {
-                    console.error(error);
-                    callback(null, error);
+                
+                    if(error.status == 401){
+                        ngScope.logout();
+                        callback(null, error); 
+                    }else{
+                        console.error(error);
+                        callback(null, error); 
+                    }
                 }
             });
         }

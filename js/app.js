@@ -166,36 +166,35 @@ var ngScope;
              ********************************************************************/
             $scope.logout = function() {
                 $('#LoadingScreen').show();
+                 //update UI
+                $timeout(function() { // emulate server call
+                    $scope.$apply(function() {
+                        $scope.AppStatus = 1;
+                        $('#LoadingScreen').hide();
+                    });
+                }, 1000);
+               
+                var tempUser = Globals.currentUser;
+                $scope.clearData();
+                // logout
 
                 // LOGOUT
-                User.logout(function(success, error){
-                    if(error || !success){
-                        console.error("Error logging out");
-                    }else{
-                        $scope.clearData();
-                        $timeout(function() {
-                            $scope.$apply(function() {
-                                $scope.AppStatus = 1;
-                                $('#LoadingScreen').hide();
-                            });
-                        }, 1000);
-                    }
-                });
+                if(tempUser){
+                    tempUser.logout(function(success, error){});
+                }
             }
             $scope.clearData = function() {
 
                 // CLEAR DATA
 
-                // Globals.clear();
-                // $scope.Steps.clear();
-
+                Globals.clear();
             }
 
             $scope.login = function(){
                 var username = "geryes"; var password = "my_password"; // Jeries Mousa
                 var username1 = "antoon91"; var password1 = "123"; // Antoon Antoon
 
-                User.login(username, password, function(success, error){
+                User.login(username1, password1, function(success, error){
                     if(error || !success)
                         $scope.logout();
                     else{
@@ -1962,7 +1961,7 @@ var ngScope;
                 }
             },1000);
             $interval(function() {
-                if(Globals.CurrentUser){
+                if(Globals.CurrentUser.id){
                     if ($scope.lastZoomIn != $('#ZoomRange').val()) {
 
                         $scope.lastZoomIn = $('#ZoomRange').val();

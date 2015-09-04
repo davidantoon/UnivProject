@@ -113,30 +113,33 @@
                 }
             }
 
-            /**
-             * logout
-             * @param  {Function} callback callback function
-             */
-            User.logout = function(callback){
-                try{
-                    $httpR.connectToServer({},$httpR.USERlogout, Globals, function(result, error){
-                        if(error || !success){
-                            console.error('Could not log out');
-                            callback(null, error);
-                        }else{
-                            callback(success);
-                        }
-                    });
-                }catch(e){
-                    console.error("logout: ", e);
-                    callback(null, e);
-                }
-            }
+            
 
 
             User.prototype = {
 
-                
+                /**
+                 * logout
+                 * @param  {Function} callback callback function
+                 */
+                logout: function(callback){
+                    try{
+                        var data = {
+                            Token: this.token
+                        };
+                        $httpR.connectToServer(data, $httpR.USERlogout, Globals, function(result, error){
+                            if(error || !success){
+                                callback(null, error);
+                            }else{
+                                callback(success);
+                            }
+                        });
+                    }catch(e){
+                        console.error("logout: ", e);
+                        callback(null, e);
+                    }
+                },
+
                 /**
                  * Changes the password for the use
                  * @param  {String} newPassword new password

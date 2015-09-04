@@ -1,6 +1,6 @@
 (function(angular) {
     // 'use strict';
-    angular.module('IntelLearner').factory('Workflow', ["$rootScope", 'Tab', 'TypeOf', function($rootScope, Tab, TypeOf){
+    angular.module('IntelLearner').factory('Workflow', ["$rootScope", 'Tab', 'TypeOf','Globals', function($rootScope, Tab, TypeOf, Globals){
 
         function Workflow(tempJson, id, fx, fy, tx, ty, colored){
             try{
@@ -188,16 +188,18 @@
              */
             scrollTo: function(){
                 try{
-                    var wWidth = $(window).width();
-                    var blockPosL = Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).position().left;
-                    var blockWidth = Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).outerWidth(true);
-                    var sLeft = blockPosL - ((wWidth - blockWidth) / 2);
+                    if(Globals.currentUser){
+                        var wWidth = $(window).width();
+                        var blockPosL = Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).position().left;
+                        var blockWidth = Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).outerWidth(true);
+                        var sLeft = blockPosL - ((wWidth - blockWidth) / 2);
 
-                    var wHeight = $(window).height();
-                    var blockPosT = Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).position().top;
-                    var blockHeight = Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).outerHeight(true);
-                    var sTop = blockPosT - ((wHeight - blockHeight) / 2);
-                    $('#BodyRow').animate({ scrollTop: sTop, scrollLeft: sLeft }, 200);
+                        var wHeight = $(window).height();
+                        var blockPosT = Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).position().top;
+                        var blockHeight = Number($('#WorkFlowMatrix').css('zoom')) * $('#Workflow' + this.ID).outerHeight(true);
+                        var sTop = blockPosT - ((wHeight - blockHeight) / 2);
+                        $('#BodyRow').animate({ scrollTop: sTop, scrollLeft: sLeft }, 200);
+                    }
                 }catch(e){
                     $rootScope.currentScope.Toast.show("Error!","There was an error in scrolling to specific location", Toast.LONG, Toast.ERROR);
                     console.error("scrollTo: ", e);

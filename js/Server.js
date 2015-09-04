@@ -791,11 +791,21 @@
 
 			getFromServer: function(objectsArray, callback){
 				try{
-					if(objectsArray.length == 0){
-						callback(null, "objects Array is empty");
+					if($scope.isDummy){
+						var temmpArray = [];
+						if(objectsArray.length == 0){
+							callback(null, "objects Array is empty");
+						}else{
+							// send array to server and get the objects
+							callback(temmpArray);
+						}
 					}else{
-						// send array to server and get the objects
-						callback();
+						if(objectsArray.length == 0){
+							callback(null, "objects Array is empty");
+						}else{
+							// send array to server and get the objects
+							callback(temmpArray);
+						}
 					}
 				}catch(e){
 					console.error("getFromServer: ", e);
