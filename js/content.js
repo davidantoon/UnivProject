@@ -9,8 +9,8 @@
 				this.kBitsNeeded = ((conData != undefined)?conData.kBitsNeeded:[]);
 				this.kBitsProvided = ((conData != undefined)?conData.kBitsProvided:[]);
 				this.terms = ((conData != undefined)?conData.terms:[]);
-				this.description = ((conData != undefined)?conData.description:'');
-				this.url = ((conData != undefined)?conData.url:'');  // Term MEANING
+				this.description = ((conData != undefined)?conData.description:''); // Term MEANING
+				this.url = ((conData != undefined)?conData.url:'');  
 				this.locked = ((conData != undefined)?conData.locked:false);
 				this.lockedBy = ((conData != undefined)?conData.lockedBy:null);
 				this.lastModified = ((conData != undefined)?conData.lastModified:null);
@@ -24,6 +24,7 @@
 					this.progressWizard = {};
 				}
 				this.progressWizard.spinner = false;
+				this.revision = ((conData != undefined)?conData.revision:1);
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","There was an error in creating new Content", Toast.LONG, Toast.ERROR);
 	            console.error("Content: ", e);
@@ -250,7 +251,8 @@
 						"termScope": this.termScope,
 						"objectType": this.objectType,
 						"progressWizard": this.progressWizard,
-						"newData": this.newData
+						"newData": this.newData,
+						"revision": this.revision
 					}
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in converting to JSON", Toast.LONG, Toast.ERROR);

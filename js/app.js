@@ -191,14 +191,16 @@ var ngScope;
             }
 
             $scope.login = function(){
-                var username = "geryes"; var password = "my_password"; // Jeries Mousa
-                var username1 = "antoon91"; var password1 = "123"; // Antoon Antoon
-
-                User.login(username1, password1, function(success, error){
+                // var username = "geryes"; var password = "my_password"; // Jeries Mousa
+                // var username1 = "antoon91"; var password1 = "123"; // Antoon Antoon
+                var username = $('#username').val();
+                var password = $('#password').val();
+                User.login(username, password, function(success, error){
                     if(error || !success)
                         $scope.logout();
                     else{
                         Globals.CurrentUser = success;
+                        $scope.loadUserData();
                         var stor = new Storage();
 
                         stor.setWorkspaceData(null, null, Globals.CurrentUser, function(){});

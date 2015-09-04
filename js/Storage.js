@@ -156,32 +156,37 @@
 			 */
 			clear: function(key, value, callback){
 				try{
-					// clear all storage
-					if(key == null || key == undefined || key == ""){
-						localStorage.clear();
-						callback("sucsess", null);
-						return;
-					}
+					if(Globals.noLockedItemrs()){
+						// clear all storage
+						if(key == null || key == undefined || key == ""){
+							localStorage.clear();
+							callback("sucsess", null);
+							return;
+						}
 
-					// remove specific key from storage
-					if(value == null || value == undefined || value == ""){
-						localStorage.removeItem(key);
-						callback(JSON.parse(localStorage.getItem(key)), null);
-						return;
-					}
-
-					//remove specific value from key in storage
-					var tempData = JSON.parse(localStorage.getItem(key));
-					for (var i = tempData.length - 1; i >= 0; i--) {
-						if( JSON.stringify(value) == JSON.stringify(tempData[i]) ){
-							tempData.splice(i, 1);
-							localStorage.setItem(key, tempData);
+						// remove specific key from storage
+						if(value == null || value == undefined || value == ""){
+							localStorage.removeItem(key);
 							callback(JSON.parse(localStorage.getItem(key)), null);
 							return;
 						}
+
+						//remove specific value from key in storage
+						var tempData = JSON.parse(localStorage.getItem(key));
+						for (var i = tempData.length - 1; i >= 0; i--) {
+							if( JSON.stringify(value) == JSON.stringify(tempData[i]) ){
+								tempData.splice(i, 1);
+								localStorage.setItem(key, tempData);
+								callback(JSON.parse(localStorage.getItem(key)), null);
+								return;
+							}
+						}
+						callback(null, {"message": "no item has been removed","code": ""});
+						return;
+					}else{
+						console.warn("clear local storage while there is locked items not implemented");
+						callback(null, null);
 					}
-					callback(null, {"message": "no item has been removed","code": ""});
-					return;
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in clearing local storage", Toast.LONG, Toast.ERROR);
 	                console.error("clear: ", e);

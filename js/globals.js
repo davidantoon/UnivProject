@@ -58,6 +58,16 @@
             }else{
                 return [];
             }
+        },
+
+        noLockedItemrs:function(){
+            if(CashedObjects){
+                for(var i=0; i< CashedObjects.length; i++){
+                    if(CashedObjects[i].locked)
+                        return false;
+                }
+            }
+            return true;
         }
     })
     .value('TypeOf', {

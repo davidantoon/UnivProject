@@ -361,7 +361,9 @@
 												locked: true,
 												kBitsNeeded: successKbitModifiedNeeded,
 												kBitsProvided: successKbitModifiedProvided,
-												terms: termKbits
+												terms: termKbits,
+												url:success[i].FRONT_DELIVERY.PATH,
+												revision: success[i].FRONT_DELIVERY.REVISION
 											});
 										}else{
 											successModified.push({
@@ -372,7 +374,9 @@
 												type: "Delivery",
 												kBitsNeeded: successKbitModifiedNeeded,
 												kBitsProvided: successKbitModifiedProvided,
-												terms: termKbits
+												terms: termKbits,
+												url:success[i].FRONT_DELIVERY.PATH,
+												revision: success[i].FRONT_DELIVERY.REVISION
 											});
 										}
 									}
@@ -384,21 +388,24 @@
 						}
 						// Term
 						if(dataToSearch.dataType[2] == 1){
-
-							data.lang = 'en';
+							data.lang = ' ';
 							$httpR.connectToServer(data, $httpR.TERMsearchTerms, Globals, function(success, error){
 								var successModified = [];
 								if(error || !success){
 									console.error("error searching term is server: ", error);
 								}else{
 									for(var i=0; i<success.length; i++){
-										console.log("Term in server: ", success);
+										
+										successModified[success[i].LANG] = success[i].TERM_MEANING;
+										var tempScope = {
+											ScopeDescription: success[i].SCOPE_DESCRIPTION,
+											scopeTitle: success[i].SCOPE_TITLE,
+											scopeID: success[i].SCOPE_UID
+										};
 										successModified.push({
 											id: success[i].UID,
 											name: success[i].TERM_STRING,
-											description: success[i].TERM_MEANING,
-											lang: success[i].LANG,
-
+											termScope: tempScope,
 											type: "Term"
 										});
 									}
@@ -481,13 +488,13 @@
 					}else{
 						switch (this.TypeOfData){
 							case "Delivery":
-								console.warn("Add Delivery update and Delivery publish functions");
+								console.warn("save delivery not implemented");
 								callback(true, null);
 
 								// call new method to save delivery and kbits relations
 							break;
 							case "Kbit":
-								console.warn("Add Kbit update and kbit publish functions");
+								onsole.warn("save kbit not implemented");
 								callback(true, null);
 
 								// call new method to save kbit and terms relations
@@ -769,17 +776,22 @@
 			 */
 			getSettings: function(callback){
 				try{
-					var settingsDB = localStorage.getItem("com.intel.server.settings");
-					if(settingsDB == null || settingsDB == undefined){
-						callback(null, {"message":"could not get settings from server","code":""});
-						return;
-					}else{
-						if(settingsDB.length == 0){
-							callback({"message":"there is no settings in server", "code": ""}, null );
+					if(this.baseUrl == "dummy"){
+						var settingsDB = localStorage.getItem("com.intel.server.settings");
+						if(settingsDB == null || settingsDB == undefined){
+							callback(null, {"message":"could not get settings from server","code":""});
+							return;
+						}else{
+							if(settingsDB.length == 0){
+								callback({"message":"there is no settings in server", "code": ""}, null );
+								return;
+							}
+							callback(JSON.parse(settingsDB), null);
 							return;
 						}
-						callback(JSON.parse(settingsDB), null);
-						return;
+					}else{
+						console.warn("get settings from server not implemented");
+						callback(null, null);
 					}
 				}catch(e){
 	                console.error("getSettings: ", e);
