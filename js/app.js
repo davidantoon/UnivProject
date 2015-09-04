@@ -32,10 +32,27 @@ var ngScope;
             $scope.isDummy = false;
 
 
-            console.warn("AFTER SAVE OR CANCEL EDITING OBJECT REMOVE ALL STEPS THAT AFFECTS ONLY (newData) PROPERTY IN CONTENTS");
-            console.warn("UPDATE EDITING BUTTONS TO SUPPORT REDO/UNDO EVENTS");
-            console.warn("CREATE PROPERTY OF GLOBALS TO ");
+            console.warn("01) Fix after \"SAVE\" editing object REMOVE all steps that affects only (newData) property in contents and check the modified data");
+            console.warn("02) Create property of GLOBALS to get recent cashed objects with specific type");
+            console.warn("03) Add LOGOUT event when server respond with TOKEN-EXPIRED");
+            console.warn("04) Check if (AMEER) restoreSteps function correct!");
+            console.warn("05) Add layout and functions to CREATE | EDIT");
+            console.warn("06) Check how to implement Terms creating and updating with SCOPE");
+            console.warn("07) Implement auto refresh cashed object that not locked by current user");
+            console.warn("08) Check implementaion restoreSteps if supports dataHolding");
+            console.warn("  08.1) Check if type == 4  >> replace dataHolding.results with \"new Content( results )\"");
+            console.warn("  08.2) Check if type == 5  >> replace content with \"new Content(content)\"");
+            console.warn("09) Create profile dialog to support all user operations");
+            console.warn("10) Modify login page and connect buttons to login functions");
+            console.warn("11) Create Settings layout");
+            console.warn("  11.1) Implement function to detect if there is locked items before clear localStorage");
+            console.warn("12) Create layout drag and drop recent cashed objects from right edge of the screen");
+            console.warn("13) Create class logs that stores logs in array with timestamp and give the ability to export to csv or textplain");
+            console.warn("14) Create tab settings dialog (change color | rename | set shortcut for focus)");
+            console.warn("15) Add send logs to profile dialog");
+            console.warn("16) Remove all debugger and convert all logs to the log class");
 
+            
             $scope.AppStatus = 0;
             $scope.currentUser = {};
             $scope.Workflow = [];
@@ -1817,7 +1834,7 @@ var ngScope;
 
             $scope.finishEditing = function(content, note){
 
-                console.warn("Remove redo/undo steps if that has been added by editing");
+                
                 content.progressWizard.spinner = true;
                 if($scope.isDummy){
                     console.warn("Dummy save object");
@@ -1829,6 +1846,7 @@ var ngScope;
                         content.newData = {};
                         $timeout(function(){
                             $scope.InsertStepToLast10Steps();
+                            $scope.Steps.removeRelatedSteps(content);
                         },500);
                         $scope.Toast.show("Success!",content.type+" has been saved.", Toast.LONG, Toast.SUCCESS);
                     },1000);
@@ -1847,6 +1865,7 @@ var ngScope;
                         }
                         $timeout(function(){
                             $scope.InsertStepToLast10Steps();
+                            $scope.Steps.removeRelatedSteps(content);
                         },500);
                     });
                 }
