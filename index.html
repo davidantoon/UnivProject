@@ -166,7 +166,7 @@
                     <!-- SEARCH TAB HTML -->
                     <div class="{{((getSelectedTabType(wFlow) == 1)?'':'hidden')}}">
                       <div class="searchTextboxDiv">
-                        <input class="searchTextbox" ng-enter="prepareForSearch(wFlow);" ng-change="InsertStepToLast10Steps(); " placeholder="Search Text" id="1" ng-model="wFlow.selectedTab.dataHolding.searchText">
+                        <input class="searchTextbox" ng-enter="prepareForSearch(wFlow);" ng-blur="InsertStepToLast10Steps(); " placeholder="Search Text" id="1" ng-model="wFlow.selectedTab.dataHolding.searchText">
                       </div>
                       <div class="searchOptions">
                         <ons-row class="LabelOfOptionsButtons">
@@ -351,7 +351,7 @@
                                   {{wFlow.selectedTab.content.type}} Name:
                                 </ons-col>
                                 <ons-col class="InputTextbox">
-                                  <input ng-change="InsertStepToLast10Steps();" ng-model="wFlow.selectedTab.content.newData.name" type="text" />
+                                  <input ng-blur="InsertStepToLast10Steps();" ng-model="wFlow.selectedTab.content.newData.name" type="text" />
                                 </ons-col>
                               </ons-row>
                               <ons-row class="editObjectDetailsRow">
@@ -359,7 +359,7 @@
                                   {{wFlow.selectedTab.content.type}} Description:
                                 </ons-col>
                                 <ons-col class="InputTextbox">
-                                  <textarea ng-change="InsertStepToLast10Steps();" ng-model="wFlow.selectedTab.content.newData.description" ></textarea>
+                                  <textarea ng-blur="InsertStepToLast10Steps();" ng-model="wFlow.selectedTab.content.newData.description" ></textarea>
                                 </ons-col>
                               </ons-row>
                               <ons-row class="editObjectDetailsRow">
@@ -367,7 +367,7 @@
                                   {{wFlow.selectedTab.content.type}} Path:
                                 </ons-col>
                                 <ons-col class="InputTextbox">
-                                  <input ng-change="InsertStepToLast10Steps();" ng-model="wFlow.selectedTab.content.newData.url" type="text" />
+                                  <input ng-blur="InsertStepToLast10Steps();" ng-model="wFlow.selectedTab.content.newData.url" type="text" />
                                 </ons-col>
                               </ons-row>
                               <!-- (DELIVERY & KBIT) CHANGE NAME | DESCRIPTION | PATH -->
@@ -734,7 +734,7 @@
       <div class="ToastBody"></div>
 
     </div>
-    <div id="profileDialog" style="display:block">
+    <div id="profileDialog" style="display:none">
       <div class="profileContainer">
         <div class="header">Profile Dialog</div>
         <div class="body">

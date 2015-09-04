@@ -64,6 +64,7 @@
 					passThis.color = ((tempJson.color != undefined)?tempJson.color:"#0860A8");
 					if(tempJson.requestFrom == "restoreStep"){
 							if(tempJson.content != null && tempJson.content != undefined){
+								
 								var stor = new Storage();
 								stor.getElementById(tempJson.content, /* force last modefied */ true, /* force server pull */ false, function(dataFromStorage){
 									passThis.content = dataFromStorage;

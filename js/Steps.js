@@ -1,6 +1,6 @@
 (function(angular) {
     // 'use strict';
-	angular.module('IntelLearner').factory('Steps', ["$rootScope", "Workflow", "Workspace", "Server", "Toast", "Storage", function($rootScope, Workflow, Workspace, Server, Toast, Storage){
+	angular.module('IntelLearner').factory('Steps', ["$rootScope", "Workflow", "Workspace", "Server", "Toast", "Storage", "checkChangesInStepsAffectsOnlyNewData", function($rootScope, Workflow, Workspace, Server, Toast, Storage, checkChangesInStepsAffectsOnlyNewData){
 
 		function Steps(){
 
@@ -21,15 +21,15 @@
 				var svr = new Server(this.objectType, $rootScope.currentScope.isDummy);
 				svr.getSteps(function(result, error){
 					if(error || !result){
-						debugger;
 						ServerResquestComplete(null, passThis1);
 					}else{
 						try{
-							debugger;
 							var x =JSON.parse(strDecompress(result.OBJECT_VALUE));
-							ServerResquestComplete(x, passThis1);
+							// if(x.last20Steps.length == 0)
+								// ServerResquestComplete(null, passThis1);
+							// else	
+								ServerResquestComplete(x, passThis1);
 						}catch(e){
-							debugger;
 							ServerResquestComplete(null, passThis1);
 						}
 					}
@@ -300,7 +300,7 @@
 			/**
 			 * Insert new step to last steps object
 			 */
-			InsertStepToLastSteps: function(workspace){
+			InsertStepToLastSteps: function(workspace, force){
 				try{
 					this.UpdateLastSteps();
 		            var tempWorkflowArray = "[";
@@ -317,14 +317,20 @@
 		                'allWorkFlowContents': tempWorkflowArray,
 		                'allProgressLines': JSON.stringify(workspace.progressLines)
 		            }
-		            if(this.last20Steps.length > 0)
-			            if(tempWorkflowArray == this.last20Steps[0].allWorkFlowContents) return;
-	            	else
-			            this.last20Steps.unshift(InsData);
+		            if(this.last20Steps.length > 0){
+			            if(tempWorkflowArray == this.last20Steps[0].allWorkFlowContents && !force) 
+			            	return;
+			            else 
+			            	this.last20Steps.unshift(InsData);
+		            }
+	            	else{
+			            this.last20Steps = [InsData];
+	            	}
 		            this.last20Steps = this.last20Steps.slice(0, 20);
 		            for (var i = 0; i < this.last20Steps.length; i++) {
 		                this.last20Steps[i].orderSteps = (i + 1);
 		            }
+
 		            var passThis = this;
 		            var stor = new Storage();
 		            stor.setWorkspaceData(this.toJson(), null, null, function(success, error){
@@ -457,6 +463,19 @@
 					$rootScope.currentScope.Toast.show("Error!","there was an error converting to JSON", Toast.LONG, Toast.ERROR);
 	                console.error("toJson: ", e);
 					return null;
+				}
+			},
+
+			removeRelatedSteps: function(content){
+				var i=0;
+				while(i < this.last20Steps.length - 1){
+					if(checkChangesInStepsAffectsOnlyNewData(content, JSON.parse(this.last20Steps[i].allWorkFlowContents),JSON.parse(this.last20Steps[i+1].allWorkFlowContents))){
+						this.last20Steps.splice(i, 1);
+						console.log(true);
+					}else{
+						console.log(false);
+						i++;
+					}
 				}
 			}
 

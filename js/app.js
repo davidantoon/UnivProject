@@ -5,8 +5,8 @@ var ngScope;
 (function(angular) {
     // 'use strict';
     angular.module('IntelLearner', ['onsen', 'firebase', 'dndLists']);
-    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope",  "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast","User", "$httpR", "Content", "checkChangesInStepsAffectsOnlyNewData",
-        function($rootScope, $scope,  $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast, User, $httpR, Content, checkChangesInStepsAffectsOnlyNewData) {
+    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope",  "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast","User", "$httpR", "Content",
+        function($rootScope, $scope,  $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast, User, $httpR, Content) {
 
 
             // PRIM COLOR = rgb(8,96,168)
@@ -33,7 +33,8 @@ var ngScope;
 
 
             console.warn("AFTER SAVE OR CANCEL EDITING OBJECT REMOVE ALL STEPS THAT AFFECTS ONLY (newData) PROPERTY IN CONTENTS");
-            console.warn("UPDAE EDITING BUTTONS TO SUPPORT REDO/UNDO EVENTS");
+            console.warn("UPDATE EDITING BUTTONS TO SUPPORT REDO/UNDO EVENTS");
+            console.warn("CREATE PROPERTY OF GLOBALS TO ");
 
             $scope.AppStatus = 0;
             $scope.currentUser = {};
@@ -317,9 +318,6 @@ var ngScope;
                 }
             }
 
-            $scope.updateProfilePicture(newPicture){
-
-            }
 
             $scope.changePassword = function(){
                 var oldpassword = $('#profileOldPassword').val();
@@ -1583,6 +1581,7 @@ var ngScope;
 
 
             $scope.editContent = function(wFlow){
+                debugger;
                 if($scope.isDummy){
                     console.warn("Dummy lock object");
                     if(wFlow.selectedTab.content.locked){
@@ -1621,6 +1620,7 @@ var ngScope;
                     }
                 }else{
                     if(wFlow.selectedTab.content.locked){
+                        debugger;
                         if(wFlow.selectedTab.content.lockedBy.id == Globals.CurrentUser.id){
                             wFlow.selectedTab.content.progressWizard = {
                                 header:wFlow.selectedTab.content.type +' Details',
@@ -1637,6 +1637,7 @@ var ngScope;
                             $scope.Toast.show("Cannot Lock Content", "Content locked by "+wFlow.selectedTab.content.lockedBy.firstName+" "+wFlow.selectedTab.content.lockedBy.lastName+".", Toast.LONG, Toast.ERROR);
                         }
                     }else{
+                        debugger;
                         wFlow.selectedTab.content.progressWizard = {
                             header:wFlow.selectedTab.content.type +' Details',
                             index:1,
@@ -1644,7 +1645,9 @@ var ngScope;
                         };
                         wFlow.selectedTab.content.inProgress = true;
                         wFlow.selectedTab.content.lock(function(success, error){
+                            debugger;
                             $timeout(function(){
+                                debugger;
                                 if(error || !success){
                                     $scope.Toast.show("Cannot Lock Content", "Content locked by another user.", Toast.LONG, Toast.ERROR);
                                     wFlow.selectedTab.content.progressWizard.spinner = {};
@@ -1888,7 +1891,6 @@ var ngScope;
             }
 
             $scope.nextButton = function(content){
-                // content.lastModified = +(new Date());
                 content.progressWizard.index++;
                 $timeout(function(){
                     $scope.InsertStepToLast10Steps();
@@ -1896,7 +1898,6 @@ var ngScope;
             }
             $scope.backButton = function(content){
                 content.progressWizard.index--;
-                // content.lastModified = +(new Date());
                 $timeout(function(){
                     $scope.InsertStepToLast10Steps();
                 },500);
@@ -1904,11 +1905,11 @@ var ngScope;
 
             $scope.cancelButton = function(content){
                 content.progressWizard = {};
+                content.lastModified = +(new Date());
                 content.inProgress = false;
-                // content.lastModified = +(new Date());
-                console.warn("Remove redo/undo steps if that has been added by editing");
                 $timeout(function(){
                     $scope.InsertStepToLast10Steps();
+                    $scope.Steps.removeRelatedSteps(content);
                 },500);
             }
 
@@ -2129,13 +2130,6 @@ var ngScope;
                 return svr;
             }
 
-
-
-            $scope.testArray = function(before, after){
-                console.log(checkChangesInStepsAffectsOnlyNewData(before, after));
-            }
-
-            
 
 
 

@@ -108,7 +108,6 @@
             if(Globals.CurrentUser && Globals.CurrentUser.id){
                 data.Token = Globals.CurrentUser.token;
             }
-            debugger;
             $.ajax({
                 // url: "http://testserver-radjybaba.rhcloud.com/webservice.php/",
                 url: this.protocol+"://"+this.ip+":"+this.port+this.baseUrl,
@@ -123,7 +122,6 @@
                 crossDomain : true,
                 timeout: 10000,
                 success: function(success) {
-                    debugger;
                     if (success.status == 200)
                         callback(success.data, null);
                     else{
@@ -132,16 +130,15 @@
                     }
                 },
                 error: function(error) {
-                    debugger;
                     console.error(error);
                     callback(null, error);
                 }
             });
         }
-    }).value('checkChangesInStepsAffectsOnlyNewData', function(before, after){
+    }).value('checkChangesInStepsAffectsOnlyNewData', function(content, after, before){
 
         /**********************************************************************************************************************/
-        /* Gett all changed values stored in object {changes:"status", value}, Modified by David to support this application. */
+        /* Get all changed values stored in object {changes:"status", value}, Modified by David to support this application. */
         /**********************************************************************************************************************/
         function diff(a, b) {
             if (a === b) {
@@ -152,23 +149,46 @@
             }
             var value = {};
             var equal = true;
-
             for (var key in a) {
                 if (key in b) {
-                    if (a[key] === b[key]) {
-                    } else {
+                    if (a[key] === b[key]) {} else {
                         var typeA = typeof a[key];
                         var typeB = typeof b[key];
                         if (a[key] && b[key] && (typeA == 'object' || typeA == 'function') && (typeB == 'object' || typeB == 'function')) {
                             var valueDiff = diff(a[key], b[key]);
-                            if (valueDiff.changed == 'equal') {
-                                
-                            } else {
-                                equal = false;
-                                value[key] = valueDiff;
+                            if (valueDiff.changed == 'equal') {} else {
+                                if(Object.keys(valueDiff.value) && Object.keys(valueDiff.value)[0] == "$$hashKey"){}
+                                else
+                                    if(key == "content"){
+                                        var foundContent=false;
+                                        for(var i=0; i<Object.keys(valueDiff.value).length; i++){
+                                            if(Object.keys(valueDiff.value)[i]=="newData" || Object.keys(valueDiff.value)[i]=="progressWizard"){
+                                                foundContent = true;
+                                            }
+                                        }
+                                        if(foundContent){
+                                            valueDiff.contentId = a.content.id;
+                                            valueDiff.contentType = a.content.type;
+                                            equal = false;
+                                            value[key] = valueDiff;
+                                        }else{
+                                            equal = false;
+                                            value[key] = valueDiff;    
+                                        }
+                                    }else if(key == "dataHolding"){
+                                        debugger;
+                                        if(valueDiff && valueDiff.value && valueDiff.value.results && valueDiff.value.results.value){
+                                            valueDiff.contentId = a.dataHolding.results[Object.keys(valueDiff.value.results.value)[0]].id;
+                                            valueDiff.contentType = a.dataHolding.results[Object.keys(valueDiff.value.results.value)[0]].type;
+                                        }
+                                        equal = false;
+                                        value[key] = valueDiff;
+                                    }else{
+                                        equal = false;
+                                        value[key] = valueDiff;
+                                    }
                             }
                         } else {
-                            debugger;
                             equal = false;
                             value[key] = {
                                 changed: 'primitive change',
@@ -185,7 +205,6 @@
                     }
                 }
             }
-
             for (key in b) {
                 if (!(key in a)) {
                     equal = false;
@@ -195,7 +214,6 @@
                     }
                 }
             }
-
             if (equal) {
                 return {
                     changed: 'equal',
@@ -212,7 +230,46 @@
         /*************************************************************************/
         /* Get All changed pathes, Modified by David to support this application */
         /*************************************************************************/
-        function objectToPaths(data) {var validId = /^[a-z_$][a-z0-9_$]*$/i;var result = [];doIt(data, "");return result;function doIt(data, s) {if (data && typeof data === "object") {if (Array.isArray(data)) {for (var i = 0; i < data.length; i++) {doIt(data[i], s + "[" + i + "]");}} else {for (var p in data) {if (validId.test(p)) {if(p != "changed" && p != "removed" && p != "added")doIt(data[p], s + "." + p);else{doIt(data[p], s);}} else {doIt(data[p], s + "[\"" + p + "\"]");}}}} else {if(data !="object change")result.push(s);}}}
+        function objectToPaths(data) {
+            var validId = /^[a-z_$][a-z0-9_$]*$/i;
+            var result = [];
+            doIt(data, "");
+            return result;
+
+            function doIt(data, s) {
+                if (data && typeof data === "object") {
+                    if (Array.isArray(data)) {
+                        for (var i = 0; i < data.length; i++) {
+                            doIt(data[i], s + "[" + i + "]");
+                        }
+                    } else {
+                        for (var p in data) {
+                            if (validId.test(p)) {
+                                if(p != "$$hashKey"){
+                                    if(p != "changed" && p != "removed" && p != "added" && p != "contentType" && p != "contentId"){
+                                        if(data.contentId){
+                                            doIt(data[p], s + "." + p+"(id="+data.contentId+"&type="+data.contentType+")");
+                                        }
+                                        else{
+                                            doIt(data[p], s + "." + p);
+                                        }
+                                    }
+                                    else {
+                                        doIt(data[p], s);
+                                    }
+                                }
+                            } else {
+                                doIt(data[p], s + "[\"" + p + "\"]");
+                            }
+                        }
+                    }
+                } else {
+                    if (data == "primitive change" || data == "added" || data == "removed"){
+                        result.push(s);
+                    }
+                }
+            }
+        }
 
         /**************************************************************************/
         /* Get unique array values, Modified by David. Support only string values */
@@ -224,11 +281,28 @@
             return true;
         diffData = objectToPaths(diffData);
         diffData = getUniqueStringValues(diffData);
+        console.log(diffData);
         for(var i=0; i<diffData.length; i++){
-            if(diffData[i].indexOf("newData") == -1)
+            if(diffData[i].indexOf("newData") == -1 && diffData[i].indexOf("progressWizard") == -1 && diffData[i].indexOf(").lastModified") == -1 && diffData[i].indexOf(").inProgress") == -1 && diffData[i].indexOf("dataHolding") == -1)
                 return false
+            else{
+                var s = diffData[i];
+                var contentId = (s.substring(s.indexOf('(id=')+4)).substring(0,(s.substring(s.indexOf('(id=')+4)).indexOf('&'));
+                var contentType = (s.substring(s.indexOf('&type=')+6)).substring(0,(s.substring(s.indexOf('&type=')+6)).indexOf(')'));
+                if(content.id != contentId || content.type != contentType){
+                    return false;
+                }
+            }
         }
         return true;
 
     });
 })(window.angular);
+
+
+
+
+
+
+
+
