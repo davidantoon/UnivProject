@@ -35,8 +35,8 @@
 								try{
 									var x = JSON.parse(stepsDecomp);
 									var stor = new Storage();
-									if(x.settings)
-										stor.setWorkspaceData(null, x.setting, null,function(dataFromLocalStorage, error){});
+									if(x.Settings)
+										stor.setWorkspaceData(null, x.Settings, null,function(dataFromLocalStorage, error){});
 									if(x.steps && x.steps.last20Steps.length == 0)
 										ServerResquestComplete(null, passThis1);
 									else
@@ -243,7 +243,7 @@
 								workspace.workflows.push(new Workflow(restoringPoint.workflows[actionOpIN_DE[1]][i]));
 							}
 						}
-						debugger;
+
 						// Update Workflows content
 						for(var i=0; i<(restoringPoint.workflowsKeys && i < restoringPoint.workflowsKeys.length); i++){
 							// Locate updated workflow content
@@ -277,11 +277,31 @@
 											workspace.workflows.push(new Workflow(restoringPoint.workflowsKeys[i].tabs[actionOpIN_DE[1]][i3]));
 										}
 
-
-										// Update Tabs content
-										
 									}
+									debugger;
+									// Update Tabs content
+									for(var i3 = 0; restoringPoint.workflowsKeys[i].tabsKeys && i3 < restoringPoint.workflowsKeys[i].tabsKeys.length; i3++){
+										// Locate updated tab content
+										for(var i4 = 0; i4< workspace.workflows[i2].tabs.length; i++){
+											if(workspace.workflows[i2].tabs[i4].equals(restoringPoint.workflowsKeys[i].tabsKeys[i3])){
 
+												// Update tab title
+												if(restoringPoint.workflowsKeys[i].tabsKeys[i3].name){
+													
+												}
+												
+												// Update tab Type
+												
+												
+												// Update tab orderTab
+												
+												
+												// Update tab color
+												
+
+											}
+										}
+									}
 								}
 							}
 						}
@@ -766,7 +786,6 @@
 			            	}else{
 			            		debugger;
 			            		var svr = new Server("steps", $rootScope.currentScope.isDummy);
-
 								if(typeof callback == "funtion")
 									svr.setSteps(localStorage["com.intel.userdata"], callback);
 								else
