@@ -200,12 +200,18 @@
 			getWorkspaceData: function(stringType, callback){
 				try{
 					var dataToRetrieve = localStorage["com.intel.userdata"];
-					if(stringType == true)
-						callback(dataToRetrieve, null);
+					if(stringType == true){
+						strDecompress(dataToRetrieve, function(stepsComp){
+							callback(stepsComp, null);
+						});
+					}
 					else{
 						if(dataToRetrieve){
-							dataToRetrieve = JSON.parse(dataToRetrieve);
-							callback(dataToRetrieve, null);
+							strDecompress(dataToRetrieve, function(stepsComp){
+								dataToRetrieve = JSON.parse(stepsComp);
+								callback(dataToRetrieve, null);
+							});
+
 						}else{
 							var data = {
 								"Steps": null,
@@ -248,8 +254,11 @@
 								"CurrentUser": currentUser
 							};
 						}
-						localStorage.setItem("com.intel.userdata", JSON.stringify(data));
-						callback(true, null);
+						console.log(data);
+						strCompress(JSON.stringify(data), function(stepsComp){
+							localStorage.setItem("com.intel.userdata", stepsComp);
+							callback(true, null);
+						});
 					});
 
 				}catch(e){

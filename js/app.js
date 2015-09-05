@@ -2,6 +2,7 @@
 console.warn("$scope stored in ngScope");
 var ngScope;
 
+
 (function(angular) {
     // 'use strict';
     angular.module('IntelLearner', ['onsen', 'firebase', 'dndLists']);
@@ -32,8 +33,13 @@ var ngScope;
             $scope.isDummy = false;
 
 
+            console.groupCollapsed("NOTES");
             // console.warn("01) Fix after \"SAVE\" editing object REMOVE all steps that affects only (newData) property in contents and check the modified data");
             // console.warn("02) Create property of GLOBALS to get recent cashed objects with specific type");
+            console.warn("!!!!!) update steps to compress last20steps before adding to lacalStorage");
+            console.warn("  02.1) Update Globals.recentCashedObjects to get object version");
+            console.warn("  02.2) ???? ???? Update Content Class to store object version");
+            console.warn("  02.3) Update Globals.recentCashedObjects DONT INCLUDE TERMS");
             console.warn("03) Add LOGOUT event when server respond with TOKEN-EXPIRED");
             console.warn("04) Check if (AMEER) restoreSteps function correct!");
             console.warn("05) Add layout and functions to CREATE | EDIT");
@@ -51,7 +57,9 @@ var ngScope;
             console.warn("14) Create tab settings dialog (change color | rename | set shortcut for focus)");
             console.warn("15) Add send logs to profile dialog");
             console.warn("16) Remove all debugger and convert all logs to the log class");
-
+            console.warn("17) Loop on all workflows and CashedContents extract none used obejcts");
+            console.warn("18) Check error .left of interval (ZoomRange)");
+            console.groupEnd();
             
             $scope.AppStatus = 0;
             $scope.currentUser = {};

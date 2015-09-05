@@ -757,8 +757,9 @@
 					if(this.baseUrl == "dummy"){
 						callback();
 					}else{
-						steps = strCompress(JSON.stringify(steps));
-						$httpR.connectToServer({Key:"Steps", value:steps}, $httpR.KVPsetKeyValuePair, Globals, callback);
+						strCompress(JSON.stringify(steps), function(stepsComp){
+							$httpR.connectToServer({Key:"Steps", value:stepsComp}, $httpR.KVPsetKeyValuePair, Globals, callback);
+						});
 					}
 				}catch(e){
 	                console.error("getSteps: ", e);
@@ -857,7 +858,7 @@
 
 					$httpR.connectToServer(data, $httpR.TERMgetAllTermsStrings, Globals, function(success, error){
 						if(error || !success){
-							console.error("error getting all terms: ", error);
+							console.error("getAllTerms: ", error);
 							callback(null, error);
 						}else{
 							callback(success);

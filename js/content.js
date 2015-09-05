@@ -261,6 +261,40 @@
 				}
 			},
 
+			toJsonDeliveryServer: function(){
+				try{
+					var tempJSON = {
+						"UID": this.id,
+						"TITLE": this.name,
+						"KBITS": {
+							"NEEDED": [], // this.kBitsNeeded
+							"PROVIDED": [], // this.kBitsProvided
+							"OTHERS": []
+							
+						},
+						"TERMS": [], // this.terms
+						"DESCRIPTION": this.description,
+						"FRONT_DELIVERY": {
+							"FRONT_TYPE": "DELIVERY_FRONT",
+							"PATH": this.url
+						}
+					}
+					for(var i=0; i<this.kBitsNeeded.length; i++){
+						tempJSON.KBITS.NEEDED.push(Number(this.kBitsNeeded[i].id));
+					}
+					for(var i=0; i<this.kBitsProvided.length; i++){
+						tempJSON.KBITS.PROVIDED.push(Number(this.kBitsProvided[i].id));
+					}
+					for(var i=0; i<this.terms.length; i++){
+						tempJSON.TERMS.push(Number(this.terms[i].id));
+					}
+					return tempJSON;
+				}catch(e){
+	           		console.error("toJson: ", e);
+	           		return null;
+				}
+			},
+
 			/**
 			 * Gets difference in kbits needed
 			 * @param  {ArraY} oldArray old kbits needed array

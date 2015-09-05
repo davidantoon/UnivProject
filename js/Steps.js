@@ -25,11 +25,13 @@
 						ServerResquestComplete(null, passThis1);
 					}else{
 						try{
-							var x =JSON.parse(strDecompress(result.OBJECT_VALUE));
-							if(x.last20Steps.length == 0)
-								ServerResquestComplete(null, passThis1);
-							else
-								ServerResquestComplete(x, passThis1);
+							strDecompress(result.OBJECT_VALUE, function(stepsDecomp){
+								var x = JSON.parse(stepsDecomp);
+								if(x.last20Steps.length == 0)
+									ServerResquestComplete(null, passThis1);
+								else
+									ServerResquestComplete(x, passThis1);
+							});
 						}catch(e){
 							ServerResquestComplete(null, passThis1);
 						}
@@ -204,9 +206,12 @@
 		                	}
 		                }
 		                this.currentUndoOrder++;
-		                localStorage.setItem("com.intel.steps.last20Steps", JSON.stringify(this.toJson()));
-			            this.savedInServer = false;
-		                callback();
+		                var passThis = this;
+		                var stor = new Storage();
+			            stor.setWorkspaceData(this.toJson(), null, null, function(success, error){
+			            	passThis.savedInServer = false;
+			            	callback();
+			            });
 					}
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","there was an error in undo function", Toast.LONG, Toast.ERROR);
@@ -267,9 +272,12 @@
 		                	}
 		                }
 		                this.currentUndoOrder--;
-		                localStorage.setItem("com.intel.steps.last20Steps", JSON.stringify(this.toJson()));
-			            this.savedInServer = false;
-		                callback();
+		                var passThis = this;
+		                var stor = new Storage();
+			            stor.setWorkspaceData(this.toJson(), null, null, function(success, error){
+			            	passThis.savedInServer = false;
+			            	callback();
+			            });
 					}
 				}catch(e){
 	                console.error("redoWorkflow: ", e);
@@ -329,7 +337,7 @@
 	            	else{
 			            this.last20Steps = [InsData];
 	            	}
-		            this.last20Steps = this.last20Steps.slice(0, 50);
+		            this.last20Steps = this.last20Steps.slice(0, 20);
 		            for (var i = 0; i < this.last20Steps.length; i++) {
 		                this.last20Steps[i].orderSteps = (i + 1);
 		            }

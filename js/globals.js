@@ -150,6 +150,7 @@
                 crossDomain : true,
                 timeout: 10000,
                 success: function(success) {
+                    console.log(success);
                     if (success.status == 200)
                         callback(success.data, null);
                     else{
@@ -218,8 +219,14 @@
                                     }else if(key == "dataHolding"){
                                         if(valueDiff && valueDiff.value && valueDiff.value.results && valueDiff.value.results.value){
                                             if(Object.keys(valueDiff.value.results.value).length != undefined && Object.keys(valueDiff.value.results.value).length > 0){
-                                                valueDiff.contentId = a.dataHolding.results[Object.keys(valueDiff.value.results.value)[0]].id;
-                                                valueDiff.contentType = a.dataHolding.results[Object.keys(valueDiff.value.results.value)[0]].type;
+                                                var mm = Object.keys(valueDiff.value.results.value);
+                                                var mm1 = mm[0];
+                                                var ss = a.dataHolding.results;
+                                                var ss1 = ss[mm1];
+                                                if(ss1 && ss1.id && ss1.type){
+                                                    valueDiff.contentId = ss1.id;
+                                                    valueDiff.contentType = ss1.type;
+                                                }
                                             }
                                         }
                                         equal = false;
@@ -322,7 +329,6 @@
             return true;
         diffData = objectToPaths(diffData);
         diffData = getUniqueStringValues(diffData);
-        console.log(diffData);
         for(var i=0; i<diffData.length; i++){
             var s = diffData[i];
             if(s.indexOf("(id=") != -1 && s.indexOf("&type=") != -1){
