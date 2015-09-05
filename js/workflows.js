@@ -256,7 +256,7 @@
                         "ID": this.selectedTab.ID
                     };
                     for (var i = 0; i < this.tabs.length; i++) {
-                        tempJson.tabs.push(JSON.parse(this.tabs[i].toString()));
+                        tempJson.tabs.push(this.tabs[i].toJson());
                     }
                     return tempJson;
                 }catch(e){
