@@ -175,13 +175,12 @@
                  * @param  {string}   role           role of the user
                  * @param  {Function} callback       callback function
                  */
-                updateUser: function(firstName, lastName, email, profilePicture, callback) {
+                updateUser: function(firstName, lastName, email, callback) {
                     try {
                         var data = {
                             firstName: firstName,
                             lastName: lastName,
                             email: email,
-                            profilePicture: profilePicture,
                             role: this.role
                         };
                         var passThis = this;
@@ -203,18 +202,14 @@
                     }
                 },
 
-                updateProfilePicture: function(profilePicture, callback){
+                updateProfilePicture: function(profilePicture, ext, callback){
                     try{
-                        
-                        var data = {
-                            firstName: this.firstName,
-                            lastName: this.lastName,
-                            email: this.email,
-                            profilePicture: profilePicture,
-                            role: this.role
+                        var Data = {
+                          data: profilePicture,
+                          extension : ext
                         };
                         var passThis = this;
-                        $httpR.connectToServer(data, $httpR.updateUser, Globals, function(success, error){
+                        $httpR.connectToServer(Data, $httpR.USERsaveProfilePicture, Globals, function(success, error){
                             if(error || !success){
                                 console.error("could not update profile picture: ", error);
                                 callback(null, error);

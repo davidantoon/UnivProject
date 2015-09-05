@@ -435,7 +435,7 @@
 			},
 
 			/**
-			 * Saves data to server
+			 * Saves NEW ELEMTN !!! to server
 			 * @param {object}   obj      object we are going to save
 			 * @param {Function} callback callback function
 			 */
@@ -443,9 +443,9 @@
 			// delivery , settings, kbits,steps, 
 			saveElement: function(obj, callback){
 				try{
+					console.warn("saveElement: only for new element not update !!!");
 					if(this.baseUrl == "dummy"){
-
-						switch (this.TypeOfData){
+						switch (obj.type){
 							case "Deliveries":
 								var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
 								deliveryDB.push(obj);
@@ -486,11 +486,9 @@
 						}
 						console.warn("DUMMY REQUESTS");
 					}else{
-						switch (this.TypeOfData){
+						debugger;
+						switch (obj.type){
 							case "Delivery":
-								console.warn("save delivery not implemented");
-								callback(true, null);
-
 								// call new method to save delivery and kbits relations
 							break;
 							case "Kbit":

@@ -302,8 +302,18 @@ var ngScope;
 
             $scope.updateImageInSRV = function() {
                 if($('#newImageFileId').val() == ''){
-                $scope.Toast.show("Error!","Could not upload image", Toast.LONG, Toast.ERROR);
+                    $scope.Toast.show("Error!","Could not upload image", Toast.LONG, Toast.ERROR);
                 }else{
+                    var fullPath = $('#newImageFileId').val();
+                    if (fullPath){
+                            var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+                            var filename = fullPath.substring(startIndex);
+                            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                                filename = filename.substring(1);
+                        }
+                    }
+                    var dotIndex = filename.lastIndexOf('.');
+                    var ext = filename.substring(dotIndex);
                     var reader = new FileReader();
                     reader.onloadend = function() {
                         if (reader.result) {
@@ -321,7 +331,13 @@ var ngScope;
                                 ctx.drawImage(image, 0, 0, image.width, image.height);
                                 var base64NewImage = canvas.toDataURL();
                                 console.log(base64NewImage);
-                                $scope.updateUser(base64NewImage);
+                                $scope.currentUser.updateProfilePicture(base64NewImage, ext, function(success, error){
+                                    if(error || !success){
+                                        console.error("Could not change profile picture: ", error);
+                                    }else{
+                                        console.warn("profile picture change, what to do ? ");
+                                    }
+                                });
                                 /// BAASEEE 64 IMAGE
                                 // Globals.currentUser.updateProfilePicture(base64NewImage, function(success, error){
                                 //     if(error || !success){

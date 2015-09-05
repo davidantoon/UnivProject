@@ -121,6 +121,8 @@
         DELIVERYremoveRelatedKbit: "DELIVERYremoveRelatedKbit",
         USERlogout: "USERlogout",
         USERvalidateToken: "USERvalidateToken",
+        DELIVERYaddNew: "DELIVERYaddNew",
+        USERsaveProfilePicture: "USERsaveProfilePicture",
 
         
 
