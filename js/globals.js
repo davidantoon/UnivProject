@@ -61,11 +61,14 @@
         },
 
         noLockedItemrs:function(){
-            if(CashedObjects){
-                for(var i=0; i< CashedObjects.length; i++){
-                    if(CashedObjects[i].locked)
-                        return false;
-                }
+            if(this.CashedObjects){
+                 for (var obj in this.CashedObjects){
+                    if( this.CashedObjects.hasOwnProperty(obj) ){
+                        if(this.CashedObjects[obj].locked)
+                            if(this.CashedObjects[obj].locked == true)
+                                return false;
+                    } 
+                  }
             }
             return true;
         }
