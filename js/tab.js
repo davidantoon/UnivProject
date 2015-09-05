@@ -225,6 +225,17 @@
 	            return JSON.stringify(strToReturn);
 			},
 
+			toJson: function(){
+				return{
+	                "ID": this.ID,
+	                "title": this.title,
+	                "Type": this.Type,
+	                "content": ((this.content == null)?null:this.content.toJson()),
+	                "orderTab": this.orderTab,
+	                "dataHolding": this.dataHolding,
+	                "color": this.color
+	            };
+			},
 			addChildToSearch: function(childData){
 				// add childData to dataHolding.childTab
 			}

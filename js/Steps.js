@@ -18,7 +18,7 @@
 
 			loadSteps: function(workspace, callback){
 
-				var passThis1 = this;
+				var passThis1 = this; 
 				var svr = new Server(this.objectType, $rootScope.currentScope.isDummy);
 				svr.getSteps(function(result, error){
 					if(error || !result){
@@ -314,15 +314,18 @@
 			InsertStepToLastSteps: function(workspace, force){
 				try{
 					this.UpdateLastSteps();
-		            var tempWorkflowArray = "[";
+		            // var tempWorkflowArray = "[";
+		            var tempWorkflowArray = [];
 		            for (var i = 0; i < workspace.workflows.length; i++) {
-		            	if(workspace.workflows.length>1 && i != workspace.workflows.length-1){
-		            		tempWorkflowArray += workspace.workflows[i].toString()+",";
-		            	}else{
-		                    tempWorkflowArray += workspace.workflows[i].toString();
-		            	}
+		            	tempWorkflowArray.push(workspace.workflows[i].toJson());
+		            	// if(workspace.workflows.length>1 && i != workspace.workflows.length-1){
+		            	// 	tempWorkflowArray += workspace.workflows[i].toString()+",";
+		            	// }else{
+		            	// 	tempWorkflowArray += workspace.workflows[i].toString();
+		            	// }
 		            }
-		            tempWorkflowArray += "]";
+		            tempWorkflowArray = angular.toJson(tempWorkflowArray);
+		            // tempWorkflowArray += "]";
 		            var InsData = {
 		                'orderSteps': 0,
 		                'allWorkFlowContents': tempWorkflowArray,
@@ -351,6 +354,9 @@
 		            		passThis.savedInServer = false;
 		            	}
 		            });
+
+
+		            
 		        }catch(e){
 		        	$rootScope.currentScope.Toast.show("Error!","there was an error in upadting last steps", Toast.LONG, Toast.ERROR);
 	                console.error("InsertStepToLastSteps: ", e);

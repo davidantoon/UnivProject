@@ -23,7 +23,6 @@
 				if(!this.progressWizard){
 					this.progressWizard = {};
 				}
-				this.progressWizard.spinner = false;
 				this.revision = ((conData != undefined)?conData.revision:1);
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","There was an error in creating new Content", Toast.LONG, Toast.ERROR);
