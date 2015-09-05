@@ -128,6 +128,21 @@ class usersAPI {
         }
     }
 
+    static function saveProfilePicture($serverHash, $Token, $data, $extension) {
+
+        if(serverAPI::validateServerIdentity($serverHash) == false)
+            return array('ErrorCode' => 4, 'Message' => "Invalid serverHash : ".$serverHash);
+        $user = usersAPI::validateToken($Token);
+        if($user == null)
+            return array('ErrorCode' => 3, 'Message' => "User is not logged in");
+        try {
+            return users::save_profile_picture($user["UID"], $data, $extension);
+        }
+        catch (Exception $e) {
+            return array('ErrorCode' => 0, 'Message' => "Unknown Error");
+        }
+    }
+
     static function validateToken($token) {
         
         return users::validate_token($token);
@@ -151,7 +166,11 @@ class termsAPI {
         if($user == null)
             return array('ErrorCode' => 3, 'Message' => "Expired Token");
         try {
-            return scope::serach_scopes($searchWord, $searchFields, $lang);
+            // return scope::serach_scopes($searchWord, $searchFields, $lang);
+            $temp = term::get_all_terms_full($searchWord);
+            // debugLog::important_log("<i>[webservice.php:aa]</i> ". dbAPI::print_json_s($temp, 0));
+            
+            return $temp;
         }
         catch (Exception $e) {
             return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -352,7 +371,7 @@ class KbitAPI {
             return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
         try {
-            return Kbit::get_kbit_by_UID($UID);
+            return Kbit::get_Kbit_details($UID, $user["UID"]);
         }
         catch (Exception $e) {
             return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -558,6 +577,22 @@ class KbitAPI {
         }
     }
 
+
+    static function updateFullKbit($serverHash, $Token, $json) {
+
+        if(serverAPI::validateServerIdentity($serverHash) == false)
+            return array('ErrorCode' => 4, 'Message' => "Invalid serverHash : ".$serverHash);
+        $user = usersAPI::validateToken($Token);
+        if($user == null)
+            return array('ErrorCode' => 3, 'Message' => "Expired Token");
+
+        try {
+            return Kbit::bulk_update_kbit($json, $user["UID"]);
+        }
+        catch (Exception $e) {
+            return array('ErrorCode' => 0, 'Message' => "Unknown Error");
+        }
+    }
 }
 
 
@@ -595,7 +630,7 @@ class DeliveryAPI {
             return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
         try {
-            return Delivery::get_Delivery_by_UID($UID);
+            return Delivery::get_Delivery_details($UID, $user["UID"]);
         }
         catch (Exception $e) {
             return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -832,6 +867,22 @@ class DeliveryAPI {
             return array('ErrorCode' => 0, 'Message' => "Unknown Error");
         }
     }
+
+    static function updateFullDelivery($serverHash, $Token, $json) {
+
+        if(serverAPI::validateServerIdentity($serverHash) == false)
+            return array('ErrorCode' => 4, 'Message' => "Invalid serverHash : ".$serverHash);
+        $user = usersAPI::validateToken($Token);
+        if($user == null)
+            return array('ErrorCode' => 3, 'Message' => "Expired Token");
+
+        try {
+            return Delivery::bulk_update_delivery($json, $user["UID"]);
+        }
+        catch (Exception $e) {
+            return array('ErrorCode' => 0, 'Message' => "Unknown Error");
+        }
+    }
 }
 
 
@@ -1008,6 +1059,8 @@ class searchableQueriesAPI {
 
 
 
+
+
 /************************************************************************************************************************
 *                                                                                                                       *
 *  00000000000  000      00  00000000000  00000000000  000000000    00000000000      000         00000     00000000000  *
@@ -1044,6 +1097,18 @@ class interfaceAPI {
     public static function USERlogout($serverHash, $Token) {
         return usersAPI::logout($serverHash, $Token);
     }
+    public static function USERvalidateToken($serverHash, $Token) {
+
+        if(serverAPI::validateServerIdentity($serverHash) == false)
+            return array('ErrorCode' => 4, 'Message' => "Invalid serverHash : ".$serverHash);
+        $user = usersAPI::validateToken($Token);
+        if($user == null)
+            return array('ErrorCode' => 3, 'Message' => "Expired Token");
+        return $user;
+    }
+    public static function USERsaveProfilePicture($serverHash, $Token, $data, $extension) {
+        return usersAPI::saveProfilePicture($serverHash, $Token, $data, $extension);
+    }
 
 
 
@@ -1055,7 +1120,9 @@ class interfaceAPI {
 // ====================================================================
     
     public static function TERMsearchTerms($serverHash, $Token, $searchWord, $searchFields, $lang = '') {
-        return termsAPI::searchTerms($serverHash, $Token, $searchWord, $searchFields, $lang = '');
+        if($lang == ' ')
+            $lang = '';
+        return termsAPI::searchTerms($serverHash, $Token, $searchWord, $searchFields, $lang);
     }
     public static function TERMaddTermToTermRelation($serverHash, $Token, $firstUID, $secondUID, $isHier) {
         return termsAPI::addTermToTermRelation($serverHash, $Token, $firstUID, $secondUID, $isHier);
@@ -1064,13 +1131,19 @@ class interfaceAPI {
         return termsAPI::removeTermToTermRelation($serverHash, $Token, $firstUID, $secondUID);
     }
     public static function TERMgetRelatedTerms($serverHash, $Token, $termUID, $lang = '') {
-        return termsAPI::getRelatedTerms($serverHash, $Token, $termUID, $lang = '');
+        if($lang == ' ')
+            $lang = '';
+        return termsAPI::getRelatedTerms($serverHash, $Token, $termUID, $lang);
     }
     public static function TERMgetAllTermsStrings($serverHash, $Token, $lang = '') {
-        return termsAPI::getAllTermsStrings($serverHash, $Token, $lang = '');
+        if($lang == ' ')
+            $lang = '';
+        return termsAPI::getAllTermsStrings($serverHash, $Token, $lang);
     }
     public static function TERMgetTermById($serverHash, $Token, $UIDs, $lang = ''){
-        return termsAPI::getTermById($serverHash, $Token, $UIDs, $lang = '');
+        if($lang == ' ')
+            $lang = '';
+        return termsAPI::getTermById($serverHash, $Token, $UIDs, $lang);
     }
     
     
@@ -1147,6 +1220,9 @@ class interfaceAPI {
     public static function KBITgetKbitById($serverHash, $Token, $UID) {
         return KbitAPI::getKbitById($serverHash, $Token, $UID);
     }
+    public static function KBITupdateFullKbit($serverHash, $Token, $json){
+        return KbitAPI::updateFullKbit($serverHash, $Token, $json);
+    }
 
 
 
@@ -1206,7 +1282,9 @@ class interfaceAPI {
     public static function DELIVERYgetDeliveryById($serverHash, $Token, $UID){
         return DeliveryAPI::getDeliveryById($serverHash, $Token, $UID);
     }
-    
+    public static function DELIVERYupdateFullDelivery($serverHash, $Token, $json){
+        return DeliveryAPI::updateFullDelivery($serverHash, $Token, $json);
+    }
     
 
 
@@ -1229,10 +1307,8 @@ class interfaceAPI {
 	}
 	public static function KVPgetKeyValuePair($serverHash, $Token, $key) {
         $temp = keyValuePairAPI::get_key_value_pair($serverHash, $Token, $key);
-        debugLog::important_log("<i>[webservice.php:getting KVP]</i>" . dbAPI::print_json_s($temp, 0));
 		return $temp;
 	}
-
 
 
 
@@ -1245,22 +1321,22 @@ class interfaceAPI {
 // ====================================================================
 // ====================================================================
 
-    public static function runQuery($serverHash, $Token, $queryID) {
+    public static function QUERYrunQuery($serverHash, $Token, $queryID) {
         return searchableQueriesAPI::runQuery($serverHash, $Token, $queryID);
     }
-    public static function removeQuery($serverHash, $Token, $key) {
+    public static function QUERYremoveQuery($serverHash, $Token, $key) {
         return searchableQueriesAPI::removeQuery($serverHash, $Token, $key);
     }
-    public static function updateQuery($serverHash, $Token, $queryID, $text, $name) {
+    public static function QUERYupdateQuery($serverHash, $Token, $queryID, $text, $name) {
         return searchableQueriesAPI::updateQuery($serverHash, $Token, $queryID, $text, $name);
     }
-    public static function saveNewQuery($serverHash, $Token, $tableName, $queryName, $text) {
+    public static function QUERYsaveNewQuery($serverHash, $Token, $tableName, $queryName, $text) {
         return searchableQueriesAPI::saveNewQuery($serverHash, $Token, $tableName, $queryName, $text);
     }
-    public static function getUserQueries($serverHash, $Token) {
+    public static function QUERYgetUserQueries($serverHash, $Token) {
         return searchableQueriesAPI::getUserQueries($serverHash, $Token);
     }
-    public static function getSearchableTables($serverHash, $Token) {
+    public static function QUERYgetSearchableTables($serverHash, $Token) {
         return searchableQueriesAPI::getSearchableTables($serverHash, $Token);
     }
 
@@ -1274,6 +1350,48 @@ class interfaceAPI {
     public static function hello($hash) {
         return usersAPI::hello($hash);
     }
+
+
+
+
+// ====================================================================
+// ====================================================================
+//                             Refresher
+// ====================================================================
+// ====================================================================
+
+
+    // checks all objects in array and returns their new values
+    public static function REFRESHERgetData($serverHash, $Token, $objectsArray) {
+        
+        if(serverAPI::validateServerIdentity($serverHash) == false)
+            return array('ErrorCode' => 4, 'Message' => "Invalid serverHash : ".$serverHash);
+        $user = usersAPI::validateToken($Token);
+        if($user == null)
+            return array('ErrorCode' => 3, 'Message' => "Expired Token");
+
+        try {
+            
+            $Deliveries = array();
+            $Kbits = array();
+            for($i=0; $i<count($objectsArray); $i++) {
+                if($objectsArray[$i]["TYPE"] == "DELIVERY") {
+                    array_push($Deliveries, interfaceAPI::DELIVERYgetDeliveryById($serverHash, $Token, $objectsArray[$i]["UID"]));
+                }
+                if($objectsArray[$i]["TYPE"] == "KBIT") {
+                    array_push($Kbits, interfaceAPI::KBITgetKbitById($serverHash, $Token, $objectsArray[$i]["UID"]));
+                }
+            }
+
+            return array("DELIVERIES" => $Deliveries, "KBITS" => $Kbits);
+        }
+        catch (Exception $e) {
+            return array('ErrorCode' => 0, 'Message' => "Unknown Error");
+        }
+    }
+
+
+
 }
 
 

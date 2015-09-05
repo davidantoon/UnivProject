@@ -15,8 +15,9 @@ class serverAPI {
     	if($hash == 'DAVIDGALIT') {
     		try {
     			$temp = users::validate_username_password('Learner', 'davidGalitLearner');
-    			if($temp == null)
+    			if($temp == null) {
 	    			debugLog::log("<i>[webrequest:validateServerIdentity]</i> ERROR: 'Could not validate the identity of requesting server'");
+                }
 	    		return $temp;
 		    }
 		    catch (Exception $e) {
@@ -50,7 +51,7 @@ class serverAPI {
 
 class interfaceAPI {
 
-	public static function search($hash, $query) {
+	public static function search($hash, $query, $withContent = true) {
 
 		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
@@ -58,8 +59,12 @@ class interfaceAPI {
 		if($user == null) {
 			return array('ErrorCode' => 3, "Message" =>"Access denied, could not validate the identity of requesting server");
 		}
-
+        try {
 		$temp = json_decode($query, true);
+        }
+        catch(Exception $e) {
+
+        }
 		if($temp == null)
 			$temp = $query;
 	
@@ -76,28 +81,56 @@ class interfaceAPI {
 			array_push($searchFields, 'DESCRIPTION');
 
 		$results = array();
+        $results["DELIVERIES"] = array();
 
 		// request data from classes
 		if($temp["elements"]["delivery"] == 'true') {
 			
 			$where_sttmnt = implode(" LIKE '%". $searchText . "%' AND ", $searchFields) . " LIKE '%". $searchText . "%' ";
-			$where_sttmnt = " (" . $where_sttmnt . ") ";
-			// debugLog::important_log("<i>[webservice-content.php:search]</i>searcg text: ". $searchText ." / where: " . $where_sttmnt);
-			
-			$results["DELIVERIES"] = Delivery::serach_deliveries_BASE_FRONT_by_query($where_sttmnt, $user["UID"]);
-		}
+			$where_sttmnt = " (" . $where_sttmnt . ") ";			
+			$results["DELIVERIES"] = $results["DELIVERIES"] + Delivery::serach_deliveries_BASE_FRONT_by_query($where_sttmnt, $user["UID"]);
+        }
 		if($temp["elements"]["term"] == 'true') {
-			// search terms
-			$results["TERMS"] = term::get_all_terms_full($searchText);
+			// search by terms
+			$results["DELIVERIES"] = $results["DELIVERIES"] + Delivery::serach_deliveries_by_terms($searchText, $user["UID"]);
 		}
 		if($temp["elements"]["scope"] == 'true') {
 
-			$results["SCOPES"] = scope::serach_scopes2($searchText);
+			// $results["SCOPES"] = scope::serach_scopes2($searchText);
+            $results["DELIVERIES"] = $results["DELIVERIES"] + Delivery::serach_deliveries_by_scopes($searchText, $user["UID"]);
 		}
 
+        // disable content when requested by the client
+        if($withContent == false) {
+            $tempArr = array();
+            for($i=0; $i<count($results["DELIVERIES"]); $i++) {
+                array_push($tempArr, array("UID" => $results["DELIVERIES"][$i]["UID"], "TITLE" => $results["DELIVERIES"][$i]["TITLE"], "DESCRIPTION" => $results["DELIVERIES"][$i]["DESCRIPTION"]));
+            }
+            return array("DELIVERIES" => $tempArr);
+        }
 
 		return $results;
 	}
+
+    public static function getDeliveryByUID($hash, $deliveryUID) {
+
+        $user = serverAPI::validateServerIdentity($hash);
+        if($user == null) {
+            return array('ErrorCode' => 3, "Message" =>"Access denied, could not validate the identity of requesting server");
+        }
+        return Delivery::get_Delivery_details($deliveryUID, $user["UID"]);
+    }
+
+
+    public static function getTreeOfDelivery($hash, $deliveryUID) {
+
+        $user = serverAPI::validateServerIdentity($hash);
+        if($user == null) {
+            return array('ErrorCode' => 3, "Message" =>"Access denied, could not validate the identity of requesting server");
+        }
+        return Delivery::get_tree_of_kbit($deliveryUID);
+    }
+
 
 	
 	
@@ -111,7 +144,7 @@ class interfaceAPI {
 // "searchtext": "Test3",
 //     "elements": {
 //         "delivery": "false",
-//         "d2k": "true",
+//         "d2k": "true",  -- canceled
 //         "term": "true",
 //         "scope": "true"
 //     },

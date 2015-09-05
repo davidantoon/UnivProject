@@ -141,7 +141,7 @@
 		  $u.'.R_LD2K', $c.'.R_LD2K',
 		  $c.'.TERMS', $c.'.TERM_STRING', $c.'.TERM_MEAN', $c.'.SCOPE',
 		  $c.'.R_LS2S', $c.'.R_LT2T',
-		  $c.'.CONTENT_LOCK');
+		  $c.'.CONTENT_LOCK', $u.'.USERS');
 	dbAPI::delete_all($tempArr);
 
 
@@ -165,6 +165,14 @@
 	$termArr = array();
 	$scopeArr = array();
 	$langArr = term::get_languages();
+
+	// create users
+	users::add_new_user('geryes', 'moussa', 'geryes', 'my_password', 'geryes@gmail.com', 'ss', '1');
+	users::add_new_user('anton', 'anton', 'antoon91', '1234', 'geryes@gmail.com', '', '1');
+
+	if(users::validate_username_password('Learner', 'davidGalitLearner') == null)
+	    users::add_new_user('Learner', 'User', 'Learner', 'davidGalitLearner', 'david@galit.com', 'ss', '1');
+
 
 	// creating terms and scopes
 	for($i=0; $i< 8; $i++) {
@@ -246,6 +254,9 @@
 	debugLog::log("<i>[hello.php:testing relation between delivery (4) and kbit(6)]</i> result: ". dbAPI::print_json_s(Delivery::add_Kbit_to_delivery($kbitArr[6]["UID"], $delArr[4]["UID"], 'PROVIDED', 0, 0), 0));
 
 
+	// publishing deliveries
+	for($i=0; $i< 7; $i++) 
+		debugLog::log("<i>[hello.php:Publishing deliveries]</i> result: ". dbAPI::print_json_s(Delivery::publish_changes($delArr[$i]["UID"], 0), 0));
 
 
 	// $deliveryfront1 = array('FRONT_TYPE'=>'DELIVERY_FRONT', 'PATH'=>'http://youtube1.com');

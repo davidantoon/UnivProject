@@ -10,7 +10,7 @@ class scope {
 		
 		$dbObj = new dbAPI();
 		// get new UID
-		$UID = $dbObj->get_latest_UID($dbObj->db_get_contentDB(), 'scope');
+		$UID = $dbObj->get_latest_UID($dbObj->db_get_contentDB(), 'SCOPE');
 		$UID++;
 		// add record to database
 		$query = "INSERT INTO SCOPE (UID, TITLE, DESCRIPTION, ENABLED, USER_ID, CREATION_DATE) VALUES (".
@@ -104,6 +104,19 @@ class scope {
 		return $results;
 	}
 
+	public static function search_terms_by_scope($search_word) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
+		$query = "SELECT ft.UID, s.TITLE, s.DESCRIPTION from [DB_NAME].TERMS as ft inner JOIN [DB_NAME].SCOPE as s ON (ft.ID_SCOPE = s.UID) where (UPPER(s.TITLE) LIKE UPPER('%[SEARCH_WORD]%') OR UPPER(s.DESCRIPTION) LIKE UPPER('%[SEARCH_WORD]%')) AND ft.ENABLED = 1";
+		$dbObj = new dbAPI();
+		$query = str_replace('[DB_NAME]', $dbObj->db_get_contentDB(), $query);
+		$query = str_replace('[SEARCH_WORD]', $search_word, $query);
+		
+		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
+		return $results;
+		
+	}	
 
 
 
