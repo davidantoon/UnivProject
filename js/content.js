@@ -118,7 +118,6 @@
 			 */
 			save: function(versionNotes, callback){
 				try{
-					debugger;
 					this.modifyContent();
 					var mThis = this;
 					this.connectToDataBase.saveElement(mThis, function(success, error){

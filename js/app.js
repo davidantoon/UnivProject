@@ -207,11 +207,14 @@ var ngScope;
                     if(error || !success)
                         $scope.logout();
                     else{
-                        Globals.CurrentUser = success;
-                        $scope.loadUserData();
-                        var stor = new Storage();
+                        setTimeout(function() {
+                             Globals.CurrentUser = success;
+                            $scope.loadUserData();
+                            var stor = new Storage();
 
-                        stor.setWorkspaceData(null, null, Globals.CurrentUser, function(){});
+                            stor.setWorkspaceData(null, null, Globals.CurrentUser, function(){});
+                        }, 1500);
+                       
                     }
                 });
             }
@@ -1604,10 +1607,30 @@ var ngScope;
 
 
 
-
-
-
-
+            $scope.createNewContent = function(wFlow, name, desc, url, type){
+                // call server create ( save ) if succ, new content and add to workspace after comeback, lock it then add to cachesObj
+                // call wizardBeginEdit for wFlow
+                obj = {
+                    name: name,
+                    description: desc,
+                    url: url,
+                    type: type
+                };
+                var svr = new Server();
+                svr.saveElement(obj, function(success, error){
+                    if(error || !success){
+                        console.error("error creating new element: ", error);
+                    }else{
+                        var obj = new Content(success);
+                        obj.locked = true;
+                        obj.lockedBy = $scope.CurrentUser;
+                        var newTab = wFlow.addTab();
+                        newTab.addContent(obj);
+                        // update in server locked and locked by
+                        Globals.set(obj);
+                    }
+                });
+            }
 
 
 

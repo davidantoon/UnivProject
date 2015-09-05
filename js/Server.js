@@ -407,7 +407,7 @@
 										};
 										successModified.push({
 											id: success[i].UID,
-											name: success[i].TERM_STRING,
+											lastModified: new Date(success[i].CREATION_DATE),
 											termScope: tempScope,
 											type: "Term"
 										});
@@ -489,10 +489,16 @@
 						}
 						console.warn("DUMMY REQUESTS");
 					}else{
-						debugger;
 						switch (obj.type){
 							case "Delivery":
-								// call new method to save delivery and kbits relations
+
+								$httpR.connectToServer(obj.toJsonDeliveryServer(), $httpR.DELIVERYaddNew, Globals, function(success, error){
+									if(error || !success){
+										callback(null, error);
+									}else{
+										callback(success);
+									}
+								});
 							break;
 							case "Kbit":
 								onsole.warn("save kbit not implemented");

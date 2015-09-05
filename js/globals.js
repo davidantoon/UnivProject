@@ -46,12 +46,16 @@
             }
         },
         getRecentObjects: function(type){
+            console.warn("getRecentObjects: now returns arrays of objects!! which has data and version");
             if (this.CurrentUser.id != undefined) {
                 var dataToRetrun = [];
                 var CashedObjectsKeys = Object.keys(this.CashedObjects);
                 for (var i = 0; i < CashedObjectsKeys.length; i++) {
-                    if(this.CashedObjects[CashedObjectsKeys[i]].type == type){
-                        dataToRetrun.push(this.CashedObjects[CashedObjectsKeys[i]]);
+                    if(this.CashedObjects[CashedObjectsKeys[i]].type == "Delivery" || this.CashedObjects[CashedObjectsKeys[i]].type == "Kbit"){
+                        dataToRetrun.push({
+                            data:this.CashedObjects[CashedObjectsKeys[i]],
+                            version: this.CashedObjects[CashedObjectsKeys[i]].revision
+                        });
                     }
                 }
                 return dataToRetrun;
@@ -63,7 +67,7 @@
         noLockedItemrs:function(){
             if(this.CashedObjects){
                  for (var obj in this.CashedObjects){
-                    if( this.CashedObjects.hasOwnProperty(obj) ){
+                    if(this.CashedObjects.hasOwnProperty(obj)){
                         if(this.CashedObjects[obj].locked){
                             if(this.CashedObjects[obj].locked == true){
                                 return false;
@@ -157,6 +161,8 @@
         USERvalidateToken: "USERvalidateToken",
         DELIVERYaddNew: "DELIVERYaddNew",
         USERsaveProfilePicture: "USERsaveProfilePicture",
+        DELIVERYupdateFullDelivery: "DELIVERYupdateFullDelivery",
+        
 
         
 
