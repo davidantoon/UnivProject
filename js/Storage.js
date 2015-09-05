@@ -254,7 +254,6 @@
 								"CurrentUser": currentUser
 							};
 						}
-						console.log(data);
 						strCompress(JSON.stringify(data), function(stepsComp){
 							localStorage.setItem("com.intel.userdata", stepsComp);
 							callback(true, null);

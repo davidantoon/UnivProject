@@ -760,9 +760,7 @@
 					if(this.baseUrl == "dummy"){
 						callback();
 					}else{
-						strCompress(JSON.stringify(steps), function(stepsComp){
-							$httpR.connectToServer({Key:"Steps", value:stepsComp}, $httpR.KVPsetKeyValuePair, Globals, callback);
-						});
+						$httpR.connectToServer({Key:"Steps", value:steps}, $httpR.KVPsetKeyValuePair, Globals, callback);
 					}
 				}catch(e){
 	                console.error("getSteps: ", e);

@@ -260,11 +260,21 @@
 				}
 			},
 
+			toJsonSteps: function(){
+				return {
+					"id": this.id,
+					"type": this.type,
+					"progressWizard": this.progressWizard,
+					"newData": this.newData,
+				}
+			},
+
 			toJsonDeliveryServer: function(){
 				try{
 					var tempJSON = {
 						"UID": this.id,
 						"TITLE": this.name,
+						"DESCRIPTION": this.description,
 						"KBITS": {
 							"NEEDED": [], // this.kBitsNeeded
 							"PROVIDED": [], // this.kBitsProvided
@@ -272,7 +282,6 @@
 							
 						},
 						"TERMS": [], // this.terms
-						"DESCRIPTION": this.description,
 						"FRONT_DELIVERY": {
 							"FRONT_TYPE": "DELIVERY_FRONT",
 							"PATH": this.url
@@ -294,6 +303,22 @@
 				}
 			},
 
+			toJsonKbitServer: function(){
+				var tempJSON = {
+					"UID": this.id,
+					"TITLE": this.name,
+					"DESCRIPTION": this.description,
+					"TERMS": [], // this.terms
+					"FRONT_KBIT": {
+						"FRONT_TYPE": "KBIT_FRONT",
+						"PATH": this.url
+					}
+				}
+				for(var i=0; i<this.terms.length; i++){
+					tempJSON.TERMS.push(Number(this.terms[i].id));
+				}
+				return tempJSON;
+			}
 			/**
 			 * Gets difference in kbits needed
 			 * @param  {ArraY} oldArray old kbits needed array

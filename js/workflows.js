@@ -260,7 +260,31 @@
                     }
                     return tempJson;
                 }catch(e){
-                    $rootScope.currentScope.Toast.show("Error!","There was an error in converting to JSON", Toast.LONG, Toast.ERROR);
+                    console.error("toJson: ", e);
+                    return null;
+                }
+            },
+
+            toJsonSteps: function(){
+                try{
+                    var tempJson = {
+                        "ID": this.ID,
+                        "fx": this.fx,
+                        "fy": this.fy,
+                        "tx": this.tx,
+                        "ty": this.ty,
+                        "name": this.name,
+                        "tabsIds": this.tabsIds,
+                        "tabs": []
+                    }
+                    tempJson.selectedTab = {
+                        "ID": this.selectedTab.ID
+                    };
+                    for (var i = 0; i < this.tabs.length; i++) {
+                        tempJson.tabs.push(this.tabs[i].toJsonSteps());
+                    }
+                    return tempJson;
+                }catch(e){
                     console.error("toJson: ", e);
                     return null;
                 }

@@ -76,7 +76,7 @@
               <ons-col id="NotificationsButton3" ng-click="Steps.commitSteps(workSpaces);" width="85px" style="width:50px; position:relative;" class="{{'col ons-col-inner '+((Steps.savedInServer == false)?'clickable hoverOp':'opacityLow')}}">
                 <div class="TopTabbarButton" style="border-right:0;font-size: 13px;">
                   <ons-icon icon="ion-upload" size="25px"></ons-icon>
-                  Save
+                  {{savingStepsToServer}}
                 </div>
                 <div class="backgroundSaveButton" style="{{((Settings.autoSave == true)?((Steps.savedInServer == false && counterBeforeSave > 2)?'height:'+ ((5-(7-counterBeforeSave))*20)+'%':'hidden'):'hidden')}}"></div>
               </ons-col>
