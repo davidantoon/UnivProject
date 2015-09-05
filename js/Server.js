@@ -225,59 +225,62 @@
 											for(var j=0; j<tempKbitsNeeded.length; j++){
 												var tempTerms= [];
 												var lockingUserKbit = {};
-												if(tempKbitsNeeded[j].TERMS){
+												if(tempKbitsNeeded[j]){
+													if(tempKbitsNeeded[j].TERMS){
 													// loop on terms inside kbit
-													for(var k=0; k< tempKbitsNeeded[j].TERMS.length; k++){
-														var tempDisc= {};
-														if(tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs){
-															// loop on other lang inside term
-															for(var h=0; h<tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs.length; h++){
-																
-																tempDisc[tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs[h].LANG] = tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs[h].TEXT;
+														for(var k=0; k< tempKbitsNeeded[j].TERMS.length; k++){
+															var tempDisc= {};
+															if(tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs){
+																// loop on other lang inside term
+																for(var h=0; h<tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs.length; h++){
+																	
+																	tempDisc[tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs[h].LANG] = tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs[h].TEXT;
+																}
 															}
+															tempDisc[tempKbitsNeeded[j].TERMS[k].TERM_STRING.LANG] = tempKbitsNeeded[j].TERMS[k].TERM_STRING.TEXT;
+															tempTerms.push({
+																id: tempKbitsNeeded[j].TERMS[k].UID,
+																lastModified: new Date(tempKbitsNeeded[j].TERMS[k].CREATION_DATE),
+																description: tempDisc,
+																type: "Term"
+															});
 														}
-														tempDisc[tempKbitsNeeded[j].TERMS[k].TERM_STRING.LANG] = tempKbitsNeeded[j].TERMS[k].TERM_STRING.TEXT;
-														tempTerms.push({
-															id: tempKbitsNeeded[j].TERMS[k].UID,
-															lastModified: new Date(tempKbitsNeeded[j].TERMS[k].CREATION_DATE),
-															description: tempDisc,
-															type: "Term"
+													}
+													if(tempKbitsNeeded[j].LOCKING_USER){
+														lockingUserKbit = {
+															id: tempKbitsNeeded[j].LOCKING_USER.UID,
+															username: tempKbitsNeeded[j].LOCKING_USER.USERNAME,
+															firstName: tempKbitsNeeded[j].LOCKING_USER.FIRST_NAME,
+															lastName: tempKbitsNeeded[j].LOCKING_USER.LAST_NAME,
+															email: tempKbitsNeeded[j].LOCKING_USER.EMAIL,
+															profilePicture: tempKbitsNeeded[j].LOCKING_USER.PROFILE_PICTURE
+														};
+														successKbitModifiedNeeded.push({
+															id: tempKbitsNeeded[j].UID,
+															name: tempKbitsNeeded[j].TITLE,
+															terms: tempTerms,
+															description: tempKbitsNeeded[j].DESCRIPTION,
+															locked: true,
+															lockedBy: lockingUserKbit,
+															lastModified: new Date(tempKbitsNeeded[j].CREATION_DATE),
+															inProgress: false,
+															type: "Kbit"
+														});
+													}else{
+														successKbitModifiedNeeded.push({
+															id: tempKbitsNeeded[j].UID,
+															name: tempKbitsNeeded[j].TITLE,
+															terms: tempTerms,
+															description: tempKbitsNeeded[j].DESCRIPTION,
+															locked: false,
+															lockedBy: null,
+															lastModified: new Date(tempKbitsNeeded[j].CREATION_DATE),
+															inProgress: false,
+															type: "Kbit"
 														});
 													}
 												}
-												if(tempKbitsNeeded[j].LOCKING_USER){
-													lockingUserKbit = {
-														id: tempKbitsNeeded[j].LOCKING_USER.UID,
-														username: tempKbitsNeeded[j].LOCKING_USER.USERNAME,
-														firstName: tempKbitsNeeded[j].LOCKING_USER.FIRST_NAME,
-														lastName: tempKbitsNeeded[j].LOCKING_USER.LAST_NAME,
-														email: tempKbitsNeeded[j].LOCKING_USER.EMAIL,
-														profilePicture: tempKbitsNeeded[j].LOCKING_USER.PROFILE_PICTURE
-													};
-													successKbitModifiedNeeded.push({
-														id: tempKbitsNeeded[j].UID,
-														name: tempKbitsNeeded[j].TITLE,
-														terms: tempTerms,
-														description: tempKbitsNeeded[j].DESCRIPTION,
-														locked: true,
-														lockedBy: lockingUserKbit,
-														lastModified: new Date(tempKbitsNeeded[j].CREATION_DATE),
-														inProgress: false,
-														type: "Kbit"
-													});
-												}else{
-													successKbitModifiedNeeded.push({
-														id: tempKbitsNeeded[j].UID,
-														name: tempKbitsNeeded[j].TITLE,
-														terms: tempTerms,
-														description: tempKbitsNeeded[j].DESCRIPTION,
-														locked: false,
-														lockedBy: null,
-														lastModified: new Date(tempKbitsNeeded[j].CREATION_DATE),
-														inProgress: false,
-														type: "Kbit"
-													});
-												}
+												
 											}
 											// loop over kbits provided
 											for(var j=0; j<tempKbitsProvided.length; j++){
