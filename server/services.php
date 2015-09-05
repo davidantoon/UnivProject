@@ -23,21 +23,19 @@
 	// $temp = users::validate_username_password('rajibaba', 'my_password');
 
 	$url= 'http://localhost:8888/mopdqwompoaskdqomdiasjdiowqe/server/webservice-content.php'; // url + file.php
-	$token = '7Qpv7KBEZVk3t67TARQqcEBITdZKb9EiZ3O7OpLOl6ROdZHORye4dQM63MQeVuxVyl2nLOb6V3V83CWUbbYo1Ku4xljsQRnodqLY';
+	$token = 'IVnWfzOraxTbBfHyyqE4zxK4o73yUMGCI3zXCooNViZwyH568KbHhWLG3OfYBVBjZbhCzFqvYp2w77DfROW9KIQOx6M82ns1yJE8';
 
 	// $method = 'DELIVERYsearchDelivery';
 	$method = 'search';
 
-	// $data_to_transfer = $query = '{"searchtext":"Test3","elements":{"delivery":"false","d2k":"true","term":"true","scope":"true"},"field":{"title":"true","info":"false"}}';
-	
-	$data_to_transfer = array('searchtext'=>'4', 'elements' => array('delivery'=>'false','term'=>'true','scope'=>'true'), "field"=> array('title'=>'true','info'=>'false'));
-	$data = array('hash' => 'DAVIDGALIT', 'query' => $data_to_transfer, 'withContent' => true, 'method'  => $method, 'token' => $token );
-	
-	// $data = array('hash' => 'DAVIDGALIT', 'deliveryUID' => "1", 'method'  => 'getTreeOfDelivery');
-	// getTreeOfDelivery($hash, $deliveryUID)
-	// getDeliveryByUID($hash, $deliveryUID)
+	$data_to_transfer = $query = '{"searchtext":"Test3","elements":{"delivery":"false","d2k":"true","term":"true","scope":"true"},"field":{"title":"true","info":"false"}}';
+	$data_to_transfer = array('searchtext'=>'5', 'elements' => array('delivery'=>'false','d2k'=>'true','term'=>'true','scope'=>'true'), "field"=> array('title'=>'true','info'=>'false'));
 
 
+
+
+	$data = array('hash' => 'DAVIDGALIT', 'query' => $data_to_transfer, 'method'  => $method, 'withContent'=>true, 'token' => $token );
+	// $data = array('method'  => 'getLanguages' );
 
 	// use key 'http' even if you send the request to https://...
 	$options = array(

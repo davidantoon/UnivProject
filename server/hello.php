@@ -197,9 +197,12 @@
 	}
 
 	debugLog::important_log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i> ::::::::::::::: KBITS STRT :::::::::::::::: ");
+	$str = '';
 	for($i=0; $i< 8; $i++) {
-		dbAPI::print_json_s($kbitArr);
+		$str .= dbAPI::print_json_s($kbitArr, 0);
 	}
+	debugLog::important_log($str);
+	
 	debugLog::important_log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i> ::::::::::::::: KBITS END :::::::::::::::: ");
 	
 

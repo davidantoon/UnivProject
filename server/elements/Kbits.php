@@ -232,9 +232,17 @@ class Kbit {
 		$tableName = 'KBIT_FRONT';
 		// aquire a new revision number
 		$rev_num = Kbit::get_new_Revision_and_disbale_old_ones($UID, $tableName, 'user');
+
+		// get new revision
+		$where_sttmnt = " UID = " . $UID . " ";
+		$new_rev = $dbObj->get_latest_Rivision_ID($dbObj->db_get_usersDB(), $tableName, $where_sttmnt);
+		if($new_rev == null)
+			$new_rev = 0;
+		$new_rev++;		
+
 		// database insert query
 		$query = "INSERT INTO ". $tableName ." (UID, REVISION, PATH, ENABLED, USER_ID, CREATION_DATE) VALUES (".
-			$UID . ", 1, '" . $front["PATH"] ."', 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
+			$UID . ", ". $new_rev .", '" . $front["PATH"] ."', 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
 		$dbObj->run_query($database_source, $query);
 
 		return Kbit::get_front_Kbit($UID, $tableName, 'user');
@@ -321,6 +329,7 @@ class Kbit {
 		}
 		$temp = $results[0];
 		$temp["FRONT_TYPE"] = $tableName;
+		unset($temp["id"]);
 		return $temp;
 	}
 

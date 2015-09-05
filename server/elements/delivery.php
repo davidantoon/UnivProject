@@ -26,17 +26,16 @@ class Delivery {
 		$front = $json["FRONT_DELIVERY"];
 		$Delivery_UID = $json["UID"];
 		
-
+		
 		if($Delivery_UID == null) {
 			debugLog::log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i> delivery id does not exist in json");			
 			return false;
 		}
 		// validate lock
 		if(Lock::is_locked_by_user($Delivery_UID, 'DELIVERY_BASE', $user) == false) {
-			debugLog::log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i>The Delivery (". $Delivery_UID .") is not locked by user (". $user .")");
+			debugLog::log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i>T222he Delivery (". $Delivery_UID .") is not locked by user (". $user .")");
 			return false;
 		}
-
 		// get related kbits
 		if($json["KBITS"] != null) {
 			
@@ -47,24 +46,25 @@ class Delivery {
 			for($i = 0; $i < count($json["KBITS"]["OTHERS"]); $i++)
 				array_push($R_D2K, array($Delivery_UID, $json["KBITS"]["OTHERS"][$i], "OTHERS"));
 		}
+		debugLog::log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i> R_D2K: " . dbAPI::print_json_s($R_D2K, 0));
+		
 
 		// get related terms
-		for($i = 0; count($json["TERMS"]); $i++)
+		for($i = 0; $i < count($json["TERMS"]); $i++)
 			array_push($terms, $json["TERMS"][$i]);
 
-		if(Delivery::add_new_edit_for_Delivery($UID, $title, $description, $user, $front) == null) {
-			debugLog::log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i> error adding new edit to delivery (". $UID . ")");
+
+		if(Delivery::add_new_edit_for_Delivery($Delivery_UID, $title, $description, $user, $front) == null) {
+			debugLog::log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i> error adding new edit to delivery (". $Delivery_UID . ")");
 			return false;
 		}
-
 		// add related kbits to database
 		for($i=0; $i < count($R_D2K); $i++) 
-			if(Delivery::add_Kbit_to_delivery($R_D2K[1], $R_D2K[0], $R_D2K[2], 0, $user) == null) {
-				debugLog::log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i> cannot add kbit (". $R_D2K[1] . ") to delivery (". $R_D2K[0] . ")");
+			if(Delivery::add_Kbit_to_delivery($R_D2K[$i][1], $R_D2K[$i][0], $R_D2K[$i][2], 0, $user) == null) {
+				debugLog::log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i> cannot add kbit (". $R_D2K[$i][1] . ") to delivery (". $R_D2K[$i][0] . ")");
 				// roll back option here
 				return false;
 			}
-
 		// add terms to database
 		for($i=0; $i < count($terms); $i++)
 			if(Delivery::add_D2T_relation($Delivery_UID, $terms[$i], '', $user) == null) {
@@ -72,7 +72,6 @@ class Delivery {
 				// roll back option here
 				return false;
 			}
-
 		return true;
 	}
 
@@ -242,9 +241,17 @@ class Delivery {
 		$tableName = 'DELIVERY_FRONT';
 		// aquire a new revision number
 		$rev_num = Delivery::get_new_Revision_and_disbale_old_ones($UID, $tableName, 'user');
+		
+		// get new revision
+		$where_sttmnt = " UID = " . $UID . " ";
+		$new_rev = $dbObj->get_latest_Rivision_ID($dbObj->db_get_usersDB(), $tableName, $where_sttmnt);
+		if($new_rev == null)
+			$new_rev = 0;
+		$new_rev++;		
+
 		// database insert query
 		$query = "INSERT INTO ". $tableName ." (UID, REVISION, PATH, ENABLED, USER_ID, CREATION_DATE) VALUES (".
-			$UID . ", 1, '" . $front["PATH"] ."', 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
+			$UID . ", ". $new_rev .", '" . $front["PATH"] ."', 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
 		$dbObj->run_query('user', $query);
 
 		return Delivery::get_front_Delivery($UID, $tableName, 'user');
@@ -329,6 +336,7 @@ class Delivery {
 		}
 		$temp = $results[0];
 		$temp["FRONT_TYPE"] = $tableName;
+		unset($temp["id"]);
 		return $temp;
 	}
 
@@ -962,7 +970,7 @@ class Delivery {
 		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		if(Lock::is_locked_by_user($Delivery_UID, 'DELIVERY_BASE', $user) == false) {
-			debugLog::log("<i>[delivery.php:remove_term_from_Delivery]</i> Delivery (". $Delivery_UID .") is not locked by the user (". $user .")");
+			debugLog::log("<i>[delivery.php:add_Kbit_to_delivery]</i> Delivery (". $Delivery_UID .") is not locked by the user (". $user .")");
 			return null;
 		}
 		$locking_user = Lock::get_locking_user($Kbit_UID, 'KBIT_BASE');
@@ -979,7 +987,7 @@ class Delivery {
 		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		if(Lock::is_locked_by_user($Delivery_UID, 'DELIVERY_BASE', $user) == false) {
-			debugLog::log("<i>[delivery.php:remove_term_from_Delivery]</i> Delivery (". $Delivery_UID .") is not locked by the user (". $user .")");
+			debugLog::log("<i>[delivery.php:add_Kbit_to_delivery]</i> Delivery (". $Delivery_UID .") is not locked by the user (". $user .")");
 			return null;
 		}
 		$locking_user = Lock::get_locking_user($Kbit_UID, 'KBIT_BASE');
@@ -1010,7 +1018,7 @@ class Delivery {
 	public static function get_tree_of_kbit($Delivery_UID) {
 
 		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
-		
+
 		return D2KRelation::get_delivery_relations_tree($Delivery_UID);
 	}
 }
