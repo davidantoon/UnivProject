@@ -141,8 +141,8 @@
                     ng-click="((displayNewWorkflowButtons == true)?return:selectTab(wFlow, tab));" 
                     class="{{'col ons-col-inner WorkFlowTab '+((getSelectedTab(wFlow, tab.ID))?'ActiveTab':'') + ' '+ ((clickToMaximize == true || displayNewWorkflowButtons == true)?'blured':'')}}"
                     style="{{'box-shadow: 0px 5px 0px -1px '+tab.color}}">
-                    <input id="{{'WorkflowId'+wFlow.ID+'Tab'+tab.ID}}" readonly="readonly" placeholder="Tab name" ng-enter="updateTabName(wFlow.ID, tab.ID, 'WorkflowI'+wFlow.ID+'Tab'+tab.ID);" 
-                    ng-dblclick="((displayNewWorkflowButtons == true)?return:ConvertTextBos('WorkflowI'+wFlow.ID+'Tab'+tab.ID));"
+                    <input id="{{'WorkflowId'+wFlow.ID+'Tab'+tab.ID}}" readonly="readonly" placeholder="Tab name" ng-enter="updateTabName(wFlow.ID, tab.ID, 'WorkflowId'+wFlow.ID+'Tab'+tab.ID);" 
+                    ng-dblclick="((displayNewWorkflowButtons == true)?return:ConvertTextBos('WorkflowId'+wFlow.ID+'Tab'+tab.ID));"
                     value="{{tab.title}}" />
                     <ons-icon ng-click="((displayNewWorkflowButtons == true)?return:closeTab(wFlow));" class="closeTabButton" icon="ion-ios-close" size="18px"></ons-icon>
                     <ons-icon ng-click="((displayNewWorkflowButtons == true)?return:openTabOptions(wFlow));" class="optionTabButton" icon="ion-navicon-round" size="18px"></ons-icon>
@@ -166,7 +166,7 @@
                     <!-- SEARCH TAB HTML -->
                     <div class="{{((getSelectedTabType(wFlow) == 1)?'':'hidden')}}">
                       <div class="searchTextboxDiv">
-                        <input class="searchTextbox" ng-enter="prepareForSearch(wFlow);" ng-change="InsertStepToLast10Steps(); " placeholder="Search Text" id="1" ng-model="wFlow.selectedTab.dataHolding.searchText">
+                        <input class="searchTextbox" ng-enter="prepareForSearch(wFlow);" ng-blur="InsertStepToLast10Steps(); " placeholder="Search Text" id="1" ng-model="wFlow.selectedTab.dataHolding.searchText">
                       </div>
                       <div class="searchOptions">
                         <ons-row class="LabelOfOptionsButtons">
@@ -351,7 +351,7 @@
                                   {{wFlow.selectedTab.content.type}} Name:
                                 </ons-col>
                                 <ons-col class="InputTextbox">
-                                  <input ng-change="InsertStepToLast10Steps();" ng-model="wFlow.selectedTab.content.newData.name" type="text" />
+                                  <input ng-blur="InsertStepToLast10Steps();" ng-model="wFlow.selectedTab.content.newData.name" type="text" />
                                 </ons-col>
                               </ons-row>
                               <ons-row class="editObjectDetailsRow">
@@ -359,7 +359,7 @@
                                   {{wFlow.selectedTab.content.type}} Description:
                                 </ons-col>
                                 <ons-col class="InputTextbox">
-                                  <textarea ng-change="InsertStepToLast10Steps();" ng-model="wFlow.selectedTab.content.newData.description" ></textarea>
+                                  <textarea ng-blur="InsertStepToLast10Steps();" ng-model="wFlow.selectedTab.content.newData.description" ></textarea>
                                 </ons-col>
                               </ons-row>
                               <ons-row class="editObjectDetailsRow">
@@ -367,7 +367,7 @@
                                   {{wFlow.selectedTab.content.type}} Path:
                                 </ons-col>
                                 <ons-col class="InputTextbox">
-                                  <input ng-change="InsertStepToLast10Steps();" ng-model="wFlow.selectedTab.content.newData.url" type="text" />
+                                  <input ng-blur="InsertStepToLast10Steps();" ng-model="wFlow.selectedTab.content.newData.url" type="text" />
                                 </ons-col>
                               </ons-row>
                               <!-- (DELIVERY & KBIT) CHANGE NAME | DESCRIPTION | PATH -->
@@ -671,11 +671,11 @@
             </div>
             <div class="LoginBody">
               <form autocomplete="off">
-                <input ng-enter="LoginWithUsernameAndPassrod();" id="username" type="text" placeholder="username">
-                <input ng-enter="LoginWithUsernameAndPassrod();" id="password" type="password" placeholder="password">
+                <input ng-enter="login();" id="username" type="text" placeholder="username">
+                <input ng-enter="login();" id="password" type="password" placeholder="password">
               </form>
             </div>
-            <div class="LoginFooter" ng-click="LoginWithUsernameAndPassrod();">
+            <div class="LoginFooter" ng-click="login();">
               <div class="LoginLoader">
                 <ons-icon spin="true" icon="ion-load-d" size="30px"></ons-icon>
               </div>
@@ -734,7 +734,7 @@
       <div class="ToastBody"></div>
 
     </div>
-    <div id="profileDialog" style="display:block">
+    <div id="profileDialog" style="display:none">
       <div class="profileContainer">
         <div class="header">Profile Dialog</div>
         <div class="body">
@@ -749,7 +749,7 @@
             <ons-col width="10px"></ons-col> <!-- Padding --> 
             <ons-col width="150px">First Name</ons-col>
             <ons-col>
-              <input type="text" ng-model="currentUser.firstName" id="profileFirstName"/>
+              <input type="text" value="{{currentUser.firstName}}" id="profileFirstName"/>
             </ons-col>
             <ons-col width="10px"></ons-col> <!-- Padding --> 
           </ons-row>
@@ -757,7 +757,7 @@
             <ons-col width="10px"></ons-col> <!-- Padding --> 
             <ons-col width="150px">Last Name</ons-col>
             <ons-col>
-              <input type="text" ng-model="currentUser.lastName" id="profileLastName"/>
+              <input type="text" value="{{currentUser.lastName}}" id="profileLastName"/>
             </ons-col>
             <ons-col width="10px"></ons-col> <!-- Padding --> 
           </ons-row>
@@ -797,7 +797,7 @@
             <ons-col width="10px"></ons-col> <!-- Padding --> 
             <ons-col width="150px">Email</ons-col>
             <ons-col>
-              <input type="text" ng-model="currentUser.email" id="profileEmail"/>
+              <input type="text" value="{{currentUser.email}}" id="profileEmail"/>
             </ons-col>
             <ons-col width="10px"></ons-col> <!-- Padding --> 
           </ons-row>
@@ -805,7 +805,7 @@
             <ons-col width="10px"></ons-col> <!-- Padding --> 
             <ons-col width="150px">Role</ons-col>
             <ons-col>
-              <input type="text" ng-model="currentUser.role" id="profileRole"/>
+              <label id="profileRole">{{currentUs.role}}</label>
             </ons-col>
             <ons-col width="10px"></ons-col> <!-- Padding --> 
           </ons-row>
@@ -818,7 +818,7 @@
           </ons-row>
           <ons-row>
             <ons-col> <button ng-click="((checkPasswords() == true)?changePassword():console.error('Passwords are not indentical'))">Change Password</button> </ons-col>
-            <ons-col> <button ng-click="updateProfile();">Update Profile</button> </ons-col>
+            <ons-col> <button ng-click="updateUser();">Update Profile</button> </ons-col>
             <ons-col> <button ng-click="updateImageInSRV();">Upload Proflie Picture</button> </ons-col>
           </ons-row>
         </div>
@@ -849,7 +849,8 @@
   <script type="text/javascript" src="js/angular-drag-and-drop-lists.min.js"></script>
 
 
-  <script type="text/javascript" src="js/compressString.js"></script>
+  <script type="text/javascript" src="js/lzma/lzma.js"></script>
+  <script type="text/javascript" src="js/lzma/initLzma.js"></script>
   <script type="text/javascript" src="js/app.js"></script>
 
   <script type="text/javascript" src="js/User.js"></script>

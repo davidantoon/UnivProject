@@ -1,6 +1,6 @@
 (function(angular) {
     // 'use strict';
-    angular.module('IntelLearner').factory('Workflow', ["$rootScope", 'Tab', 'TypeOf', function($rootScope, Tab, TypeOf){
+    angular.module('IntelLearner').factory('Workflow', ["$rootScope", 'Tab', 'TypeOf','Globals', function($rootScope, Tab, TypeOf, Globals){
 
         function Workflow(tempJson, id, fx, fy, tx, ty, colored){
             try{
@@ -199,7 +199,6 @@
                     var sTop = blockPosT - ((wHeight - blockHeight) / 2);
                     $('#BodyRow').animate({ scrollTop: sTop, scrollLeft: sLeft }, 200);
                 }catch(e){
-                    $rootScope.currentScope.Toast.show("Error!","There was an error in scrolling to specific location", Toast.LONG, Toast.ERROR);
                     console.error("scrollTo: ", e);
                 }
             },
@@ -257,7 +256,7 @@
                         "ID": this.selectedTab.ID
                     };
                     for (var i = 0; i < this.tabs.length; i++) {
-                        tempJson.tabs.push(JSON.parse(this.tabs[i].toString()));
+                        tempJson.tabs.push(this.tabs[i].toJson());
                     }
                     return tempJson;
                 }catch(e){

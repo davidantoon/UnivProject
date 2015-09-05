@@ -9,8 +9,8 @@
 				this.kBitsNeeded = ((conData != undefined)?conData.kBitsNeeded:[]);
 				this.kBitsProvided = ((conData != undefined)?conData.kBitsProvided:[]);
 				this.terms = ((conData != undefined)?conData.terms:[]);
-				this.description = ((conData != undefined)?conData.description:'');
-				this.url = ((conData != undefined)?conData.url:'');  // Term MEANING
+				this.description = ((conData != undefined)?conData.description:''); // Term MEANING
+				this.url = ((conData != undefined)?conData.url:'');  
 				this.locked = ((conData != undefined)?conData.locked:false);
 				this.lockedBy = ((conData != undefined)?conData.lockedBy:null);
 				this.lastModified = ((conData != undefined)?conData.lastModified:null);
@@ -23,7 +23,7 @@
 				if(!this.progressWizard){
 					this.progressWizard = {};
 				}
-				this.progressWizard.spinner = false;
+				this.revision = ((conData != undefined)?conData.revision:1);
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","There was an error in creating new Content", Toast.LONG, Toast.ERROR);
 	            console.error("Content: ", e);
@@ -250,10 +250,45 @@
 						"termScope": this.termScope,
 						"objectType": this.objectType,
 						"progressWizard": this.progressWizard,
-						"newData": this.newData
+						"newData": this.newData,
+						"revision": this.revision
 					}
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in converting to JSON", Toast.LONG, Toast.ERROR);
+	           		console.error("toJson: ", e);
+	           		return null;
+				}
+			},
+
+			toJsonDeliveryServer: function(){
+				try{
+					var tempJSON = {
+						"UID": this.id,
+						"TITLE": this.name,
+						"KBITS": {
+							"NEEDED": [], // this.kBitsNeeded
+							"PROVIDED": [], // this.kBitsProvided
+							"OTHERS": []
+							
+						},
+						"TERMS": [], // this.terms
+						"DESCRIPTION": this.description,
+						"FRONT_DELIVERY": {
+							"FRONT_TYPE": "DELIVERY_FRONT",
+							"PATH": this.url
+						}
+					}
+					for(var i=0; i<this.kBitsNeeded.length; i++){
+						tempJSON.KBITS.NEEDED.push(Number(this.kBitsNeeded[i].id));
+					}
+					for(var i=0; i<this.kBitsProvided.length; i++){
+						tempJSON.KBITS.PROVIDED.push(Number(this.kBitsProvided[i].id));
+					}
+					for(var i=0; i<this.terms.length; i++){
+						tempJSON.TERMS.push(Number(this.terms[i].id));
+					}
+					return tempJSON;
+				}catch(e){
 	           		console.error("toJson: ", e);
 	           		return null;
 				}

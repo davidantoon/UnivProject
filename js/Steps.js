@@ -1,6 +1,7 @@
 (function(angular) {
     // 'use strict';
-	angular.module('IntelLearner').factory('Steps', ["$rootScope", "Workflow", "Workspace", "Server", "Toast", "Storage", function($rootScope, Workflow, Workspace, Server, Toast, Storage){
+    // 
+	angular.module('IntelLearner').factory('Steps', ["$rootScope", "Workflow", "Workspace", "Server", "Toast", "Storage", "checkChangesInStepsAffectsOnlyNewData", "Globals", function($rootScope, Workflow, Workspace, Server, Toast, Storage, checkChangesInStepsAffectsOnlyNewData, Globals){
 
 		function Steps(){
 
@@ -17,19 +18,21 @@
 
 			loadSteps: function(workspace, callback){
 
-				var passThis1 = this;
+				var passThis1 = this; 
 				var svr = new Server(this.objectType, $rootScope.currentScope.isDummy);
 				svr.getSteps(function(result, error){
 					if(error || !result){
-						debugger;
 						ServerResquestComplete(null, passThis1);
 					}else{
 						try{
-							debugger;
-							var x =JSON.parse(strDecompress(result.OBJECT_VALUE));
-							ServerResquestComplete(x, passThis1);
+							strDecompress(result.OBJECT_VALUE, function(stepsDecomp){
+								var x = JSON.parse(stepsDecomp);
+								if(x.last20Steps.length == 0)
+									ServerResquestComplete(null, passThis1);
+								else
+									ServerResquestComplete(x, passThis1);
+							});
 						}catch(e){
-							debugger;
 							ServerResquestComplete(null, passThis1);
 						}
 					}
@@ -39,6 +42,8 @@
 						var stor = new Storage();
 						stor.getWorkspaceData(false,function(dataFromLocalStorage, error){
 							dataFromLocalStorage = ((dataFromLocalStorage)?dataFromLocalStorage.Steps:null);
+							if(dataFromLocalStorage != null && dataFromLocalStorage.length == 0)
+								dataFromLocalStorage = null;
 							// init workspace
 							if(serverSteps){
 								if(dataFromLocalStorage != null){
@@ -201,9 +206,12 @@
 		                	}
 		                }
 		                this.currentUndoOrder++;
-		                localStorage.setItem("com.intel.steps.last20Steps", JSON.stringify(this.toJson()));
-			            this.savedInServer = false;
-		                callback();
+		                var passThis = this;
+		                var stor = new Storage();
+			            stor.setWorkspaceData(this.toJson(), null, null, function(success, error){
+			            	passThis.savedInServer = false;
+			            	callback();
+			            });
 					}
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","there was an error in undo function", Toast.LONG, Toast.ERROR);
@@ -264,9 +272,12 @@
 		                	}
 		                }
 		                this.currentUndoOrder--;
-		                localStorage.setItem("com.intel.steps.last20Steps", JSON.stringify(this.toJson()));
-			            this.savedInServer = false;
-		                callback();
+		                var passThis = this;
+		                var stor = new Storage();
+			            stor.setWorkspaceData(this.toJson(), null, null, function(success, error){
+			            	passThis.savedInServer = false;
+			            	callback();
+			            });
 					}
 				}catch(e){
 	                console.error("redoWorkflow: ", e);
@@ -300,31 +311,40 @@
 			/**
 			 * Insert new step to last steps object
 			 */
-			InsertStepToLastSteps: function(workspace){
+			InsertStepToLastSteps: function(workspace, force){
 				try{
 					this.UpdateLastSteps();
-		            var tempWorkflowArray = "[";
+		            // var tempWorkflowArray = "[";
+		            var tempWorkflowArray = [];
 		            for (var i = 0; i < workspace.workflows.length; i++) {
-		            	if(workspace.workflows.length>1 && i != workspace.workflows.length-1){
-		            		tempWorkflowArray += workspace.workflows[i].toString()+",";
-		            	}else{
-		                    tempWorkflowArray += workspace.workflows[i].toString();
-		            	}
+		            	tempWorkflowArray.push(workspace.workflows[i].toJson());
+		            	// if(workspace.workflows.length>1 && i != workspace.workflows.length-1){
+		            	// 	tempWorkflowArray += workspace.workflows[i].toString()+",";
+		            	// }else{
+		            	// 	tempWorkflowArray += workspace.workflows[i].toString();
+		            	// }
 		            }
-		            tempWorkflowArray += "]";
+		            tempWorkflowArray = angular.toJson(tempWorkflowArray);
+		            // tempWorkflowArray += "]";
 		            var InsData = {
 		                'orderSteps': 0,
 		                'allWorkFlowContents': tempWorkflowArray,
 		                'allProgressLines': JSON.stringify(workspace.progressLines)
 		            }
-		            if(this.last20Steps.length > 0)
-			            if(tempWorkflowArray == this.last20Steps[0].allWorkFlowContents) return;
-	            	else
-			            this.last20Steps.unshift(InsData);
+		            if(this.last20Steps.length > 0){
+			            if(tempWorkflowArray == this.last20Steps[0].allWorkFlowContents && !force) 
+			            	return;
+			            else 
+			            	this.last20Steps.unshift(InsData);
+		            }
+	            	else{
+			            this.last20Steps = [InsData];
+	            	}
 		            this.last20Steps = this.last20Steps.slice(0, 20);
 		            for (var i = 0; i < this.last20Steps.length; i++) {
 		                this.last20Steps[i].orderSteps = (i + 1);
 		            }
+
 		            var passThis = this;
 		            var stor = new Storage();
 		            stor.setWorkspaceData(this.toJson(), null, null, function(success, error){
@@ -334,6 +354,9 @@
 		            		passThis.savedInServer = false;
 		            	}
 		            });
+
+
+		            
 		        }catch(e){
 		        	$rootScope.currentScope.Toast.show("Error!","there was an error in upadting last steps", Toast.LONG, Toast.ERROR);
 	                console.error("InsertStepToLastSteps: ", e);
@@ -375,7 +398,95 @@
 			        			workflowsToBuild[index].workflowsToBuild = workflowsToBuild;
 			        			var tempWorkflow = new Workflow(workflowsToBuild[index]);
 			        		}else{
+			        			updateCashedContents();
 			        			loopDiffObjectsDone();
+			        		}
+			        	}
+			        	// check new -> if locked by me, take from cashe, else pull from server
+			        	function updateCashedContents(){
+			        		Globals.getMinimized(function(result){
+			        			if(result.length == 0){
+			        				loopDiffObjectsDone();
+			        			}else{
+			        				var svr = new Server();
+			        				svr.getFromServer(result, function(success, error){
+			        					for(var i=0; i<success.length; i++){
+			        						for(var j=0; j< Globals.CashedObjects.length; j++){
+			        							if(success[i].id == Globals.CashedObjects[j].id){
+			        								if(success[i].type == Globals.CashedObjects[j].type){
+			        									Globals.set(success[i]);
+			        								}
+			        							}
+			        						}
+			        					}
+			        					refreshObjectsInheritence();
+			        				});
+			        			}
+			        		});
+			        	}
+
+			        	function refreshObjectsInheritence(){
+			        		//loop on cahsed objects 
+			        			//if ( del..)
+			        			//	loop all arays and get elem..
+			        		var str = new Storage();
+			        		loopGlobalObjects(0, Globals.CashedObjects);
+			        		function loopGlobalObjects(Index, CashedObjects){
+			        			if(Index < CashedObjects.length){
+				        			switch(Globals.CashedObjects[Index].type){
+				        				case "Delivery":
+				        					// loop over terms
+				        					loopTerms(0, Globals.CashedObjects[Index].terms);
+				        					function loopTerms(index, termsArray){
+				        						if(index < termsArray.length){
+				        							str.getElementById(termsArray[index], false, false, function(result){
+				        								loopTerms(Number(index)+1, termsArray);
+				        							});
+				        						}else{
+				        							loopKbitsNeeded(0, Globals.CashedObjects[i].kBitsNeeded);
+				        						}
+				        					}
+				        					// loop over kbits needed
+				        					function loopKbitsNeeded(index, KbitsNeededArray){
+				        						if(index < KbitsNeededArray.length){
+				        							str.getElementById(KbitsNeededArray[index], false, false, function(result){
+				        								loopKbitsNeeded(Number(index)+1, KbitsNeededArray);
+				        							});
+				        						}else{
+				        							loopKbitsProvided(0, Globals.CashedObjects[i].kbitProvided);
+				        						}
+				        					}
+				        					// loop over kbits provided
+				        					function loopKbitsProvided(index, kbitsProvidedArray){
+				        						if(index < kbitsProvidedArray.length){
+				        							str.getElementById(kbitsProvidedArray[index], false, false, function(result){
+				        								loopKbitsProvided(Number(index)+1, kbitsProvidedArray);
+				        							});
+				        						}else{
+				        							loopGlobalObjects(Number(Index)+1, CashedObjects);
+				        						}
+				        					}
+				        				break;
+				        				case "Term":
+
+				        				break;
+				        				case "Kbit":
+				        					//loop terms
+				        					loopTerms(0, Globals.CashedObjects[Index].terms);
+				        					function loopTerms(index, termsArray){
+				        						if(index < termsArray.length){
+				        							str.getElementById(termsArray[index], false, false, function(result){
+				        								loopTerms(Number(index)+1, termsArray);
+				        							});
+				        						}else{
+				        							loopGlobalObjects(Number(Index)+1, CashedObjects);
+				        						}
+				        					}
+				        				break;
+				        				default:
+				        				break;
+				        			}
+				        		}
 			        		}
 			        	}
 			        	function loopDiffObjectsDone(){
@@ -457,6 +568,19 @@
 					$rootScope.currentScope.Toast.show("Error!","there was an error converting to JSON", Toast.LONG, Toast.ERROR);
 	                console.error("toJson: ", e);
 					return null;
+				}
+			},
+
+			removeRelatedSteps: function(content){
+				var i=0;
+				while(i < this.last20Steps.length - 1){
+					if(checkChangesInStepsAffectsOnlyNewData(content, JSON.parse(this.last20Steps[i].allWorkFlowContents),JSON.parse(this.last20Steps[i+1].allWorkFlowContents))){
+						this.last20Steps.splice(i, 1);
+						console.log(true);
+					}else{
+						console.log(false);
+						i++;
+					}
 				}
 			}
 

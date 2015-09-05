@@ -225,59 +225,62 @@
 											for(var j=0; j<tempKbitsNeeded.length; j++){
 												var tempTerms= [];
 												var lockingUserKbit = {};
-												if(tempKbitsNeeded[j].TERMS){
+												if(tempKbitsNeeded[j]){
+													if(tempKbitsNeeded[j].TERMS){
 													// loop on terms inside kbit
-													for(var k=0; k< tempKbitsNeeded[j].TERMS.length; k++){
-														var tempDisc= {};
-														if(tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs){
-															// loop on other lang inside term
-															for(var h=0; h<tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs.length; h++){
-																
-																tempDisc[tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs[h].LANG] = tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs[h].TEXT;
+														for(var k=0; k< tempKbitsNeeded[j].TERMS.length; k++){
+															var tempDisc= {};
+															if(tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs){
+																// loop on other lang inside term
+																for(var h=0; h<tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs.length; h++){
+																	
+																	tempDisc[tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs[h].LANG] = tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs[h].TEXT;
+																}
 															}
+															tempDisc[tempKbitsNeeded[j].TERMS[k].TERM_STRING.LANG] = tempKbitsNeeded[j].TERMS[k].TERM_STRING.TEXT;
+															tempTerms.push({
+																id: tempKbitsNeeded[j].TERMS[k].UID,
+																lastModified: new Date(tempKbitsNeeded[j].TERMS[k].CREATION_DATE),
+																description: tempDisc,
+																type: "Term"
+															});
 														}
-														tempDisc[tempKbitsNeeded[j].TERMS[k].TERM_STRING.LANG] = tempKbitsNeeded[j].TERMS[k].TERM_STRING.TEXT;
-														tempTerms.push({
-															id: tempKbitsNeeded[j].TERMS[k].UID,
-															lastModified: new Date(tempKbitsNeeded[j].TERMS[k].CREATION_DATE),
-															description: tempDisc,
-															type: "Term"
+													}
+													if(tempKbitsNeeded[j].LOCKING_USER){
+														lockingUserKbit = {
+															id: tempKbitsNeeded[j].LOCKING_USER.UID,
+															username: tempKbitsNeeded[j].LOCKING_USER.USERNAME,
+															firstName: tempKbitsNeeded[j].LOCKING_USER.FIRST_NAME,
+															lastName: tempKbitsNeeded[j].LOCKING_USER.LAST_NAME,
+															email: tempKbitsNeeded[j].LOCKING_USER.EMAIL,
+															profilePicture: tempKbitsNeeded[j].LOCKING_USER.PROFILE_PICTURE
+														};
+														successKbitModifiedNeeded.push({
+															id: tempKbitsNeeded[j].UID,
+															name: tempKbitsNeeded[j].TITLE,
+															terms: tempTerms,
+															description: tempKbitsNeeded[j].DESCRIPTION,
+															locked: true,
+															lockedBy: lockingUserKbit,
+															lastModified: new Date(tempKbitsNeeded[j].CREATION_DATE),
+															inProgress: false,
+															type: "Kbit"
+														});
+													}else{
+														successKbitModifiedNeeded.push({
+															id: tempKbitsNeeded[j].UID,
+															name: tempKbitsNeeded[j].TITLE,
+															terms: tempTerms,
+															description: tempKbitsNeeded[j].DESCRIPTION,
+															locked: false,
+															lockedBy: null,
+															lastModified: new Date(tempKbitsNeeded[j].CREATION_DATE),
+															inProgress: false,
+															type: "Kbit"
 														});
 													}
 												}
-												if(tempKbitsNeeded[j].LOCKING_USER){
-													lockingUserKbit = {
-														id: tempKbitsNeeded[j].LOCKING_USER.UID,
-														username: tempKbitsNeeded[j].LOCKING_USER.USERNAME,
-														firstName: tempKbitsNeeded[j].LOCKING_USER.FIRST_NAME,
-														lastName: tempKbitsNeeded[j].LOCKING_USER.LAST_NAME,
-														email: tempKbitsNeeded[j].LOCKING_USER.EMAIL,
-														profilePicture: tempKbitsNeeded[j].LOCKING_USER.PROFILE_PICTURE
-													};
-													successKbitModifiedNeeded.push({
-														id: tempKbitsNeeded[j].UID,
-														name: tempKbitsNeeded[j].TITLE,
-														terms: tempTerms,
-														description: tempKbitsNeeded[j].DESCRIPTION,
-														locked: true,
-														lockedBy: lockingUserKbit,
-														lastModified: new Date(tempKbitsNeeded[j].CREATION_DATE),
-														inProgress: false,
-														type: "Kbit"
-													});
-												}else{
-													successKbitModifiedNeeded.push({
-														id: tempKbitsNeeded[j].UID,
-														name: tempKbitsNeeded[j].TITLE,
-														terms: tempTerms,
-														description: tempKbitsNeeded[j].DESCRIPTION,
-														locked: false,
-														lockedBy: null,
-														lastModified: new Date(tempKbitsNeeded[j].CREATION_DATE),
-														inProgress: false,
-														type: "Kbit"
-													});
-												}
+												
 											}
 											// loop over kbits provided
 											for(var j=0; j<tempKbitsProvided.length; j++){
@@ -361,7 +364,9 @@
 												locked: true,
 												kBitsNeeded: successKbitModifiedNeeded,
 												kBitsProvided: successKbitModifiedProvided,
-												terms: termKbits
+												terms: termKbits,
+												url:success[i].FRONT_DELIVERY.PATH,
+												revision: success[i].FRONT_DELIVERY.REVISION
 											});
 										}else{
 											successModified.push({
@@ -372,7 +377,9 @@
 												type: "Delivery",
 												kBitsNeeded: successKbitModifiedNeeded,
 												kBitsProvided: successKbitModifiedProvided,
-												terms: termKbits
+												terms: termKbits,
+												url:success[i].FRONT_DELIVERY.PATH,
+												revision: success[i].FRONT_DELIVERY.REVISION
 											});
 										}
 									}
@@ -384,19 +391,24 @@
 						}
 						// Term
 						if(dataToSearch.dataType[2] == 1){
-
-							data.lang = 'en';
+							data.lang = ' ';
 							$httpR.connectToServer(data, $httpR.TERMsearchTerms, Globals, function(success, error){
 								var successModified = [];
-								debugger;
 								if(error || !success){
 									console.error("error searching term is server: ", error);
 								}else{
 									for(var i=0; i<success.length; i++){
+										
+										successModified[success[i].LANG] = success[i].TERM_MEANING;
+										var tempScope = {
+											ScopeDescription: success[i].SCOPE_DESCRIPTION,
+											scopeTitle: success[i].SCOPE_TITLE,
+											scopeID: success[i].SCOPE_UID
+										};
 										successModified.push({
 											id: success[i].UID,
 											name: success[i].TERM_STRING,
-											description: success[i].TERM_MEANING + " Language: " +success[i].LANG,
+											termScope: tempScope,
 											type: "Term"
 										});
 									}
@@ -410,7 +422,6 @@
 						
 
 						function mergeData(result, index){
-							debugger;
 							mergeResult = mergeResult.concat(result);
 							if(index == 3)
 								callback(mergeResult);
@@ -427,7 +438,7 @@
 			},
 
 			/**
-			 * Saves data to server
+			 * Saves NEW ELEMTN !!! to server
 			 * @param {object}   obj      object we are going to save
 			 * @param {Function} callback callback function
 			 */
@@ -435,9 +446,9 @@
 			// delivery , settings, kbits,steps, 
 			saveElement: function(obj, callback){
 				try{
+					console.warn("saveElement: only for new element not update !!!");
 					if(this.baseUrl == "dummy"){
-
-						switch (this.TypeOfData){
+						switch (obj.type){
 							case "Deliveries":
 								var deliveryDB = JSON.parse(localStorage.getItem("com.intel.Server.delivery"));
 								deliveryDB.push(obj);
@@ -478,15 +489,13 @@
 						}
 						console.warn("DUMMY REQUESTS");
 					}else{
-						switch (this.TypeOfData){
+						debugger;
+						switch (obj.type){
 							case "Delivery":
-								console.warn("Add Delivery update and Delivery publish functions");
-								callback(true, null);
-
 								// call new method to save delivery and kbits relations
 							break;
 							case "Kbit":
-								console.warn("Add Kbit update and kbit publish functions");
+								onsole.warn("save kbit not implemented");
 								callback(true, null);
 
 								// call new method to save kbit and terms relations
@@ -751,8 +760,9 @@
 					if(this.baseUrl == "dummy"){
 						callback();
 					}else{
-						steps = strCompress(JSON.stringify(steps));
-						$httpR.connectToServer({Key:"Steps", value:steps}, $httpR.KVPsetKeyValuePair, Globals, callback);
+						strCompress(JSON.stringify(steps), function(stepsComp){
+							$httpR.connectToServer({Key:"Steps", value:stepsComp}, $httpR.KVPsetKeyValuePair, Globals, callback);
+						});
 					}
 				}catch(e){
 	                console.error("getSteps: ", e);
@@ -768,17 +778,22 @@
 			 */
 			getSettings: function(callback){
 				try{
-					var settingsDB = localStorage.getItem("com.intel.server.settings");
-					if(settingsDB == null || settingsDB == undefined){
-						callback(null, {"message":"could not get settings from server","code":""});
-						return;
-					}else{
-						if(settingsDB.length == 0){
-							callback({"message":"there is no settings in server", "code": ""}, null );
+					if(this.baseUrl == "dummy"){
+						var settingsDB = localStorage.getItem("com.intel.server.settings");
+						if(settingsDB == null || settingsDB == undefined){
+							callback(null, {"message":"could not get settings from server","code":""});
+							return;
+						}else{
+							if(settingsDB.length == 0){
+								callback({"message":"there is no settings in server", "code": ""}, null );
+								return;
+							}
+							callback(JSON.parse(settingsDB), null);
 							return;
 						}
-						callback(JSON.parse(settingsDB), null);
-						return;
+					}else{
+						console.warn("get settings from server not implemented");
+						callback(null, null);
 					}
 				}catch(e){
 	                console.error("getSettings: ", e);
@@ -786,6 +801,36 @@
 				}
 			},
 
+
+
+
+			getFromServer: function(objectsArray, callback){
+				try{
+					var temmpArray = [];
+					if(this.baseUr== "dummy"){
+						if(objectsArray){
+							if(objectsArray.length == 0){
+								callback(null, "objects Array is empty");
+							}else{
+								// send array to server and get the objects
+								callback(temmpArray);
+							}
+						}
+					}else{
+						if(objectsArray){
+							if(objectsArray.length == 0){
+								callback(null, "objects Array is empty");
+							}else{
+								// send array to server and get the objects
+								callback(temmpArray);
+							}
+						}
+					}
+				}catch(e){
+					console.error("getFromServer: ", e);
+					callback(null, e);
+				}
+			},
 
 
 			/********************************************************************
@@ -816,7 +861,7 @@
 
 					$httpR.connectToServer(data, $httpR.TERMgetAllTermsStrings, Globals, function(success, error){
 						if(error || !success){
-							console.error("error getting all terms: ", error);
+							console.error("getAllTerms: ", error);
 							callback(null, error);
 						}else{
 							callback(success);

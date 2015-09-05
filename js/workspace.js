@@ -189,7 +189,6 @@
 			            this.coloredWorkflows[indexOfScroll].scrollTo();
 			        }
 		        }catch(e){
-		        	$rootScope.currentScope.Toast.show("Error!","There was an error in scrolling to last workflow", Toast.LONG, Toast.ERROR);
 	           		console.error("scrollToLastWorkflow: ", e);
 		        }
 			},

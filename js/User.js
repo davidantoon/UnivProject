@@ -113,30 +113,33 @@
                 }
             }
 
-            /**
-             * logout
-             * @param  {Function} callback callback function
-             */
-            User.logout = function(callback){
-                try{
-                    $httpR.connectToServer({},$httpR.USERlogout, Globals, function(result, error){
-                        if(error || !success){
-                            console.error('Could not log out');
-                            callback(null, error);
-                        }else{
-                            callback(success);
-                        }
-                    });
-                }catch(e){
-                    console.error("logout: ", e);
-                    callback(null, e);
-                }
-            }
+            
 
 
             User.prototype = {
 
-                
+                /**
+                 * logout
+                 * @param  {Function} callback callback function
+                 */
+                logout: function(callback){
+                    try{
+                        var data = {
+                            Token: this.token
+                        };
+                        $httpR.connectToServer(data, $httpR.USERlogout, Globals, function(result, error){
+                            if(error || !success){
+                                callback(null, error);
+                            }else{
+                                callback(success);
+                            }
+                        });
+                    }catch(e){
+                        console.error("logout: ", e);
+                        callback(null, e);
+                    }
+                },
+
                 /**
                  * Changes the password for the use
                  * @param  {String} newPassword new password
@@ -149,14 +152,15 @@
                             new_password: newPassword
                         }
                         $httpR.connectToServer(data, $httpR.changePassword, Globals, function(success, error) {
+                            debugger;
                             if (error || !success) {
                                 console.error("could not change password: ", error);
                                 callback(null, error);
                             } else {
-                                callback(success);
+                                callback(success, null);
                             }
                         });
-                    } catch (e) {
+                    }catch(e){
                         console.error("changePassword: ", e);
                         callback(null, e);
                     }
@@ -177,17 +181,19 @@
                             firstName: firstName,
                             lastName: lastName,
                             email: email,
-                            profilePicture: this.profilePicture
-                        }
+                            role: this.role
+                        };
+                        var passThis = this;
                         $httpR.connectToServer(data, $httpR.updateUser, Globals, function(success, error) {
-                            if (error || !success) {
+                            if (error || !success){
                                 console.error("could not update data: ", error);
                                 callback(null, error);
-                            } else {
-                                this.firstName = success["firstName"];
-                                this.lastName = success["lastName"];
-                                this.email = success["email"];
-                                callback(this);
+                            }else{
+                                passThis.firstName = success["FIRST_NAME"];
+                                passThis.lastName = success["LAST_NAME"];
+                                passThis.email = success["EMAIL"];
+                                passThis.profilePicture = success["PROFILE_PICTURE"];
+                                callback(passThis);
                             }
                         });
                     } catch (e) {
@@ -196,24 +202,20 @@
                     }
                 },
 
-                updateProfilePicture: function(profilePicture, callback){
+                updateProfilePicture: function(profilePicture, ext, callback){
                     try{
-                        
-                        var data = {
-                            firstName: this.firstName,
-                            lastName: this.lastName,
-                            email: this.email,
-                            profilePicture: profilePicture,
-                            role: this.role
+                        var Data = {
+                          data: profilePicture,
+                          extension : ext
                         };
-
-                        $httpR.connectToServer(data, $httpR.updateUser, Globals, function(success, error){
+                        var passThis = this;
+                        $httpR.connectToServer(Data, $httpR.USERsaveProfilePicture, Globals, function(success, error){
                             if(error || !success){
                                 console.error("could not update profile picture: ", error);
                                 callback(null, error);
                             }else{
-                                this.profilePicture = success["profilePicture"];
-                                callback(this);
+                                passThis.profilePicture = success["PROFILE_PICTURE"];
+                                callback(passThis);
                             }
                         });
                     }catch(e){
@@ -222,7 +224,18 @@
                     }
                 },
 
-                
+                checkValidToken: function(callback){
+
+                    var data = {};
+
+                    $httpR.connectToServer(data, $httpR.USERvalidateToken, Globals, function(success, error){
+                        if(error || !success){
+                            callback(false);
+                        }else{
+                            callback(true);
+                        }
+                    });
+                },
 
                 toJSON: function() {
                     try {

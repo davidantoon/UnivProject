@@ -2,11 +2,12 @@
 console.warn("$scope stored in ngScope");
 var ngScope;
 
+
 (function(angular) {
     // 'use strict';
     angular.module('IntelLearner', ['onsen', 'firebase', 'dndLists']);
-    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope",  "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast","User", "$httpR", "Content", "checkChangesInStepsAffectsOnlyNewData",
-        function($rootScope, $scope,  $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast, User, $httpR, Content, checkChangesInStepsAffectsOnlyNewData) {
+    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope",  "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast","User", "$httpR", "Content",
+        function($rootScope, $scope,  $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast, User, $httpR, Content) {
 
 
             // PRIM COLOR = rgb(8,96,168)
@@ -32,9 +33,34 @@ var ngScope;
             $scope.isDummy = false;
 
 
-            console.warn("AFTER SAVE OR CANCEL EDITING OBJECT REMOVE ALL STEPS THAT AFFECTS ONLY (newData) PROPERTY IN CONTENTS");
-            console.warn("UPDAE EDITING BUTTONS TO SUPPORT REDO/UNDO EVENTS");
-
+            console.groupCollapsed("NOTES");
+            // console.warn("01) Fix after \"SAVE\" editing object REMOVE all steps that affects only (newData) property in contents and check the modified data");
+            // console.warn("02) Create property of GLOBALS to get recent cashed objects with specific type");
+            console.warn("!!!!!) update steps to compress last20steps before adding to lacalStorage");
+            console.warn("  02.1) Update Globals.recentCashedObjects to get object version");
+            console.warn("  02.2) ???? ???? Update Content Class to store object version");
+            console.warn("  02.3) Update Globals.recentCashedObjects DONT INCLUDE TERMS");
+            console.warn("03) Add LOGOUT event when server respond with TOKEN-EXPIRED");
+            console.warn("04) Check if (AMEER) restoreSteps function correct!");
+            console.warn("05) Add layout and functions to CREATE | EDIT");
+            console.warn("06) Check how to implement Terms creating and updating with SCOPE");
+            console.warn("07) Implement auto refresh cashed object that not locked by current user");
+            console.warn("08) Check implementaion restoreSteps if supports dataHolding");
+            console.warn("  08.1) Check if type == 4  >> replace dataHolding.results with \"new Content( results )\"");
+            console.warn("  08.2) Check if type == 5  >> replace content with \"new Content(content)\"");
+            console.warn("09) Create profile dialog to support all user operations");
+            console.warn("10) Modify login page and connect buttons to login functions");
+            console.warn("11) Create Settings layout");
+            console.warn("  11.1) Implement function to detect if there is locked items before clear localStorage");
+            console.warn("12) Create layout drag and drop recent cashed objects from right edge of the screen");
+            console.warn("13) Create class logs that stores logs in array with timestamp and give the ability to export to csv or textplain");
+            console.warn("14) Create tab settings dialog (change color | rename | set shortcut for focus)");
+            console.warn("15) Add send logs to profile dialog");
+            console.warn("16) Remove all debugger and convert all logs to the log class");
+            console.warn("17) Loop on all workflows and CashedContents extract none used obejcts");
+            console.warn("18) Check error .left of interval (ZoomRange)");
+            console.groupEnd();
+            
             $scope.AppStatus = 0;
             $scope.currentUser = {};
             $scope.Workflow = [];
@@ -114,7 +140,7 @@ var ngScope;
                     TypeOf.init();
                     var stor = new Storage();
                     stor.getWorkspaceData(false, function(data){
-                        if(data.CurrentUser){
+                        if(data.CurrentUser.id){
                             Globals.CurrentUser = new User(data.CurrentUser);
                             $scope.currentUser = Globals.CurrentUser;
                             $scope.loadUserData();
@@ -148,40 +174,41 @@ var ngScope;
              ********************************************************************/
             $scope.logout = function() {
                 $('#LoadingScreen').show();
+                 //update UI
+                $timeout(function() { // emulate server call
+                    $scope.$apply(function() {
+                        $scope.AppStatus = 1;
+                        $('#LoadingScreen').hide();
+                    });
+                }, 1000);
+               
+                var tempUser = Globals.currentUser;
+                $scope.clearData();
+                // logout
 
                 // LOGOUT
-                User.logout(function(success, error){
-                    if(error || !success){
-                        console.error("Error logging out");
-                    }else{
-                        $scope.clearData();
-                        $timeout(function() {
-                            $scope.$apply(function() {
-                                $scope.AppStatus = 1;
-                                $('#LoadingScreen').hide();
-                            });
-                        }, 1000);
-                    }
-                });
+                if(tempUser){
+                    tempUser.logout(function(success, error){});
+                }
             }
             $scope.clearData = function() {
 
                 // CLEAR DATA
 
-                // Globals.clear();
-                // $scope.Steps.clear();
-
+                Globals.clear();
             }
 
             $scope.login = function(){
-                var username = "geryes"; var password = "my_password"; // Jeries Mousa
-                var username1 = "antoon91"; var password1 = "1234"; // Antoon Antoon
-
-                User.login(username1, password1, function(succes, error){
-                    if(error || !succes)
+                // var username = "geryes"; var password = "my_password"; // Jeries Mousa
+                // var username1 = "antoon91"; var password1 = "123"; // Antoon Antoon
+                var username = $('#username').val();
+                var password = $('#password').val();
+                User.login(username, password, function(success, error){
+                    if(error || !success)
                         $scope.logout();
                     else{
-                        Globals.CurrentUser = succes;
+                        Globals.CurrentUser = success;
+                        $scope.loadUserData();
                         var stor = new Storage();
 
                         stor.setWorkspaceData(null, null, Globals.CurrentUser, function(){});
@@ -192,13 +219,20 @@ var ngScope;
 
             $scope.loadUserData = function() {
                 var loadedAmmount = 0;
-                $scope.loadDataFromSRV(function(e) {
-                    AllDataLoaded(++loadedAmmount);
+                Globals.CurrentUser.checkValidToken(function(validToken){
+                    if(validToken){
+                        AllDataLoaded(++loadedAmmount);
+                        $scope.loadDataFromSRV(function(e) {
+                            AllDataLoaded(++loadedAmmount);
+                        });
+                    }else{
+                        $scope.logout();     
+                    }
                 });
                 AllDataLoaded(++loadedAmmount);
                 function AllDataLoaded(finished) {
-                    $('.StatusBarPerc').css('width', ((finished / 2) * 100) + "%");
-                    if (finished == 2) {
+                    $('.StatusBarPerc').css('width', ((finished / 3) * 100) + "%");
+                    if (finished == 3) {
                         $timeout(function() {
                             $scope.$apply(function() {
                                 $scope.AppStatus = 2;
@@ -275,47 +309,62 @@ var ngScope;
 
 
             $scope.updateImageInSRV = function() {
-                // if($('#newImageFileId').val() == ''){
-                // $scope.alert('לא נבחרה תמונה');
-                // }else{
-                var reader = new FileReader();
-                reader.onloadend = function() {
-                    if (reader.result) {
-                        var image = new Image();
-                        image.onload = function() {
-                            var canvas = document.createElement('canvas');
-                            if (image.height > 200) {
-                                image.width *= 200 / image.height;
-                                image.height = 200;
-                            }
-                            var ctx = canvas.getContext("2d");
-                            ctx.clearRect(0, 0, canvas.width, canvas.height);
-                            canvas.width = image.width;
-                            canvas.height = image.height;
-                            ctx.drawImage(image, 0, 0, image.width, image.height);
-                            var base64NewImage = canvas.toDataURL();
-                            console.log(base64NewImage);
-
-                            /// BAASEEE 64 IMAGE
-                            // Globals.currentUser.updateProfilePicture(base64NewImage, function(succes, error){
-                            //     if(error || !succes){
-                            //         console.error("could not update profile picture: ", error);
-                            //     }else{
-                            //         console.log("profile picture change: ", succes);
-                            //     }
-                            // });
-                        };
-                        image.src = reader.result;
-                       
-                    } else {
-                        console.error("there was a problem uploading image");
-                        // $scope.alert('אריעה שגיאה במהלך העלאת התמונה');
+                if($('#newImageFileId').val() == ''){
+                    $scope.Toast.show("Error!","Could not upload image", Toast.LONG, Toast.ERROR);
+                }else{
+                    var fullPath = $('#newImageFileId').val();
+                    if (fullPath){
+                            var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+                            var filename = fullPath.substring(startIndex);
+                            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                                filename = filename.substring(1);
+                        }
                     }
+                    var dotIndex = filename.lastIndexOf('.');
+                    var ext = filename.substring(dotIndex);
+                    var reader = new FileReader();
+                    reader.onloadend = function() {
+                        if (reader.result) {
+                            var image = new Image();
+                            image.onload = function() {
+                                var canvas = document.createElement('canvas');
+                                if (image.height > 100) {
+                                    image.width *= 100 / image.height;
+                                    image.height = 100;
+                                }
+                                var ctx = canvas.getContext("2d");
+                                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                                canvas.width = image.width;
+                                canvas.height = image.height;
+                                ctx.drawImage(image, 0, 0, image.width, image.height);
+                                var base64NewImage = canvas.toDataURL();
+                                console.log(base64NewImage);
+                                $scope.currentUser.updateProfilePicture(base64NewImage, ext, function(success, error){
+                                    if(error || !success){
+                                        console.error("Could not change profile picture: ", error);
+                                    }else{
+                                        console.warn("profile picture change, what to do ? ");
+                                    }
+                                });
+                                /// BAASEEE 64 IMAGE
+                                // Globals.currentUser.updateProfilePicture(base64NewImage, function(success, error){
+                                //     if(error || !success){
+                                //         console.error("could not update profile picture: ", error);
+                                //     }else{
+                                //         console.log("profile picture change: ", success);
+                                //     }
+                                // });
+                            };
+                            image.src = reader.result;
+                           
+                        } else {
+                            console.error("there was a problem uploading image");
+                            // $scope.alert('אריעה שגיאה במהלך העלאת התמונה');
+                        }
+                    }
+                    reader.readAsDataURL($('#newImageFileId')[0].files[0]);
                 }
-                reader.readAsDataURL($('#newImageFileId')[0].files[0]);
-                // }
             }
-
 
             $scope.changePassword = function(){
                 var oldpassword = $('#profileOldPassword').val();
@@ -333,20 +382,44 @@ var ngScope;
                 }
             }
 
-            $scope.updateUser = function(){
-                var firstName = $('#profileFirstName').val();
-                var lastName = $('#proflieLastName').val();
-                var email = $('#profileEmail').val();
-                if(firstName == "" || lastName == "" || email == ""){
-                    console.error("updateUser: some inputs are invalid values");
+            $scope.updateUser = function(profilePicture){
+                if(profilePicture == "" || profilePicture == undefined || profilePicture == null){
+                    var firstName = $('#profileFirstName').val();
+                    var lastName = $('#profileLastName').val();
+                    var email = $('#profileEmail').val();
+                    console.log(firstName+ ',' +lastName+',' +email);
+                    if(firstName == "" || lastName == "" || email == ""){
+                        console.error("updateUser: some inputs are invalid values");
+                    }else{
+                        $scope.currentUser.updateUser(firstName, lastName, email, $scope.currentUser.profilePicture, function(success, error){
+                            if(error || !success){
+                                console.error("Could not update profile: ", error);
+                            }else{
+                                console.warn("profile updated, what to do ? ", success);
+                                var stor = new Storage();
+
+                                stor.setWorkspaceData(null, null, Globals.CurrentUser, function(){});
+                            }
+                        });
+                    }
                 }else{
-                    $scope.currentUser.updateUser(firstName, lastName, email, function(success, error){
-                        if(error || !success){
-                            console.error("Could not change password: ", error);
-                        }else{
-                            console.warn("password change, what to do ? ");
-                        }
-                    });
+                    var firstName = $('#profileFirstName').val();
+                    var lastName = $('#profileLastName').val();
+                    var email = $('#profileEmail').val();
+                    if(firstName == "" || lastName == "" || email == ""){
+                        console.error("updateUser: some inputs are invalid values");
+                    }else{
+                        $scope.currentUser.updateUser(firstName, lastName, email, profilePicture, function(success, error){
+                            if(error || !success){
+                                console.error("Could not update profile: ", error);
+                            }else{
+                                console.warn("profile updated, what to do ? ", success);
+                                var stor = new Storage();
+
+                                stor.setWorkspaceData(null, null, Globals.CurrentUser, function(){});
+                            }
+                        });
+                    }
                 }
             }
 
@@ -495,7 +568,6 @@ var ngScope;
                 $('#' + inputId).blur();
             }
             $scope.ConvertTextBos = function(inputId) {
-
                 $timeout(function() {
                     $scope.holdDoubleClickOnTab = false;
                 }, 1);
@@ -549,7 +621,8 @@ var ngScope;
             $scope.updateAllTabName = function() {
                 for (var i = 0; i < $scope.Workflow.length; i++) {
                     for (var j = 0; j < $scope.Workflow[i].tabs.length; j++) {
-                        $('#WorkflowId' + $scope.Workflow[i].ID + 'Tab' + $scope.Workflow[i].tabs[j].ID).val($scope.Workflow[i].tabs[j].title);
+                        if($('#WorkflowId' + $scope.Workflow[i].ID + 'Tab' + $scope.Workflow[i].tabs[j].ID).attr("readonly") == "readonly")
+                            $('#WorkflowId' + $scope.Workflow[i].ID + 'Tab' + $scope.Workflow[i].tabs[j].ID).val($scope.Workflow[i].tabs[j].title);
                     }
                 }
             }
@@ -1328,7 +1401,6 @@ var ngScope;
                                             stor.getElementById(originalData[index], holdingRequestTab.dataHolding.forceLastModifed, holdingRequestTab.dataHolding.forceServerPull, function(resultO){
                                                 if(resultO != undefined)
                                                     resultData.push(resultO);
-                                                debugger;
                                                 loopResults(Number(index)+1, originalData, resultData);
                                             });    
                                         }else{
@@ -1555,6 +1627,7 @@ var ngScope;
 
 
             $scope.editContent = function(wFlow){
+                debugger;
                 if($scope.isDummy){
                     console.warn("Dummy lock object");
                     if(wFlow.selectedTab.content.locked){
@@ -1619,7 +1692,7 @@ var ngScope;
                             $timeout(function(){
                                 if(error || !success){
                                     $scope.Toast.show("Cannot Lock Content", "Content locked by another user.", Toast.LONG, Toast.ERROR);
-                                    wFlow.selectedTab.content.progressWizard.spinner = {};
+                                    wFlow.selectedTab.content.progressWizard = {};
                                     wFlow.selectedTab.content.inProgress = false;
                                 }else{
                                     wFlow.selectedTab.content.progressWizard.spinner = false;
@@ -1788,7 +1861,7 @@ var ngScope;
 
             $scope.finishEditing = function(content, note){
 
-                console.warn("Remove redo/undo steps if that has been added by editing");
+                
                 content.progressWizard.spinner = true;
                 if($scope.isDummy){
                     console.warn("Dummy save object");
@@ -1800,6 +1873,7 @@ var ngScope;
                         content.newData = {};
                         $timeout(function(){
                             $scope.InsertStepToLast10Steps();
+                            $scope.Steps.removeRelatedSteps(content);
                         },500);
                         $scope.Toast.show("Success!",content.type+" has been saved.", Toast.LONG, Toast.SUCCESS);
                     },1000);
@@ -1818,6 +1892,7 @@ var ngScope;
                         }
                         $timeout(function(){
                             $scope.InsertStepToLast10Steps();
+                            $scope.Steps.removeRelatedSteps(content);
                         },500);
                     });
                 }
@@ -1826,7 +1901,7 @@ var ngScope;
 
             $scope.publishButton = function(content){
 
-                content.progressWizard.spinner = true
+                content.progressWizard.spinner = true;
                 if($scope.isDummy){
                     console.log("Dummy publish object");
                     $timeout(function(){
@@ -1860,7 +1935,6 @@ var ngScope;
             }
 
             $scope.nextButton = function(content){
-                // content.lastModified = +(new Date());
                 content.progressWizard.index++;
                 $timeout(function(){
                     $scope.InsertStepToLast10Steps();
@@ -1868,7 +1942,6 @@ var ngScope;
             }
             $scope.backButton = function(content){
                 content.progressWizard.index--;
-                // content.lastModified = +(new Date());
                 $timeout(function(){
                     $scope.InsertStepToLast10Steps();
                 },500);
@@ -1876,11 +1949,11 @@ var ngScope;
 
             $scope.cancelButton = function(content){
                 content.progressWizard = {};
+                content.lastModified = +(new Date());
                 content.inProgress = false;
-                // content.lastModified = +(new Date());
-                console.warn("Remove redo/undo steps if that has been added by editing");
                 $timeout(function(){
                     $scope.InsertStepToLast10Steps();
+                    $scope.Steps.removeRelatedSteps(content);
                 },500);
             }
 
@@ -1909,7 +1982,7 @@ var ngScope;
                 }
             },1000);
             $interval(function() {
-                if(Globals.CurrentUser){
+                if(Globals.CurrentUser.id && $('#pointToZoom').position()){
                     if ($scope.lastZoomIn != $('#ZoomRange').val()) {
 
                         $scope.lastZoomIn = $('#ZoomRange').val();
@@ -2101,13 +2174,6 @@ var ngScope;
                 return svr;
             }
 
-
-
-            $scope.testArray = function(before, after){
-                console.log(checkChangesInStepsAffectsOnlyNewData(before, after));
-            }
-
-            
 
 
 

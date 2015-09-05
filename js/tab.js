@@ -64,6 +64,7 @@
 					passThis.color = ((tempJson.color != undefined)?tempJson.color:"#0860A8");
 					if(tempJson.requestFrom == "restoreStep"){
 							if(tempJson.content != null && tempJson.content != undefined){
+								
 								var stor = new Storage();
 								stor.getElementById(tempJson.content, /* force last modefied */ true, /* force server pull */ false, function(dataFromStorage){
 									passThis.content = dataFromStorage;
@@ -224,6 +225,17 @@
 	            return JSON.stringify(strToReturn);
 			},
 
+			toJson: function(){
+				return{
+	                "ID": this.ID,
+	                "title": this.title,
+	                "Type": this.Type,
+	                "content": ((this.content == null)?null:this.content.toJson()),
+	                "orderTab": this.orderTab,
+	                "dataHolding": this.dataHolding,
+	                "color": this.color
+	            };
+			},
 			addChildToSearch: function(childData){
 				// add childData to dataHolding.childTab
 			}

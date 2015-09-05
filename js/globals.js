@@ -11,6 +11,7 @@
         },
         clear: function() {
             this.CashedObjects = {};
+            this.CurrentUser = {};
         },
         allObjectsaved: function() {
             console.warn("allObjectsaved not implemented!");
@@ -27,11 +28,11 @@
             return tempObj;
         },
         getMinimized: function(callback) {
-            if (CurrentUser.id != undefined) {
+            if (this.CurrentUser.id != undefined) {
                 var dataToRetrun = [];
                 var CashedObjectsKeys = Object.keys(this.CashedObjects);
                 for (var i = 0; i < CashedObjectsKeys.length; i++) {
-                    if (this.CashedObjects[CashedObjectsKeys[i]].inProgress != true && this.CashedObjects[CashedObjectsKeys[i]].lockedBy.id == CurrentUser.id) {
+                    if (this.CashedObjects[CashedObjectsKeys[i]].inProgress == false && this.CashedObjects[CashedObjectsKeys[i]].locked &&  this.CashedObjects[CashedObjectsKeys[i]].lockedBy.id != this.CurrentUser.id) {
                         dataToRetrun.push({
                             "id": this.CashedObjects[CashedObjectsKeys[i]].id,
                             "type": this.CashedObjects[CashedObjectsKeys[i]].type,
@@ -43,6 +44,64 @@
             } else {
                 callback([]);
             }
+        },
+        getRecentObjects: function(type){
+            if (this.CurrentUser.id != undefined) {
+                var dataToRetrun = [];
+                var CashedObjectsKeys = Object.keys(this.CashedObjects);
+                for (var i = 0; i < CashedObjectsKeys.length; i++) {
+                    if(this.CashedObjects[CashedObjectsKeys[i]].type == type){
+                        dataToRetrun.push(this.CashedObjects[CashedObjectsKeys[i]]);
+                    }
+                }
+                return dataToRetrun;
+            }else{
+                return [];
+            }
+        },
+
+        noLockedItemrs:function(){
+            if(this.CashedObjects){
+                 for (var obj in this.CashedObjects){
+                    if( this.CashedObjects.hasOwnProperty(obj) ){
+                        if(this.CashedObjects[obj].locked){
+                            if(this.CashedObjects[obj].locked == true){
+                                return false;
+                            }
+                        }
+                    } 
+                }
+            }
+            return true;
+        },
+
+        getAllObjectToJson: function(){
+            var dataToRetrun = [];
+            if (this.CurrentUser.id != undefined) {
+                var CashedObjectsKeys = Object.keys(this.CashedObjects);
+                for (var i = 0; i < CashedObjectsKeys.length; i++) {
+                    dataToRetrun.push({
+                        "id": this.CashedObjects[CashedObjectsKeys[i]].id,
+                        "name": this.CashedObjects[CashedObjectsKeys[i]].name,
+                        "kBitsNeeded": this.CashedObjects[CashedObjectsKeys[i]].kBitsNeeded,
+                        "kBitsProvided": this.CashedObjects[CashedObjectsKeys[i]].kBitsProvided,
+                        "terms": this.CashedObjects[CashedObjectsKeys[i]].terms,
+                        "description": this.CashedObjects[CashedObjectsKeys[i]].description,
+                        "url": this.CashedObjects[CashedObjectsKeys[i]].url,
+                        "locked": this.CashedObjects[CashedObjectsKeys[i]].locked,
+                        "lockedBy": this.CashedObjects[CashedObjectsKeys[i]].lockedBy,
+                        "lastModified": this.CashedObjects[CashedObjectsKeys[i]].lastModified,
+                        "inProgress": this.CashedObjects[CashedObjectsKeys[i]].inProgress,
+                        "type": this.CashedObjects[CashedObjectsKeys[i]].type,
+                        "termScope": this.CashedObjects[CashedObjectsKeys[i]].termScope,
+                        "objectType": this.CashedObjects[CashedObjectsKeys[i]].objectType,
+                        "progressWizard": this.CashedObjects[CashedObjectsKeys[i]].progressWizard,
+                        "newData": this.CashedObjects[CashedObjectsKeys[i]].newData,
+                        "revision": this.CashedObjects[CashedObjectsKeys[i]].revision
+                    });
+                }
+            }
+            return dataToRetrun;
         }
     })
     .value('TypeOf', {
@@ -60,7 +119,7 @@
     .value('$httpR', {
 
         protocol: "http",
-        ip: "109.160.151.65",
+        ip: "109.160.241.160",
         port: "8888",
         baseUrl: "/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/",
 
@@ -95,6 +154,9 @@
         DELIVERYaddRelatedKbit: "DELIVERYaddRelatedKbit",
         DELIVERYremoveRelatedKbit: "DELIVERYremoveRelatedKbit",
         USERlogout: "USERlogout",
+        USERvalidateToken: "USERvalidateToken",
+        DELIVERYaddNew: "DELIVERYaddNew",
+        USERsaveProfilePicture: "USERsaveProfilePicture",
 
         
 
@@ -108,14 +170,13 @@
             if(Globals.CurrentUser && Globals.CurrentUser.id){
                 data.Token = Globals.CurrentUser.token;
             }
-            debugger;
             $.ajax({
                 // url: "http://testserver-radjybaba.rhcloud.com/webservice.php/",
                 url: this.protocol+"://"+this.ip+":"+this.port+this.baseUrl,
                 data: data,
                 method: "POST",
                 header:{
-                    "Access-Control-Allow-Origin": "http://31.154.152.220:8888"
+                    "Access-Control-Allow-Origin": "http://"+this.ip+":8888"
                 },
                 xhrFields: {
                     withCredentials: true
@@ -123,25 +184,36 @@
                 crossDomain : true,
                 timeout: 10000,
                 success: function(success) {
-                    debugger;
+                    console.log(success);
                     if (success.status == 200)
                         callback(success.data, null);
                     else{
-                        console.error(success);
-                        callback(null, success);
+                    
+                        if(success.status == 401){
+                            ngScope.logout();
+                            callback(null, error); 
+                        }else{
+                            console.error(success);
+                            callback(null, success);
+                        }
                     }
                 },
                 error: function(error) {
-                    debugger;
-                    console.error(error);
-                    callback(null, error);
+                
+                    if(error.status == 401){
+                        ngScope.logout();
+                        callback(null, error); 
+                    }else{
+                        console.error(error);
+                        callback(null, error); 
+                    }
                 }
             });
         }
-    }).value('checkChangesInStepsAffectsOnlyNewData', function(before, after){
+    }).value('checkChangesInStepsAffectsOnlyNewData', function(content, after, before){
 
         /**********************************************************************************************************************/
-        /* Gett all changed values stored in object {changes:"status", value}, Modified by David to support this application. */
+        /* Get all changed values stored in object {changes:"status", value}, Modified by David to support this application. */
         /**********************************************************************************************************************/
         function diff(a, b) {
             if (a === b) {
@@ -152,23 +224,53 @@
             }
             var value = {};
             var equal = true;
-
             for (var key in a) {
                 if (key in b) {
-                    if (a[key] === b[key]) {
-                    } else {
+                    if (a[key] === b[key]) {} else {
                         var typeA = typeof a[key];
                         var typeB = typeof b[key];
                         if (a[key] && b[key] && (typeA == 'object' || typeA == 'function') && (typeB == 'object' || typeB == 'function')) {
                             var valueDiff = diff(a[key], b[key]);
-                            if (valueDiff.changed == 'equal') {
-                                
-                            } else {
-                                equal = false;
-                                value[key] = valueDiff;
+                            if (valueDiff.changed == 'equal') {} else {
+                                if(Object.keys(valueDiff.value) && Object.keys(valueDiff.value)[0] == "$$hashKey"){}
+                                else
+                                    if(key == "content"){
+                                        var foundContent=false;
+                                        for(var i=0; i<Object.keys(valueDiff.value).length; i++){
+                                            if(Object.keys(valueDiff.value)[i]=="newData" || Object.keys(valueDiff.value)[i]=="progressWizard"){
+                                                foundContent = true;
+                                            }
+                                        }
+                                        if(foundContent){
+                                            valueDiff.contentId = a.content.id;
+                                            valueDiff.contentType = a.content.type;
+                                            equal = false;
+                                            value[key] = valueDiff;
+                                        }else{
+                                            equal = false;
+                                            value[key] = valueDiff;    
+                                        }
+                                    }else if(key == "dataHolding"){
+                                        if(valueDiff && valueDiff.value && valueDiff.value.results && valueDiff.value.results.value){
+                                            if(Object.keys(valueDiff.value.results.value).length != undefined && Object.keys(valueDiff.value.results.value).length > 0){
+                                                var mm = Object.keys(valueDiff.value.results.value);
+                                                var mm1 = mm[0];
+                                                var ss = a.dataHolding.results;
+                                                var ss1 = ss[mm1];
+                                                if(ss1 && ss1.id && ss1.type){
+                                                    valueDiff.contentId = ss1.id;
+                                                    valueDiff.contentType = ss1.type;
+                                                }
+                                            }
+                                        }
+                                        equal = false;
+                                        value[key] = valueDiff;
+                                    }else{
+                                        equal = false;
+                                        value[key] = valueDiff;
+                                    }
                             }
                         } else {
-                            debugger;
                             equal = false;
                             value[key] = {
                                 changed: 'primitive change',
@@ -185,7 +287,6 @@
                     }
                 }
             }
-
             for (key in b) {
                 if (!(key in a)) {
                     equal = false;
@@ -195,7 +296,6 @@
                     }
                 }
             }
-
             if (equal) {
                 return {
                     changed: 'equal',
@@ -212,7 +312,46 @@
         /*************************************************************************/
         /* Get All changed pathes, Modified by David to support this application */
         /*************************************************************************/
-        function objectToPaths(data) {var validId = /^[a-z_$][a-z0-9_$]*$/i;var result = [];doIt(data, "");return result;function doIt(data, s) {if (data && typeof data === "object") {if (Array.isArray(data)) {for (var i = 0; i < data.length; i++) {doIt(data[i], s + "[" + i + "]");}} else {for (var p in data) {if (validId.test(p)) {if(p != "changed" && p != "removed" && p != "added")doIt(data[p], s + "." + p);else{doIt(data[p], s);}} else {doIt(data[p], s + "[\"" + p + "\"]");}}}} else {if(data !="object change")result.push(s);}}}
+        function objectToPaths(data) {
+            var validId = /^[a-z_$][a-z0-9_$]*$/i;
+            var result = [];
+            doIt(data, "");
+            return result;
+
+            function doIt(data, s) {
+                if (data && typeof data === "object") {
+                    if (Array.isArray(data)) {
+                        for (var i = 0; i < data.length; i++) {
+                            doIt(data[i], s + "[" + i + "]");
+                        }
+                    } else {
+                        for (var p in data) {
+                            if (validId.test(p)) {
+                                if(p != "$$hashKey"){
+                                    if(p != "changed" && p != "removed" && p != "added" && p != "contentType" && p != "contentId"){
+                                        if(data.contentId){
+                                            doIt(data[p], s + "." + p+"(id="+data.contentId+"&type="+data.contentType+")");
+                                        }
+                                        else{
+                                            doIt(data[p], s + "." + p);
+                                        }
+                                    }
+                                    else {
+                                        doIt(data[p], s);
+                                    }
+                                }
+                            } else {
+                                doIt(data[p], s + "[\"" + p + "\"]");
+                            }
+                        }
+                    }
+                } else {
+                    if (data == "primitive change" || data == "added" || data == "removed"){
+                        result.push(s);
+                    }
+                }
+            }
+        }
 
         /**************************************************************************/
         /* Get unique array values, Modified by David. Support only string values */
@@ -225,10 +364,26 @@
         diffData = objectToPaths(diffData);
         diffData = getUniqueStringValues(diffData);
         for(var i=0; i<diffData.length; i++){
-            if(diffData[i].indexOf("newData") == -1)
-                return false
+            var s = diffData[i];
+            if(s.indexOf("(id=") != -1 && s.indexOf("&type=") != -1){
+                var contentId = (s.substring(s.indexOf('(id=')+4)).substring(0,(s.substring(s.indexOf('(id=')+4)).indexOf('&'));
+                var contentType = (s.substring(s.indexOf('&type=')+6)).substring(0,(s.substring(s.indexOf('&type=')+6)).indexOf(')'));
+                if(content.id != contentId || content.type != contentType){
+                    return false;
+                }
+            }else{
+                return false;
+            }
         }
         return true;
 
     });
 })(window.angular);
+
+
+
+
+
+
+
+
