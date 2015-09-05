@@ -176,6 +176,7 @@
             if(Globals.CurrentUser && Globals.CurrentUser.id){
                 data.Token = Globals.CurrentUser.token;
             }
+            // http://109.160.241.160:8888/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/
             $.ajax({
                 // url: "http://testserver-radjybaba.rhcloud.com/webservice.php/",
                 url: this.protocol+"://"+this.ip+":"+this.port+this.baseUrl,
@@ -383,6 +384,216 @@
         }
         return true;
 
+    }).value("getDiffSteps", function(before, after){
+        function getDeletedInsertedByKey(e,t,n){var d={deleted:e.filter(function(e){for(var d=!1,r=0;r<t.length;r++)t[r][n]==e[n]&&(d=!0);return!d}),inserted:t.filter(function(t){for(var d=!1,r=0;r<e.length;r++)e[r][n]==t[n]&&(d=!0);return!d})};return 0==d.deleted.length&&0==d.inserted.length?null:0!=d.deleted.length&&0==d.inserted.length?{deleted:d.deleted}:0==d.deleted.length&&0!=d.inserted.length?{inserted:d.inserted}:d}
+        function getSameObjectsByKey(t,e,n){return t.filter(function(t){return 0!=e.filter(function(e){return e[n]==t[n]}).length})}
+        function makeIdsAsKeys(e,n){for(var r={},s=0;s<e.length;s++)r[e[s][n]]=e[s];return r}
+        
+        // var diffObject = {
+        //  "affectsOnlyEditingData": true, // Check if steps save while editing content
+        //  "contentId": 0,                 // Editing content id
+        //  "workflows": {},                // Added or Removed workflows
+        //  "workflowsKeys": [{             // Updated Workflows (selectedTab, tabs)
+        //      "id": 0,                    // Updated Workflow ID
+        //      "selectedTab": {            //  
+        //          "before": 0,  
+        //          "after": 1
+        //      } 
+        //      "tabs":[],                  // Added or Removed tabs
+        //      "tabsKeys":[{               // Updated Tabs (title, Type, orderTab, color)
+        //          "id": 0,                // Updated Workflow ID
+        //          "name": {               //
+        //              before:"",
+        //              after:""
+        //          },
+        //          ...
+        //          ...
+        //          ...
+        //          "content":{             // Added or Removed content 
+        //              "inserted": {}
+        //              "deleted": {}
+        //          }
+        //          "contentKeys":[{        // Updated Content (newData, progressWizard) Steps contains(id, type, newData, progressWizard)
+        //              "id": 0,            // Updated Content ID
+        //              
+        //          }]
+        //      }]
+        //  }]
+
+        // };
+        
+
+        // check workflows
+        var diffObject = {};
+        var affectsOnlyEditingData = true , contentId = -1, contentType = "";
+        // check inserted deleted workflows
+        var workflowsDiff = getDeletedInsertedByKey(before, after, "ID");
+        if(workflowsDiff){
+            diffObject.workflows = workflowsDiff;
+            affectsOnlyEditingData = false;
+        }
+
+
+        // loop in same workflows
+        var sameWorkflowsKeys = Object.keys(makeIdsAsKeys(getSameObjectsByKey(before, after, "ID"), "ID"));
+        before = makeIdsAsKeys(before, "ID");
+        after = makeIdsAsKeys(after, "ID");
+
+        for(var i=0; i<sameWorkflowsKeys.length; i++){
+            var changedWorkflow = {};
+            // check selected tab
+            if(before[sameWorkflowsKeys[i]].selectedTab.ID != after[sameWorkflowsKeys[i]].selectedTab.ID){
+                changedWorkflow.selectedTab = {
+                    "before": before[sameWorkflowsKeys[i]].selectedTab,
+                    "after":after[sameWorkflowsKeys[i]].selectedTab
+                };
+                affectsOnlyEditingData = false;
+            }
+
+            // check inserted deleted tabs
+            var beforeTabs = before[sameWorkflowsKeys[i]].tabs;
+            var afterTabs = after[sameWorkflowsKeys[i]].tabs;
+            var tabsDiff = getDeletedInsertedByKey(beforeTabs, afterTabs, "ID");
+            if(tabsDiff){
+                changedWorkflow.tabs = tabsDiff;
+                affectsOnlyEditingData = false;
+            }
+
+            // loop in same tabs
+            var sameTabsKeys = Object.keys(makeIdsAsKeys(getSameObjectsByKey(beforeTabs, afterTabs, "ID"), "ID"));
+            beforeTabs = makeIdsAsKeys(beforeTabs, "ID");
+            afterTabs = makeIdsAsKeys(afterTabs, "ID");
+
+            for(var j=0; j<sameTabsKeys.length; j++){
+                var changedTab = {};
+
+                // check title
+                if(beforeTabs[sameTabsKeys[j]].title != afterTabs[sameTabsKeys[j]].title){
+                    changedTab.title = {
+                        "before": beforeTabs[sameTabsKeys[j]].title,
+                        "after":afterTabs[sameTabsKeys[j]].title
+                    };
+                    affectsOnlyEditingData = false;
+                }
+
+                // check Type
+                if(beforeTabs[sameTabsKeys[j]].Type != afterTabs[sameTabsKeys[j]].Type){
+                    changedTab.Type = {
+                        "before": beforeTabs[sameTabsKeys[j]].Type,
+                        "after":afterTabs[sameTabsKeys[j]].Type
+                    };
+                    affectsOnlyEditingData = false;
+                }
+
+                // check Type
+                if(beforeTabs[sameTabsKeys[j]].orderTab != afterTabs[sameTabsKeys[j]].orderTab){
+                    changedTab.orderTab = {
+                        "before": beforeTabs[sameTabsKeys[j]].orderTab,
+                        "after":afterTabs[sameTabsKeys[j]].orderTab
+                    };
+                    affectsOnlyEditingData = false;
+                }
+
+                // check Type
+                if(beforeTabs[sameTabsKeys[j]].color != afterTabs[sameTabsKeys[j]].color){
+                    changedTab.color = {
+                        "before": beforeTabs[sameTabsKeys[j]].color,
+                        "after":afterTabs[sameTabsKeys[j]].color
+                    };
+                    affectsOnlyEditingData = false;
+                }
+
+
+                // check content
+                if(beforeTabs[sameTabsKeys[j]].content && afterTabs[sameTabsKeys[j]].content){
+                    if(beforeTabs[sameTabsKeys[j]].content.id != afterTabs[sameTabsKeys[j]].content.id || beforeTabs[sameTabsKeys[j]].content.type != afterTabs[sameTabsKeys[j]].content.type ){
+                        // content changed
+                        changedTab.content = {
+                            "deleted": beforeTabs[sameTabsKeys[j]].content,
+                            "inserted": afterTabs[sameTabsKeys[j]].content
+                        };
+                        affectsOnlyEditingData = false;
+                    }else if(beforeTabs[sameTabsKeys[j]].content.id == afterTabs[sameTabsKeys[j]].content.id && beforeTabs[sameTabsKeys[j]].content.type == afterTabs[sameTabsKeys[j]].content.type){
+                        // check content keys
+                        var contentChanged = {};
+                        if(beforeTabs[sameTabsKeys[j]].content.type == "Delivery" || beforeTabs[sameTabsKeys[j]].content.type != "Kbit"){
+                            
+                            // check progressWizard if Delivery || Kbit
+                            if(!angular.equals(beforeTabs[sameTabsKeys[j]].content.progressWizard, afterTabs[sameTabsKeys[j]].content.progressWizard)){
+                                contentChanged.progressWizard = {
+                                    "before": beforeTabs[sameTabsKeys[j]].content.progressWizard,
+                                    "after": afterTabs[sameTabsKeys[j]].content.progressWizard
+                                }
+                            }
+                            // check newData if Delivery || Kbit
+                            if(!angular.equals(beforeTabs[sameTabsKeys[j]].content.newData, afterTabs[sameTabsKeys[j]].content.newData)){
+                                contentChanged.newData = {
+                                    "before": beforeTabs[sameTabsKeys[j]].content.newData,
+                                    "after": afterTabs[sameTabsKeys[j]].content.newData
+                                }
+                            }
+                        }
+
+                        if(!$.isEmptyObject(contentChanged)){
+                            contentId = beforeTabs[sameTabsKeys[j]].content.id;
+                            contentType = beforeTabs[sameTabsKeys[j]].content.type;
+                            contentChanged.contentId = sameTabsKeys[j];
+                            changedTab.contentKeys = contentChanged;
+                        }
+                    }
+
+                }else if(beforeTabs[sameTabsKeys[j]].content){
+                    // content deleted
+                    changedTab.content = {
+                        "deleted": beforeTabs[sameTabsKeys[j]].content
+                    };
+                    affectsOnlyEditingData = false;
+                }else if(afterTabs[sameTabsKeys[j]].content){
+                    // content inserted
+                    changedTab.content = {
+                        "inserted": afterTabs[sameTabsKeys[j]].content
+                    };
+                    affectsOnlyEditingData = false;
+                }
+
+
+                // check dataHolding
+
+                if(!angular.equals(beforeTabs[sameTabsKeys[j]].dataHolding, afterTabs[sameTabsKeys[j]].dataHolding)){
+                    changedTab.dataHolding = {
+                        "deleted": beforeTabs[sameTabsKeys[j]].dataHolding,
+                        "inserted": afterTabs[sameTabsKeys[j]].dataHolding
+                    }
+                }
+
+                if(!$.isEmptyObject(changedTab)){
+                    changedTab.tabId = sameTabsKeys[j];
+                    if(changedWorkflow.tabsKeys)
+                        changedWorkflow.tabsKeys.push(changedTab);
+                    else
+                        changedWorkflow.tabsKeys = [changedTab];
+                }
+            }
+
+            if(!$.isEmptyObject(changedWorkflow)){
+                changedWorkflow.workflowId = sameWorkflowsKeys[i];
+                if(diffObject.workflowsKeys)
+                    diffObject.workflowsKeys.push(changedWorkflow);
+                else
+                    diffObject.workflowsKeys = [changedWorkflow];
+            }
+        }
+
+        if(!$.isEmptyObject(diffObject)){
+            if(affectsOnlyEditingData && contentId != -1){
+                diffObject.affectsOnlyEditingData = affectsOnlyEditingData;
+                diffObject.contentId = contentId;
+                diffObject.contentType = contentType;
+            }
+        }
+
+        return (!$.isEmptyObject(diffObject))?diffObject:null;
+            
     });
 })(window.angular);
 

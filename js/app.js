@@ -30,6 +30,7 @@ var ngScope;
              // FOR Debugging
             var appElement = document.querySelector('[ng-controller=MainCtrl]');
             ngScope = angular.element(appElement).scope();
+            ngScope.httpR = $httpR;
             $scope.isDummy = false;
 
 
@@ -85,6 +86,7 @@ var ngScope;
             $scope.holdDoubleClickOnObject = null;
             $scope.bodyScrolling = false;
             $scope.bodyScrollingTimeout = null;
+            $scope.savingStepsToServer = "Save";
 
 
             // $scope.$on('$destroy', function() {
@@ -140,7 +142,7 @@ var ngScope;
                     TypeOf.init();
                     var stor = new Storage();
                     stor.getWorkspaceData(false, function(data){
-                        if(data.CurrentUser.id){
+                        if(data.CurrentUser && data.CurrentUser.id){
                             Globals.CurrentUser = new User(data.CurrentUser);
                             $scope.currentUser = Globals.CurrentUser;
                             $scope.loadUserData();
@@ -468,7 +470,7 @@ var ngScope;
             $scope.UndoWorkflow = function() {
                 try{
                     // call for undo in Steps, define the callback funtion to update the layouts and names
-                    $scope.Steps.undoWorkflow($scope.workSpaces, function(){
+                    $scope.Steps.restorePoint($scope.workSpaces, "undo", function(){
                         $scope.counterBeforeSave = 0;
                         $scope.updateAllTabName();
                         $scope.updateMatrixLayout();
@@ -489,7 +491,7 @@ var ngScope;
             $scope.RedoWorkflow = function() {
                 try{
                     // call for redo in Steps, define the callback funtion to update the layouts and names
-                    $scope.Steps.redoWorkflow($scope.workSpaces, function(){
+                    $scope.Steps.restorePoint($scope.workSpaces, "redo", function(){
                         $scope.counterBeforeSave = 0;
                         $scope.updateAllTabName();
                         $scope.updateMatrixLayout();

@@ -6,7 +6,7 @@
 		function Settings(){
 			this.autoScroll = false;
 			this.autoColor = false;
-			this.autoSave = true;
+			this.autoSave = false;
 			this.autoOpenTabs = false;
 			this.defaultToastPosition = "BOTTOM";
 			this.removeScrollOnMouseOver = false;
