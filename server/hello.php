@@ -196,6 +196,12 @@
 		}
 	}
 
+	debugLog::important_log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i> ::::::::::::::: KBITS STRT :::::::::::::::: ");
+	for($i=0; $i< 8; $i++) {
+		dbAPI::print_json_s($kbitArr);
+	}
+	debugLog::important_log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i> ::::::::::::::: KBITS END :::::::::::::::: ");
+	
 
 	// creating relations of type K2K
 	debugLog::log("<i>[hello.php:testing relation K2K KBIT (1=>0)]</i> result: ". dbAPI::print_json_s(Kbit::add_K2K_relation($kbitArr[1]["UID"], $kbitArr[0]["UID"], true, 0), 0));
