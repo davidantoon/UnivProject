@@ -141,8 +141,8 @@
                     ng-click="((displayNewWorkflowButtons == true)?return:selectTab(wFlow, tab));" 
                     class="{{'col ons-col-inner WorkFlowTab '+((getSelectedTab(wFlow, tab.ID))?'ActiveTab':'') + ' '+ ((clickToMaximize == true || displayNewWorkflowButtons == true)?'blured':'')}}"
                     style="{{'box-shadow: 0px 5px 0px -1px '+tab.color}}">
-                    <input id="{{'WorkflowId'+wFlow.ID+'Tab'+tab.ID}}" readonly="readonly" placeholder="Tab name" ng-enter="updateTabName(wFlow.ID, tab.ID, 'WorkflowI'+wFlow.ID+'Tab'+tab.ID);" 
-                    ng-dblclick="((displayNewWorkflowButtons == true)?return:ConvertTextBos('WorkflowI'+wFlow.ID+'Tab'+tab.ID));"
+                    <input id="{{'WorkflowId'+wFlow.ID+'Tab'+tab.ID}}" readonly="readonly" placeholder="Tab name" ng-enter="updateTabName(wFlow.ID, tab.ID, 'WorkflowId'+wFlow.ID+'Tab'+tab.ID);" 
+                    ng-dblclick="((displayNewWorkflowButtons == true)?return:ConvertTextBos('WorkflowId'+wFlow.ID+'Tab'+tab.ID));"
                     value="{{tab.title}}" />
                     <ons-icon ng-click="((displayNewWorkflowButtons == true)?return:closeTab(wFlow));" class="closeTabButton" icon="ion-ios-close" size="18px"></ons-icon>
                     <ons-icon ng-click="((displayNewWorkflowButtons == true)?return:openTabOptions(wFlow));" class="optionTabButton" icon="ion-navicon-round" size="18px"></ons-icon>

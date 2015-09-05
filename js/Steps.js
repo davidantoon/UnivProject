@@ -324,7 +324,6 @@
 		            	// 	tempWorkflowArray += workspace.workflows[i].toString();
 		            	// }
 		            }
-		            debugger;
 		            tempWorkflowArray = angular.toJson(tempWorkflowArray);
 		            // tempWorkflowArray += "]";
 		            var InsData = {
@@ -355,6 +354,9 @@
 		            		passThis.savedInServer = false;
 		            	}
 		            });
+
+
+		            
 		        }catch(e){
 		        	$rootScope.currentScope.Toast.show("Error!","there was an error in upadting last steps", Toast.LONG, Toast.ERROR);
 	                console.error("InsertStepToLastSteps: ", e);

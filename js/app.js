@@ -568,7 +568,6 @@ var ngScope;
                 $('#' + inputId).blur();
             }
             $scope.ConvertTextBos = function(inputId) {
-
                 $timeout(function() {
                     $scope.holdDoubleClickOnTab = false;
                 }, 1);
@@ -622,7 +621,8 @@ var ngScope;
             $scope.updateAllTabName = function() {
                 for (var i = 0; i < $scope.Workflow.length; i++) {
                     for (var j = 0; j < $scope.Workflow[i].tabs.length; j++) {
-                        $('#WorkflowId' + $scope.Workflow[i].ID + 'Tab' + $scope.Workflow[i].tabs[j].ID).val($scope.Workflow[i].tabs[j].title);
+                        if($('#WorkflowId' + $scope.Workflow[i].ID + 'Tab' + $scope.Workflow[i].tabs[j].ID).attr("readonly") == "readonly")
+                            $('#WorkflowId' + $scope.Workflow[i].ID + 'Tab' + $scope.Workflow[i].tabs[j].ID).val($scope.Workflow[i].tabs[j].title);
                     }
                 }
             }
@@ -1666,7 +1666,6 @@ var ngScope;
                     }
                 }else{
                     if(wFlow.selectedTab.content.locked){
-                        debugger;
                         if(wFlow.selectedTab.content.lockedBy.id == Globals.CurrentUser.id){
                             wFlow.selectedTab.content.progressWizard = {
                                 header:wFlow.selectedTab.content.type +' Details',
@@ -1683,7 +1682,6 @@ var ngScope;
                             $scope.Toast.show("Cannot Lock Content", "Content locked by "+wFlow.selectedTab.content.lockedBy.firstName+" "+wFlow.selectedTab.content.lockedBy.lastName+".", Toast.LONG, Toast.ERROR);
                         }
                     }else{
-                        debugger;
                         wFlow.selectedTab.content.progressWizard = {
                             header:wFlow.selectedTab.content.type +' Details',
                             index:1,
@@ -1691,12 +1689,10 @@ var ngScope;
                         };
                         wFlow.selectedTab.content.inProgress = true;
                         wFlow.selectedTab.content.lock(function(success, error){
-                            debugger;
                             $timeout(function(){
-                                debugger;
                                 if(error || !success){
                                     $scope.Toast.show("Cannot Lock Content", "Content locked by another user.", Toast.LONG, Toast.ERROR);
-                                    wFlow.selectedTab.content.progressWizard.spinner = {};
+                                    wFlow.selectedTab.content.progressWizard = {};
                                     wFlow.selectedTab.content.inProgress = false;
                                 }else{
                                     wFlow.selectedTab.content.progressWizard.spinner = false;
@@ -1905,7 +1901,7 @@ var ngScope;
 
             $scope.publishButton = function(content){
 
-                content.progressWizard.spinner = true
+                content.progressWizard.spinner = true;
                 if($scope.isDummy){
                     console.log("Dummy publish object");
                     $timeout(function(){

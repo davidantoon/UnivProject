@@ -60,7 +60,7 @@
             }
         },
 
-        noLockedItemrs:function(){
+        noLockedItemrs: function(){
             if(CashedObjects){
                 for(var i=0; i< CashedObjects.length; i++){
                     if(CashedObjects[i].locked)
@@ -68,6 +68,35 @@
                 }
             }
             return true;
+        },
+
+        getAllObjectToJson: function(){
+            var dataToRetrun = [];
+            if (this.CurrentUser.id != undefined) {
+                var CashedObjectsKeys = Object.keys(this.CashedObjects);
+                for (var i = 0; i < CashedObjectsKeys.length; i++) {
+                    dataToRetrun.push({
+                        "id": this.CashedObjects[CashedObjectsKeys[i]].id,
+                        "name": this.CashedObjects[CashedObjectsKeys[i]].name,
+                        "kBitsNeeded": this.CashedObjects[CashedObjectsKeys[i]].kBitsNeeded,
+                        "kBitsProvided": this.CashedObjects[CashedObjectsKeys[i]].kBitsProvided,
+                        "terms": this.CashedObjects[CashedObjectsKeys[i]].terms,
+                        "description": this.CashedObjects[CashedObjectsKeys[i]].description,
+                        "url": this.CashedObjects[CashedObjectsKeys[i]].url,
+                        "locked": this.CashedObjects[CashedObjectsKeys[i]].locked,
+                        "lockedBy": this.CashedObjects[CashedObjectsKeys[i]].lockedBy,
+                        "lastModified": this.CashedObjects[CashedObjectsKeys[i]].lastModified,
+                        "inProgress": this.CashedObjects[CashedObjectsKeys[i]].inProgress,
+                        "type": this.CashedObjects[CashedObjectsKeys[i]].type,
+                        "termScope": this.CashedObjects[CashedObjectsKeys[i]].termScope,
+                        "objectType": this.CashedObjects[CashedObjectsKeys[i]].objectType,
+                        "progressWizard": this.CashedObjects[CashedObjectsKeys[i]].progressWizard,
+                        "newData": this.CashedObjects[CashedObjectsKeys[i]].newData,
+                        "revision": this.CashedObjects[CashedObjectsKeys[i]].revision
+                    });
+                }
+            }
+            return dataToRetrun;
         }
     })
     .value('TypeOf', {
