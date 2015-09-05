@@ -13,6 +13,54 @@ class Kbit {
 		return array(/*'R_LD2K',*/ 'R_LK2T', 'R_LK2K');
 	}
 
+
+
+	// get full kbit json from user, remove all data in user database, add new records (process purpose is to update kbit)
+	public static function bulk_update_kbit($json, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+		
+		$R_D2K = array();
+		$terms = array();
+		$title = $json["TITLE"];
+		$description = $json["DESCRIPTION"];
+		$front = $json["FRONT_KBIT"];
+		$Kbit_UID = $json["UID"];
+		
+
+		if($Kbit_UID == null) {
+			debugLog::log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i> kbit id does not exist in json");			
+			return false;
+		}
+		// validate lock
+		if(Lock::is_locked_by_user($Kbit_UID, 'KBIT_BASE', $user) == false) {
+			debugLog::log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i>The kbit (". $Kbit_UID .") is not locked by user (". $user .")");
+			return false;
+		}
+
+		// get related terms
+		for($i = 0; count($json["TERMS"]); $i++)
+			array_push($terms, $json["TERMS"][$i]);
+
+		if(Kbit::add_new_edit_for_kbit($UID, $title, $description, $user, $front) == null) {
+			debugLog::log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i> error adding new edit to kbit (". $UID . ")");
+			return false;
+		}
+
+		// add terms to database
+		for($i=0; $i < count($terms); $i++)
+			if(Kbit::add_K2T_relation($Kbit_UID, $terms[$i], '', $user) == null) {
+				debugLog::log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i> cannot add term (". $terms[$i] . ") to kbit (". $Kbit_UID . ")");
+				// roll back option here
+				return false;
+			}
+		return true;
+	}
+
+
+
+
+
 	/**
 	 * Add new Kbit in edit mode (users database)
 	 * @param {string} $title The title of the Kbit
@@ -625,7 +673,7 @@ class Kbit {
 			$kbit = Kbit::get_kbit_by_UID($UID);
 
 		if($kbit == null) {
-			debugLog::important_log("<i>[Kbits.php:". __FUNCTION___ ."]</i> Kbit (". $UID .") was not found");
+			debugLog::important_log("<i>[Kbits.php:get_Kbit_details]</i> Kbit (". $UID .") was not found, (NOTE: it might be that the kbit is not yet published but the delivery that is related to it is already published)");
 			return null;
 		}
 

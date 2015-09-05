@@ -168,7 +168,11 @@
 
 	// create users
 	users::add_new_user('geryes', 'moussa', 'geryes', 'my_password', 'geryes@gmail.com', 'ss', '1');
-	users::add_new_user('anton', 'anton', 'antoon91', '1234', 'geryes@gmail.com', 'ss', '1');
+	users::add_new_user('anton', 'anton', 'antoon91', '1234', 'geryes@gmail.com', '', '1');
+
+	if(users::validate_username_password('Learner', 'davidGalitLearner') == null)
+	    users::add_new_user('Learner', 'User', 'Learner', 'davidGalitLearner', 'david@galit.com', 'ss', '1');
+
 
 	// creating terms and scopes
 	for($i=0; $i< 8; $i++) {

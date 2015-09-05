@@ -28,14 +28,16 @@
 	// $method = 'DELIVERYsearchDelivery';
 	$method = 'search';
 
-	$data_to_transfer = $query = '{"searchtext":"Test3","elements":{"delivery":"false","d2k":"true","term":"true","scope":"true"},"field":{"title":"true","info":"false"}}';
-	$data_to_transfer = array('searchtext'=>'c', 'elements' => array('delivery'=>'false','d2k'=>'true','term'=>'true','scope'=>'true'), "field"=> array('title'=>'true','info'=>'false'));
+	// $data_to_transfer = $query = '{"searchtext":"Test3","elements":{"delivery":"false","d2k":"true","term":"true","scope":"true"},"field":{"title":"true","info":"false"}}';
+	
+	$data_to_transfer = array('searchtext'=>'4', 'elements' => array('delivery'=>'false','term'=>'true','scope'=>'true'), "field"=> array('title'=>'true','info'=>'false'));
+	$data = array('hash' => 'DAVIDGALIT', 'query' => $data_to_transfer, 'withContent' => true, 'method'  => $method, 'token' => $token );
+	
+	// $data = array('hash' => 'DAVIDGALIT', 'deliveryUID' => "1", 'method'  => 'getTreeOfDelivery');
+	// getTreeOfDelivery($hash, $deliveryUID)
+	// getDeliveryByUID($hash, $deliveryUID)
 
 
-
-
-	$data = array('hash' => 'DAVIDGALIT', 'query' => $data_to_transfer, 'method'  => $method, 'token' => $token );
-	// $data = array('method'  => 'getLanguages' );
 
 	// use key 'http' even if you send the request to https://...
 	$options = array(

@@ -262,6 +262,25 @@ class O2TRelation {
 		return $results[0];	
 	}
 
+	// get all objects related to term by type
+	public static function get_T2O_relation($term_UID, $tableName, $database_name) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
+		$database_name = dbAPI::get_db_name($database_name);
+
+		$dbObj = new dbAPI();
+		// where statement
+		$where_sttmnt = " TERM_ID = " . $term_UID . " AND ENABLED = 1 ";
+		$query = "SELECT * FROM ". $tableName ." where " . $where_sttmnt;
+	
+		$results = $dbObj->db_select_query($database_name, $query);
+		if(count($results) == 0) {
+			return null;
+		}
+		return $results[0];	
+	}
+
 
 
 	/**
@@ -454,14 +473,16 @@ class D2KRelation {
 
 		for($i=0;$i<count($results);$i++) {
 			$curr_Kbit = Kbit::get_Kbit_details($results[$i]["KBIT_BASE_ID"], $user);
-			if($results[$i]["LINK_TYPE"] == 'NEEDED') {
-				array_push($NEEDED, $curr_Kbit);
-			}
-			else { 
-				if($results[$i]["LINK_TYPE"] == 'PROVIDED')
-				array_push($PROVIDED, $curr_Kbit);
-				else
-					array_push($OTHERS, $curr_Kbit);
+			if($curr_Kbit != null) {
+				if($results[$i]["LINK_TYPE"] == 'NEEDED') {
+					array_push($NEEDED, $curr_Kbit);
+				}
+				else { 
+					if($results[$i]["LINK_TYPE"] == 'PROVIDED')
+					array_push($PROVIDED, $curr_Kbit);
+					else
+						array_push($OTHERS, $curr_Kbit);
+				}
 			}
 		}
 		$kbits = array("NEEDED"=>$NEEDED, "PROVIDED"=>$PROVIDED, "OTHERS"=>$OTHERS);
@@ -522,9 +543,10 @@ class D2KRelation {
 	}
 
 	// retrieves all relations tree from the database
-	public static function get_deliveries_relations_tree() {
+	public static function get_deliveries_relations_full_tree() {
 
-		
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
 		$cdb = dbAPI::get_db_name('content');
 		$query = "select KBIT_BASE_ID, DELIVERY_BASE_ID, LINK_TYPE from ". $cdb .".R_LD2K where enabled = 1";
 		$dbObj = new dbAPI();
@@ -576,6 +598,127 @@ class D2KRelation {
 
 		return array_merge($deliveriesArr, $kbitsArr);
 	}
+
+
+	public static function get_delivery_relations_tree($delivery_UID) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+		return D2KRelation::get_delivery_relations($delivery_UID);
+	}
+
+
+	private static function get_delivery_relations($delivery, $res = array()) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
+		// get related kbits on current delivery
+		$cdb = dbAPI::get_db_name('content');
+		$query = "select KBIT_BASE_ID, DELIVERY_BASE_ID, LINK_TYPE from ". $cdb .".R_LD2K where DELIVERY_BASE_ID = ". $delivery ." AND enabled = 1";
+		$dbObj = new dbAPI();
+		$results = $dbObj->db_select_query('', $query);
+		
+		// create instance for current delivery
+		$resDelivery = array();
+		$resDelivery["name"] = "d". $delivery;
+		$resDelivery["children"] = array();
+		$resDelivery["parent"] = array();
+		$resDelivery["type"] = 'd';
+
+		// get children for aftermath processing
+		$children = array();
+
+		// determine relation type
+		for($j = 0; $j < count($results); $j++) {
+
+			if($results[$j]["LINK_TYPE"] == "NEEDED") {
+				array_push($resDelivery["children"], "k".$results[$j]["KBIT_BASE_ID"]);
+				array_push($children, $results[$j]["KBIT_BASE_ID"]);
+			}
+			else
+				if(!empty($res)) // check this to prevent adding parents to root
+					array_push($resDelivery["parent"], "k".$results[$j]["KBIT_BASE_ID"]); 
+		}		
+
+		// convert related kbits ids into string instead of arrays
+		$resDelivery["parent"] = implode(',', $resDelivery["parent"]);
+		$resDelivery["children"] = implode(',', $resDelivery["children"]);
+
+		$tempArr = array($resDelivery);
+		// check if current delivery already added to result array		
+		if(in_array($resDelivery, $res) == true)
+			return array();
+		// debugLog::important_log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i> resDelivery: ". dbAPI::print_json_s($resDelivery, 0));
+
+		// add current delivery to res array to prevent processing it again during children processing
+		array_push($res, $resDelivery);
+
+		// merge current delivery with its children's results		
+		for($i=0; $i<count($children); $i++) {
+			$tempArr = array_merge($tempArr, $tempp = D2KRelation::get_kbit_relations($children[$i], $res));
+		}
+
+		return $tempArr;
+	}
+
+
+	private static function get_kbit_relations($kbit, $res = array()) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+
+		// get related deliveries of current kbit
+		$cdb = dbAPI::get_db_name('content');
+		$query = "select KBIT_BASE_ID, DELIVERY_BASE_ID, LINK_TYPE from ". $cdb .".R_LD2K where KBIT_BASE_ID = ". $kbit ." AND enabled = 1";
+		$dbObj = new dbAPI();
+		$results = $dbObj->db_select_query('', $query);
+		
+		// create instance for current kbit
+		$resKbit = array();
+		$resKbit["name"] = "k". $kbit;
+		$resKbit["children"] = array();
+		$resKbit["parent"] = array();
+		$resKbit["type"] = 'k';
+
+		// get children for aftermath processing
+		$children = array();
+
+		// determine relation type
+		for($j = 0; $j < count($results); $j++) {
+
+			if($results[$j]["LINK_TYPE"] == "NEEDED") {
+				if(!empty($res)) {// check this to prevent adding parents to root
+					array_push($resKbit["parent"], "d".$results[$j]["DELIVERY_BASE_ID"]);
+				}
+			}
+			else {
+				array_push($resKbit["children"], "d".$results[$j]["DELIVERY_BASE_ID"]); 
+				array_push($children, $results[$j]["DELIVERY_BASE_ID"]);
+			}
+		}
+		
+
+		// convert related deliveries ids into string instead of arrays
+		$resKbit["parent"] = implode(',', $resKbit["parent"]);
+		$resKbit["children"] = implode(',', $resKbit["children"]);
+
+		$tempArr = array($resKbit);
+		// check if current kbit already added to result array
+		if(in_array($resKbit, $res) == true)
+			return array();
+
+		// add current kbit to res array to prevent processing it again during children processing
+		array_push($res, $resKbit);
+
+		// merge current kbit with its children's results		
+		for($i=0; $i<count($children); $i++) {
+			$tempArr = array_merge($tempArr, D2KRelation::get_delivery_relations($children[$i], $res));
+		}
+
+		return $tempArr;
+	}
+
+
+
+
 }
 ?>
 

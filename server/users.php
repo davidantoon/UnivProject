@@ -131,7 +131,7 @@ class users {
 
 		// update user's password in database
 		$dbObj = new dbAPI();
-		$query = "UPDATE USERS SET FIRST_NAME = '". $first_name ."', LAST_NAME = '". $last_name ."', email = '". $email ."', PROFILE_PICTURE = '". $profile_picture ."', ROLE = '". $role ."'  where UID = '" . $UID . "'";
+		$query = "UPDATE USERS SET FIRST_NAME = '". $first_name ."', LAST_NAME = '". $last_name ."', email = '". $email ."', ROLE = '". $role ."'  where UID = '" . $UID . "'";
 		$results = $dbObj->run_query($dbObj->db_get_usersDB(), $query);
 		if($results) {
 			return users::get_user_by_UID($UID);
@@ -141,6 +141,31 @@ class users {
 		return null;
 	}
 
+	public static function save_profile_picture($UID, $data, $fileName) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+		try {
+			$dir = 'imgs/';
+			$file_name = $dir . sprintf('%08d', $UID) . '_' . uniqid() . '_img' . $fileName;
+			$data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $data));
+			file_put_contents($file_name, $data/*, FILE_APPEND*/);
+
+			// update databse
+			$dbObj = new dbAPI();
+			$query = "UPDATE USERS SET PROFILE_PICTURE = '". $file_name ."' where UID = '" . $UID . "'";
+			$results = $dbObj->run_query($dbObj->db_get_usersDB(), $query);
+			debugLog::important_log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i> query: ". $query);
+			
+			if($results) {
+				return users::get_user_by_UID($UID);
+			}
+			return null;
+		}
+		catch(Exception $e){
+			debugLog::important_log("<i>[".__FILE__.":".__FUNCTION__."]</i>". $e->getMessage());
+			
+		}	
+	}
 
 	// validate token
 	public static function validate_token($token) {
