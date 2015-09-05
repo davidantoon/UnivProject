@@ -318,7 +318,7 @@
 					tempJSON.TERMS.push(Number(this.terms[i].id));
 				}
 				return tempJSON;
-			}
+			},
 			/**
 			 * Gets difference in kbits needed
 			 * @param  {ArraY} oldArray old kbits needed array
