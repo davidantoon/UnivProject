@@ -474,7 +474,7 @@ class term {
 
 		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
-		$query = "SELECT ft.UID from [DB_NAME].TERMS as ft inner join [DB_NAME].TERM_STRING as ts ON (ft.ID_TERM_STRING = ts.UID) inner JOIN [DB_NAME].TERM_MEAN as tm ON (ft.ID_TERM_MEAN = tm.UID AND ts.LANG = tm.LANG) inner JOIN [DB_NAME].SCOPE as s ON (ft.ID_SCOPE = s.UID) where (UPPER(ts.TEXT) LIKE UPPER('%[SEARCH_WORD]%') OR UPPER(tm.TEXT) LIKE UPPER('%[SEARCH_WORD]%')) AND ts.UID IS NOT NULL AND tm.UID IS NOT NULL AND ft.ENABLED = 1";
+		$query = "SELECT DISTINCT ft.UID from [DB_NAME].TERMS as ft inner join [DB_NAME].TERM_STRING as ts ON (ft.ID_TERM_STRING = ts.UID) inner JOIN [DB_NAME].TERM_MEAN as tm ON (ft.ID_TERM_MEAN = tm.UID AND ts.LANG = tm.LANG) inner JOIN [DB_NAME].SCOPE as s ON (ft.ID_SCOPE = s.UID) where (UPPER(ts.TEXT) LIKE UPPER('%[SEARCH_WORD]%') OR UPPER(tm.TEXT) LIKE UPPER('%[SEARCH_WORD]%')) AND ts.UID IS NOT NULL AND tm.UID IS NOT NULL AND ft.ENABLED = 1";
 		$dbObj = new dbAPI();
 		$query = str_replace('[DB_NAME]', $dbObj->db_get_contentDB(), $query);
 		$query = str_replace('[SEARCH_WORD]', $search_word, $query);

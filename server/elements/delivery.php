@@ -677,6 +677,9 @@ class Delivery {
 		else
 			$Delivery = Delivery::get_Delivery_by_UID($UID);
 
+		if($Delivery == null)
+			return null;
+
 		// get locking user
 		$locking_user = Lock::get_locking_user($UID, 'DELIVERY_BASE');
 		if($locking_user != null)

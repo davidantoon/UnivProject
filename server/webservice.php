@@ -168,8 +168,13 @@ class termsAPI {
         try {
             // check if searching by UID
             for($i=0; $i<count($searchFields); $i++)
-                if(strtoupper($searchFields[$i]) == strtoupper('UID'))
-                    return array(termsAPI::getTermById($serverHash, $Token, $searchWord, $lang = ''));
+                if(strtoupper($searchFields[$i]) == strtoupper('UID')){
+                    $tempp = termsAPI::getTermById($serverHash, $Token, $searchWord, $lang = '');
+                    if($tempp == null)
+                        return array();
+                    else
+                        return array(termsAPI::getTermById($serverHash, $Token, $searchWord, $lang = ''));
+                }
 
             $temp = term::get_all_terms_full($searchWord);            
             return $temp;
@@ -1384,10 +1389,14 @@ class interfaceAPI {
             $Kbits = array();
             for($i=0; $i<count($objectsArray); $i++) {
                 if($objectsArray[$i]["TYPE"] == "DELIVERY") {
-                    array_push($Deliveries, interfaceAPI::DELIVERYgetDeliveryById($serverHash, $Token, $objectsArray[$i]["UID"]));
+                    $tempVar = interfaceAPI::DELIVERYgetDeliveryById($serverHash, $Token, $objectsArray[$i]["UID"]);
+                    if($tempVar != null)
+                        array_push($Deliveries, $tempVar);
                 }
                 if($objectsArray[$i]["TYPE"] == "KBIT") {
-                    array_push($Kbits, interfaceAPI::KBITgetKbitById($serverHash, $Token, $objectsArray[$i]["UID"]));
+                    $tempVar = interfaceAPI::KBITgetKbitById($serverHash, $Token, $objectsArray[$i]["UID"]);
+                    if($tempVar != null)
+                        array_push($Kbits, $tempVar);
                 }
             }
 
@@ -1399,6 +1408,12 @@ class interfaceAPI {
     }
 
 
+    public static function getFileContent($fileURL) {
+        $str = file_get_contents($fileURL);
+        $str = str_replace('<', '&lt;', $str);
+        $str = str_replace('>', '&gt;', $str);
+        return $str;
+    }
 
 }
 
