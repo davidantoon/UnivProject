@@ -63,8 +63,8 @@
                 return [];
             }
         },
-
-        noLockedItemrs:function(){
+        // for specific workflow
+        noLockedItems:function(){
             if(this.CashedObjects){
                  for (var obj in this.CashedObjects){
                     if(this.CashedObjects.hasOwnProperty(obj)){
@@ -80,29 +80,63 @@
         },
 
         updateUsedObjects: function(workspace){
-             // loop on cashed objects and check if its in workflow
-           var found = false;
-           for(var obj in this.CashedObjects){
-                if(this.CashedObjects.hasOwnProperty(obj)){
-                    found = false;
-                    //loop on workflows
-                    for(var j=0; j<workspace.workflows.length; j++){
-                        //loop over tabs
-                        for(var k=0; k<workspace.workflows[j].tabs.length; k++){
-                            if(workspace.workflows[j].tabs[k].dataHolding.result.id == this.CashedObjects[obj].id){
-                                found = true;
-                                break;
+            // loop on cashed objects and check if its in workflow
+            var found = false;
+
+            var CashedObjectsKeys = Object.keys(this.CashedObjects);
+            for (var i = 0; i < CashedObjectsKeys.length; i++) {
+                found = false;
+                //loop on workflows
+                for(var j=0; j<workspace.workflows.length; j++){
+                    //loop over tabs
+                    for(var k=0; k<workspace.workflows[j].tabs.length; k++){
+                        if(workspace.workflows[j].tabs[k].dataHolding.result){
+                            for(var z=0; z< workspace.workflows[j].tabs[k].dataHolding.result.length; z++){
+                                if(workspace.workflows[j].tabs[k].dataHolding.result[z].id == this.CashedObjects[CashedObjectsKeys].id){
+                                    found = true;
+                                    break;
+                                }
                             }
-                        }
-                        if(found){
-                            break;
+                            if(found)
+                                break;
                         }
                     }
-                    if(found == false){
-                        this.pop(this.CashedObjects[ob].id, this.CashedObjects[ob].type);
+                    if(found){
+                        break;
                     }
                 }
-           }
+                if(found == false){
+                    this.pop(this.CashedObjects[CashedObjectsKeys[i]].id, this.CashedObjects[CashedObjectsKeys[i]].type);
+                }
+            }
+        // for(var obj in this.CashedObjects){
+       //  debugger;
+       //      if(this.CashedObjects.hasOwnProperty(obj)){
+       //          found = false;
+       //          //loop on workflows
+       //          for(var j=0; j<workspace.workflows.length; j++){
+       //              //loop over tabs
+       //              for(var k=0; k<workspace.workflows[j].tabs.length; k++){
+       //                  if(workspace.workflows[j].tabs[k].dataHolding.result){
+       //                      for(var z=0; z< workspace.workflows[j].tabs[k].dataHolding.result.length; z++){
+       //                          if(workspace.workflows[j].tabs[k].dataHolding.result[z].id == this.CashedObjects[obj].id){
+       //                              found = true;
+       //                              break;
+       //                          }
+       //                      }
+       //                      if(found)
+       //                          break;
+       //                  }
+       //              }
+       //              if(found){
+       //                  break;
+       //              }
+       //          }
+       //          if(found == false){
+       //              this.pop(this.CashedObjects[obj].id, this.CashedObjects[obj].type);
+       //          }
+       //      }
+       // }
         },
 
         getAllObjectToJson: function(){
@@ -149,7 +183,7 @@
 
     .value('Logs', {
 
-        logs ={};
+        logs: {},
         set: function(params){
             console.warn("save ( set ) logs not finished !!!");
             if(params.length == 4){

@@ -35,6 +35,9 @@ var ngScope;
 
 
             console.groupCollapsed("NOTES");
+
+            
+            console.warn("fix Globals noLockedItems");
             // console.warn("01) Fix after \"SAVE\" editing object REMOVE all steps that affects only (newData) property in contents and check the modified data");
             // console.warn("02) Create property of GLOBALS to get recent cashed objects with specific type");
             console.warn("!!!!!) update steps to compress last20steps before adding to lacalStorage");
