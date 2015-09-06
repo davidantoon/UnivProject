@@ -9,9 +9,13 @@
         set: function(obj) {
             this.CashedObjects[obj.type + obj.id] = obj;
         },
-        clear: function() {
-            this.CashedObjects = {};
-            this.CurrentUser = {};
+        clear: function(clearUser) {
+            var CashedObjectsKeys = Object.keys(this.CashedObjects);
+            for (var i = 0; i < CashedObjectsKeys.length; i++) {
+                delete this.CashedObjects[CashedObjectsKeys[i]]; 
+            }
+            if(clearUser)
+                this.CurrentUser = {};
         },
         allObjectsaved: function() {
             console.warn("allObjectsaved not implemented!");
@@ -32,11 +36,11 @@
                 var dataToRetrun = [];
                 var CashedObjectsKeys = Object.keys(this.CashedObjects);
                 for (var i = 0; i < CashedObjectsKeys.length; i++) {
-                    if (this.CashedObjects[CashedObjectsKeys[i]].inProgress == false && this.CashedObjects[CashedObjectsKeys[i]].locked &&  this.CashedObjects[CashedObjectsKeys[i]].lockedBy.id != this.CurrentUser.id) {
+                    if (this.CashedObjects[CashedObjectsKeys[i]].inProgress == false && (this.CashedObjects[CashedObjectsKeys[i]].type == "Delivery" || this.CashedObjects[CashedObjectsKeys[i]].type == "Kbit")){
                         dataToRetrun.push({
-                            "id": this.CashedObjects[CashedObjectsKeys[i]].id,
-                            "type": this.CashedObjects[CashedObjectsKeys[i]].type,
-                            "lastModified": this.CashedObjects[CashedObjectsKeys[i]].lastModified,
+                            "UID": this.CashedObjects[CashedObjectsKeys[i]].id,
+                            "TYPE": this.CashedObjects[CashedObjectsKeys[i]].type.toUpperCase(),
+                            "CREATION_DATE": ngScope.toServerTime(this.CashedObjects[CashedObjectsKeys[i]].lastModified),
                         });
                     }
                 }
@@ -46,17 +50,13 @@
             }
         },
         getRecentObjects: function(type){
-            console.warn("getRecentObjects: now returns arrays of objects!! which has data and version");
+            
             if (this.CurrentUser.id != undefined) {
                 var dataToRetrun = [];
                 var CashedObjectsKeys = Object.keys(this.CashedObjects);
                 for (var i = 0; i < CashedObjectsKeys.length; i++) {
-                    if(this.CashedObjects[CashedObjectsKeys[i]].type == "Delivery" || this.CashedObjects[CashedObjectsKeys[i]].type == "Kbit"){
-                        dataToRetrun.push({
-                            data:this.CashedObjects[CashedObjectsKeys[i]],
-                            version: this.CashedObjects[CashedObjectsKeys[i]].revision
-                        });
-                    }
+                    if(this.CashedObjects[CashedObjectsKeys[i]].type == type)
+                        dataToRetrun.push(this.CashedObjects[CashedObjectsKeys[i]]);
                 }
                 return dataToRetrun;
             }else{
@@ -260,7 +260,8 @@
         DELIVERYaddNew: "DELIVERYaddNew",
         USERsaveProfilePicture: "USERsaveProfilePicture",
         DELIVERYupdateFullDelivery: "DELIVERYupdateFullDelivery",
-        
+        getLanguages: "getLanguages",
+        REFRESHERgetData: "REFRESHERgetData",
 
         
 
@@ -274,46 +275,53 @@
             if(Globals.CurrentUser && Globals.CurrentUser.id){
                 data.Token = Globals.CurrentUser.token;
             }
-            // http://109.160.241.160:8888/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/
-            $.ajax({
-                // url: "http://testserver-radjybaba.rhcloud.com/webservice.php/",
-                url: this.protocol+"://"+this.ip+":"+this.port+this.baseUrl,
-                data: data,
-                method: "POST",
-                header:{
-                    "Access-Control-Allow-Origin": "http://"+this.ip+":8888"
-                },
-                xhrFields: {
-                    withCredentials: true
-                },
-                crossDomain : true,
-                timeout: 10000,
-                success: function(success) {
-                    console.log(success);
-                    if (success.status == 200)
-                        callback(success.data, null);
-                    else{
-                    
-                        if(success.status == 401){
+            // if(method == this.logIn && method == this.signUp && !data.Token){
+                // ngScope.logout();
+            // }else{
+                
+                console.log(data);
+                // http://109.160.241.160:8888/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/
+                $.ajax({
+                    // url: "http://testserver-radjybaba.rhcloud.com/webservice.php/",
+                    url: this.protocol+"://"+this.ip+":"+this.port+this.baseUrl,
+                    data: data,
+                    method: "POST",
+                    header:{
+                        "Access-Control-Allow-Origin": "http://"+this.ip+":8888"
+                    },
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    crossDomain : true,
+                    timeout: 10000,
+                    success: function(success) {
+                        debugger;
+                        console.log(success);
+                        if (success.status == 200)
+                            callback(success.data, null);
+                        else{
+                        
+                            if(success.status == 401){
+                                ngScope.logout();
+                                callback(null, error); 
+                            }else{
+                                console.error(success);
+                                callback(null, success);
+                            }
+                        }
+                    },
+                    error: function(error) {
+                        debugger;
+                        if(error.status == 401){
                             ngScope.logout();
                             callback(null, error); 
                         }else{
-                            console.error(success);
-                            callback(null, success);
+                            console.error(error);
+                            callback(null, error); 
                         }
                     }
-                },
-                error: function(error) {
-                
-                    if(error.status == 401){
-                        ngScope.logout();
-                        callback(null, error); 
-                    }else{
-                        console.error(error);
-                        callback(null, error); 
-                    }
-                }
-            });
+                });
+            // }
         }
     }).value('checkChangesInStepsAffectsOnlyNewData', function(content, after, before){
 
@@ -630,12 +638,20 @@
                                     "after": afterTabs[sameTabsKeys[j]].content.newData
                                 }
                             }
+
+                            // check inProgress if Delivery || Kbit
+                            if(!angular.equals(beforeTabs[sameTabsKeys[j]].content.inProgress, afterTabs[sameTabsKeys[j]].content.inProgress)){
+                                contentChanged.inProgress = {
+                                    "before": beforeTabs[sameTabsKeys[j]].content.inProgress,
+                                    "after": afterTabs[sameTabsKeys[j]].content.inProgress
+                                }
+                            }
                         }
 
                         if(!$.isEmptyObject(contentChanged)){
-                            contentId = beforeTabs[sameTabsKeys[j]].content.id;
-                            contentType = beforeTabs[sameTabsKeys[j]].content.type;
-                            contentChanged.contentId = sameTabsKeys[j];
+                            contentId = ((beforeTabs[sameTabsKeys[j]].content.id)?beforeTabs[sameTabsKeys[j]].content.id:afterTabs[sameTabsKeys[j]].content.id);
+                            contentType = ((beforeTabs[sameTabsKeys[j]].content.type)?beforeTabs[sameTabsKeys[j]].content.type:afterTabs[sameTabsKeys[j]].content.type);
+                            contentChanged.contentId = contentId;
                             changedTab.contentKeys = contentChanged;
                         }
                     }
@@ -683,7 +699,7 @@
         }
 
         if(!$.isEmptyObject(diffObject)){
-            if(affectsOnlyEditingData && contentId != -1){
+            if(affectsOnlyEditingData){
                 diffObject.affectsOnlyEditingData = affectsOnlyEditingData;
                 diffObject.contentId = contentId;
                 diffObject.contentType = contentType;
@@ -692,6 +708,115 @@
 
         return (!$.isEmptyObject(diffObject))?diffObject:null;
             
+    }).value("objectServerToClient", function(serverObj){
+
+        if(serverObj.FRONT_DELIVERY){
+            // delevery
+            return ngScope.deliveryServerToClient(serverObj);
+        }else if(serverObj.FRONT_KBIT){
+            // kbit
+            return ngScope.kbitServerToClient(serverObj);
+        }else if(serverObj.ID_TERM_MEAN){
+            // term
+            return ngScope.termServerToClient(serverObj);
+        }
+
+    }).value('deliveryServerToClient', function(serverObj){
+        var tempJson = {
+            "id": serverObj.UID,
+            "name": serverObj.TITLE,
+            "description": serverObj.DESCRIPTION,
+            "url": serverObj.FRONT_DELIVERY.PATH,
+            "revision": serverObj.REVISION,
+            "lastModified": ngScope.fromServerTime(serverObj.CREATION_DATE),
+            "type": "Delivery",
+            "kBitsNeeded": [],
+            "kBitsProvided": [],
+            "terms": [],
+
+        }
+        if(serverObj.LOCKING_USER){
+            tempJson.locked = true;
+            tempJson.lockedBy = {
+                "id": serverObj.LOCKING_USER.UID,
+                "firstName": serverObj.LOCKING_USER.FIRST_NAME,
+                "lastName": serverObj.LOCKING_USER.LAST_NAME,
+                "username": serverObj.LOCKING_USER.USERNAME,
+                "email": serverObj.LOCKING_USER.EMAIL,
+                "profilePicture": serverObj.LOCKING_USER.PROFILE_PICTURE
+            }
+        }else{
+            tempJson.locked = false;
+        }
+        if(serverObj.KBITS && serverObj.KBITS.NEEDED)
+            for(var i=0; i<serverObj.KBITS.NEEDED.length; i++){
+                tempJson.kBitsNeeded.push(ngScope.objectServerToClient(serverObj.KBITS.NEEDED[i]));
+            }
+        if(serverObj.KBITS && serverObj.KBITS.PROVIDED)
+            for(var i=0; i<serverObj.KBITS.PROVIDED.length; i++){
+                tempJson.kBitsProvided.push(ngScope.objectServerToClient(serverObj.KBITS.PROVIDED[i]));
+            }
+        if(serverObj.TERMS)
+            for(var i=0; i<serverObj.TERMS.length; i++){
+                tempJson.terms.push(ngScope.objectServerToClient(serverObj.TERMS[i]));
+            }
+        return tempJson;
+    }).value('kbitServerToClient', function(serverObj){
+        var tempJson = {
+            "id": serverObj.UID,
+            "name": serverObj.TITLE,
+            "description": serverObj.DESCRIPTION,
+            "url": serverObj.FRONT_KBIT.PATH,
+            "type": "Kbit",
+            "revision": serverObj.REVISION,
+            "lastModified": ngScope.fromServerTime(serverObj.CREATION_DATE),
+            "terms":[]
+        }
+        if(serverObj.LOCKING_USER){
+            tempJson.locked = true;
+            tempJson.lockedBy = {
+                "id": serverObj.LOCKING_USER.UID,
+                "firstName": serverObj.LOCKING_USER.FIRST_NAME,
+                "lastName": serverObj.LOCKING_USER.LAST_NAME,
+                "username": serverObj.LOCKING_USER.USERNAME,
+                "email": serverObj.LOCKING_USER.EMAIL,
+                "profilePicture": serverObj.LOCKING_USER.PROFILE_PICTURE
+            }
+        }else{
+            tempJson.locked = false;
+        }
+        if(serverObj.TERMS)
+            for(var i=0; i<serverObj.TERMS.length; i++){
+                tempJson.terms.push(ngScope.objectServerToClient(serverObj.TERMS[i]));
+            }
+        return tempJson;
+    }).value('termServerToClient', function(serverObj){
+        var tempName={}, tempDescription={};
+        tempName[Object.keys(serverObj.TERM_MEANING)[0]] = serverObj.TERM_MEANING[Object.keys(serverObj.TERM_MEANING)[0]];
+        tempDescription[Object.keys(serverObj.TERM_STRING)[0]] = serverObj.TERM_STRING[Object.keys(serverObj.TERM_STRING)[0]];
+        return {
+            "id": serverObj.UID,
+            "name": tempName,
+            "description": tempDescription,
+            "type": "Term",
+            "termScope": {
+                "id": serverObj.SCOPE_UID,
+                "name": serverObj.SCOPE_TITLE,
+                "description": serverObj.SCOPE_DESCRIPTION
+            }
+        };
+    }).value('toServerTime', function(time){
+        var date = new Date(time);
+        return date.format("yyyy-dd-mm HH:MM:ss");
+    }).value('fromServerTime', function(time){
+        var year = time.substring(0,4);
+        var month = time.substring(5,7);
+        var day = time.substring(8,10);
+        var hour = time.substring(11,13);
+        var minute = time.substring(14,16);
+        var second = time.substring(17,19);
+        var date = new Date(year, (Number(month)-1), day, hour, minute, second);
+        return date.getTime();
     });
 })(window.angular);
 

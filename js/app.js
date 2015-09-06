@@ -6,8 +6,8 @@ var ngScope;
 (function(angular) {
     // 'use strict';
     angular.module('IntelLearner', ['onsen', 'firebase', 'dndLists']);
-    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope",  "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast","User", "$httpR", "Content",
-        function($rootScope, $scope,  $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast, User, $httpR, Content) {
+    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope",  "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast","User", "$httpR", "Content", "fromServerTime", "termServerToClient", "deliveryServerToClient", "kbitServerToClient", "objectServerToClient", "toServerTime",
+        function($rootScope, $scope,  $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast, User, $httpR, Content, fromServerTime, termServerToClient, deliveryServerToClient, kbitServerToClient, objectServerToClient, toServerTime) {
 
 
             // PRIM COLOR = rgb(8,96,168)
@@ -63,6 +63,9 @@ var ngScope;
             console.warn("16) Remove all debugger and convert all logs to the log class");
             console.warn("17) Loop on all workflows and CashedContents extract none used obejcts");
             console.warn("18) Check error .left of interval (ZoomRange)");
+            console.warn("19) Fix deleteElement function in server.js");
+            console.warn("20) Fix CancelEditingDelivery function in server.js");
+            console.warn("21) Check all server functions");
             console.groupEnd();
             
             $scope.AppStatus = 0;
@@ -90,7 +93,13 @@ var ngScope;
             $scope.bodyScrolling = false;
             $scope.bodyScrollingTimeout = null;
             $scope.savingStepsToServer = "Save";
-
+            $scope.fromServerTime = fromServerTime;
+            $scope.termServerToClient = termServerToClient;
+            $scope.deliveryServerToClient = deliveryServerToClient;
+            $scope.kbitServerToClient = kbitServerToClient;
+            $scope.objectServerToClient = objectServerToClient;
+            $scope.toServerTime = toServerTime;
+            
 
             // $scope.$on('$destroy', function() {
             //     delete $window.onbeforeunload;
@@ -486,6 +495,7 @@ var ngScope;
                         $scope.workSpaces.updateNewWorkflowButtons();
                         $timeout(function(){
                             $scope.workSpaces.checkUserColorsInWorkspace();
+                            $scope.updateColorFilterWorkflows();
                         },200);
                     });
                 }catch(e){
@@ -507,6 +517,7 @@ var ngScope;
                         $scope.workSpaces.updateNewWorkflowButtons();
                         $timeout(function(){
                             $scope.workSpaces.checkUserColorsInWorkspace();
+                            $scope.updateColorFilterWorkflows();
                         },200);
                     });
                 }catch(e){
@@ -1408,11 +1419,14 @@ var ngScope;
                                     $scope.Toast.show("Server Error", error.message, Toast.LONG, Toast.ERROR);
                                     $scope.InsertStepToLast10Steps();
                                 }else{
+                                    debugger;
                                     var stor = new Storage();
                                     loopResults(0, result, []);
                                     function loopResults(index, originalData, resultData){
                                         if(index < originalData.length){
+                                            debugger;
                                             stor.getElementById(originalData[index], holdingRequestTab.dataHolding.forceLastModifed, holdingRequestTab.dataHolding.forceServerPull, function(resultO){
+                                                debugger;
                                                 if(resultO != undefined)
                                                     resultData.push(resultO);
                                                 loopResults(Number(index)+1, originalData, resultData);
@@ -2071,7 +2085,7 @@ var ngScope;
             $interval(function() {
                 $('#BodyRow').css('height', ($(window).height() - 50) + "px");
                 $('#FullScreenDiv').css('height', ($(window).height() - 50) + "px");
-            }, 100);
+            }, 50);
             $interval(function() {
                 $scope.updateMatrixLayout();
                 $scope.updateAllTabName();

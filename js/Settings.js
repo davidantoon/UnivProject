@@ -1,6 +1,6 @@
 (function(angular) {
     'use strict';
-	angular.module('IntelLearner').factory('Settings', ["$rootScope", "Storage", "Server", function($rootScope, Storage, Server){
+	angular.module('IntelLearner').factory('Settings', ["$rootScope", "Storage", "Server", "$httpR", "Globals", function($rootScope, Storage, Server, $httpR, Globals){
 
 
 		function Settings(){
@@ -11,6 +11,7 @@
 			this.autoOpenTabs = false;
 			this.defaultToastPosition = "BOTTOM";
 			this.removeScrollOnMouseOver = false;
+			this.preferLanguage = {"LANG_CODE":"en","LANG_NAME":"English"};
 			this.lastModified = new Date();
 		}
 
@@ -29,6 +30,7 @@
 							passThis.autoOpenTabs = dataFromLocalStorage.autoOpenTabs;
 							passThis.defaultToastPosition = dataFromLocalStorage.defaultToastPosition;
 							passThis.removeScrollOnMouseOver = dataFromLocalStorage.removeScrollOnMouseOver;
+							passThis.preferLanguage = dataFromLocalStorage.preferLanguage;
 							passThis.lastModified = dataFromLocalStorage.lastModified;
 						}
 						callback();
@@ -38,18 +40,31 @@
 					callback();
 				}
 			},
-			saveSettings: function(callback){
+			saveSettings: function(){
 				var stor = new Storage();
 				stor.setWorkspaceData(null, x.Settings, null,function(dataSaved, error){
-					if(error || !dataSaved){}
+					if(error || !dataSaved)
+						console.error("saveSettings: ", error);
 					else{
-						var svr = new Server("steps", $rootScope.currentScope.isDummy);
+						var svr = new Server("steps", ngScope.isDummy);
 						if(typeof callback == "funtion")
 							svr.setSteps(localStorage["com.intel.userdata"], callback);
 						else
 							svr.setSteps(localStorage["com.intel.userdata"], function(){});
 					}
 				});
+			},
+			getLanguages: function(callback){
+				if(ngScope.isDummy)
+					callback([{"LANG_CODE":"en", "LANG_NAME":"English"},{"LANG_CODE":"he","LANG_NAME":"Hebrew"},{"LANG_CODE":"ar","LANG_NAME":"Arabic"}]);
+				else{
+					$httpR.connectToServer({}, $httpR.getLanguages, Globals, function(success, error){
+						if(error || !success)
+							callback([{"LANG_CODE":"en", "LANG_NAME":"English"},{"LANG_CODE":"he","LANG_NAME":"Hebrew"},{"LANG_CODE":"ar","LANG_NAME":"Arabic"}]);
+						else
+							callback(success);
+					});
+				}
 			}
 		}
 

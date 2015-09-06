@@ -14,7 +14,7 @@
 				this.locked = ((conData != undefined)?conData.locked:false);
 				this.lockedBy = ((conData != undefined)?conData.lockedBy:null);
 				this.lastModified = ((conData != undefined)?conData.lastModified:null);
-				this.inProgress = ((conData != undefined)?conData.inProgress:false);
+				this.inProgress = ((conData != undefined && conData.inProgress)?conData.inProgress:false);
 				this.type = ((conData != undefined)?conData.type:null);
 				this.termScope = ((conData !=undefined)?conData.termScope: null);
 				this.connectToDataBase = ((this.type && new Server(this.type, $rootScope.currentScope.isDummy)) || null);
@@ -265,6 +265,7 @@
 					"type": this.type,
 					"progressWizard": this.progressWizard,
 					"newData": this.newData,
+					"inProgress": this.inProgress
 				}
 			},
 
