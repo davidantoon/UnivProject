@@ -63,20 +63,16 @@
                 return [];
             }
         },
-        // for specific workflow
+        
         noLockedItems:function(){
             if(this.CashedObjects){
-                 for (var obj in this.CashedObjects){
-                    if(this.CashedObjects.hasOwnProperty(obj)){
-                        if(this.CashedObjects[obj].locked){
-                            if(this.CashedObjects[obj].locked == true){
-                                return false;
-                            }
-                        }
-                    } 
+                var CashedObjectsKeys = Object.keys(this.CashedObjects);
+                for(var i=0; i<CashedObjectsKeys.length; i++){
+                    if(this.CashedObjects[CashedObjectsKeys[i]].locked){
+                        return fasle;
+                    }
                 }
-            }
-            return true;
+             return true;
         },
 
         updateUsedObjects: function(workspace){
