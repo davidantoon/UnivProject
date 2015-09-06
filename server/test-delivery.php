@@ -96,7 +96,9 @@
 	// $result = json_encode(D2KRelation::get_deliveries_relations_tree());
 	debugLog::important_log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i> looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooog");
 	
-	$result = json_encode(D2KRelation::get_delivery_relations_tree(1919));
+	// $result = json_encode(D2KRelation::get_delivery_relations_tree(1919));
+	
+
 	echo "<pre style='-webkit-user-select: initial;-moz-user-select: initial;-ms-user-select: initial;user-select: initial;' ng-init='david=". $result ."'>{{ david | json:4}}</pre>";
 	echo "<script>console.log(". $result .")<"."/script>";
 	// debugLog::important_log("<i>[testing tree]</i>: " . dbAPI::print_json_s(D2KRelation::get_deliveries_relations_tree(), 0));

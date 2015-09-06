@@ -734,7 +734,7 @@ class Delivery {
 
 		$dbObj = new dbAPI();
 		for($i=0; $i<count($search_fields); $i++) {
-			if(strtoupper($search_fields[$i]) == strtoupper('ID'))
+			if(strtoupper($search_fields[$i]) == strtoupper('UID'))
 				$search_fields[$i] = " " . $search_fields[$i] . " = " . $search_word . " "; 
 			else	
 				$search_fields[$i] = "UPPER(" . $search_fields[$i] . ") LIKE UPPER('%" . $search_word . "%') "; 

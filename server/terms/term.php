@@ -296,7 +296,7 @@ class term {
 		// validate user in database
 		$query = "SELECT DISTINCT UID FROM TERM_STRING where LANG = '" . $lang . "' AND ENABLED = '1'";
 		if($lang == '')
-			$query = "SELECT * FROM TERM_STRING where ENABLED = '1'";
+			$query = "SELECT DISTINCT UID FROM TERM_STRING where ENABLED = '1'";
 		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
 		if(count($results) == 0)
 			return array();
@@ -319,6 +319,8 @@ class term {
 		// validate user in database
 		$query = "SELECT * FROM TERM_STRING where UID = '" . $UID . "' AND ENABLED = '1'";
 		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
+		for($i=0; $i < count($results); $i++)
+			unset($results[$i]["id"]);
 		return $results;
 	}
 
@@ -472,13 +474,17 @@ class term {
 
 		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
-		$query = "SELECT ft.UID, ts.TEXT as 'TERM_STRING', tm.TEXT as 'TERM_MEANING', s.UID as 'SCOPE_UID', s.TITLE as 'SCOPE_TITLE', s.DESCRIPTION as 'SCOPE_DESCRIPTION', tm.LANG from [DB_NAME].TERMS as ft inner join [DB_NAME].TERM_STRING as ts ON (ft.ID_TERM_STRING = ts.UID) inner JOIN [DB_NAME].TERM_MEAN as tm ON (ft.ID_TERM_MEAN = tm.UID AND ts.LANG = tm.LANG) inner JOIN [DB_NAME].SCOPE as s ON (ft.ID_SCOPE = s.UID) where (UPPER(ts.TEXT) LIKE UPPER('%[SEARCH_WORD]%') OR UPPER(tm.TEXT) LIKE UPPER('%[SEARCH_WORD]%')) AND ts.UID IS NOT NULL AND tm.UID IS NOT NULL AND ft.ENABLED = 1";
+		$query = "SELECT ft.UID from [DB_NAME].TERMS as ft inner join [DB_NAME].TERM_STRING as ts ON (ft.ID_TERM_STRING = ts.UID) inner JOIN [DB_NAME].TERM_MEAN as tm ON (ft.ID_TERM_MEAN = tm.UID AND ts.LANG = tm.LANG) inner JOIN [DB_NAME].SCOPE as s ON (ft.ID_SCOPE = s.UID) where (UPPER(ts.TEXT) LIKE UPPER('%[SEARCH_WORD]%') OR UPPER(tm.TEXT) LIKE UPPER('%[SEARCH_WORD]%')) AND ts.UID IS NOT NULL AND tm.UID IS NOT NULL AND ft.ENABLED = 1";
 		$dbObj = new dbAPI();
 		$query = str_replace('[DB_NAME]', $dbObj->db_get_contentDB(), $query);
 		$query = str_replace('[SEARCH_WORD]', $search_word, $query);
 		
 		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
-		return $results;
+		$res = array();
+		for($i=0; $i < count($results); $i++) {
+			array_push($res, term::get_full_term_by_UID($results[$i]["UID"]));
+		}
+		return $res;
 	}
 
 

@@ -166,10 +166,12 @@ class termsAPI {
         if($user == null)
             return array('ErrorCode' => 3, 'Message' => "Expired Token");
         try {
-            // return scope::serach_scopes($searchWord, $searchFields, $lang);
-            $temp = term::get_all_terms_full($searchWord);
-            // debugLog::important_log("<i>[webservice.php:aa]</i> ". dbAPI::print_json_s($temp, 0));
-            
+            // check if searching by UID
+            for($i=0; $i<count($searchFields); $i++)
+                if(strtoupper($searchFields[$i]) == strtoupper('UID'))
+                    return array(termsAPI::getTermById($serverHash, $Token, $searchWord, $lang = ''));
+
+            $temp = term::get_all_terms_full($searchWord);            
             return $temp;
         }
         catch (Exception $e) {
@@ -234,14 +236,14 @@ class termsAPI {
             return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
         try {
-            return term::get_all_term_strings($lang);
+            return term::get_all_term_strings('');
         }
         catch (Exception $e) {
             return array('ErrorCode' => 0, 'Message' => "Unknown Error");
         }
     }
 
-    static function getTermById($serverHash, $Token, $UIDs, $lang = '') {
+    static function getTermById($serverHash, $Token, $UID, $lang = '') {
         
         if(serverAPI::validateServerIdentity($serverHash) == false)
             return array('ErrorCode' => 4, 'Message' => "Invalid serverHash : ".$serverHash);
@@ -249,7 +251,7 @@ class termsAPI {
         if($user == null)
             return array('ErrorCode' => 3, 'Message' => "Expired Token");
         try {
-            return term::get_term_by_UID($UID, $lang = '');
+            return term::get_full_term_by_UID($UID, $lang = '');
         }
         catch (Exception $e) {
             return array('ErrorCode' => 0, 'Message' => "Unknown Error");
@@ -614,6 +616,7 @@ class DeliveryAPI {
             return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
         try {
+
             return Delivery::serach_deliveries($searchWord, $searchFields, $user["UID"]);
         }
         catch (Exception $e) {
@@ -1124,6 +1127,11 @@ class interfaceAPI {
             $lang = '';
         return termsAPI::searchTerms($serverHash, $Token, $searchWord, $searchFields, $lang);
     }
+    public static function TERMgetAllTerms($serverHash, $Token, $lang = '') {
+        if($lang == ' ')
+            $lang = '';
+        return termsAPI::searchTerms($serverHash, $Token, $searchWord, $searchFields, $lang);
+    }
     public static function TERMaddTermToTermRelation($serverHash, $Token, $firstUID, $secondUID, $isHier) {
         return termsAPI::addTermToTermRelation($serverHash, $Token, $firstUID, $secondUID, $isHier);
     }
@@ -1135,15 +1143,15 @@ class interfaceAPI {
             $lang = '';
         return termsAPI::getRelatedTerms($serverHash, $Token, $termUID, $lang);
     }
-    public static function TERMgetAllTermsStrings($serverHash, $Token, $lang = '') {
+    // public static function TERMgetAllTermsStrings($serverHash, $Token, $lang = '') {
+    //     if($lang == ' ')
+    //         $lang = '';
+    //     return termsAPI::getAllTermsStrings($serverHash, $Token, $lang);
+    // }
+    public static function TERMgetTermById($serverHash, $Token, $UID, $lang = ''){
         if($lang == ' ')
             $lang = '';
-        return termsAPI::getAllTermsStrings($serverHash, $Token, $lang);
-    }
-    public static function TERMgetTermById($serverHash, $Token, $UIDs, $lang = ''){
-        if($lang == ' ')
-            $lang = '';
-        return termsAPI::getTermById($serverHash, $Token, $UIDs, $lang);
+        return termsAPI::getTermById($serverHash, $Token, $UID, $lang);
     }
     
     
