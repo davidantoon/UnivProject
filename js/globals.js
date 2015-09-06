@@ -79,6 +79,32 @@
             return true;
         },
 
+        updateUsedObjects: function(workspace){
+             // loop on cashed objects and check if its in workflow
+           var found = false;
+           for(var obj in this.CashedObjects){
+                if(this.CashedObjects.hasOwnProperty(obj)){
+                    found = false;
+                    //loop on workflows
+                    for(var j=0; j<workspace.workflows.length; j++){
+                        //loop over tabs
+                        for(var k=0; k<workspace.workflows[j].tabs.length; k++){
+                            if(workspace.workflows[j].tabs[k].dataHolding.result.id == this.CashedObjects[obj].id){
+                                found = true;
+                                break;
+                            }
+                        }
+                        if(found){
+                            break;
+                        }
+                    }
+                    if(found == false){
+                        this.pop(this.CashedObjects[ob].id, this.CashedObjects[ob].type);
+                    }
+                }
+           }
+        },
+
         getAllObjectToJson: function(){
             var dataToRetrun = [];
             if (this.CurrentUser.id != undefined) {
@@ -120,6 +146,44 @@
         }
     })
     .value('ServerReq', "Not initialized")
+
+    .value('Logs', {
+
+        logs ={};
+        set: function(params){
+            console.warn("save ( set ) logs not finished !!!");
+            if(params.length == 4){
+                if(typeof(params[2]) == "string" && params[3]){
+                    this.logs.push({
+                        Class: params[0],
+                        Func: params[1],
+                        message: params[2],
+                        obj: params[3]
+                    });
+                }else{
+
+                }
+            }else{
+                if(params.length == 3){
+                    if(typeof(params[2]) == "object"){
+                        this.logs.push({
+                            Class: params[0],
+                            Func: params[1],
+                            obj: params[2]
+                        });
+                    }else{
+                        if(typeof(params[2]) == "string"){
+                            this.logs.push({
+                                Class: params[0],
+                                Func: params[1],
+                                message: params[2]
+                            });  
+                        }
+                    }
+                }
+            }
+        }
+    })
     .value('$httpR', {
 
         protocol: "http",
