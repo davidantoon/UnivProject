@@ -184,10 +184,11 @@
 
     .value('Logs', {
 
-        logs: {},
-        push: function(params){
+        logs: [],
+
+        Push: function(params){
             if(params.length == 4){
-                if(typeof(params[2]) == "string" && params[3]){
+                if(typeof(params[2]) == "string" && typeof(params[3]) == "object"){
                     this.logs.push({
                         Class: params[0],
                         Func: params[1],
@@ -233,6 +234,10 @@
         e: function(params){
             this.push(params);
             console.error(params);
+        },
+
+        sendToFile: function(){
+
         }
 
     })

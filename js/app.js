@@ -6,8 +6,8 @@ var ngScope;
 (function(angular) {
     // 'use strict';
     angular.module('IntelLearner', ['onsen', 'firebase', 'dndLists']);
-    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope",  "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast","User", "$httpR", "Content", "fromServerTime", "termServerToClient", "deliveryServerToClient", "kbitServerToClient", "objectServerToClient", "toServerTime",
-        function($rootScope, $scope,  $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast, User, $httpR, Content, fromServerTime, termServerToClient, deliveryServerToClient, kbitServerToClient, objectServerToClient, toServerTime) {
+    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope",  "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast","User", "$httpR", "Content", "fromServerTime", "termServerToClient", "deliveryServerToClient", "kbitServerToClient", "objectServerToClient", "toServerTime", "Logs",
+        function($rootScope, $scope,  $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast, User, $httpR, Content, fromServerTime, termServerToClient, deliveryServerToClient, kbitServerToClient, objectServerToClient, toServerTime, Logs) {
 
 
             // PRIM COLOR = rgb(8,96,168)
@@ -2186,6 +2186,10 @@ var ngScope;
 
             $scope.getGlobals = function(){
                 return Globals;
+            }
+
+            $scope.getLogs = function(){
+                return Logs;
             }
 
 
