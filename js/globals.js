@@ -181,7 +181,6 @@
 
         logs: {},
         set: function(params){
-            console.warn("save ( set ) logs not finished !!!");
             if(params.length == 4){
                 if(typeof(params[2]) == "string" && params[3]){
                     this.logs.push({
@@ -213,6 +212,7 @@
                 }
             }
         }
+
     })
     .value('$httpR', {
 
