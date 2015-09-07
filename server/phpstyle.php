@@ -96,7 +96,15 @@ include("phpFileTree/php_file_tree.php");
 		<div id="two">
 			<div id="phpCode">
 				<pre class="data">
-					
+				&lt;?php
+					$url = 'http://testserver-radjybaba.rhcloud.com/webservice-content.php';
+					$method = 'search';
+					$data_to_transfer = array('searchtext'=>'term', 'elements'=>array('delivery'=>'false','term'=>'true','scope'=>false), "field"=> array('title'=>'true','info'=>'false'));
+					$data = array('hash' => 'DAVIDGALIT', 'query' => $data_to_transfer, 'withContent' => true, 'method'  => $method);
+					$options = array('http' => array('method'  => "POST", 'header'  => "Content-type: application/x-www-form-urlencoded\r\n", 'content' => http_build_query($data)));
+					$context  = stream_context_create($options);
+					$result = file_get_contents($url, false, $context);
+					?&gt;
 				</pre>
 			</div>
 		</div>

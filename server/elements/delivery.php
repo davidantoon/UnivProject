@@ -572,10 +572,12 @@ class Delivery {
 		// release lock off the Delivery
 		if(Lock::release_lock($UID, 'DELIVERY_BASE', $user) == false) {
 			debugLog::log("<i>[delivery.php:cancel_edited_Delivery]</i> Could not release lock off Delivery (". $UID .")");
-			return false;
+			return null;
 		}
 		// disable all records in user database
 		Delivery::disable_all_Delivery_info($UID, 'user');
+		// return data after revoking
+		return Delivery::get_Delivery_details($UID, $user);
 	}
 
 	private static function disable_base_and_front($UID) {
@@ -689,9 +691,9 @@ class Delivery {
 		$Delivery["KBITS"] = Delivery::get_Kbit_of_delivery($UID, $user);
 
 		// get terms
-		$terms = Delivery::get_terms_of_Delivery($UID, $user);
+		$terms = Delivery::get_terms_of_Delivery($UID, $user);		
 		if($terms != null)
-			$kbit["TERMS"] = $terms;
+			$Delivery["TERMS"] = $terms;
 
 		// get front
 		$Delivery["FRONT_DELIVERY"] = Delivery::get_front_Delivery_with_user($UID, $Delivery["FRONT_TYPE"], $user);

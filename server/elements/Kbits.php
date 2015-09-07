@@ -570,11 +570,12 @@ class Kbit {
 		// release lock off the Kbit
 		if(Lock::release_lock($UID, 'KBIT_BASE', $user) == false) {
 			debugLog::log("<i>[Kbits.php:cancel_edited_kbit]</i> Could not release lock off kbit (". $UID .")");
-			return false;
+			return null;
 		}
 		// disable all records in user database
 		Kbit::disable_all_kbit_info($UID, 'user');
-		return true;
+		// return data after revoking
+		return Kbit::get_Kbit_details($UID, $user);
 	}
 
 

@@ -309,6 +309,7 @@ class O2TRelation {
 		}
 		// get all related terms to object
 		$query = "SELECT * FROM ". $tableName ." where ENABLED = 1 AND (". $object_column_name ." = " . $object_UID_value .")";
+		
 		$results = $dbObj->db_select_query($database_name, $query);
 
 		// retrieve term's details from terms class into array
@@ -318,7 +319,7 @@ class O2TRelation {
 			// copy LINK_TYPE to term object
 			$curr_term["LINK_TYPE"] = $results[$i]["LINK_TYPE"];
 			array_push($terms, $curr_term);
-		}
+		}		
 		return $terms;
 	}
 }

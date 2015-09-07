@@ -689,7 +689,9 @@ class DeliveryAPI {
             return array('ErrorCode' => 3, 'Message' => "Expired Token");
 
         try {
-            return Delivery::cancel_edited_Delivery($deliveryUID, $user["UID"]);
+            $temp = Delivery::cancel_edited_Delivery($deliveryUID, $user["UID"]);
+            debugLog::important_log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i>: " . dbAPI::print_json_s($temp, 0));            
+            return $temp;
         }
         catch (Exception $e) {
             return array('ErrorCode' => 0, 'Message' => "Unknown Error");
