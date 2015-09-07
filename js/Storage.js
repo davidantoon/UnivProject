@@ -1,6 +1,6 @@
 (function(angular) {
     // 'use strict';
-	angular.module('IntelLearner').factory('Storage', ["$rootScope", "Globals", "TypeOf", "Content", function($rootScope, Globals, TypeOf, Content){
+	angular.module('IntelLearner').factory('Storage', ["$rootScope", "Globals", "TypeOf", "Content","Log", function($rootScope, Globals, TypeOf, Content, Log){
 
 
 		/**
@@ -89,12 +89,12 @@
 							callback(true, null);
 						}else{
 							callback(null, {"message":"Exception localStorage insert","code":100});
-							console.error(new Error("Storage: save() " + data));
+							Log.e("Storage","save",new Error("Storage: save() " + data));
 						}
 					}
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in saving in storage", Toast.LONG, Toast.ERROR);
-	                console.error("save: ", e);
+	                Log.e("Storage","save", e);
 				}
 			},
 
@@ -137,13 +137,13 @@
 						callback(obj);
 					}else{
 						callback(null, {"message":"Object not found","code":"404"});
-						console.error(new Error("Storage: save() "), data);
+						Log.e("Storage","get",new Error("Storage: get() "), data);
 					}
 				}catch(exp){
 					// callback(null, exp);
 					// console.error("Storage: save() ", exp);
 					$rootScope.currentScope.Toast.show("Error!","There was an error in getting value from storage", Toast.LONG, Toast.ERROR);
-	                console.error("get: ", e);
+	                Log.e("Storage","get", e);
 				}
 
 			},
@@ -189,7 +189,7 @@
 					}
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in clearing local storage", Toast.LONG, Toast.ERROR);
-	                console.error("clear: ", e);
+	                Log.e("Storage","clear", e);
 				}
 			},
 
@@ -223,7 +223,7 @@
 					}
 					return;
 				}catch(e){
-					console.error("getWorkspaceData:", e);
+					Log.e("Storage","getWorkspaceData", e);
 					var data = {
 						"Steps": null,
 						"Settings": null,
@@ -254,7 +254,6 @@
 								"CurrentUser": currentUser
 							};
 						}
-						console.log(data);
 						strCompress(JSON.stringify(data), function(stepsComp){
 							localStorage.setItem("com.intel.userdata", stepsComp);
 							callback(true, null);
@@ -262,7 +261,7 @@
 					});
 
 				}catch(e){
-					console.error("setWorkspaceData:", e);
+					Log.e("Storage","setWorkspaceData", e);
 				}
 			},
 
@@ -281,11 +280,10 @@
 				if( elemId != undefined && elemId != null && elemId != ""){
 					var cashedObject = Globals.get(elemId, elemType);
 					if(forceServerPull == true){
-						if(cashedObject == null){
-							createObjects(jsonObject, callback, this);
-						}else{
-							callback(cashedObject);
+						if(cashedObject != null){
+							Globals.pop(cashedObject.id, cashedObject.type);
 						}
+						createObjects(jsonObject, callback, this);
 					}else if(forceLastmodefied == true){
 						if(cashedObject == null)
 							createObjects(jsonObject, callback, this);
@@ -357,7 +355,14 @@
 									}
 								break;
 								case "Kbit":
-									loopTerms2(0, objectToAdd.terms, []);
+									if(objectToAdd.terms)
+										loopTerms2(0, objectToAdd.terms, []);
+									else{
+										objectToAdd.terms =	[];
+										var newObject = new Content(objectToAdd);
+										Globals.set(newObject);
+										passCallback(newObject);
+									}
 									function loopTerms2(index, termsArray, termResults){
 										if(index < termsArray.length){
 											passThis.getElementById(termsArray[index], objectToAdd.forceLastmodefied, objectToAdd.forceServerPull, function(resultTerm){

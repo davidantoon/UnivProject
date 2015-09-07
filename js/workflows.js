@@ -1,6 +1,6 @@
 (function(angular) {
     // 'use strict';
-    angular.module('IntelLearner').factory('Workflow', ["$rootScope", 'Tab', 'TypeOf','Globals', function($rootScope, Tab, TypeOf, Globals){
+    angular.module('IntelLearner').factory('Workflow', ["$rootScope", 'Tab', 'TypeOf','Globals','Log', function($rootScope, Tab, TypeOf, Globals, Log){
 
         function Workflow(tempJson, id, fx, fy, tx, ty, colored){
             try{
@@ -93,7 +93,7 @@
                 }
             }catch(e){
                 // $rootScope.currentScope.Toast.show("Error!","There was an error in creating workflow", Toast.LONG, Toast.ERROR);
-                console.error("Workflow: ", e);
+                Log.e("workflow","Workflow", e);
                 return null;
              }        
         }
@@ -147,7 +147,7 @@
                     }
                 }catch(e){
                     $rootScope.currentScope.Toast.show("Error!","There was an error in updating workflow parameters", Toast.LONG, Toast.ERROR);
-                    console.error("updateAllParams: ", e);
+                    Log.e("workflow","updateAllParams", e);
                 }
             },
 
@@ -161,7 +161,7 @@
                     return (this.ID == obj.ID);
                 }catch(e){
                     $rootScope.currentScope.Toast.show("Error!","There was an error in compating two worflows", Toast.LONG, Toast.ERROR);
-                    console.error("equals: ", e);
+                    Log.e("workflow","equals", e);
                     return false;
                 }        
             },
@@ -178,7 +178,7 @@
                     return newTab;
                 }catch(e){
                     $rootScope.currentScope.Toast.show("Error!","There was an error in adding tab to workflow", Toast.LONG, Toast.ERROR);
-                    console.error("addTab: ", e);
+                    Log.e("workflow","addTab", e);
                     return null;
                 }
             },
@@ -199,7 +199,7 @@
                     var sTop = blockPosT - ((wHeight - blockHeight) / 2);
                     $('#BodyRow').animate({ scrollTop: sTop, scrollLeft: sLeft }, 200);
                 }catch(e){
-                    console.error("scrollTo: ", e);
+                    Log.e("workflow","scrollTo", e);
                 }
             },
 
@@ -217,7 +217,7 @@
                     }
                 }catch(e){
                     $rootScope.currentScope.Toast.show("Error!","There was an error in getting position of workflow", Toast.LONG, Toast.ERROR);
-                    console.error("getPosition: ", e);
+                    Log.e("workflow","getPosition", e);
                     return null;
                 }
             },
@@ -231,7 +231,7 @@
                     return JSON.stringify(this.toJson());
                 }catch(e){
                     $rootScope.currentScope.Toast.show("Error!","There was an error in converting to string", Toast.LONG, Toast.ERROR);
-                    console.error("toString: ", e);
+                    Log.e("workflow","toString", e);
                     return null;
                 }
             },
@@ -260,8 +260,32 @@
                     }
                     return tempJson;
                 }catch(e){
-                    $rootScope.currentScope.Toast.show("Error!","There was an error in converting to JSON", Toast.LONG, Toast.ERROR);
-                    console.error("toJson: ", e);
+                    Log.e("workflow","toJson", e);
+                    return null;
+                }
+            },
+
+            toJsonSteps: function(){
+                try{
+                    var tempJson = {
+                        "ID": this.ID,
+                        "fx": this.fx,
+                        "fy": this.fy,
+                        "tx": this.tx,
+                        "ty": this.ty,
+                        "name": this.name,
+                        "tabsIds": this.tabsIds,
+                        "tabs": []
+                    }
+                    tempJson.selectedTab = {
+                        "ID": this.selectedTab.ID
+                    };
+                    for (var i = 0; i < this.tabs.length; i++) {
+                        tempJson.tabs.push(this.tabs[i].toJsonSteps());
+                    }
+                    return tempJson;
+                }catch(e){
+                    Log.e("workflow","toJsonSteps", e);
                     return null;
                 }
             }

@@ -76,7 +76,7 @@
               <ons-col id="NotificationsButton3" ng-click="Steps.commitSteps(workSpaces);" width="85px" style="width:50px; position:relative;" class="{{'col ons-col-inner '+((Steps.savedInServer == false)?'clickable hoverOp':'opacityLow')}}">
                 <div class="TopTabbarButton" style="border-right:0;font-size: 13px;">
                   <ons-icon icon="ion-upload" size="25px"></ons-icon>
-                  Save
+                  {{savingStepsToServer}}
                 </div>
                 <div class="backgroundSaveButton" style="{{((Settings.autoSave == true)?((Steps.savedInServer == false && counterBeforeSave > 2)?'height:'+ ((5-(7-counterBeforeSave))*20)+'%':'hidden'):'hidden')}}"></div>
               </ons-col>
@@ -295,12 +295,12 @@
                             <ons-col>
                               <ons-row style="height: 25px;">
                                 <ons-col>
-                                  <p class="searchResultName">{{result.name}}</p>
+                                  <p class="searchResultName">{{result.name[Settings.preferLanguage["LANG_CODE"]]}}</p>
                                 </ons-col>
                               </ons-row>
                               <ons-row style="height: 18px;">
                                 <ons-col>
-                                  <p class="searchResultDescription">{{result.description}}</p>
+                                  <p class="searchResultDescription">{{result.description[Settings.preferLanguage["LANG_CODE"]]}}</p>
                                 </ons-col>
                               </ons-row>
                               <ons-row class="resultInfo">
@@ -310,9 +310,7 @@
                                 <ons-col width="25%">
                                   <p class="{{'lockedMessage '+((result.locked == true)?'':'hidden')}}">Locked</p>
                                 </ons-col>
-                                <ons-col width="50%">
-                                  <p class="lastModifiedMessage">{{ result.lastModified| date:"MMM d, y h:mm:ss"}}</p>
-                                </ons-col>
+                                <ons-col width="50%"></ons-col>
                               </ons-row>
                             </ons-col>
                           </ons-row>
@@ -450,7 +448,7 @@
                                       <div class="dropDiv" style="width: 766px;">Drop terms here</div>
                                       <ul class="draggedItem" style="width: 766px;" dnd-list="wFlow.selectedTab.content.newData.terms">
                                         <li  ng-repeat="term in wFlow.selectedTab.content.newData.terms">
-                                          <span class="clickable hoverOp" ng-click="displayContentNewTab(wFlow,term);" dnd-draggable="term" dnd-effect-allowed="copy"  dnd-copied="draggingItems(term);">{{term.name}}</span>
+                                          <span class="clickable hoverOp" ng-click="displayContentNewTab(wFlow,term);" dnd-draggable="term" dnd-effect-allowed="copy"  dnd-copied="draggingItems(term);">{{result.name[Settings.preferLanguage["LANG_CODE"]]}}</span>
                                           <ons-icon ng-click="removeObjectFromContent(wFlow.selectedTab.content.newData.terms, term)" icon="ion-android-cancel" size="20px"></ons-icon>
                                         </li>
                                       </ul>
@@ -491,7 +489,7 @@
                                       <div class="dropDiv" style="width: 766px;">Drop terms here</div>
                                       <ul class="draggedItem" style="width: 766px;" dnd-list="wFlow.selectedTab.content.newData.terms">
                                         <li  ng-repeat="term in wFlow.selectedTab.content.newData.terms">
-                                          <span class="clickable hoverOp" ng-click="displayContentNewTab(wFlow,term);" dnd-draggable="term" dnd-effect-allowed="copy"  dnd-copied="draggingItems(term);">{{term.name}}</span>
+                                          <span class="clickable hoverOp" ng-click="displayContentNewTab(wFlow,term);" dnd-draggable="term" dnd-effect-allowed="copy"  dnd-copied="draggingItems(term);">{{term.name[Settings.preferLanguage["LANG_CODE"]]}}</span>
                                           <ons-icon ng-click="removeObjectFromContent(wFlow.selectedTab.content.newData.terms, term)" icon="ion-android-cancel" size="20px"></ons-icon>
                                         </li>
                                       </ul>
@@ -584,7 +582,7 @@
                                     <ons-row class="listItems">
                                       <ons-col>
                                         <ons-row class="listItem" ng-click="displayContent(wFlow,Term);" ng-repeat="Term in wFlow.selectedTab.content.terms" dnd-draggable="Term" dnd-effect-allowed="copy" dnd-copied="draggingItems(Term);">
-                                          {{Term.name}}
+                                          {{Term.name[Settings.preferLanguage["LANG_CODE"]]}}
                                         </ons-row>
                                       </ons-col>
                                     </ons-row>
@@ -632,7 +630,7 @@
                                     <ons-row class="listItems">
                                       <ons-col>
                                         <ons-row class="listItem" ng-click="displayContent(wFlow,Term);" ng-repeat="Term in wFlow.selectedTab.content.terms" dnd-draggable="Term" dnd-effect-allowed="copy" dnd-copied="draggingItems(Term);">
-                                          {{Term.name}}
+                                          {{Term.name[Settings.preferLanguage["LANG_CODE"]]}}
                                         </ons-row>
                                       </ons-col>
                                     </ons-row>
@@ -848,7 +846,7 @@
   <script type="text/javascript" src="js/visible.js"></script>
   <script type="text/javascript" src="js/angular-drag-and-drop-lists.min.js"></script>
 
-
+  <script type="text/javascript" src="js/dateFormat.js"></script>
   <script type="text/javascript" src="js/lzma/lzma.js"></script>
   <script type="text/javascript" src="js/lzma/initLzma.js"></script>
   <script type="text/javascript" src="js/app.js"></script>

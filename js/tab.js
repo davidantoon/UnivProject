@@ -1,6 +1,6 @@
 (function(angular) {
     // 'use strict';
-	angular.module('IntelLearner').factory('Tab', ["$rootScope", 'Content','Globals','Storage', function($rootScope, Content, Globals, Storage){
+	angular.module('IntelLearner').factory('Tab', ["$rootScope", 'Content','Globals','Storage',"Log", function($rootScope, Content, Globals, Storage, Log){
 	
 		// constant static members 
 		Tab.NORMAL_TAB = 0;// Search | Create | Edit'
@@ -87,6 +87,7 @@
 				}
 
 			}else{
+				Log.e("tab","Tab", "Id or parentWorkflow not specified!");
 				throw "Id or parentWorkflow not specified!";
 				return null;
 			}
@@ -173,7 +174,7 @@
 			addContent: function(contentObj, forceServerPull){
 				// pass content to storage function to check if already in cache or add it and return new content
 				if(contentObj == null || contentObj == undefined){
-					console.error("addContet: content obj is null or undefined");
+					Log.e("tab","addContet","content obj is null or undefined");
 				}else{
 					var passThis = this;
 					var stor = new Storage();
@@ -236,8 +237,41 @@
 	                "color": this.color
 	            };
 			},
+
+			toJsonSteps: function(){
+				var tempJson = {
+	                "ID": this.ID,
+	                "title": this.title,
+	                "Type": this.Type,
+	                "content": ((this.content == null)?null:this.content.toJsonSteps()),
+	                "orderTab": this.orderTab,
+	                "color": this.color
+	            };
+	            if(tempJson.Type == Tab.RESULTS_TAB){
+	            	tempJson.dataHolding = {
+	            		"resultsCount": this.dataHolding.resultsCount,
+						"results": [],
+						"childTab": this.dataHolding.childTab,
+						"parentTab": this.dataHolding.parentTab
+	            	}
+	            	for(var i=0; i<this.dataHolding.results.length; i++){
+	            		tempJson.dataHolding.results.push({
+	            			"id": this.dataHolding.results[i].id,
+	            			"type": this.dataHolding.results[i].type
+	            		});
+	            	}
+	            }else{
+	            	tempJson.dataHolding = this.dataHolding;
+	            }
+	            return tempJson;
+			},
+
 			addChildToSearch: function(childData){
 				// add childData to dataHolding.childTab
+			},
+
+			equals: function(tab){
+				return (this.ID == tab.ID);
 			}
 
 

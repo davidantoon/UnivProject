@@ -1,6 +1,6 @@
 (function(angular) {
     // 'use strict';
-	angular.module('IntelLearner').factory('Server', ["$rootScope", "Toast", "$httpR", "Globals", function($rootScope, Toast, $httpR, Globals){
+	angular.module('IntelLearner').factory('Server', ["$rootScope", "Toast", "$httpR", "Globals","Log", function($rootScope, Toast, $httpR, Globals, Log){
 	
 		function Server(connectionType, dummy){
 			try{
@@ -11,7 +11,7 @@
 				}
 				this.TypeOfData = connectionType;
 			}catch(e){
-	            console.error("server: ", e);
+	            Log.e("Server","server", e);
 			}
 		}
 	 
@@ -116,7 +116,36 @@
 						callback(searchResults, null);
 						return;
 					}else{
+						var ConvertData = function (results, error){
+							if(error || !results){
+								Log.e("Server","search", error);
+								results = [];
+							}else{
+								for(var i=0; i<results.length; i++){
+									results[i] = ngScope.objectServerToClient(results[i]);
+								}
+							}
+							mergeData(results, ++resultCounter);
+						}
 						
+						function mergeData(result, index){
+							mergeResult = mergeResult.concat(result);
+							if(index == 3){
+								var tempData = [];
+								for(var i=0; i<mergeResult.length; i++){
+									var found = false;
+									for(var j=0; j<tempData.length; j++){
+										if(tempData[j].id == mergeResult[i].id && tempData[j].type == mergeResult[i].type){
+											found = true;
+										}
+									}
+									if(found == false){
+										tempData.push(mergeResult[i]);
+									}
+								}
+								callback(tempData);
+							}
+						}
 						var searchFields = [];
 						var mergeResult = [];
 						var resultCounter = 0;
@@ -133,306 +162,27 @@
 						};
 						//Kbit
 						if(dataToSearch.dataType[0] == 1){
-							$httpR.connectToServer(data, $httpR.KBITsearchKbits, Globals, function(success, error){
-								
-								var successModified = [];
-								if(error || !success){
-									console.error("error searching kbit is server: ", error);
-								}else{
-									console.log("search kbit in serve done: ", success);
-									// loop on kbits
-									for(var i=0; i<success.length; i++){
-										var tempTerms= [];
-										var lockingUser = {};
-										if(success[i].TERMS)
-											// loop on terms inside kbit
-											for(var j=0; j< success[i].TERMS.length; j++){
-												var tempDisc= {};
-												if(success[i].TERMS[j].TERM_STRING.other_langs){
-													// loop on other lang inside term
-													for(var k=0; k<success[i].TERMS[j].TERM_STRING.other_langs.length; k++){
-														tempDisc[success[i].TERMS[j].TERM_STRING.other_langs[k].LANG] = success[i].TERMS[j].TERM_STRING.other_langs[k].TEXT;
-													}
-												}
-												tempDisc[success[i].TERMS[j].TERM_STRING.LANG] = success[i].TERMS[j].TERM_STRING.TEXT;
-												tempTerms.push({
-													id: success[i].TERMS[j].UID,
-													lastModified: new Date(success[i].TERMS[j].CREATION_DATE),
-													description: tempDisc,
-													type: "Term"
-												});
-											}
-										if(success[i].LOCKING_USER){
-											lockingUser = {
-												id: success[i].LOCKING_USER.UID,
-												username: success[i].LOCKING_USER.USERNAME,
-												firstName: success[i].LOCKING_USER.FIRST_NAME,
-												lastName: success[i].LOCKING_USER.LAST_NAME,
-												email: success[i].LOCKING_USER.EMAIL,
-												profilePicture: success[i].LOCKING_USER.PROFILE_PICTURE
-											};
-											successModified.push({
-												id: success[i].UID,
-												name: success[i].TITLE,
-												terms: tempTerms,
-												description: success[i].DESCRIPTION,
-												locked: true,
-												lockedBy: lockingUser,
-												lastModified: new Date(success[i].CREATION_DATE),
-												inProgress: false,
-												type: "Kbit",
-											});
-										}else{
-											successModified.push({
-												id: success[i].UID,
-												name: success[i].TITLE,
-												terms: tempTerms,
-												description: success[i].DESCRIPTION,
-												locked: false,
-												lockedBy: null,
-												lastModified: new Date(success[i].CREATION_DATE),
-												inProgress: false,
-												type: "Kbit",
-											});
-										}
-									}
-								}
-								mergeData(successModified, ++resultCounter);
-							});
+							$httpR.connectToServer(data, $httpR.KBITsearchKbits, Globals, ConvertData);
 						}else{
 							mergeData([], ++resultCounter);
 						}
 						// Delivery
 						if(dataToSearch.dataType[1] == 1){
-							$httpR.connectToServer(data, $httpR.DELIVERYsearchDelivery, Globals, function(success, error){
-								
-								var successModified = [];
-								var lockingUser = {};
-								if(error || !success){
-									console.error("error searching delivery is server: ", error);
-								}else{
-									console.log("search delivery in serve done: ", success);
-									// loop on deliveries
-									for(var i=0; i<success.length; i++){
-										var termKbits = [];
-										
-										if(success[i].KBITS){
-											var successKbitModifiedNeeded = [];
-											var successKbitModifiedProvided = [];
-											// loop over the kbits dic.
-											var tempKbitsNeeded = success[i].KBITS["NEEDED"];
-											var tempKbitsProvided = success[i].KBITS["PROVIDED"];
-											for(var j=0; j<tempKbitsNeeded.length; j++){
-												var tempTerms= [];
-												var lockingUserKbit = {};
-												if(tempKbitsNeeded[j]){
-													if(tempKbitsNeeded[j].TERMS){
-													// loop on terms inside kbit
-														for(var k=0; k< tempKbitsNeeded[j].TERMS.length; k++){
-															var tempDisc= {};
-															if(tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs){
-																// loop on other lang inside term
-																for(var h=0; h<tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs.length; h++){
-																	
-																	tempDisc[tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs[h].LANG] = tempKbitsNeeded[j].TERMS[k].TERM_STRING.other_langs[h].TEXT;
-																}
-															}
-															tempDisc[tempKbitsNeeded[j].TERMS[k].TERM_STRING.LANG] = tempKbitsNeeded[j].TERMS[k].TERM_STRING.TEXT;
-															tempTerms.push({
-																id: tempKbitsNeeded[j].TERMS[k].UID,
-																lastModified: new Date(tempKbitsNeeded[j].TERMS[k].CREATION_DATE),
-																description: tempDisc,
-																type: "Term"
-															});
-														}
-													}
-													if(tempKbitsNeeded[j].LOCKING_USER){
-														lockingUserKbit = {
-															id: tempKbitsNeeded[j].LOCKING_USER.UID,
-															username: tempKbitsNeeded[j].LOCKING_USER.USERNAME,
-															firstName: tempKbitsNeeded[j].LOCKING_USER.FIRST_NAME,
-															lastName: tempKbitsNeeded[j].LOCKING_USER.LAST_NAME,
-															email: tempKbitsNeeded[j].LOCKING_USER.EMAIL,
-															profilePicture: tempKbitsNeeded[j].LOCKING_USER.PROFILE_PICTURE
-														};
-														successKbitModifiedNeeded.push({
-															id: tempKbitsNeeded[j].UID,
-															name: tempKbitsNeeded[j].TITLE,
-															terms: tempTerms,
-															description: tempKbitsNeeded[j].DESCRIPTION,
-															locked: true,
-															lockedBy: lockingUserKbit,
-															lastModified: new Date(tempKbitsNeeded[j].CREATION_DATE),
-															inProgress: false,
-															type: "Kbit"
-														});
-													}else{
-														successKbitModifiedNeeded.push({
-															id: tempKbitsNeeded[j].UID,
-															name: tempKbitsNeeded[j].TITLE,
-															terms: tempTerms,
-															description: tempKbitsNeeded[j].DESCRIPTION,
-															locked: false,
-															lockedBy: null,
-															lastModified: new Date(tempKbitsNeeded[j].CREATION_DATE),
-															inProgress: false,
-															type: "Kbit"
-														});
-													}
-												}
-												
-											}
-											// loop over kbits provided
-											for(var j=0; j<tempKbitsProvided.length; j++){
-												var tempTerms= [];
-												var lockingUserKbit = {};
-												if(tempKbitsProvided[j] != null)
-												if(tempKbitsProvided[j].TERMS){
-													// loop on terms inside kbit
-													for(var k=0; k< tempKbitsProvided[j].TERMS.length; k++){
-														var tempDisc= {};
-														if(tempKbitsProvided[j].TERMS[k].TERM_STRING.other_langs){
-															// loop on other lang inside term
-															for(var h=0; h<tempKbitsProvided[j].TERMS[k].TERM_STRING.other_langs.length; h++){
-																
-																tempDisc[tempKbitsProvided[j].TERMS[k].TERM_STRING.other_langs[h].LANG] = tempKbitsProvided[j].TERMS[k].TERM_STRING.other_langs[h].TEXT;
-															}
-														}
-														tempDisc[tempKbitsProvided[j].TERMS[k].TERM_STRING.LANG] = tempKbitsProvided[j].TERMS[k].TERM_STRING.TEXT;
-														tempTerms.push({
-															id: tempKbitsProvided[j].TERMS[k].UID,
-															lastModified: new Date(tempKbitsProvided[j].TERMS[k].CREATION_DATE),
-															description: tempDisc,
-															type: "Term"
-														});
-													}
-												}
-
-												if(tempKbitsProvided[j] != null)
-												if(tempKbitsProvided[j].LOCKING_USER){
-													lockingUserKbit = {
-														id: tempKbitsProvided[j].LOCKING_USER.UID,
-														username: tempKbitsProvided[j].LOCKING_USER.USERNAME,
-														firstName: tempKbitsProvided[j].LOCKING_USER.FIRST_NAME,
-														lastName: tempKbitsProvided[j].LOCKING_USER.LAST_NAME,
-														email: tempKbitsProvided[j].LOCKING_USER.EMAIL,
-														profilePicture: tempKbitsProvided[j].LOCKING_USER.PROFILE_PICTURE
-													};
-													successKbitModifiedProvided.push({
-														id: tempKbitsProvided[j].UID,
-														name: tempKbitsProvided[j].TITLE,
-														terms: tempTerms,
-														description: tempKbitsProvided[j].DESCRIPTION,
-														locked: true,
-														lockedBy: lockingUserKbit,
-														lastModified: new Date(tempKbitsProvided[j].CREATION_DATE),
-														inProgress: false,
-														type: "Kbit",
-													});
-												}else{
-													successKbitModifiedProvided.push({
-														id: tempKbitsProvided[j].UID,
-														name: tempKbitsProvided[j].TITLE,
-														terms: tempTerms,
-														description: tempKbitsProvided[j].DESCRIPTION,
-														locked: false,
-														lockedBy: null,
-														lastModified: new Date(tempKbitsProvided[j].CREATION_DATE),
-														inProgress: false,
-														type: "Kbit",
-													});
-												}
-											}
-										}
-
-										if(success[i].LOCKING_USER){
-											lockingUser = {
-												id: success[i].LOCKING_USER.UID,
-												username: success[i].LOCKING_USER.USERNAME,
-												firstName: success[i].LOCKING_USER.FIRST_NAME,
-												lastName: success[i].LOCKING_USER.LAST_NAME,
-												email: success[i].LOCKING_USER.EMAIL,
-												profilePicture: success[i].LOCKING_USER.PROFILE_PICTURE
-											};
-											successModified.push({
-												id: success[i].UID,
-												name: success[i].TITLE,
-												description: success[i].DESCRIPTION,
-												lastModified: new Date(success[i].CREATION_DATE),
-												type: "Delivery",
-												lockedBy: lockingUser,
-												locked: true,
-												kBitsNeeded: successKbitModifiedNeeded,
-												kBitsProvided: successKbitModifiedProvided,
-												terms: termKbits,
-												url:success[i].FRONT_DELIVERY.PATH,
-												revision: success[i].FRONT_DELIVERY.REVISION
-											});
-										}else{
-											successModified.push({
-												id: success[i].UID,
-												name: success[i].TITLE,
-												description: success[i].DESCRIPTION,
-												lastModified: new Date(success[i].CREATION_DATE),
-												type: "Delivery",
-												kBitsNeeded: successKbitModifiedNeeded,
-												kBitsProvided: successKbitModifiedProvided,
-												terms: termKbits,
-												url:success[i].FRONT_DELIVERY.PATH,
-												revision: success[i].FRONT_DELIVERY.REVISION
-											});
-										}
-									}
-								}
-								mergeData(successModified, ++resultCounter);
-							});
+							$httpR.connectToServer(data, $httpR.DELIVERYsearchDelivery, Globals, ConvertData);
 						}else{
 							mergeData([], ++resultCounter);
 						}
 						// Term
 						if(dataToSearch.dataType[2] == 1){
-							data.lang = ' ';
-							$httpR.connectToServer(data, $httpR.TERMsearchTerms, Globals, function(success, error){
-								var successModified = [];
-								if(error || !success){
-									console.error("error searching term is server: ", error);
-								}else{
-									for(var i=0; i<success.length; i++){
-										
-										successModified[success[i].LANG] = success[i].TERM_MEANING;
-										var tempScope = {
-											ScopeDescription: success[i].SCOPE_DESCRIPTION,
-											scopeTitle: success[i].SCOPE_TITLE,
-											scopeID: success[i].SCOPE_UID
-										};
-										successModified.push({
-											id: success[i].UID,
-											name: success[i].TERM_STRING,
-											termScope: tempScope,
-											type: "Term"
-										});
-									}
-									
-								}
-								mergeData(successModified, ++resultCounter);
-							});
+							data.lang = ngScope.Settings.preferLanguage.LANG_CODE;
+							$httpR.connectToServer(data, $httpR.TERMsearchTerms, Globals, ConvertData);
 						}else{
 							mergeData([], ++resultCounter);
 						}
-						
-
-						function mergeData(result, index){
-							mergeResult = mergeResult.concat(result);
-							if(index == 3)
-								callback(mergeResult);
-						}
-
-
-
 
 					}
 				}catch(e){
-	                console.error("search: ", e);
+	                Log.e("Server","search", e);
 	                callback(null,{"message":e.message,"code":e.code});
 				}
 			},
@@ -489,13 +239,19 @@
 						}
 						console.warn("DUMMY REQUESTS");
 					}else{
-						debugger;
 						switch (obj.type){
 							case "Delivery":
-								// call new method to save delivery and kbits relations
+
+								$httpR.connectToServer(obj.toJsonDeliveryServer(), $httpR.DELIVERYaddNew, Globals, function(success, error){
+									if(error || !success){
+										callback(null, error);
+									}else{
+										callback(success);
+									}
+								});
 							break;
 							case "Kbit":
-								onsole.warn("save kbit not implemented");
+								console.warn("save kbit not implemented");
 								callback(true, null);
 
 								// call new method to save kbit and terms relations
@@ -505,7 +261,7 @@
 						}
 					}
 				}catch(e){
-	                console.error("saveElement: ", e);
+	                Log.e("Server","saveElement", e);
 	                callback(null,{"message":e.message,"code":e.code});
 				}
 			},
@@ -597,7 +353,7 @@
 						}
 					}
 				}catch(e){
-	                console.error("getElementByID: ", e);
+	                Log.e("Server","getElementByID", e);
 	                callback(null,{"message":e.message,"code":e.code});
 				}
 			},
@@ -658,67 +414,38 @@
 							break;
 						}
 					}else{
-						
-						switch (this.TypeOfData){
-							case "delivery":
-							break;
-							case "kbits":
-								data.kbitUID = objID;
-								data.lang = 0;
-								console.warn("Delete kbit by id missing from API");
-								// $httpR.connectToServer(data, "TERMgetRelatedTerms", Globals, function(success, error){
-								// 	if(error || !(success)){
-								// 		console.log("error getting term by id: ", error);
-								// 	}else{
-								// 		console.log("term got by id from server: ", success);
-								// 	}
-								// });
-							break;
-							case "term":
-								data.kbitUID = objID;
-								data.lang = 0;
-								console.warn("Delete term by id missing from API");
+
+						callback(true);
+						// switch (this.TypeOfData){
+						// 	case "delivery":
+						// 	break;
+						// 	case "kbits":
+						// 		data.kbitUID = objID;
+						// 		data.lang = 0;
+						// 		console.warn("Delete kbit by id missing from API");
+						// 		// $httpR.connectToServer(data, "TERMgetRelatedTerms", Globals, function(success, error){
+						// 		// 	if(error || !(success)){
+						// 		// 		console.log("error getting term by id: ", error);
+						// 		// 	}else{
+						// 		// 		console.log("term got by id from server: ", success);
+						// 		// 	}
+						// 		// });
+						// 	break;
+						// 	case "term":
+						// 		data.kbitUID = objID;
+						// 		data.lang = 0;
+						// 		console.warn("Delete term by id missing from API");
 								
-							break;
-							default:
-								callback(null, {"message":"Save Element func Object is not found","code":"404"});
-								return;
-							break;
-						}
+						// 	break;
+						// 	default:
+						// 		callback(null, {"message":"Save Element func Object is not found","code":"404"});
+						// 		return;
+						// 	break;
+						// }
 					}
 				}catch(e){
-	                console.error("deleteElementByID: ", e);
+	                Log.e("Server","deleteElementByID", e);
 	                callback(null,{"message":e.message,"code":e.code});
-				}
-			},
-
-			/**
-			 * Gets the version of the provided ID
-			 * @param  {Number}   objID    the object ID
-			 * @param  {Function} callback callback function
-			 * @return {object}            the object version we need
-			 */
-			getVersionsByID: function(objID, callback){
-				try{
-					callback(null, null);
-				}catch(e){
-					console.error("getVersionsByID: ", e);
-					callback(null, {"message":e.message,"code":e.code});
-				}
-			},
- 
-			/**
-			 * Gets the versions list of the provided ID
-			 * @param  {Number}   objID    the object ID
-			 * @param  {Function} callback callback function
-			 * @return {list}              the object versions.
-			 */
-			getVersionList: function(objID, callback){
-				try{
-					callback(null, null);
-				}catch(e){
-					console.error("getVersionList: ", e);
-					callback(null,{"message":e.message,"code":e.code});
 				}
 			},
 
@@ -746,7 +473,7 @@
 						$httpR.connectToServer({Key:"Steps"}, $httpR.KVPgetKeyValuePair, Globals, callback);
 					}
 				}catch(e){
-	                console.error("getSteps: ", e);
+	                Log.e("Server","getSteps", e);
 	                callback(null,{"message":e.message,"code":e.code});
 				}
 			},
@@ -760,74 +487,57 @@
 					if(this.baseUrl == "dummy"){
 						callback();
 					}else{
-						strCompress(JSON.stringify(steps), function(stepsComp){
-							$httpR.connectToServer({Key:"Steps", value:stepsComp}, $httpR.KVPsetKeyValuePair, Globals, callback);
-						});
+						$httpR.connectToServer({Key:"Steps", value:steps}, $httpR.KVPsetKeyValuePair, Globals, callback);
 					}
 				}catch(e){
-	                console.error("getSteps: ", e);
+	                Log.e("Server","getSteps", e);
 	                callback(null,{"message":e.message,"code":e.code});
 				}
 			},
-
-			/**
-			 * 	------------------------------- ASK IF IT SHOULD TAKE ID TO GET SPECIFIC SETTINGS -------------------------------------
-			 * Gets the settings from Server
-			 * @param  {callback} callback callback function
-			 * @return {json}              steps found in server
-			 */
-			getSettings: function(callback){
-				try{
-					if(this.baseUrl == "dummy"){
-						var settingsDB = localStorage.getItem("com.intel.server.settings");
-						if(settingsDB == null || settingsDB == undefined){
-							callback(null, {"message":"could not get settings from server","code":""});
-							return;
-						}else{
-							if(settingsDB.length == 0){
-								callback({"message":"there is no settings in server", "code": ""}, null );
-								return;
-							}
-							callback(JSON.parse(settingsDB), null);
-							return;
-						}
-					}else{
-						console.warn("get settings from server not implemented");
-						callback(null, null);
-					}
-				}catch(e){
-	                console.error("getSettings: ", e);
-	                callback(null,{"message":e.message,"code":e.code});
-				}
-			},
-
-
-
 
 			getFromServer: function(objectsArray, callback){
 				try{
 					var temmpArray = [];
 					if(this.baseUr== "dummy"){
-						if(objectsArray){
-							if(objectsArray.length == 0){
-								callback(null, "objects Array is empty");
-							}else{
-								// send array to server and get the objects
-								callback(temmpArray);
-							}
-						}
+						callback([]);
 					}else{
 						if(objectsArray){
 							if(objectsArray.length == 0){
-								callback(null, "objects Array is empty");
+								callback([]);
 							}else{
 								// send array to server and get the objects
-								callback(temmpArray);
+								$httpR.connectToServer(objectsArray, $httpR.REFRESHERgetData, Globals, function(success, error){
+									if(error && !success){
+										console.log(error);
+										callback([]);
+									}
+									else{
+										success = success.DELIVERIES.concat(success.KBITS);
+										if(success && success.length){
+											debugger;
+											var tempData = [];
+											for(var i=0; i<success.length; i++){
+												var found = false;
+												for(var j=0; j<tempData.length; j++){
+													if(tempData[j].UID == success[i].UID){
+														found = true;
+													}
+												}
+												if(found == false){
+													tempData.push(success[i]);
+												}
+											}
+											callback(tempData);
+										}else{
+											callback([]);
+										}
+									}
+								});
 							}
 						}
 					}
 				}catch(e){
-					console.error("getFromServer: ", e);
+					Log.e("Server","getFromServer", e);
 					callback(null, e);
 				}
 			},
@@ -845,10 +555,6 @@
 			*                                                                   *
 			********************************************************************/
 
-
-
-
-
 			/**
 			 * Gets all terms from server
 			 * @param  {Function} callback callback function
@@ -856,419 +562,22 @@
 			getAllTerms: function(callback){
 				try{
 					var data = {
-						lang: 0
+						lang: ngScope.Settings.preferLanguage.LANG_CODE
 					};
 
 					$httpR.connectToServer(data, $httpR.TERMgetAllTermsStrings, Globals, function(success, error){
 						if(error || !success){
-							console.error("getAllTerms: ", error);
+							Log.e("Server","getAllTerms", error);
 							callback(null, error);
 						}else{
 							callback(success);
 						}
 					});
 				}catch(e){
-					console.error("getAllTerms: ", e);
+					Log.e("Server","getAllTerms", e);
 					callback(null, e);
 				}
-			},
-
-			/**
-			 * Gets all related term to specific term
-			 * @param  {Number}   termID   term id
-			 * @param  {Function} callback callback fucntion
-			 */
-			getRelatedTermsByID: function(termID, callback){
-				try{
-					if(termID){
-						var data = {
-							termUID: termID,
-							lang: 0
-						};
-
-						$httpR.connectToServer(data, $httpR.TERMgetRelatedTerms, Globals, function(success, error){
-							if(error || !success){
-								console.error("error getting related terms: ", error);
-								callback(null, error);
-							}else{
-								callback(success);
-							}
-						});
-					}else{
-						console.error("error getting related terms");
-						callback(null, "error getting related terms");
-					}
-				}catch(e){
-					console.error("getRelatedTermsByID: ", e);
-					callback(null, e);
-				}
-			},
-
-
-
-
-			/********************************************************************
-			*                                                                   *
-			  000     000  000000000    00000000000  00000000000     00000     
-			  000    000   000     000      000          000       000   000   
-			  000  000     000     000      000          000       00          
-			  00000        0000000000       000          000        0000000    
-			  000  000     000     000      000          000              00   
-			  000    000   000     000      000          000       000   000   
-			  000     000  000000000    00000000000      000         00000     
-			*                                                                   *
-			********************************************************************/
-
-
-
-
-			/**
-			 * Start editing kbit ( lock )
-			 * @param {Number}   kbitID   kbit id
-			 * @param {Function} callback callback function
-			 */
-			StartEditingKbit: function(kbitID, callback){
-				try{
-					if(kbitID){
-						var data = {
-							kbitUID: kbitID
-						};
-
-						$httpR.connectToServer(data, $httpR.KBITbeginEdit, Globals, function(success, error){
-							if(error || !success){
-								console.log("error begining edit kbit: ", error);
-								callback(null, error);
-							}else{
-								callback(success, null);
-							}
-						});
-					}else{
-						console.log("error begining edit kbit");
-						callback(null, "error begining edit kbit");
-					}
-				}catch(e){
-					console.error("StartEditingKbit: ", e);
-					callback(null, e);
-				}
-			},
-
-			/**
-			 * Cancel editing kbit
-			 * @param {Number}   kbitID   kbit id
-			 * @param {Function} callback callback function
-			 */
-			CancelEditingKbit: function(kbitID, callback){
-				try{
-					if(kbitID){
-						var data = {
-							kbitUID: kbitID
-						};
-
-						$httpR.connectToServer(data, $httpR.KBITcancelEdit, Globals, function(success, error){
-							if(error || !success){
-								console.log("error canceling edit kbit: ", error);
-								callback(null, error);
-							}else{
-								callback(success, null);
-							}
-						});
-					}else{
-						console.log("error canceling edit kbit");
-						callback(null, "error canceling editing kbit");
-					}
-				}catch(e){
-					console.error("CancelEditingKbit: ", e);
-					callback(null, e);
-				}
-			},
-
-			
-
-			/**
-			 * Adds term to kbit terms arrat
-			 * @param {number}   kbitID   kibt id
-			 * @param {number}   termID   term id
-			 * @param {String}   linkType type link
-			 * @param {Function} callback callback function
-			 */
-			addTermToKbit: function(kbitID, termID, linkType, callback){
-				try{
-					if( (kbitID !=null && kbitID !=undefined) && (termID != null && termID !=undefined) && (linkType != null && linkType !=undefined) ){
-						var data = {
-							kbitUID: kbitID,
-							termUID: termID,
-							linkType: " "
-						};
-
-						$httpR.connectToServer(data, $httpR.KBITaddTermByUID, Globals, function(success, error){
-							if(error || !success){
-								console.log("error adding term to kbit: ", error);
-								callback(null, error);
-							}else{
-								callback(success, null);
-							}
-						});
-					}else{
-						console.log("error adding term to kbit");
-						callback(null, "error adding term to kbit");
-					}
-				}catch(e){
-					console.error("addTermToKbit: ", e);
-					callback(null, e);
-				}
-			},
-
-			/**
-			 * Removes relation between kbit and term
-			 * @param  {number}   kbitID   kbit id
-			 * @param  {number}   termID   term id
-			 * @param  {String}   relation link relation
-			 * @param  {Function} callback callback function
-			 */
-			removeTermFromKbit: function(kbitID, termID, relation, callback){
-				try{
-					if( (kbitID !=null && kbitID !=undefined) && (termID != null && termID !=undefined) && (relation != null && relation !=undefined) ){
-						console.warn("link Type ??? ");
-						var data = {
-							kbitUID: kbitID,
-							termUID: termID,
-							linkType: " "
-						};
-
-						$httpR.connectToServer(data, $httpR.KBITremoveTerm, Globals, function(success, error){
-							if(error || !success){
-								console.error("error removing term from kbit: ", error);
-								callback(null, error);
-							}else{
-								callback(success, null);
-							}
-						});
-					}else{
-						console.error("error removing term from kbit");
-						callback(null, "error removing term from kbit");
-					}
-				}catch(e){
-					console.error("addTermToKbit: ", e);
-					callback(null, e);
-				}
-			},
-
-
-
-			/***********************************************************************************************************
-			*                                                                                                          *
-			  000000000    00000000000  000          00000000000 00         00 00000000000  000000000    000     000  
-			  000     000  000          000              000      00       00  000          000      00   000   000   
-			  000     000  000          000              000       00     00   000          000      00    000 000    
-			  000     000  00000000000  000              000        00   00    00000000000  000000000        000      
-			  000     000  000          000              000         00 00     000          000 000          000      
-			  000     000  000          000              000          000      000          000   000        000      
-			  000000000    00000000000  0000000000   00000000000       0       00000000000  000     000      000      
-			*                                                                                                          *
-			***********************************************************************************************************/
-
-
-
-
-
-
-
-			/**
-			 * Publish delivery on server
-			 * @param  {Number}   deliveryID delivery id
-			 * @param  {Function} callback   callback function
-			 */
-			publishDelivery: function(deliveryID, callback){
-				try{
-					if(deliveryID){
-						var data = {
-							deliveryUID: deliveryID
-						};
-
-						$httpR.connectToServer(data, $httpR.DELIVERYpublish, Globals, function(success, error){
-							if(error || !success){
-								callback(null, error);
-							}else{
-								callback(success, null);
-							}
-						});
-					}else{
-						callback(null, "error publishing deliver");
-					}
-				}catch(e){
-					console.error("publishDelivery: ", e);
-					callback(null, e);
-				}
-			},
-
-			/**
-			 * Updates delivery in server
-			 * @param  {Number}   deliveryID    delivery id
-			 * @param  {String}   deliveryTitle delivery title
-			 * @param  {String}   deliverydesc  delivery description
-			 * @param  {Array}   frontArr       content array
-			 * @param  {Function} callback      callback function
-			 */
-			updateDelivery:function(deliveryID, deliveryTitle, deliverydesc, frontArr, callback){
-				try{
-					if(deliveryID){
-						var data = {
-							deliveryUID: deliveryID,
-							title: deliveryTitle,
-							desc: deliverydesc,
-							front: frontArr
-						};
-
-						$httpR.connectToServer(data, $httpR.DELIVERYupdate, Globals, function(success, error){
-							if(error || !success){
-								callback(null, error);
-							}else{
-								callback(success, null);
-							}
-						});
-					}else{
-						callback(null, "error updating delivery");
-					}
-				}catch(e){
-					console.error("updateDelivery: ", e);
-					callback(null, e);
-				}
-			},
-
-
-			/**
-			 * Adds term to delivery relation
-			 * @param {Number}   deliveryID delivery id
-			 * @param {Number}   termID     term id
-			 * @param {String}   linkType   Link type
-			 * @param {Function} callback   callback function
-			 */
-			addTermToDeliveryRelation: function(deliveryID, termID, linkType, callback){
-				try{
-					if(deliveryID && termID){
-						var data = {
-							deliveryUID: deliveryID,
-							termUID: termID,
-							linkType: " "
-						};
-
-						$httpR.connectToServer(data, $httpR.DELIVERYaddTermByUID, Globals, function(success, error){
-							if(error || !success){
-								callback(null, error);
-							}else{
-								callback(success, null);
-							}
-						});
-					}else{
-						callback(null, "error adding term to delivery relation");
-					}
-				}catch(e){
-					console.error("addTermToDeliveryRelation: ", e);
-					callback(null, e);
-				}
-			},
-
-			/**
-			 * Removes term and delivery relation
-			 * @param  {Number}   deliveryID delivery id
-			 * @param  {Number}   termID     term id
-			 * @param  {String}   linkType   link type
-			 * @param  {Function} callback callback function
-			 */
-			removeTermFromDeliveryRelation: function(deliveryID, termID, linkType, callback){
-				try{
-					if(deliveryID && termID){
-						var data = {
-							deliveryUID: deliveryID,
-							termUID: termID,
-							linkType: " "
-						};
-
-						$httpR.connectToServer(data, $httpR.DELIVERYremoveTerm, Globals, function(success, error){
-							if(error || !success){
-								callback(null, error);
-							}else{
-								callback(success, null);
-							}
-						});
-					}else{
-						callback(null, "error removing term to delivery relation");
-					}
-				}catch(e){
-					console.error("removeTermFromDeliveryRelation: ", e);
-					callback(null, e);
-				}
-			},
-
-			/**
-			 * Adds kbit to delivery relation
-			 * @param {Number}   deliveryID delivery id
-			 * @param {Number}   kbitID     kbit id
-			 * @param {String}   linkType   link type
-			 * @param {Float}    linkWeight link weight
-			 * @param {Function} callback   callback function
-			 */
-			addKbitToDeliveryRelation: function(deliveryID, kbitID, linkType, linkWeight, callback){
-				try{
-					if(deliveryID && kbitID){
-						var data = {
-							deliveryUID: deliveryID,
-							kbitUID: kbitID,
-							linkType: " ",
-							linkWeight: linkWeight
-						};
-
-						$httpR.connectToServer(data, $httpR.DELIVERYaddRelatedKbit, Globals, function(success, error){
-							if(error || !success){
-								callback(null, error);
-							}else{
-								callback(success, null);
-							}
-						});
-					}else{
-						callback(null, "error adding kbit to delivery relation");
-					}
-				}catch(e){
-					console.error("addKbitToDeliveryRelation: ", e);
-					callback(null, e);
-				}
-			},
-
-			/**
-			 * Removes kbit from delivery relation
-			 * @param  {Number}   deliveryID delivery id
-			 * @param  {Number}   kbitID     kbit id
-			 * @param  {String}   linkType   link type
-			 * @param  {Float}    linkWeight link weight
-			 * @param  {Function} callback   callback function
-			 */
-			removeKbitFromDeliveryRelation: function(deliveryID, kbitID, linkType, linkWeight, callback){
-				try{
-					if(deliveryID && kbitID){
-						var data = {
-							deliveryUID: deliveryID,
-							kbitUID: kbitID,
-							linkType: " ",
-							linkWeight: linkWeight
-						};
-
-						$httpR.connectToServer(data, $httpR.DELIVERYremoveRelatedKbit, Globals, function(success, error){
-							if(error || !success){
-								console.error("error removing kbit from delivery relation: ", error);
-								callback(null, error);
-							}else{
-								callback(success, null);
-							}
-						});
-					}else{
-						console.error("error removing kbit from delivery relation");
-						callback(null, "error removing kbit from delivery relation");
-					}
-				}catch(e){
-					console.error("removeKbitFromDeliveryRelation: ", e);
-					callback(null, e);
-				}
-			},
+			}
 
 		}
 		return Server;
