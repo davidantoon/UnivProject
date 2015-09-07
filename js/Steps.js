@@ -50,7 +50,6 @@
 					try{
 						var stor = new Storage();
 						stor.getWorkspaceData(false,function(dataFromLocalStorage, error){
-							
 							dataFromLocalStorage = ((dataFromLocalStorage)?dataFromLocalStorage.Steps:null);
 							if(dataFromLocalStorage != null && dataFromLocalStorage.length == 0)
 								dataFromLocalStorage = null;
@@ -310,7 +309,7 @@
 
 												// Update tab dataHolding
 												if(restoringPoint.workflowsKeys[i].tabsKeys[i3].dataHolding){
-													workspace.workflows[i2].tabs[i4].dataHolding = restoringPoint.workflowsKeys[i].tabsKeys[i3].dataHolding[actionOpIN_DE[0]];
+													workspace.workflows[i2].tabs[i4].dataHolding = restoringPoint.workflowsKeys[i].tabsKeys[i3].dataHolding[actionOpIN_DE[1]];
 													// update Data Holding results content Reference
 													
 												}													
@@ -336,6 +335,10 @@
 													// Update content inProgress
 													if(restoringPoint.workflowsKeys[i].tabsKeys[i3].contentKeys.inProgress){
 														workspace.workflows[i2].tabs[i4].content.inProgress = restoringPoint.workflowsKeys[i].tabsKeys[i3].contentKeys.inProgress[actionOpBE_AF[0]];
+														if(workspace.workflows[i2].tabs[i4].content.inProgress == false){
+															workspace.workflows[i2].tabs[i4].content.newData = {};
+															workspace.workflows[i2].tabs[i4].content.progressWizard = {};
+														}
 													}
 												}
 											}
@@ -350,6 +353,7 @@
 						else
 							this.currentUndoOrder--;
 						
+						this.savedInServer = false;
 						callback(true);
 
 
@@ -381,7 +385,7 @@
 		                }
 		                this.last20Steps = templast20Steps;
 		            }
-		            this.currentUndoOrder = 1;
+		            this.currentUndoOrder = 0;
 		        }catch(e){
 		        	$rootScope.currentScope.Toast.show("Error!","there was an error in updating last steps", Toast.LONG, Toast.ERROR);
 	                console.error("UpdateLastSteps: ", e);
@@ -409,6 +413,7 @@
 		            	return;
 
 		            this.currentStep = angular.copy(TNS_newSteps);
+		            Globals.updateUsedObjects(workspace);
 		            this.currentGlobals = Globals.getAllObjectToJson();
 		            this.currentUndoOrder = 0;
 		            var InsData = {
@@ -425,17 +430,7 @@
 		            for (var i = 0; i < this.last20Steps.length; i++) {
 		                this.last20Steps[i].orderSteps = i;
 		            }
-
 		            this.savedInServer = false;
-		            // var passThis = this;
-		            // var stor = new Storage();
-		            // stor.setWorkspaceData(this.toJson(), null, null, function(success, error){
-		            // 	if(error || !success){
-		            // 		$rootScope.currentScope.Toast.show("Error!","there was an error in upadting last steps", Toast.LONG, Toast.ERROR);		
-		            // 	}else{
-		            // 		passThis
-		            // 	}
-		            // });
 
 		        }catch(e){
 		        	$rootScope.currentScope.Toast.show("Error!","there was an error in upadting last steps", Toast.LONG, Toast.ERROR);
@@ -480,6 +475,26 @@
 		        	}
 		        	function loopDiffObjects(index, workflowsToBuild){
 		        		if(index < workflowsToBuild.length){
+		        			// restoring onjects
+		        			// check cotnents
+		        			for(var i=0; i<workflowsToBuild[index].tabs.length; i++){
+		        				if(workflowsToBuild[index].tabs[i].content){
+		        					workflowsToBuild[index].tabs[i].content = Globals.get(workflowsToBuild[index].tabs[i].content.id, workflowsToBuild[index].tabs[i].content.type);
+		        				}
+
+		        				if(workflowsToBuild[index].tabs[i].dataHolding && workflowsToBuild[index].tabs[i].dataHolding.results){
+		        					var tempResults = [];
+		        					for(var i2=0; i2<workflowsToBuild[index].tabs[i].dataHolding.results.length; i2++){
+		        						if(workflowsToBuild[index].tabs[i].dataHolding.results)
+		        							if(Globals.get(workflowsToBuild[index].tabs[i].dataHolding.results[i2].id, workflowsToBuild[index].tabs[i].dataHolding.results[i2].type))
+		        								tempResults.push(Globals.get(workflowsToBuild[index].tabs[i].dataHolding.results[i2].id, workflowsToBuild[index].tabs[i].dataHolding.results[i2].type));
+		        					}
+		        					workflowsToBuild[index].tabs[i].dataHolding.results = tempResults;
+		        					workflowsToBuild[index].tabs[i].dataHolding.resultsCount = tempResults.length;
+		        				}
+		        			}
+		        			// check dataholidng contents
+		        			// 
 		        			workflowsToBuild[index].requestFrom="restoreStep";
 		        			workflowsToBuild[index].callback = workflowsReturn;
 		        			workflowsToBuild[index].passindex = index + 1;
@@ -487,32 +502,32 @@
 		        			workflowsToBuild[index].workflowsToBuild = workflowsToBuild;
 		        			var tempWorkflow = new Workflow(workflowsToBuild[index]);
 		        		}else{
-		        			loopDiffObjectsDone();
-		        			// updateCashedContents();
+		        			updateCashedContents();
 		        		}
 		        	}
 		        	// check new -> if locked by me, take from cashe, else pull from server
 		        	function updateCashedContents(){
-		        		debugger;
 		        		Globals.getMinimized(function(result){
-		        			debugger;
 		        			if(result.length == 0){
 		        				loopDiffObjectsDone();
 		        			}else{
-		        				debugger;
 		        				var svr = new Server();
 		        				svr.getFromServer({objectsArray:result}, function(success, error){
-		        					console.log(success);
-		        					// for(var i=0; i<success.length; i++){
-		        					// 	for(var j=0; j< Globals.CashedObjects.length; j++){
-		        					// 		if(success[i].id == Globals.CashedObjects[j].id){
-		        					// 			if(success[i].type == Globals.CashedObjects[j].type){
-		        					// 				Globals.set(success[i]);
-		        					// 			}
-		        					// 		}
-		        					// 	}
-		        					// }
-		        					// refreshObjectsInheritence();
+		        					if(error && !success){
+		        						loopDiffObjectsDone();
+		        					}else{
+		        						var stor = new Storage();
+		        						loopObjects(0, success);
+		        						function loopObjects(index, newObjects){
+		        							if(index < newObjects.length){
+		        								stor.getElementById(newObjects[index], false, true, function(object){
+		        									loopObjects(Number(index)+1, newObjects);
+		        								});
+		        							}else{
+		        								refreshObjectsInheritence();
+		        							}
+		        						}
+			        				}
 		        				});
 		        			}
 		        		});
@@ -520,68 +535,47 @@
 
 		        	function refreshObjectsInheritence(){
 
-
-		        		// var stor = new Storage();
-		        		// loopGlobalObjects(0, Globals.CashedObjects);
-		        		// function loopGlobalObjects(Index, CashedObjects){
-		        		// 	if(Index < CashedObjects.length){
-			        	// 		switch(Globals.CashedObjects[Index].type){
-			        	// 			case "Delivery":
-
-
-			        	// 				// loop over terms
-			        	// 				loopTerms(0, Globals.CashedObjects[Index].terms);
-			        	// 				function loopTerms(index, termsArray){
-			        	// 					if(index < termsArray.length){
-			        	// 						str.getElementById(termsArray[index], false, false, function(result){
-			        	// 							loopTerms(Number(index)+1, termsArray);
-			        	// 						});
-			        	// 					}else{
-			        	// 						loopKbitsNeeded(0, Globals.CashedObjects[i].kBitsNeeded);
-			        	// 					}
-			        	// 				}
-			        	// 				// loop over kbits needed
-			        	// 				function loopKbitsNeeded(index, KbitsNeededArray){
-			        	// 					if(index < KbitsNeededArray.length){
-			        	// 						str.getElementById(KbitsNeededArray[index], false, false, function(result){
-			        	// 							loopKbitsNeeded(Number(index)+1, KbitsNeededArray);
-			        	// 						});
-			        	// 					}else{
-			        	// 						loopKbitsProvided(0, Globals.CashedObjects[i].kbitProvided);
-			        	// 					}
-			        	// 				}
-			        	// 				// loop over kbits provided
-			        	// 				function loopKbitsProvided(index, kbitsProvidedArray){
-			        	// 					if(index < kbitsProvidedArray.length){
-			        	// 						str.getElementById(kbitsProvidedArray[index], false, false, function(result){
-			        	// 							loopKbitsProvided(Number(index)+1, kbitsProvidedArray);
-			        	// 						});
-			        	// 					}else{
-			        	// 						loopGlobalObjects(Number(Index)+1, CashedObjects);
-			        	// 					}
-			        	// 				}
-			        	// 			break;
-			        	// 			case "Term":
-
-			        	// 			break;
-			        	// 			case "Kbit":
-			        	// 				//loop terms
-			        	// 				loopTerms(0, Globals.CashedObjects[Index].terms);
-			        	// 				function loopTerms(index, termsArray){
-			        	// 					if(index < termsArray.length){
-			        	// 						str.getElementById(termsArray[index], false, false, function(result){
-			        	// 							loopTerms(Number(index)+1, termsArray);
-			        	// 						});
-			        	// 					}else{
-			        	// 						loopGlobalObjects(Number(Index)+1, CashedObjects);
-			        	// 					}
-			        	// 				}
-			        	// 			break;
-			        	// 			default:
-			        	// 			break;
-			        	// 		}
-			        	// 	}
-		        		// }
+		        		// loopKbits
+		        		var Kbits = Globals.getRecentObjects("Kbit");
+		        		for(var i=0; i<Kbits.length; i++){
+		        			if(Kbits[i].terms){
+		        				var tempTerms = [];
+		        				for(var i2=0; i2<Kbits[i].terms.length; i2++){
+		        					if(Globals.get(Kbits[i].terms[i2].id, Kbits[i].terms[i2].type))
+		        						tempTerms.push(Globals.get(Kbits[i].terms[i2].id, Kbits[i].terms[i2].type));
+		        				}
+		        				Kbits[i].terms = tempTerms;
+		        			}
+		        		}
+		        		// loopDelivery
+		        		var Deliveries = Globals.getRecentObjects("Delivery");
+		        		for(var i=0; i<Deliveries.length; i++){
+		        			if(Deliveries[i].terms){
+		        				var tempTerms = [];
+		        				for(var i2=0; i2<Deliveries[i].terms.length; i2++){
+		        					if(Globals.get(Deliveries[i].terms[i2].id, Deliveries[i].terms[i2].type))
+		        						tempTerms.push(Globals.get(Deliveries[i].terms[i2].id, Deliveries[i].terms[i2].type));
+		        				}
+		        				Deliveries[i].terms = tempTerms;
+		        			}
+		        			if(Deliveries[i].kBitsNeeded){
+		        				var tempTerms = [];
+		        				for(var i2=0; i2<Deliveries[i].kBitsNeeded.length; i2++){
+		        					if(Globals.get(Deliveries[i].kBitsNeeded[i2].id, Deliveries[i].kBitsNeeded[i2].type))
+		        						tempTerms.push(Globals.get(Deliveries[i].kBitsNeeded[i2].id, Deliveries[i].kBitsNeeded[i2].type));
+		        				}
+		        				Deliveries[i].kBitsNeeded = tempTerms;
+		        			}
+		        			if(Deliveries[i].kBitsProvided){
+		        				var tempTerms = [];
+		        				for(var i2=0; i2<Deliveries[i].kBitsProvided.length; i2++){
+		        					if(Globals.get(Deliveries[i].kBitsProvided[i2].id, Deliveries[i].kBitsProvided[i2].type))
+		        						tempTerms.push(Globals.get(Deliveries[i].kBitsProvided[i2].id, Deliveries[i].kBitsProvided[i2].type));
+		        				}
+		        				Deliveries[i].kBitsProvided = tempTerms;
+		        			}
+		        		}
+		        		loopDiffObjectsDone();
 		        	}
 		        	function loopDiffObjectsDone(){
 		        		callback();
@@ -633,7 +627,6 @@
 			            	if(error || !success){
 			            		$rootScope.currentScope.Toast.show("Error!","there was an error in upadting last steps", Toast.LONG, Toast.ERROR);		
 			            	}else{
-			            		debugger;
 			            		var svr = new Server("steps", $rootScope.currentScope.isDummy);
 								if(typeof callback == "funtion")
 									svr.setSteps(localStorage["com.intel.userdata"], callback);
@@ -677,15 +670,20 @@
 
 			removeRelatedSteps: function(content){
 				var i=0;
-				while(i < this.last20Steps.length - 1){
-					if(checkChangesInStepsAffectsOnlyNewData(content, JSON.parse(this.last20Steps[i].allWorkFlowContents),JSON.parse(this.last20Steps[i+1].allWorkFlowContents))){
-						this.last20Steps.splice(i, 1);
-						console.log(true);
-					}else{
-						console.log(false);
+				while(i < this.last20Steps.length){
+					var step = JSON.parse(this.last20Steps[i].allWorkFlowContents);
+					if(step.affectsOnlyEditingData && step.affectsOnlyEditingData == true){
+						if(step.contentId && step.contentType && step.contentId == content.id &&  step.contentType == content.type){
+							this.last20Steps.splice(i,1);
+						}else
+							i++;
+					}else
 						i++;
-					}
 				}
+				for (var i = 0; i < this.last20Steps.length; i++) {
+	                this.last20Steps[i].orderSteps = i;
+	            }
+	            this.currentUndoOrder = 0;
 			}
 
 

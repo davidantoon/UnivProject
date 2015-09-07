@@ -280,11 +280,10 @@
 				if( elemId != undefined && elemId != null && elemId != ""){
 					var cashedObject = Globals.get(elemId, elemType);
 					if(forceServerPull == true){
-						if(cashedObject == null){
-							createObjects(jsonObject, callback, this);
-						}else{
-							callback(cashedObject);
+						if(cashedObject != null){
+							Globals.pop(cashedObject.id, cashedObject.type);
 						}
+						createObjects(jsonObject, callback, this);
 					}else if(forceLastmodefied == true){
 						if(cashedObject == null)
 							createObjects(jsonObject, callback, this);
@@ -356,7 +355,14 @@
 									}
 								break;
 								case "Kbit":
-									loopTerms2(0, objectToAdd.terms, []);
+									if(objectToAdd.terms)
+										loopTerms2(0, objectToAdd.terms, []);
+									else{
+										objectToAdd.terms =	[];
+										var newObject = new Content(objectToAdd);
+										Globals.set(newObject);
+										passCallback(newObject);
+									}
 									function loopTerms2(index, termsArray, termResults){
 										if(index < termsArray.length){
 											passThis.getElementById(termsArray[index], objectToAdd.forceLastmodefied, objectToAdd.forceServerPull, function(resultTerm){

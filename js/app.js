@@ -63,8 +63,6 @@ var ngScope;
             console.warn("16) Remove all debugger and convert all logs to the log class");
             console.warn("17) Loop on all workflows and CashedContents extract none used obejcts");
             console.warn("18) Check error .left of interval (ZoomRange)");
-            console.warn("19) Fix deleteElement function in server.js");
-            console.warn("20) Fix CancelEditingDelivery function in server.js");
             console.warn("21) Check all server functions");
             console.groupEnd();
             
@@ -1419,14 +1417,11 @@ var ngScope;
                                     $scope.Toast.show("Server Error", error.message, Toast.LONG, Toast.ERROR);
                                     $scope.InsertStepToLast10Steps();
                                 }else{
-                                    debugger;
                                     var stor = new Storage();
                                     loopResults(0, result, []);
                                     function loopResults(index, originalData, resultData){
                                         if(index < originalData.length){
-                                            debugger;
                                             stor.getElementById(originalData[index], holdingRequestTab.dataHolding.forceLastModifed, holdingRequestTab.dataHolding.forceServerPull, function(resultO){
-                                                debugger;
                                                 if(resultO != undefined)
                                                     resultData.push(resultO);
                                                 loopResults(Number(index)+1, originalData, resultData);

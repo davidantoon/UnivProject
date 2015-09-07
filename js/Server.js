@@ -121,19 +121,30 @@
 								console.error("error searching is server: ", error);
 								results = [];
 							}else{
-								debugger;
 								for(var i=0; i<results.length; i++){
 									results[i] = ngScope.objectServerToClient(results[i]);
 								}
 							}
-							console.log(results);
 							mergeData(results, ++resultCounter);
 						}
 						
 						function mergeData(result, index){
 							mergeResult = mergeResult.concat(result);
-							if(index == 3)
-								callback(mergeResult);
+							if(index == 3){
+								var tempData = [];
+								for(var i=0; i<mergeResult.length; i++){
+									var found = false;
+									for(var j=0; j<tempData.length; j++){
+										if(tempData[j].id == mergeResult[i].id){
+											found = true;
+										}
+									}
+									if(found == false){
+										tempData.push(mergeResult[i]);
+									}
+								}
+								callback(tempData);
+							}
 						}
 						var searchFields = [];
 						var mergeResult = [];
@@ -488,27 +499,39 @@
 				try{
 					var temmpArray = [];
 					if(this.baseUr== "dummy"){
-						if(objectsArray){
-							if(objectsArray.length == 0){
-								callback(null, "objects Array is empty");
-							}else{
-								// send array to server and get the objects
-								callback(temmpArray);
-							}
-						}
+						callback([]);
 					}else{
 						if(objectsArray){
 							if(objectsArray.length == 0){
-								callback(null, "objects Array is empty");
+								callback([]);
 							}else{
 								// send array to server and get the objects
-								debugger;
 								$httpR.connectToServer(objectsArray, $httpR.REFRESHERgetData, Globals, function(success, error){
-									debugger;
-									if(error && !success)
+									if(error && !success){
+										console.log(error);
 										callback([]);
-									else
-										callback(success);
+									}
+									else{
+										success = success.DELIVERIES.concat(success.KBITS);
+										if(success && success.length){
+											debugger;
+											var tempData = [];
+											for(var i=0; i<success.length; i++){
+												var found = false;
+												for(var j=0; j<tempData.length; j++){
+													if(tempData[j].UID == success[i].UID){
+														found = true;
+													}
+												}
+												if(found == false){
+													tempData.push(success[i]);
+												}
+											}
+											callback(tempData);
+										}else{
+											callback([]);
+										}
+									}
 								});
 							}
 						}

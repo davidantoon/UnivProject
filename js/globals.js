@@ -81,62 +81,216 @@
 
         updateUsedObjects: function(workspace){
             // loop on cashed objects and check if its in workflow
-            var found = false;
 
-            var CashedObjectsKeys = Object.keys(this.CashedObjects);
-            for (var i = 0; i < CashedObjectsKeys.length; i++) {
-                found = false;
-                //loop on workflows
-                for(var j=0; j<workspace.workflows.length; j++){
-                    //loop over tabs
-                    for(var k=0; k<workspace.workflows[j].tabs.length; k++){
-                        if(workspace.workflows[j].tabs[k].dataHolding.result){
-                            for(var z=0; z< workspace.workflows[j].tabs[k].dataHolding.result.length; z++){
-                                if(workspace.workflows[j].tabs[k].dataHolding.result[z].id == this.CashedObjects[CashedObjectsKeys].id){
-                                    found = true;
-                                    break;
+            debugger;
+            // Check Terms
+            var ChashedTerms = this.getRecentObjects("Term");
+            for(var i=0; i<ChashedTerms.length; i++){
+                var termInUse = false;
+                for(var i2=0; i2<workspace.workflows.length; i2++){
+                    for(var i3=0; i3<workspace.workflows[i2].tabs.length; i3++){
+                        
+                        // 1) In dataHolding.results                      || if results type Term
+                        // 2) In dataHolding.results.terms                || if results type Delivery Or Kbit
+                        // 3) In dataHolding.results.kBitsNeeded.terms    || if results type Delivery
+                        // 4) In dataHolding.results.kBitsProvided.terms  || if results type Delivery
+                        if(workspace.workflows[i2].tabs[i3].dataHolding && workspace.workflows[i2].tabs[i3].dataHolding.results){
+                            for(var i4=0; i4<workspace.workflows[i2].tabs[i3].dataHolding.results.length; i4++){
+                                if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].type == "Term"){
+                                    if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].id == ChashedTerms[i].id){
+                                        workspace.workflows[i2].tabs[i3].dataHolding.results[i4] = ChashedTerms[i];
+                                        termInUse = true;
+                                    }
+                                }else{
+                                    if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].terms){
+                                        for(var i5=0; i5<workspace.workflows[i2].tabs[i3].dataHolding.results[i4].terms.length; i5++){
+                                            if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].terms[i5].id == ChashedTerms[i].id){
+                                                workspace.workflows[i2].tabs[i3].dataHolding.results[i4].terms[i5] = ChashedTerms[i];
+                                                termInUse = true;
+                                            }
+                                        }
+                                    }
+                                    if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].type == "Delivery"){
+                                        if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsNeeded)
+                                            for(var i5=0; i5<workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsNeeded.length; i5++){
+                                                if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsNeeded[i5].terms)
+                                                    for(var i6=0; i6<workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsNeeded[i5].terms.length; i6++){
+                                                        if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsNeeded[i5].terms[i6].id == ChashedTerms[i].id){
+                                                            workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsNeeded[i5].terms[i6] = ChashedTerms[i].id;
+                                                            termInUse = true;
+                                                        }
+                                                    }
+                                            }
+                                        if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsProvided)
+                                            for(var i5=0; i5<workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsProvided.length; i5++){
+                                                if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsProvided[i5].terms)
+                                                    for(var i6=0; i6<workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsProvided[i5].terms.length; i6++){
+                                                        if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsProvided[i5].terms[i6].id == ChashedTerms[i].id){
+                                                            workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsProvided[i5].terms[i6] = ChashedTerms[i].id;
+                                                            termInUse = true;
+                                                        }
+                                                    }
+                                            }
+                                    }
                                 }
                             }
-                            if(found)
-                                break;
+                        }
+
+                        // 5) In content                    || if content type Term
+                        // 6) In content.terms              || if content type Delivery or Kbit
+                        // 7) In content.kBitsNeeded        || if content type Delivery
+                        // 8) In content.kBitsProvided        || if content type Delivery
+                        if(workspace.workflows[i2].tabs[i3].content){
+                            if(workspace.workflows[i2].tabs[i3].content.type == "Term"){
+                                if(workspace.workflows[i2].tabs[i3].content.id == ChashedTerms[i].id){
+                                    workspace.workflows[i2].tabs[i3].content = ChashedTerms[i];
+                                    termInUse = true;
+                                }
+                            }else{
+                                if(workspace.workflows[i2].tabs[i3].content.terms){
+                                    for(var i4=0; i4<workspace.workflows[i2].tabs[i3].content.terms.length; i4++){
+                                        if(workspace.workflows[i2].tabs[i3].content.terms[i4].id == ChashedTerms[i].id){
+                                            workspace.workflows[i2].tabs[i3].content.terms[i4] = ChashedTerms[i];
+                                            termInUse = true;
+                                        }
+                                    }
+                                }
+                                if(workspace.workflows[i2].tabs[i3].content.type == "Delivery"){
+                                    if(workspace.workflows[i2].tabs[i3].content.kBitsNeeded)
+                                        for(var i4=0; i4<workspace.workflows[i2].tabs[i3].content.kBitsNeeded.length; i4++){
+                                            if(workspace.workflows[i2].tabs[i3].content.kBitsNeeded[i4].terms)
+                                                for(var i5=0; i5<workspace.workflows[i2].tabs[i3].content.kBitsNeeded[i4].terms.length; i6++){
+                                                    if(workspace.workflows[i2].tabs[i3].content.kBitsNeeded[i4].terms[i5].id == ChashedTerms[i].id){
+                                                        workspace.workflows[i2].tabs[i3].content.kBitsNeeded[i4].terms[i5] = ChashedTerms[i].id;
+                                                        termInUse = true;
+                                                    }
+                                                }
+                                        }
+                                    if(workspace.workflows[i2].tabs[i3].content.kBitsProvided)
+                                        for(var i4=0; i4<workspace.workflows[i2].tabs[i3].content.kBitsProvided.length; i4++){
+                                            if(workspace.workflows[i2].tabs[i3].content.kBitsProvided[i4].terms)
+                                                for(var i5=0; i5<workspace.workflows[i2].tabs[i3].content.kBitsProvided[i4].terms.length; i6++){
+                                                    if(workspace.workflows[i2].tabs[i3].content.kBitsProvided[i4].terms[i5].id == ChashedTerms[i].id){
+                                                        workspace.workflows[i2].tabs[i3].content.kBitsProvided[i4].terms[i5] = ChashedTerms[i].id;
+                                                        termInUse = true;
+                                                    }
+                                                }
+                                        }
+                                }
+                            }
                         }
                     }
-                    if(found){
-                        break;
+                }
+                debugger;
+                if(termInUse == false)
+                    this.pop(ChashedTerms[i].id, ChashedTerms[i].type);
+            }
+
+            // Check Kbits
+            var ChashedKbits = this.getRecentObjects("Kbit");
+            for(var i=0; i<ChashedKbits.length; i++){
+                var kbitInUse = false;
+                for(var i2=0; i2<workspace.workflows.length; i2++){
+                    for(var i3=0; i3<workspace.workflows[i2].tabs.length; i3++){
+
+                        // 1) In dataHolding.results                || if results type Kbit
+                        // 2) In dataHolding.results.kBitsNeeded    || if results type Delivery
+                        // 3) In dataHolding.results.kBitsProvided  || if results type Delivery
+                        if(workspace.workflows[i2].tabs[i3].dataHolding && workspace.workflows[i2].tabs[i3].dataHolding.results){
+                            for(var i4=0; i4<workspace.workflows[i2].tabs[i3].dataHolding.results.length; i4++){
+                                if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].type == "Kbit"){
+                                    if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].id == ChashedKbits[i].id){
+                                        workspace.workflows[i2].tabs[i3].dataHolding.results[i4] = ChashedKbits[i];
+                                        kbitInUse = true;
+                                    }
+                                }else if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].type == "Delivery"){
+                                    if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsNeeded){
+                                        for(var i5=0; i5<workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsNeeded.length; i5++){
+                                            if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsNeeded[i5].id == ChashedKbits[i].id){
+                                                workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsNeeded[i5] = ChashedKbits[i];
+                                                kbitInUse = true;
+                                            }
+                                        }
+                                    }
+                                    if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsProvided){
+                                        for(var i5=0; i5<workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsProvided.length; i5++){
+                                            if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsNeeded[i5].id == ChashedKbits[i].id){
+                                                workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsNeeded[i5] = ChashedKbits[i];
+                                                kbitInUse = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // 4) In content                            || if content type Kbit
+                        // 5) In content.kBitsNeeded                || if content type Delivery
+                        // 6) In content.kBitsProvided              || if content type Delivery
+                        if(workspace.workflows[i2].tabs[i3].content){
+                            if(workspace.workflows[i2].tabs[i3].content.type == "Kbit"){
+                                if(workspace.workflows[i2].tabs[i3].content.id == ChashedKbits[i].id){
+                                    workspace.workflows[i2].tabs[i3].content = ChashedKbits[i];
+                                    kbitInUse = true;
+                                }
+                            }else if(workspace.workflows[i2].tabs[i3].content.type == "Delivery"){
+                                if(workspace.workflows[i2].tabs[i3].content.kBitsNeeded){
+                                    for(var i4=0; i4<workspace.workflows[i2].tabs[i3].content.kBitsNeeded.length; i4++){
+                                        if(workspace.workflows[i2].tabs[i3].content.kBitsNeeded[i4].id == ChashedKbits[i].id){
+                                            workspace.workflows[i2].tabs[i3].content.kBitsNeeded[i4] = ChashedKbits[i];
+                                            kbitInUse = true;
+                                        }
+                                    }
+                                }
+                                if(workspace.workflows[i2].tabs[i3].content.kBitsProvided){
+                                    for(var i4=0; i4<workspace.workflows[i2].tabs[i3].content.kBitsProvided.length; i4++){
+                                        if(workspace.workflows[i2].tabs[i3].content.kBitsProvided[i4].id == ChashedKbits[i].id){
+                                            workspace.workflows[i2].tabs[i3].content.kBitsProvided[i4] = ChashedKbits[i];
+                                            kbitInUse = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
-                if(found == false){
-                    this.pop(this.CashedObjects[CashedObjectsKeys[i]].id, this.CashedObjects[CashedObjectsKeys[i]].type);
-                }
+                if(kbitInUse == false)
+                    this.pop(ChashedKbits[i].id, ChashedKbits[i].type);
             }
-        // for(var obj in this.CashedObjects){
-       //  debugger;
-       //      if(this.CashedObjects.hasOwnProperty(obj)){
-       //          found = false;
-       //          //loop on workflows
-       //          for(var j=0; j<workspace.workflows.length; j++){
-       //              //loop over tabs
-       //              for(var k=0; k<workspace.workflows[j].tabs.length; k++){
-       //                  if(workspace.workflows[j].tabs[k].dataHolding.result){
-       //                      for(var z=0; z< workspace.workflows[j].tabs[k].dataHolding.result.length; z++){
-       //                          if(workspace.workflows[j].tabs[k].dataHolding.result[z].id == this.CashedObjects[obj].id){
-       //                              found = true;
-       //                              break;
-       //                          }
-       //                      }
-       //                      if(found)
-       //                          break;
-       //                  }
-       //              }
-       //              if(found){
-       //                  break;
-       //              }
-       //          }
-       //          if(found == false){
-       //              this.pop(this.CashedObjects[obj].id, this.CashedObjects[obj].type);
-       //          }
-       //      }
-       // }
+
+            // Check Delivery
+            var ChashedDeliveries = this.getRecentObjects("Delivery");
+            for(var i=0; i<ChashedDeliveries.length; i++){
+                var deliveryInUse = false;
+                for(var i2=0; i2<workspace.workflows.length; i2++){
+                    for(var i3=0; i3<workspace.workflows[i2].tabs.length; i3++){
+                        
+                        // 1) In dataHolding.results                || if results type Delivery
+                        if(workspace.workflows[i2].tabs[i3].dataHolding && workspace.workflows[i2].tabs[i3].dataHolding.results){
+                            for(var i4=0; i4<workspace.workflows[i2].tabs[i3].dataHolding.results.length; i4++){
+                                if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].type == "Delivery"){
+                                    if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].id == ChashedDeliveries[i].id){
+                                        workspace.workflows[i2].tabs[i3].dataHolding.results[i4] = ChashedDeliveries[i];
+                                        deliveryInUse = true;
+                                    }
+                                }
+                            }
+                        }
+
+                        // 2) In content                            || if content type Delivery
+                        if(workspace.workflows[i2].tabs[i3].content){
+                            if(workspace.workflows[i2].tabs[i3].content.type == "Delivery"){
+                                if(workspace.workflows[i2].tabs[i3].content.id == ChashedDeliveries[i].id){
+                                    workspace.workflows[i2].tabs[i3].content = ChashedDeliveries[i];
+                                    deliveryInUse = true;
+                                }
+                            }
+                        }
+                    }
+                }
+                if(deliveryInUse == false)
+                    this.pop(ChashedDeliveries[i].id, ChashedDeliveries[i].type);
+            }
         },
 
         getAllObjectToJson: function(){
@@ -295,7 +449,6 @@
                     crossDomain : true,
                     timeout: 10000,
                     success: function(success) {
-                        debugger;
                         console.log(success);
                         if (success.status == 200)
                             callback(success.data, null);
@@ -792,8 +945,8 @@
         return tempJson;
     }).value('termServerToClient', function(serverObj){
         var tempName={}, tempDescription={};
-        tempName[Object.keys(serverObj.TERM_MEANING)[0]] = serverObj.TERM_MEANING[Object.keys(serverObj.TERM_MEANING)[0]];
-        tempDescription[Object.keys(serverObj.TERM_STRING)[0]] = serverObj.TERM_STRING[Object.keys(serverObj.TERM_STRING)[0]];
+        tempDescription[Object.keys(serverObj.TERM_MEANING)[0]] = serverObj.TERM_MEANING[Object.keys(serverObj.TERM_MEANING)[0]];
+        tempName[Object.keys(serverObj.TERM_STRING)[0]] = serverObj.TERM_STRING[Object.keys(serverObj.TERM_STRING)[0]];
         return {
             "id": serverObj.UID,
             "name": tempName,
