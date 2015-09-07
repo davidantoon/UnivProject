@@ -42,21 +42,27 @@
 			 */
 			lock: function(callback){
 				try{
+
 					var dataToSend = {};
 					dataToSend[this.type.toLowerCase()+"UID"] = this.id;
 					var passThis = this;
 					$httpR.connectToServer(dataToSend, this.type.toUpperCase() + "beginEdit", Globals, function(success, error){
 						if(error && !success){
-							callback(null, error);
+							Log.e("Content","lock", "Error locking object", error, passThis);
+							if(error.statusText && error.statusText == "timeout")
+								callback(1);
+							else
+								callback(false);
 						}else{
+							Log.d("Content","lock", "Object locked", success, passThis);
 							passThis.locked = true;
 							passThis.lockedBy = Globals.CurrentUser;
-							callback(success, null);
+							callback(true);
 						}
 					});
 				}catch(e){
-	           		Log.e("Content","lock", e);
-	           		callback(null, e);
+	           		Log.e("Content","lock", "Error saving object as editing mode", error, this);
+	           		callback(false);
 				}
 			},
 
@@ -119,17 +125,19 @@
 			save: function(versionNotes, callback){
 				try{
 					this.modifyContent();
-					var mThis = this;
-					this.connectToDataBase.saveElement(mThis, function(success, error){
+					var passThis = this;
+					this.connectToDataBase.saveElement(passThis, function(success, error){
 						if(error || !success){
+							Log.e("Content","save", "Error saving object as editing mode", error, passThis);
 							callback(false);
 						}else{
+							Log.d("Content","save", "Object saved as editing mode", success, passThis);
 							callback(true);
 						}
 					});
 				}catch(e){
-					Log.e("Content","save", error);
-	            	callback(null,{"message":e.message,"code":e.code});
+					Log.e("Content","save", "Error saving object as editing mode", error, this);
+	            	callback(false);
 	            }
 			},
 
@@ -140,11 +148,55 @@
 			 */
 			release: function(versionNotes, callback){
 				try{
+					if(this.type != "Term"){
+						var data = {};
+						var passThis = this;
+						data[this.type.toLowerCase()+"UID"] = this.id;
+						$httpR.connectToServer(data,  this.type.toUpperCase()+ "publish", Globals, function(success, error){
+							if(error || !success){
+								passThis.progressWizard = {};
+								passThis.newData = {};
+								Log.e("Content", "Release", "Error releaseing object from editing", error, passThis);
+								callback(false);
+							}else{
+								passThis.progressWizard = {};
+								passThis.newData = {};
+								passThis.lastModified = +(new Date());
+	                            passThis.locked = false;
+	                            passThis.lockedBy = {};
+								Log.d("Content","Release", "Object released from editing", success, passThis);
+								callback(true);
+							}
+						});
+					}else{
+						Log.e("Content", "Release", "Bad Content Type", this, passThis);
+					}
+				}catch(e){
+	           		Log.e("Content", "Release", "Error releaseing object from editing", e, this);
+				}
+			},
+
+
+			revoke: function(versionNotes, callback){
+				try{
+					var data = {};
+					var passThis = this;
+					data[this.type.toLowerCase()+"UID"] = this.id;
+					$httpR.connectToServer(data,  this.type.toUpperCase()+ "cancelEdit", Globals, function(success, error){
+						Log.i("Content", "revoke", "Update Data from original object that stored in http success!");
+						if(error || !success){
+							Log.e("Content", "revoke", "Error revoking object to original", error, passThis);
+							callback(false);
+						}else{
+							Log.d("Content","revoke", "Object revoked to original", success, passThis);
+							callback(true);
+						}
+					});
 
 				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","There was an error in releasing content", Toast.LONG, Toast.ERROR);
-	           		Log.e("Content","release", e);
-				}
+					Log.e("Content", "revoke", "Error revoking object to original", error, this);
+	            	callback(false);
+	            }
 			},
 
 			/**

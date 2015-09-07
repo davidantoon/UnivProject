@@ -32,8 +32,8 @@
               <ons-col  class="LogoutDivTabbar hoverOp clickable" ng-click="logout();" width="49px">
                 <ons-icon  size="25px" icon="ion-android-exit"></ons-icon>
               </ons-col>
-              <ons-col width="220px" class="Logo rtl">
-                <img ng-src="{{currentUser.profilePicture}}">
+              <ons-col width="220px" ng-click="openProfileDialog();" class="Logo rtl">
+                <div class="ProfilePicDivTabbar" style="{{'background:url(\''+getProfilePicture()+'\') 50% 50% no-repeat;'}}"></div>
                 <p>{{currentUser.firstName+" "+currentUser.lastName}}</p>
               </ons-col>
               <ons-col id="NotificationsButton1" ng-click="testFunctions1();" width="100px" style="width:100px; position:relative;" class="">
@@ -513,7 +513,7 @@
                             Edit
                           </ons-col>
                         </ons-row>
-                        <ons-row class="hoverOp clickable">
+                        <ons-row ng-click="revokeContent(wFlow.selectedTab.content)" class="hoverOp clickable">
                           <ons-col class="optionIcon" width="34px">
                             <ons-icon icon="ion-backspace" size="18px"></ons-icon>
                           </ons-col>
@@ -732,97 +732,79 @@
       <div class="ToastBody"></div>
 
     </div>
+    <div id="profileDialogClose" ng-click="closeProfileDialog();" style="display:none"></div>
     <div id="profileDialog" style="display:none">
-      <div class="profileContainer">
-        <div class="header">Profile Dialog</div>
-        <div class="body">
-          <ons-row>
-            <ons-col width="10px"></ons-col> <!-- Padding --> 
-            <ons-col width="150px">Profile Picutre</ons-col>
-            <ons-col>
-              <img ng-src="{{currentUser.profilePicture}}">
-            </ons-col>
-          </ons-row>
-          <ons-row>
-            <ons-col width="10px"></ons-col> <!-- Padding --> 
-            <ons-col width="150px">First Name</ons-col>
-            <ons-col>
-              <input type="text" value="{{currentUser.firstName}}" id="profileFirstName"/>
-            </ons-col>
-            <ons-col width="10px"></ons-col> <!-- Padding --> 
-          </ons-row>
-          <ons-row>
-            <ons-col width="10px"></ons-col> <!-- Padding --> 
-            <ons-col width="150px">Last Name</ons-col>
-            <ons-col>
-              <input type="text" value="{{currentUser.lastName}}" id="profileLastName"/>
-            </ons-col>
-            <ons-col width="10px"></ons-col> <!-- Padding --> 
-          </ons-row>
-          <ons-row>
-            <ons-col width="10px"></ons-col> <!-- Padding --> 
-            <ons-col width="150px">Username</ons-col>
-            <ons-col>
-              <label for="Username"> {{currentUser.username}}</label>
-            </ons-col>
-            <ons-col width="10px"></ons-col> <!-- Padding --> 
-          </ons-row>
-          <ons-row>
-            <ons-col width="10px"></ons-col> <!-- Padding --> 
-            <ons-col width="150px">Old Password</ons-col>
-            <ons-col>
-              <input ng-model="oldPassword" type="password" placeholder="Enter old password" required="" id="profileOldPassword"/>
-            </ons-col>
-            <ons-col width="10px"></ons-col> <!-- Padding --> 
-          </ons-row>
-          <ons-row>
-            <ons-col width="10px"></ons-col> <!-- Padding --> 
-            <ons-col width="150px">New Password</ons-col>
-            <ons-col>
-              <input type="password" placeholder="Enter new password" id="profileNewPassword"/>
-            </ons-col>
-            <ons-col width="10px"></ons-col> <!-- Padding --> 
-          </ons-row>
-          <ons-row>
-            <ons-col width="10px"></ons-col> <!-- Padding --> 
-            <ons-col width="150px" >Confirm Password</ons-col>
-            <ons-col>
-              <input type="password" placeholder="Confrim password" id="profileConfirmPassword"/>
-            </ons-col>
-            <ons-col width="10px"></ons-col> <!-- Padding --> 
-          </ons-row>
-          <ons-row>
-            <ons-col width="10px"></ons-col> <!-- Padding --> 
-            <ons-col width="150px">Email</ons-col>
-            <ons-col>
-              <input type="text" value="{{currentUser.email}}" id="profileEmail"/>
-            </ons-col>
-            <ons-col width="10px"></ons-col> <!-- Padding --> 
-          </ons-row>
-          <ons-row>
-            <ons-col width="10px"></ons-col> <!-- Padding --> 
-            <ons-col width="150px">Role</ons-col>
-            <ons-col>
-              <label id="profileRole">{{currentUs.role}}</label>
-            </ons-col>
-            <ons-col width="10px"></ons-col> <!-- Padding --> 
-          </ons-row>
-          <ons-row>
-            <ons-col width="10px"></ons-col> <!-- Padding --> 
-            <ons-col width="150px">Upload New Picture</ons-col>
-            <ons-col>
-              <input type="file" id="newImageFileId" />
-            </ons-col>
-          </ons-row>
-          <ons-row>
-            <ons-col> <button ng-click="((checkPasswords() == true)?changePassword():console.error('Passwords are not indentical'))">Change Password</button> </ons-col>
-            <ons-col> <button ng-click="updateUser();">Update Profile</button> </ons-col>
-            <ons-col> <button ng-click="updateImageInSRV();">Upload Proflie Picture</button> </ons-col>
-          </ons-row>
-        </div>
+      <div class="ProfileAfterLoad" style="display: block;">
+        <ons-row class="row ons-row-inner ProfileViewHeader">
+          <ons-col class="col ons-col-inner">
+            <img class="blurBackground" ng-src="{{getProfilePicture()}}" >
+            <div class="ProfilePicDiv" style="{{'background:url(\''+getProfilePicture()+'\') 50% 50% no-repeat;background-size:100px;'}}"></div>
+          </ons-col>
+        </ons-row>
+        <ons-row class="row ons-row-inner">
+          <ons-col class="col ons-col-inner ProfileName ng-binding">{{currentUser.username}}</ons-col>
+        </ons-row>
+        <ons-row class="profileDialogRow" class="profileDialogRow">
+          <ons-col width="20px"></ons-col>
+          <ons-col class="ColTypeProfile col ons-col-inner" width="100px" >First Name</ons-col>
+          <ons-col class="ColResProfile col ons-col-inner">
+            <ons-icon class="updateName updateFirstNameProfile ons-icon ons-icon--ion ion-edit" ng-click="DisplayUpdateSelectedProfile('FirstName')" icon="ion-edit" size="16px" style="font-size: 16px; display: inline;"></ons-icon>
+            <ons-icon class="updateNameLoader updateFirstNameProfileLoader ons-icon ons-icon--ion ion-load-d" style="display: none; font-size: 22px;" spin="true" icon="ion-load-d" size="22px"></ons-icon>
+            <input style="width:120px" ng-enter="UpdateSelectedProfile('FirstName');" ng-blur="UpdateSelectedProfile('FirstName')" class="updateNameInput updateFirstNameProfileInput" type="text" placeholder="First Name" value="{{currentUser.firstName}}">
+            <span class="updateFirstNameValue ng-binding">{{currentUser.firstName}}</span>
+          </ons-col>
+        </ons-row>
+        <ons-row class="profileDialogRow" class="profileDialogRow">
+          <ons-col width="20px"></ons-col>
+          <ons-col class="ColTypeProfile col ons-col-inner" width="100px" >Last Name</ons-col>
+          <ons-col class="ColResProfile col ons-col-inner">
+            <ons-icon class="updateName updateLastNameProfile ons-icon ons-icon--ion ion-edit" ng-click="DisplayUpdateSelectedProfile('LastName')" icon="ion-edit" size="16px" style="font-size: 16px; display: inline;"></ons-icon>
+            <ons-icon class="updateNameLoader updateLastNameProfileLoader ons-icon ons-icon--ion ion-load-d" style="display: none; font-size: 22px;" spin="true" icon="ion-load-d" size="22px"></ons-icon>
+            <input style="width:120px" ng-enter="UpdateSelectedProfile('LastName');" ng-blur="UpdateSelectedProfile('LastName')" class="updateNameInput updateLastNameProfileInput" type="text" placeholder="Last Name" value="{{currentUser.lastName}}">
+            <span class="updateLastNameValue ng-binding">{{currentUser.lastName}}</span>
+          </ons-col>
+        </ons-row>
+        <ons-row class="profileDialogRow" class="profileDialogRow">
+          <ons-col width="20px"></ons-col>
+          <ons-col class="ColTypeProfile col ons-col-inner" width="100px" >Email</ons-col>
+          <ons-col class="ColResProfile col ons-col-inner">
+            <ons-icon class="updateName updateEmailProfile ons-icon ons-icon--ion ion-edit" ng-click="DisplayUpdateSelectedProfile('Email')" icon="ion-edit" size="16px" style="font-size: 16px; display: inline;"></ons-icon>
+            <ons-icon class="updateNameLoader updateEmailProfileLoader ons-icon ons-icon--ion ion-load-d" style="display: none; font-size: 22px;" spin="true" icon="ion-load-d" size="22px"></ons-icon>
+            <input style="width:120px" ng-enter="UpdateSelectedProfile('Email');" ng-blur="UpdateSelectedProfile('Email')" class="updateNameInput updateEmailProfileInput" type="text" placeholder="Email" value="{{currentUser.email}}">
+            <span class="updateEmailValue ng-binding">{{currentUser.email}}</span>
+          </ons-col>
+        </ons-row>
+
+        <ons-row class="profileDialogRow" class="profileDialogRow">
+          <ons-col width="20px"></ons-col>
+          <ons-col class="ColTypeProfile col ons-col-inner" width="100px" >Password</ons-col>
+          <ons-col class="ColResProfile col ons-col-inner">
+            <ons-icon class="updateName updatePasswordProfile ons-icon ons-icon--ion ion-edit" ng-click="DisplayUpdateSelectedProfile('Password')" icon="ion-edit" size="16px" style="font-size: 16px; display: inline;"></ons-icon>
+            <ons-icon class="updateNameLoader updatePasswordProfileLoader ons-icon ons-icon--ion ion-load-d" style="display: none; font-size: 22px;" spin="true" icon="ion-load-d" size="22px"></ons-icon>
+            <input style="width:120px" ng-enter="UpdateSelectedProfile('Password');" ng-blur="UpdateSelectedProfile('Password')" class="updateNameInput updatePasswordProfileInput1" type="text" placeholder="Old Password" value="">
+            <input style="width:120px" ng-enter="UpdateSelectedProfile('Password');" ng-blur="UpdateSelectedProfile('Password')" class="updateNameInput updatePasswordProfileInput2" type="text" placeholder="New Password" value="">
+            <input style="width:120px" ng-enter="UpdateSelectedProfile('Password');" ng-blur="UpdateSelectedProfile('Password')" class="updateNameInput updatePasswordProfileInput3" type="text" placeholder="Confirm Password" value="">
+            <span class="updatePasswordValue ng-binding">••••••••</span>
+          </ons-col>
+        </ons-row>
+        
+        <ons-row class="profileDialogRow" class="profileDialogRow">
+          <ons-col width="20px"></ons-col>
+          <ons-col class="ColTypeProfile col ons-col-inner" width="100px" >Profile Picture</ons-col>
+          <ons-col class="ColResProfile col ons-col-inner">
+            <div ng-click="DisplayUpdateSelectedProfile('Picture');" class="updateName updatePictureProfile UpdatePasswordButtonProfile hoverOp">Upload</div>
+            <ons-icon class="updateNameLoader updatePictureProfileLoader ons-icon ons-icon--ion ion-load-d" style="display: none; font-size: 22px;" spin="true" icon="ion-load-d" size="22px"></ons-icon>
+            <input type="file" onchange="angular.element(this).scope().UpdateSelectedProfile('Picture')" class="updateNameInput updatePictureProfileInput" style="width: 80px;border: 0;" />
+          </ons-col>
+        </ons-row>
+        <ons-row class="profileDialogRow" class="profileDialogRow">
+          <ons-col width="20px" class="col ons-col-inner"></ons-col>
+          <ons-col class="ColTypeProfile col ons-col-inner" width="100px" >Role</ons-col>
+          <ons-col class="ColResProfile col ons-col-inner ng-binding">{{currentUser.Role}}</ons-col>
+        </ons-row>
+        <div class="closeModalProfile" ng-click="closeProfileDialog();">x</div>
       </div>
     </div>
-
     <div id="LoadingScreen" style="z-index: 100000;display:block;position: fixed;width: 100%;height: 100%;background: rgb(8,96,168);">
       <!-- <img src="img/IntelIcon.png" style="width: 200px;position: absolute;top: 0;bottom: 0;left: 0;right: 0;margin: auto;opacity: .85;z-index: 3;"> -->
       <!-- <img src="img/IntelIcon.png" class="animatedLogo" style="width: 200px;position: absolute;top: 0;bottom: 0;left: 0;right: 0;margin: auto;"> -->
