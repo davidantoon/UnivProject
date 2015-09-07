@@ -1,6 +1,6 @@
 (function(angular) {
     'use strict';
-	angular.module('IntelLearner').factory('Toast',  function(){
+	angular.module('IntelLearner').factory('Toast', ["Log",  function(Log){
 	
 		function Toast(Settings){
 			this.text = "";
@@ -62,12 +62,12 @@
 						this.toastsArray.push(tempToast);
 					}
 				}catch(e){
-	                console.error("Toast Show function: ", e);
+	                Log.e("toast","Show", e);
 				}
 			}
 		};
 		return Toast;
-	});
+	}]);
 })(window.angular);
 
 

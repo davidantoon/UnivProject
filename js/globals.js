@@ -63,20 +63,17 @@
                 return [];
             }
         },
-        // for specific workflow
+        
         noLockedItems:function(){
             if(this.CashedObjects){
-                 for (var obj in this.CashedObjects){
-                    if(this.CashedObjects.hasOwnProperty(obj)){
-                        if(this.CashedObjects[obj].locked){
-                            if(this.CashedObjects[obj].locked == true){
-                                return false;
-                            }
-                        }
-                    } 
+                var CashedObjectsKeys = Object.keys(this.CashedObjects);
+                for(var i=0; i<CashedObjectsKeys.length; i++){
+                    if(this.CashedObjects[CashedObjectsKeys[i]].locked){
+                        return fasle;
+                    }
                 }
+             return true;
             }
-            return true;
         },
 
         updateUsedObjects: function(workspace){
@@ -139,7 +136,7 @@
                         // 5) In content                    || if content type Term
                         // 6) In content.terms              || if content type Delivery or Kbit
                         // 7) In content.kBitsNeeded        || if content type Delivery
-                        // 8) In content.kBitsProvided        || if content type Delivery
+                        // 8) In content.kBitsProvided      || if content type Delivery
                         if(workspace.workflows[i2].tabs[i3].content){
                             if(workspace.workflows[i2].tabs[i3].content.type == "Term"){
                                 if(workspace.workflows[i2].tabs[i3].content.id == ChashedTerms[i].id){
@@ -335,42 +332,122 @@
     })
     .value('ServerReq', "Not initialized")
 
-    .value('Logs', {
+    .value('Log', {
 
-        logs: {},
-        set: function(params){
-            console.warn("save ( set ) logs not finished !!!");
-            if(params.length == 4){
-                if(typeof(params[2]) == "string" && params[3]){
-                    this.logs.push({
-                        Class: params[0],
-                        Func: params[1],
-                        message: params[2],
-                        obj: params[3]
-                    });
+        logs: [],
+        classFilter: undefined,
+        funcFilter: undefined,
+        Push: function(){
+            //loop over function arguments
+            var logArr = {};
+            var argg = arguments;
+            for(var i=0; i<argg.length; i++){
+                if(i<=1){
+                    //Class name
+                    if(i==0){
+                        logArr["Class"] = argg[i];
+                    }
+                    //function
+                    if(i==1){
+                        logArr["Function"] = argg[i];
+                    }
                 }else{
-
-                }
-            }else{
-                if(params.length == 3){
-                    if(typeof(params[2]) == "object"){
-                        this.logs.push({
-                            Class: params[0],
-                            Func: params[1],
-                            obj: params[2]
-                        });
+                    // message
+                    if(typeof(argg[i]) == "string"){
+                        logArr["Massege"+i.toString()] = "| " + argg[i] ;
                     }else{
-                        if(typeof(params[2]) == "string"){
-                            this.logs.push({
-                                Class: params[0],
-                                Func: params[1],
-                                message: params[2]
-                            });  
+                        if(typeof(argg[i]) == "object"){
+                            logArr[i.toString()] = argg[i];
                         }
                     }
                 }
             }
+            this.logs.push(logArr);
+        },
+
+        filter: function(Class, func){
+            this.classFilter = Class;
+            this.funcFilter = func;
+        },
+        // warning log
+        i: function(){
+            this.Push.apply(this, arguments);
+            var arr = [];
+            var arguments = [].slice.call(arguments);
+
+            
+            arr[0] = "(" + arguments[0].toUpperCase() + ") " + arguments[1] + ":";
+            arr = arr.concat(arguments.splice(2));
+            if(this.classFilter == undefined && this.classFilter == undefined){
+                console.warn.apply(console, arr);
+            }
+            if(this.classFilter){
+                if(this.funcFilter){
+                    if(arguments[0] == this.classFilter && arguments[1] == this.funcFilter){
+                        console.warn.apply(console,arr);
+                    }
+                }else{
+                    if(arguments[0] == this.classFilter){
+                        console.warn.apply(console, arr);
+                    }
+                }
+            }
+        },
+
+        // note log
+        d: function(){
+            this.Push(arguments);
+            var arr = [];
+            var arguments = [].slice.call(arguments);
+
+            
+            arr[0] = "(" + arguments[0].toUpperCase() + ") " + arguments[1] + ":";
+            arr = arr.concat(arguments.splice(2));
+            if(this.classFilter == undefined && this.classFilter == undefined){
+                console.log.apply(console, arr);
+            }
+            if(this.classFilter){
+                if(this.funcFilter){
+                    if(arguments[0] == this.classFilter && arguments[1] == this.funcFilter){
+                        console.log.apply(console, arr);
+                    }
+                }else{
+                    if(arguments[0] == this.classFilter){
+                        console.log.apply(console, arr);
+                    }
+                }
+            }
+        },
+
+        //error log
+        e: function(){
+            this.Push(arguments);
+            var arr = [];
+            var arguments = [].slice.call(arguments);
+
+            
+            arr[0] = "(" + arguments[0].toUpperCase() + ") " + arguments[1] + ":";
+            arr = arr.concat(arguments.splice(2));
+            if(this.classFilter == undefined && this.classFilter == undefined){
+                console.error.apply(console, arr);
+            }
+            if(this.classFilter){
+                if(this.funcFilter){
+                    if(arguments[0] == this.classFilter && arguments[1] == this.funcFilter){
+                        console.error.apply(console, arr);
+                    }
+                }else{
+                    if(arguments[0] == this.classFilter){
+                        console.error.apply(console, arr);
+                    }
+                }
+            }
+        },
+
+        sendToFile: function(){
+
         }
+
     })
     .value('$httpR', {
 
@@ -458,7 +535,7 @@
                                 ngScope.logout();
                                 callback(null, error); 
                             }else{
-                                console.error(success);
+                                Log.e(success);
                                 callback(null, success);
                             }
                         }
@@ -469,7 +546,7 @@
                             ngScope.logout();
                             callback(null, error); 
                         }else{
-                            console.error(error);
+                            Log.e(error);
                             callback(null, error); 
                         }
                     }

@@ -1,7 +1,7 @@
 (function(angular) {
     // 'use strict';
     // 
-	angular.module('IntelLearner').factory('Steps', ["$rootScope", "Workflow", "Workspace", "Server", "Toast", "Storage", "checkChangesInStepsAffectsOnlyNewData", "Globals", "getDiffSteps", function($rootScope, Workflow, Workspace, Server, Toast, Storage, checkChangesInStepsAffectsOnlyNewData, Globals, getDiffSteps){
+	angular.module('IntelLearner').factory('Steps', ["$rootScope", "Workflow", "Workspace", "Server", "Toast", "Storage", "checkChangesInStepsAffectsOnlyNewData", "Globals", "getDiffSteps","Log", function($rootScope, Workflow, Workspace, Server, Toast, Storage, checkChangesInStepsAffectsOnlyNewData, Globals, getDiffSteps, Log){
 
 		function Steps(){
 
@@ -121,7 +121,7 @@
 							});
 						});
 					}catch(e){
-			            console.error("ServerResquestComplete: ", e);
+			            Log.e("Steps","ServerResquestComplete", e);
 			            callback();
 					}
 				}
@@ -147,7 +147,7 @@
 		            return undoFound;
 		        }catch(e){
 		        	$rootScope.currentScope.Toast.show("Error!","There was an error in Undo function", Toast.LONG, Toast.ERROR);
-	                console.error("canUndo: ", e);
+	                Log.e("Steps","canUndo", e);
 	                return false;
 		        }
 			},
@@ -171,7 +171,7 @@
 		            return redoFound;
 		        }catch(e){
 		        	$rootScope.currentScope.Toast.show("Error!","There was an error in redo function", Toast.LONG, Toast.ERROR);
-	                console.error("canRedo: ", e);
+	                Log.e("Steps","canRedo", e);
 	                return false;
 		        }
 			},
@@ -217,7 +217,7 @@
 							}
 
 						if(IOPS < 0){
-							console.log(new Error("Steps: restorePoint() cant "+ action +", IOPS = -1"));
+							Log.d("Steps","restorePoint",new Error("Steps: restorePoint() cant "+ action +", IOPS = -1"));
 							callback(false);
 							return;
 						}
@@ -358,12 +358,12 @@
 
 
 					}else{
-						console.error("restorePoint: Wrong action " + action);
+						Log.e("Steps","restorePoint", "Wrong action " + action);
 		                callback(false);	
 					}
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","there was an error in "+action+" function", Toast.LONG, Toast.ERROR);
-	                console.error("restorePoint: ", e);
+	                Log.e("Steps","restorePoint", e);
 	                callback(false);
 				}
 			},
@@ -388,7 +388,7 @@
 		            this.currentUndoOrder = 0;
 		        }catch(e){
 		        	$rootScope.currentScope.Toast.show("Error!","there was an error in updating last steps", Toast.LONG, Toast.ERROR);
-	                console.error("UpdateLastSteps: ", e);
+	                Log.e("Steps","UpdateLastSteps", e);
 		        }
 			},
 
@@ -434,7 +434,7 @@
 
 		        }catch(e){
 		        	$rootScope.currentScope.Toast.show("Error!","there was an error in upadting last steps", Toast.LONG, Toast.ERROR);
-	                console.error("InsertStepToLastSteps: ", e);
+	                Log.e("Steps","InsertStepToLastSteps", e);
 		        }
 			},
 
@@ -583,7 +583,7 @@
 			        
 		        }catch(e){
 			        $rootScope.currentScope.Toast.show("Error!","there was an error in restoring steps", Toast.LONG, Toast.ERROR);
-	                console.error("restoreStep: ", e);
+	                Log.e("Steps","restoreStep", e);
 	                callback();
 	            }
 			},
@@ -597,7 +597,7 @@
 					this.InsertStepToLastSteps(workspace);
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in clearing last steps", Toast.LONG, Toast.ERROR);
-	           		console.error("clearLastSteps: ", e);
+	           		Log.e("Steps","clearLastSteps", e);
 				}
 			},
 
@@ -640,7 +640,7 @@
 							callback(null, {"message": "Steps up to date", "code":""});
 					}
 				}catch(e){
-	                console.error("commitSteps: ", e);
+	                Log.e("Steps","commitSteps", e);
 	                callback(null, {"message": e.message, "code":e.code});
 				}
 			},
@@ -663,7 +663,7 @@
 					}
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","there was an error converting to JSON", Toast.LONG, Toast.ERROR);
-	                console.error("toJson: ", e);
+	                Log.e("Steps","toJson", e);
 					return null;
 				}
 			},

@@ -1,7 +1,7 @@
 (function(angular) {
     // 'use strict';
-    angular.module('IntelLearner').factory('User', ['$rootScope', '$http', 'Server', '$httpR', 'Globals',
-        function($rootScope, $http, Server, $httpR, Globals) {
+    angular.module('IntelLearner').factory('User', ['$rootScope', '$http', 'Server', '$httpR', 'Globals', 'Log',
+        function($rootScope, $http, Server, $httpR, Globals, Log) {
 
             function User(tempJson, id, firstName, lastName, username, email, profilePicture, role, token) {
                 if (tempJson) {
@@ -65,13 +65,13 @@
                                 var newUser = new User(result);
                                 callback(newUser);
                             } else {
-                                console.error("error logging in: ", error);
+                                Log.e("User","login", error);
                                 callback(null, error);
                             }
                         });
                     }
                 } catch (e) {
-                    console.error("User.login: ", e);
+                    Log.e("User","login", e);
                     callback(null, e);
                 }
             }
@@ -103,12 +103,12 @@
                             var newUser = new User(result);
                             callback(newUser);
                         } else {
-                            console.error("error signing up: ", error);
+                            Log.e("User","signup: ", error);
                             callback(null, error);
                         }
                     });
                 } catch (e) {
-                    console.error("singup: ", e);
+                    Log.e("User","singup", e);
                     callback(null, e);
                 }
             }
@@ -135,7 +135,7 @@
                             }
                         });
                     }catch(e){
-                        console.error("logout: ", e);
+                        Log.e("User","logout", e);
                         callback(null, e);
                     }
                 },
@@ -154,14 +154,14 @@
                         $httpR.connectToServer(data, $httpR.changePassword, Globals, function(success, error) {
                             debugger;
                             if (error || !success) {
-                                console.error("could not change password: ", error);
+                                Log.e("User","changePassword", error);
                                 callback(null, error);
                             } else {
                                 callback(success, null);
                             }
                         });
                     }catch(e){
-                        console.error("changePassword: ", e);
+                        Log.e("User","changePassword", e);
                         callback(null, e);
                     }
                 },
@@ -186,7 +186,7 @@
                         var passThis = this;
                         $httpR.connectToServer(data, $httpR.updateUser, Globals, function(success, error) {
                             if (error || !success){
-                                console.error("could not update data: ", error);
+                                Log.e("User","updateUser", error);
                                 callback(null, error);
                             }else{
                                 passThis.firstName = success["FIRST_NAME"];
@@ -197,7 +197,7 @@
                             }
                         });
                     } catch (e) {
-                        console.error("updateUser: ", e);
+                        Log.e("User","updateUser", e);
                         callback(null, e);
                     }
                 },
@@ -211,7 +211,7 @@
                         var passThis = this;
                         $httpR.connectToServer(Data, $httpR.USERsaveProfilePicture, Globals, function(success, error){
                             if(error || !success){
-                                console.error("could not update profile picture: ", error);
+                                Log.e("User","updateProfilePicture", error);
                                 callback(null, error);
                             }else{
                                 passThis.profilePicture = success["PROFILE_PICTURE"];
@@ -219,7 +219,7 @@
                             }
                         });
                     }catch(e){
-                        console.error("updateProfilePicture: ", e);
+                        Log.e("User","updateProfilePicture", e);
                         callback(null, e);
                     }
                 },
@@ -252,7 +252,7 @@
                         }
                     } catch (e) {
                         $rootScope.currentScope.Toast.show("Error!", "There was an error in converting to JSON", Toast.LONG, Toast.ERROR);
-                        console.error("toJson: ", e);
+                        Log.e("User","toJson", e);
                         return null;
                     }
                 }

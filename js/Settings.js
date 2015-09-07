@@ -1,6 +1,6 @@
 (function(angular) {
     'use strict';
-	angular.module('IntelLearner').factory('Settings', ["$rootScope", "Storage", "Server", "$httpR", "Globals", function($rootScope, Storage, Server, $httpR, Globals){
+	angular.module('IntelLearner').factory('Settings', ["$rootScope", "Storage", "Server", "$httpR", "Globals","Log", function($rootScope, Storage, Server, $httpR, Globals, Log){
 
 
 		function Settings(){
@@ -36,7 +36,7 @@
 						callback();
 					});
 				}catch(e){
-					console.log("loadSettings: ", e);
+					Log.e("Settings","loadSettings", e);
 					callback();
 				}
 			},
@@ -44,7 +44,7 @@
 				var stor = new Storage();
 				stor.setWorkspaceData(null, x.Settings, null,function(dataSaved, error){
 					if(error || !dataSaved)
-						console.error("saveSettings: ", error);
+						Log.e("Settings","saveSettings", error);
 					else{
 						var svr = new Server("steps", ngScope.isDummy);
 						if(typeof callback == "funtion")

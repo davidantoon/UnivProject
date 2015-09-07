@@ -1,6 +1,6 @@
 (function(angular) {
     // 'use strict';
-	angular.module('IntelLearner').factory('Content', ["$rootScope", 'Globals', "Toast", "Server", "$httpR", function($rootScope, Globals, Toast, Server, $httpR){
+	angular.module('IntelLearner').factory('Content', ["$rootScope", 'Globals', "Toast", "Server", "$httpR","Log", function($rootScope, Globals, Toast, Server, $httpR, Log){
 	
 		function Content(conData, forceLastmodefied, forceServerPull){
 			try{
@@ -26,7 +26,7 @@
 				this.revision = ((conData != undefined)?conData.revision:1);
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","There was an error in creating new Content", Toast.LONG, Toast.ERROR);
-	            console.error("Content: ", e);
+	            Log.e("Content","Content", e);
 	            return null;
 			}
 		}
@@ -55,7 +55,7 @@
 						}
 					});
 				}catch(e){
-	           		console.error("lock: ", e);
+	           		Log.e("Content","lock", e);
 	           		callback(null, e);
 				}
 			},
@@ -128,7 +128,7 @@
 						}
 					});
 				}catch(e){
-					console.error("content.save: ", error);
+					Log.e("Content","save", error);
 	            	callback(null,{"message":e.message,"code":e.code});
 	            }
 			},
@@ -143,7 +143,7 @@
 
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in releasing content", Toast.LONG, Toast.ERROR);
-	           		console.error("release: ", e);
+	           		Log.e("Content","release", e);
 				}
 			},
 
@@ -157,7 +157,7 @@
 
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in removing content", Toast.LONG, Toast.ERROR);
-	           		console.error("remove: ", e);
+	           		Log.e("Content","remove", e);
 				}
 			},
 
@@ -171,7 +171,7 @@
 
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in restoring content", Toast.LONG, Toast.ERROR);
-	           		console.error("reversion: ", e);
+	           		Log.e("Content","reversion", e);
 				}
 			},
 
@@ -184,7 +184,7 @@
 
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in getting previous versions", Toast.LONG, Toast.ERROR);
-	           		console.error("getVersions: ", e);
+	           		Log.e("Content","getVersions", e);
 				}
 			},
 
@@ -198,7 +198,7 @@
 					return (this.id == contentObj.id);
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in checking equal content", Toast.LONG, Toast.ERROR);
-	           		console.error("equal: ", e);
+	           		Log.e("Content","equal", e);
 	           		return false;
 				}
 			},
@@ -213,7 +213,7 @@
 					return new Content(contentObj);
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in dublicating content", Toast.LONG, Toast.ERROR);
-	           		console.error("dublicate: ", e);
+	           		Log.e("Content","dublicate", e);
 	           		return null;
 				}
 			},
@@ -227,7 +227,7 @@
 					return JSON.stringify(this.toJson());
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in converting to string", Toast.LONG, Toast.ERROR);
-	           		console.error("toString: ", e);
+	           		Log.e("Content","toString", e);
 	           		return null;
 				}
 			},
@@ -254,7 +254,7 @@
 					}
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in converting to JSON", Toast.LONG, Toast.ERROR);
-	           		console.error("toJson: ", e);
+	           		Log.e("Content","toJson", e);
 	           		return null;
 				}
 			},
@@ -298,7 +298,7 @@
 					}
 					return tempJSON;
 				}catch(e){
-	           		console.error("toJson: ", e);
+	           		Log.e("Content","toJson", e);
 	           		return null;
 				}
 			},
