@@ -501,7 +501,7 @@
                           </ons-row>
                         </div>
                       </ons-row>
-                      <div ng-click="back(wFlow.selectedTab.dataHolding);" style="{{'border-top: 2px solid '+wFlow.selectedTab.color+'; border-right: 3px solid '+wFlow.selectedTab.color+';'}}" class="ReturnToSearchButton">
+                      <div ng-click="back(wFlow.selectedTab.dataHolding);" style="{{'border-top: 2px solid '+wFlow.selectedTab.color+'; border-right: 3px solid '+wFlow.selectedTab.color+';z-index: 1;'}}" class="ReturnToSearchButton">
                         <ons-icon icon="ion-chevron-left" size="18px"></ons-icon> Back
                       </div>
                       <div class="{{'tabOptionsDiv '+ ((wFlow.selectedTab.tabOption == true && wFlow.selectedTab.content.type != 'Term')?'':'invisible')}}" ng-mouseleave="closeOptionTab(wFlow)">

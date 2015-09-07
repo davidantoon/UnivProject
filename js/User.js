@@ -247,6 +247,8 @@
                             callback(false);
                         }else{
                             Log.d("User","checkValidToken","Valid token", {LogObject:success});
+                            passThis.id = success.UID;
+                            passThis.username = success.USERNAME;
                             passThis.firstName = success.FIRST_NAME;
                             passThis.lastName = success.LAST_NAME
                             passThis.email = success.EMAIL;

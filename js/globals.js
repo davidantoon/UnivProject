@@ -14,8 +14,10 @@
             for (var i = 0; i < CashedObjectsKeys.length; i++) {
                 delete this.CashedObjects[CashedObjectsKeys[i]]; 
             }
-            if(clearUser)
+            if(clearUser){
                 this.CurrentUser = {};
+                delete this.CurrentUser;
+            }
         },
         allObjectsaved: function() {
             console.warn("allObjectsaved not implemented!");
@@ -207,6 +209,7 @@
                                             }
                                         }
                                     }
+                                    debugger;
                                     if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsProvided){
                                         for(var i5=0; i5<workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsProvided.length; i5++){
                                             if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsNeeded[i5].id == ChashedKbits[i].id){
@@ -1037,7 +1040,7 @@
         ngScope.Log.hideFilter("Tab");
         ngScope.Log.hideFilter("Toast");
         // ngScope.Log.hideFilter("Content");
-        ngScope.Log.hideFilter("Steps");
+        // ngScope.Log.hideFilter("Steps");
         ngScope.Log.hideFilter("Server");
     });
 })(window.angular);

@@ -196,7 +196,6 @@
 			// delivery , settings, kbits,steps, 
 			saveElement: function(obj, callback){
 				try{
-					console.warn("saveElement: only for new element not update !!!");
 					if(this.baseUrl == "dummy"){
 						switch (obj.type){
 							case "Deliveries":

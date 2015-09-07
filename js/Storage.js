@@ -156,7 +156,7 @@
 			 */
 			clear: function(key, value, callback){
 				try{
-					if(Globals.noLockedItemrs()){
+					if(Globals.noLockedItems()){
 						// clear all storage
 						if(key == null || key == undefined || key == ""){
 							localStorage.clear();
@@ -266,6 +266,8 @@
 			},
 
 
+
+
 			/**
 			 * Gets elemtent or creates new onw if it doesnt exist
 			 * @param  {number}   elemId            element id
@@ -275,6 +277,7 @@
 			 * @param  {Function} callback          callback function
 			 */
 			getElementById: function(jsonObject, forceLastmodefied, forceServerPull, callback){
+				debugger;
 				var elemId = jsonObject.id;
 				var elemType = jsonObject.type;
 				if( elemId != undefined && elemId != null && elemId != ""){

@@ -84,7 +84,8 @@ var ngScope;
             $scope.Log = Log;
             $scope.Globals = Globals;
             $scope.httpR = $httpR;
-
+            $rootScope.currentScope = $scope;
+            $scope.Toast = new Toast();
             defultFilters();
 
 
@@ -185,19 +186,16 @@ var ngScope;
                 }, 1000);
                
                 var tempUser = Globals.currentUser;
-                $scope.clearData();
-                // logout
-
                 // LOGOUT
                 if(tempUser){
                     tempUser.logout(function(success, error){});
                 }
+                $scope.clearData();
             }
             $scope.clearData = function() {
-
                 // CLEAR DATA
-
                 Globals.clear();
+                localStorage.removeItem("com.intel.userdata");
             }
 
             $scope.login = function(){
@@ -207,28 +205,27 @@ var ngScope;
                 var username = $('#username').val();
                 var password = $('#password').val();
                 if(username == "" || password == ""){
-                    $scope.Toast.show("Error!","wrong username or password input", Toast.LONG, Toast.ERROR);
+                    $scope.Toast.show("Error!","Missing username or password!", Toast.LONG, Toast.ERROR);
+                }else{
+                    $('.LoginLoader').show();
+                    $('.LoginButton').hide();
+                    User.login(username, password, function(success, error){
+                        if(error || !success){
+                            $('.LoginLoader').hide();
+                            $('.LoginButton').show();
+                            $('#password').val("")
+                            $scope.Toast.show("Error!","Wrong information!", Toast.LONG, Toast.ERROR);
+                        }else{
+                            $timeout(function() {
+                                Globals.CurrentUser = success;
+                                var stor = new Storage();
+                                stor.setWorkspaceData(null, null, Globals.CurrentUser, function(){
+                                    location.reload();
+                                });
+                            },500);
+                        }
+                    });
                 }
-                $('.LoginLoader').show();
-                $('.LoginButton').hide();
-                $('#LoadingScreen').show();
-                $('.StatusBarPerc').css('width', "0%");
-                User.login(username, password, function(success, error){
-                    $('.LoginLoader').hide();
-                    $('.LoginButton').show();
-                    if(error || !success){
-                        $scope.logout();
-                    }else{
-                        $scope.AppStatus = 0;
-                        $timeout(function() {
-                            Globals.CurrentUser = success;
-                            $scope.loadUserData();
-                            var stor = new Storage();
-
-                            stor.setWorkspaceData(null, null, Globals.CurrentUser, function(){});
-                        },500);
-                    }
-                });
             }
 
 
@@ -277,10 +274,7 @@ var ngScope;
             $scope.loadDataFromSRV = function(callbackFunction) {
                 
                 // init worksace
-                $rootScope.currentScope = $scope;
-                $scope.Toast = new Toast();
                 $scope.workSpaces = new Workspace();
-
                 $scope.Steps = new Steps();
                 $scope.Steps.loadSteps($scope.workSpaces, function(){
                     $scope.Settings = new Settings();
