@@ -1,6 +1,6 @@
 (function(angular) {
     // 'use strict';
-	angular.module('IntelLearner').factory('Workspace', ['$rootScope', 'Workflow', function($rootScope, Workflow){
+	angular.module('IntelLearner').factory('Workspace', ['$rootScope', 'Workflow','Log', function($rootScope, Workflow, Log){
 		function Workspace(scope) {
 			try{
 				var firstWorkflow = new Workflow(null, 0, 7, 5, 8, 6);
@@ -26,7 +26,7 @@
 				this.selectedColors = [];
 			}catch(e){
 				$rootScope.currentScope.Toast.show("Error!","There was an error in creating workspace", Toast.LONG, Toast.ERROR);
-	           	console.error("canUndo: ", e);
+	           	Log.e("Workspace","Workspace", e);
 			}
 		}
 
@@ -43,7 +43,7 @@
 					return tempWorkflow;
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in adding new workflow", Toast.LONG, Toast.ERROR);
-	           		console.error("addNewWorkflow: ", e);
+	           		Log.e("Workspace","addNewWorkflow", e);
 	           		return null;
 				}
 			},
@@ -57,7 +57,7 @@
 					this.newWorkflowButtons = this.getNewWorkflowButtons(1, size);
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in updating new Workflow buttons", Toast.LONG, Toast.ERROR);
-	           		console.error("updateNewWorkflowButtons: ", e);
+	           		Log.e("Workspace","updateNewWorkflowButtons", e);
 				}
 			},
 
@@ -97,7 +97,7 @@
 					return tempNewWorkflowButtons;
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in getting new Workflow buttons", Toast.LONG, Toast.ERROR);
-	           		console.error("getNewWorkflowButtons: ", e);
+	           		Log.e("Workspace","getNewWorkflowButtons", e);
 	           		return null;
 				}
 			},
@@ -135,7 +135,7 @@
 					return flag;
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in checking new Workflow buttons", Toast.LONG, Toast.ERROR);
-	           		console.error("checkNewWorkflowButtons: ", e);
+	           		Log.e("Workspace","checkNewWorkflowButtons", e);
 				}
 			},
 
@@ -156,7 +156,7 @@
 					this.lastWorkflowId = maxId;
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in updating last Id", Toast.LONG, Toast.ERROR);
-	           		console.error("updateLastId: ", e);
+	           		Log.e("Workspace","updateLastId", e);
 				}
 			},
 
@@ -189,7 +189,7 @@
 			            this.coloredWorkflows[indexOfScroll].scrollTo();
 			        }
 		        }catch(e){
-	           		console.error("scrollToLastWorkflow: ", e);
+	           		Log.e("Workspace","scrollToLastWorkflow", e);
 		        }
 			},
 
@@ -214,7 +214,7 @@
 					}
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in updating fata in tab", Toast.LONG, Toast.ERROR);
-	           		console.error("updateDataInTab: ", e);
+	           		Log.e("Workspace","updateDataInTab", e);
 				}
 			},
 
@@ -252,7 +252,7 @@
 					}
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in selecting tab after search", Toast.LONG, Toast.ERROR);
-	           		console.error("selectTabAfterSearch: ", e);
+	           		Log.e("Workspace","selectTabAfterSearch", e);
 				}
 			},
 	     
@@ -292,7 +292,7 @@
 					}
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in deleting relative (child) tab", Toast.LONG, Toast.ERROR);
-	           		console.error("deleteChildTabIds: ", e);
+	           		Log.e("Workspace","deleteChildTabIds", e);
 				}
 			},
 
@@ -316,7 +316,7 @@
 					}
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in checking colors in workspace", Toast.LONG, Toast.ERROR);
-	           		console.error("checkUserColorsInWorkspace: ", e);
+	           		Log.e("Workspace","checkUserColorsInWorkspace", e);
 				}
 			},
 

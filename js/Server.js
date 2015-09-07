@@ -1,6 +1,6 @@
 (function(angular) {
     // 'use strict';
-	angular.module('IntelLearner').factory('Server', ["$rootScope", "Toast", "$httpR", "Globals", function($rootScope, Toast, $httpR, Globals){
+	angular.module('IntelLearner').factory('Server', ["$rootScope", "Toast", "$httpR", "Globals","Log", function($rootScope, Toast, $httpR, Globals, Log){
 	
 		function Server(connectionType, dummy){
 			try{
@@ -11,7 +11,7 @@
 				}
 				this.TypeOfData = connectionType;
 			}catch(e){
-	            console.error("server: ", e);
+	            Log.e("Server","server", e);
 			}
 		}
 	 
@@ -118,7 +118,7 @@
 					}else{
 						var ConvertData = function (results, error){
 							if(error || !results){
-								console.error("error searching is server: ", error);
+								Log.e("Server","search", error);
 								results = [];
 							}else{
 								debugger;
@@ -171,7 +171,7 @@
 
 					}
 				}catch(e){
-	                console.error("search: ", e);
+	                Log.e("Server","search", e);
 	                callback(null,{"message":e.message,"code":e.code});
 				}
 			},
@@ -240,7 +240,7 @@
 								});
 							break;
 							case "Kbit":
-								onsole.warn("save kbit not implemented");
+								console.warn("save kbit not implemented");
 								callback(true, null);
 
 								// call new method to save kbit and terms relations
@@ -250,7 +250,7 @@
 						}
 					}
 				}catch(e){
-	                console.error("saveElement: ", e);
+	                Log.e("Server","saveElement", e);
 	                callback(null,{"message":e.message,"code":e.code});
 				}
 			},
@@ -342,7 +342,7 @@
 						}
 					}
 				}catch(e){
-	                console.error("getElementByID: ", e);
+	                Log.e("Server","getElementByID", e);
 	                callback(null,{"message":e.message,"code":e.code});
 				}
 			},
@@ -433,7 +433,7 @@
 						// }
 					}
 				}catch(e){
-	                console.error("deleteElementByID: ", e);
+	                Log.e("Server","deleteElementByID", e);
 	                callback(null,{"message":e.message,"code":e.code});
 				}
 			},
@@ -462,7 +462,7 @@
 						$httpR.connectToServer({Key:"Steps"}, $httpR.KVPgetKeyValuePair, Globals, callback);
 					}
 				}catch(e){
-	                console.error("getSteps: ", e);
+	                Log.e("Server","getSteps", e);
 	                callback(null,{"message":e.message,"code":e.code});
 				}
 			},
@@ -479,7 +479,7 @@
 						$httpR.connectToServer({Key:"Steps", value:steps}, $httpR.KVPsetKeyValuePair, Globals, callback);
 					}
 				}catch(e){
-	                console.error("getSteps: ", e);
+	                Log.e("Server","getSteps", e);
 	                callback(null,{"message":e.message,"code":e.code});
 				}
 			},
@@ -514,7 +514,7 @@
 						}
 					}
 				}catch(e){
-					console.error("getFromServer: ", e);
+					Log.e("Server","getFromServer", e);
 					callback(null, e);
 				}
 			},
@@ -544,14 +544,14 @@
 
 					$httpR.connectToServer(data, $httpR.TERMgetAllTermsStrings, Globals, function(success, error){
 						if(error || !success){
-							console.error("getAllTerms: ", error);
+							Log.e("Server","getAllTerms", error);
 							callback(null, error);
 						}else{
 							callback(success);
 						}
 					});
 				}catch(e){
-					console.error("getAllTerms: ", e);
+					Log.e("Server","getAllTerms", e);
 					callback(null, e);
 				}
 			}

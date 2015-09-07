@@ -110,34 +110,6 @@
             }catch(e){
 
             }
-        // for(var obj in this.CashedObjects){
-       //  debugger;
-       //      if(this.CashedObjects.hasOwnProperty(obj)){
-       //          found = false;
-       //          //loop on workflows
-       //          for(var j=0; j<workspace.workflows.length; j++){
-       //              //loop over tabs
-       //              for(var k=0; k<workspace.workflows[j].tabs.length; k++){
-       //                  if(workspace.workflows[j].tabs[k].dataHolding.result){
-       //                      for(var z=0; z< workspace.workflows[j].tabs[k].dataHolding.result.length; z++){
-       //                          if(workspace.workflows[j].tabs[k].dataHolding.result[z].id == this.CashedObjects[obj].id){
-       //                              found = true;
-       //                              break;
-       //                          }
-       //                      }
-       //                      if(found)
-       //                          break;
-       //                  }
-       //              }
-       //              if(found){
-       //                  break;
-       //              }
-       //          }
-       //          if(found == false){
-       //              this.pop(this.CashedObjects[obj].id, this.CashedObjects[obj].type);
-       //          }
-       //      }
-       // }
         },
 
         getAllObjectToJson: function(){
@@ -182,58 +154,116 @@
     })
     .value('ServerReq', "Not initialized")
 
-    .value('Logs', {
+    .value('Log', {
 
         logs: [],
-
-        Push: function(params){
-            if(params.length == 4){
-                if(typeof(params[2]) == "string" && typeof(params[3]) == "object"){
-                    this.logs.push({
-                        Class: params[0],
-                        Func: params[1],
-                        message: params[2],
-                        obj: params[3]
-                    });
+        classFilter: undefined,
+        funcFilter: undefined,
+        Push: function(){
+            //loop over function arguments
+            var logArr = {};
+            var argg = arguments;
+            for(var i=0; i<argg.length; i++){
+                if(i<=1){
+                    //Class name
+                    if(i==0){
+                        logArr["Class"] = argg[i];
+                    }
+                    //function
+                    if(i==1){
+                        logArr["Function"] = argg[i];
+                    }
                 }else{
-
-                }
-            }else{
-                if(params.length == 3){
-                    if(typeof(params[2]) == "object"){
-                        this.logs.push({
-                            Class: params[0],
-                            Func: params[1],
-                            obj: params[2]
-                        });
+                    // message
+                    if(typeof(argg[i]) == "string"){
+                        logArr["Massege"+i.toString()] = "| " + argg[i] ;
                     }else{
-                        if(typeof(params[2]) == "string"){
-                            this.logs.push({
-                                Class: params[0],
-                                Func: params[1],
-                                message: params[2]
-                            });  
+                        if(typeof(argg[i]) == "object"){
+                            logArr[i.toString()] = argg[i];
                         }
                     }
                 }
             }
+            this.logs.push(logArr);
+        },
+
+        filter: function(Class, func){
+            this.classFilter = Class;
+            this.funcFilter = func;
         },
         // warning log
-        i: function(params){
-            this.push(params);
-            console.warn(params);
+        i: function(){
+            this.Push.apply(this, arguments);
+            var arr = [];
+            var arguments = [].slice.call(arguments);
+
+            
+            arr[0] = "(" + arguments[0].toUpperCase() + ") " + arguments[1] + ":";
+            arr = arr.concat(arguments.splice(2));
+            if(this.classFilter == undefined && this.classFilter == undefined){
+                console.warn.apply(console, arr);
+            }
+            if(this.classFilter){
+                if(this.funcFilter){
+                    if(arguments[0] == this.classFilter && arguments[1] == this.funcFilter){
+                        console.warn.apply(console,arr);
+                    }
+                }else{
+                    if(arguments[0] == this.classFilter){
+                        console.warn.apply(console, arr);
+                    }
+                }
+            }
         },
 
         // note log
-        d: function(params){
-            this.push(params);
-            console.log(params);
+        d: function(){
+            this.Push(arguments);
+            var arr = [];
+            var arguments = [].slice.call(arguments);
+
+            
+            arr[0] = "(" + arguments[0].toUpperCase() + ") " + arguments[1] + ":";
+            arr = arr.concat(arguments.splice(2));
+            if(this.classFilter == undefined && this.classFilter == undefined){
+                console.log.apply(console, arr);
+            }
+            if(this.classFilter){
+                if(this.funcFilter){
+                    if(arguments[0] == this.classFilter && arguments[1] == this.funcFilter){
+                        console.log.apply(console, arr);
+                    }
+                }else{
+                    if(arguments[0] == this.classFilter){
+                        console.log.apply(console, arr);
+                    }
+                }
+            }
         },
 
         //error log
-        e: function(params){
-            this.push(params);
-            console.error(params);
+        e: function(){
+            this.Push(arguments);
+            var arr = [];
+            var arguments = [].slice.call(arguments);
+
+            
+            arr[0] = "(" + arguments[0].toUpperCase() + ") " + arguments[1] + ":";
+            arr = arr.concat(arguments.splice(2));
+            if(this.classFilter == undefined && this.classFilter == undefined){
+                console.error.apply(console, arr);
+            }
+            if(this.classFilter){
+                if(this.funcFilter){
+                    if(arguments[0] == this.classFilter && arguments[1] == this.funcFilter){
+                        console.error.apply(console, arr);
+                    }
+                }else{
+                    if(arguments[0] == this.classFilter){
+                        console.error.apply(console, arr);
+                    }
+                }
+            }
         },
 
         sendToFile: function(){
@@ -328,7 +358,7 @@
                                 ngScope.logout();
                                 callback(null, error); 
                             }else{
-                                console.error(success);
+                                Log.e(success);
                                 callback(null, success);
                             }
                         }
@@ -339,7 +369,7 @@
                             ngScope.logout();
                             callback(null, error); 
                         }else{
-                            console.error(error);
+                            Log.e(error);
                             callback(null, error); 
                         }
                     }

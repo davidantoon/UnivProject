@@ -1,6 +1,6 @@
 (function(angular) {
     // 'use strict';
-	angular.module('IntelLearner').factory('Storage', ["$rootScope", "Globals", "TypeOf", "Content", function($rootScope, Globals, TypeOf, Content){
+	angular.module('IntelLearner').factory('Storage', ["$rootScope", "Globals", "TypeOf", "Content","Log", function($rootScope, Globals, TypeOf, Content, Log){
 
 
 		/**
@@ -89,12 +89,12 @@
 							callback(true, null);
 						}else{
 							callback(null, {"message":"Exception localStorage insert","code":100});
-							console.error(new Error("Storage: save() " + data));
+							Log.e("Storage","save",new Error("Storage: save() " + data));
 						}
 					}
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in saving in storage", Toast.LONG, Toast.ERROR);
-	                console.error("save: ", e);
+	                Log.e("Storage","save", e);
 				}
 			},
 
@@ -137,13 +137,13 @@
 						callback(obj);
 					}else{
 						callback(null, {"message":"Object not found","code":"404"});
-						console.error(new Error("Storage: save() "), data);
+						Log.e("Storage","get",new Error("Storage: get() "), data);
 					}
 				}catch(exp){
 					// callback(null, exp);
 					// console.error("Storage: save() ", exp);
 					$rootScope.currentScope.Toast.show("Error!","There was an error in getting value from storage", Toast.LONG, Toast.ERROR);
-	                console.error("get: ", e);
+	                Log.e("Storage","get", e);
 				}
 
 			},
@@ -189,7 +189,7 @@
 					}
 				}catch(e){
 					$rootScope.currentScope.Toast.show("Error!","There was an error in clearing local storage", Toast.LONG, Toast.ERROR);
-	                console.error("clear: ", e);
+	                Log.e("Storage","clear", e);
 				}
 			},
 
@@ -223,7 +223,7 @@
 					}
 					return;
 				}catch(e){
-					console.error("getWorkspaceData:", e);
+					Log.e("Storage","getWorkspaceData", e);
 					var data = {
 						"Steps": null,
 						"Settings": null,
@@ -261,7 +261,7 @@
 					});
 
 				}catch(e){
-					console.error("setWorkspaceData:", e);
+					Log.e("Storage","setWorkspaceData", e);
 				}
 			},
 
