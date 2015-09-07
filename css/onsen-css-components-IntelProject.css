@@ -5983,7 +5983,7 @@ div.vertical {
 .UpdatePasswordButtonProfile{
   width: 80px;
   text-align: center;
-  background: rgb(255,166,1);
+  background: rgb(8,96,168);
   color: white;
   border-radius: 7px;
   cursor: pointer;
@@ -7277,45 +7277,61 @@ selectable{
 }
 
 
-#profileDialog{
+#profileDialogClose{
+  position: absolute;
+  z-index: 9;
   width: 100%;
   height: 100%;
-  position: absolute;
-  background-color: rgba(0,0,0,.5);
-  z-index: 10;
-  display: none;
+  background-color: rgba(0,0,0,.3);
 }
 
-#profileDialog .profileContainer{
+
+#profileDialog{
   width: 500px;
-  height: 400px;
-  margin: auto;
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: whitesmoke;
-  border-radius: 14px;
-  overflow: hidden;
-}
-
-#profileDialog .profileContainer .header{
-  border-bottom: 1px solid rgba(0,0,0,.2);
-  padding: 8px;
-  text-align: center;
-  font-size: 19px;
   background-color: white;
-  color: rgb(80,80,80);
+  z-index: 10;
+  text-align: center;
+  padding: 4px 16px;
+  border-radius: 9px;
+  overflow: hidden;
+  bottom: 0;
+  top: 0;
+  right: 0;
+  left: 0;
+  margin: auto;
+  height: 360px;
 }
 
-#profileDialog .profileContainer .body{
 
+
+#profileDialog .profileDialogRow{
+  text-align: left;
+  height: 35px;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(0,0,0,.1);
 }
 
-.nolink{
-  color: rgb(80,80,80);
-  padding: 2px 9px;
+.ProfilePicDivTabbar{
+  background-size: 45px !important;
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  display: inline-block;
+  border-radius: 50px;
+  border: 1px solid rgba(255,255,255,.3);
+  left: 53px;
+  top: 4px;
 }
+
+
+
+
+
+
+
+
+
+
 
 

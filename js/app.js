@@ -45,6 +45,7 @@ var ngScope;
             console.warn("14) Create tab settings dialog (change color | rename | set shortcut for focus)");
             console.warn("15) Add send logs to profile dialog");
             console.warn("16) Remove all debugger and convert all logs to the log class");
+            console.warn("17) Update ClearData() in app.js ");
             console.warn("21) Check all server functions");
             console.groupEnd();
             
@@ -83,7 +84,8 @@ var ngScope;
             $scope.Log = Log;
             $scope.Globals = Globals;
             $scope.httpR = $httpR;
-
+            $rootScope.currentScope = $scope;
+            $scope.Toast = new Toast();
             defultFilters();
 
 
@@ -184,19 +186,16 @@ var ngScope;
                 }, 1000);
                
                 var tempUser = Globals.currentUser;
-                $scope.clearData();
-                // logout
-
                 // LOGOUT
                 if(tempUser){
                     tempUser.logout(function(success, error){});
                 }
+                $scope.clearData();
             }
             $scope.clearData = function() {
-
                 // CLEAR DATA
-
                 Globals.clear();
+                localStorage.removeItem("com.intel.userdata");
             }
 
             $scope.login = function(){
@@ -206,28 +205,27 @@ var ngScope;
                 var username = $('#username').val();
                 var password = $('#password').val();
                 if(username == "" || password == ""){
-                    $scope.Toast.show("Error!","wrong username or password input", Toast.LONG, Toast.ERROR);
+                    $scope.Toast.show("Error!","Missing username or password!", Toast.LONG, Toast.ERROR);
+                }else{
+                    $('.LoginLoader').show();
+                    $('.LoginButton').hide();
+                    User.login(username, password, function(success, error){
+                        if(error || !success){
+                            $('.LoginLoader').hide();
+                            $('.LoginButton').show();
+                            $('#password').val("")
+                            $scope.Toast.show("Error!","Wrong information!", Toast.LONG, Toast.ERROR);
+                        }else{
+                            $timeout(function() {
+                                Globals.CurrentUser = success;
+                                var stor = new Storage();
+                                stor.setWorkspaceData(null, null, Globals.CurrentUser, function(){
+                                    location.reload();
+                                });
+                            },500);
+                        }
+                    });
                 }
-                $('.LoginLoader').show();
-                $('.LoginButton').hide();
-                $('#LoadingScreen').show();
-                $('.StatusBarPerc').css('width', "0%");
-                User.login(username, password, function(success, error){
-                    $('.LoginLoader').hide();
-                    $('.LoginButton').show();
-                    if(error || !success){
-                        $scope.logout();
-                    }else{
-                        $scope.AppStatus = 0;
-                        $timeout(function() {
-                            Globals.CurrentUser = success;
-                            $scope.loadUserData();
-                            var stor = new Storage();
-
-                            stor.setWorkspaceData(null, null, Globals.CurrentUser, function(){});
-                        },500);
-                    }
-                });
             }
 
 
@@ -276,10 +274,7 @@ var ngScope;
             $scope.loadDataFromSRV = function(callbackFunction) {
                 
                 // init worksace
-                $rootScope.currentScope = $scope;
-                $scope.Toast = new Toast();
                 $scope.workSpaces = new Workspace();
-
                 $scope.Steps = new Steps();
                 $scope.Steps.loadSteps($scope.workSpaces, function(){
                     $scope.Settings = new Settings();
@@ -322,29 +317,40 @@ var ngScope;
 
 
 
-            $scope.updateImageInSRV = function() {
-                if($('#newImageFileId').val() == ''){
-                    $scope.Toast.show("Error!","Could not upload image", Toast.LONG, Toast.ERROR);
+            $scope.updateImageInSRV = function(callback) {
+                if($('.updatePictureProfileInput').val() == ''){
+                    Log.e("app","updateImageInSRV","there was a problem uploading image");
+                    callback(null, 1);
                 }else{
-                    var fullPath = $('#newImageFileId').val();
+                    var fullPath = $('.updatePictureProfileInput').val();
                     if (fullPath){
-                            var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
-                            var filename = fullPath.substring(startIndex);
-                            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
-                                filename = filename.substring(1);
+                        var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+                        var filename = fullPath.substring(startIndex);
+                        if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                            filename = filename.substring(1);
+                        }else{
+                            Log.e("app","updateImageInSRV","Bad file name", fullPath);
+                            callback(null, 2);
                         }
+                    }else{
+                        Log.e("app","updateImageInSRV","there was a problem uploading image");
+                        callback(null, 2);
                     }
                     var dotIndex = filename.lastIndexOf('.');
                     var ext = filename.substring(dotIndex);
+                    if(ext.toUpperCase() != ".JPEG" && ext.toUpperCase() != ".JPG" && ext.toUpperCase() != ".PNG"){
+                        Log.e("app","updateImageInSRV","Bad file type", ext);
+                        callback(null, 3);   
+                    }
                     var reader = new FileReader();
                     reader.onloadend = function() {
                         if (reader.result) {
                             var image = new Image();
                             image.onload = function() {
                                 var canvas = document.createElement('canvas');
-                                if (image.height > 100) {
-                                    image.width *= 100 / image.height;
-                                    image.height = 100;
+                                if (image.height > 300) {
+                                    image.width *= 300 / image.height;
+                                    image.height = 300;
                                 }
                                 var ctx = canvas.getContext("2d");
                                 ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -352,108 +358,185 @@ var ngScope;
                                 canvas.height = image.height;
                                 ctx.drawImage(image, 0, 0, image.width, image.height);
                                 var base64NewImage = canvas.toDataURL();
-                                console.log(base64NewImage);
-                                $scope.currentUser.updateProfilePicture(base64NewImage, ext, function(success, error){
-                                    if(error || !success){
-                                        Log.e("apps.js","updateImageInSRV","Could not change profile picture: ", error);
-                                    }else{
-                                        console.warn("profile picture change, what to do ? ");
-                                    }
+                                callback({
+                                    base64NewImage:base64NewImage,
+                                    ext:ext
                                 });
-                                /// BAASEEE 64 IMAGE
-                                // Globals.currentUser.updateProfilePicture(base64NewImage, function(success, error){
-                                //     if(error || !success){
-                                //         console.error("could not update profile picture: ", error);
-                                //     }else{
-                                //         console.log("profile picture change: ", success);
-                                //     }
-                                // });
                             };
                             image.src = reader.result;
-                           
                         } else {
-                            Log.e("apps.js","updateImageInSRV","there was a problem uploading image");
-                            // $scope.alert('אריעה שגיאה במהלך העלאת התמונה');
+                            Log.e("app","updateImageInSRV","there was a problem uploading image");
+                            callback(null, 2);
                         }
                     }
-                    reader.readAsDataURL($('#newImageFileId')[0].files[0]);
+                    reader.readAsDataURL($('.updatePictureProfileInput')[0].files[0]);
                 }
             }
 
-            $scope.changePassword = function(){
-                var oldpassword = $('#profileOldPassword').val();
-                var newpassword = $('#profileNewPassword').val();
-                if(oldpassword == "" || newpassword == ""){
-                    Log.e("apps.js","changePassword","some inputs are invalid values");
+            $scope.DisplayUpdateSelectedProfile = function(action){
+                if(action == "FirstName" ||  action == "LastName" || action == "Email"){
+                    $(".update"+action+"Value").hide();
+                    $(".update"+action+"Profile").hide();
+                    $(".update"+action+"ProfileInput").show().focus().select();
+                }else if(action == "Picture"){
+                    $(".update"+action+"Profile").hide();
+                    $('.updatePictureProfileInput')[0].click();
                 }else{
-                    $scope.currentUser.changePassword(oldpassword, newpassword, function(success, error){
-                        if(error || !success){
-                            Log.e("apps.js","changePassword","Could not change password", error);
+                    $(".update"+action+"Value").hide();
+                    $(".update"+action+"Profile").hide();
+                    $(".update"+action+"ProfileInput1").show().focus().select();
+                }
+            }
+            $scope.UpdateSelectedProfile = function(action){
+                if(!$(".update"+action+"ProfileLoader").is(":visible")){
+                    if(action == "FirstName" ||  action == "LastName" || action == "Email"){
+                        $(".update"+action+"ProfileLoader").show();
+                        $(".update"+action+"ProfileInput").hide();
+                        var firstName = $('.updateFirstNameProfileInput').val();
+                        var lastName = $('.updateLastNameProfileInput').val();
+                        var email = $('.updateEmailProfileInput').val();
+                        if(firstName == "" || lastName == "" || email == ""){
+                            $scope.Toast.show("Note!","Update user info canceled", Toast.LONG, Toast.NORMAL);
+                            $('.updateFirstNameProfileInput').val(currentUser.firstName);
+                            $('.updateLastNameProfileInput').val(currentUser.lastName);
+                            $('.updateEmailProfileInput').val(currentUser.Email);
+                            // After Request
+                            $(".update"+action+"ProfileLoader").hide();
+                            $(".update"+action+"Value").show();
+                            $(".update"+action+"Profile").show();
                         }else{
-                            console.warn("password change, what to do ? ");
+                            $scope.currentUser.updateUser(firstName, lastName, email, function(success, error){
+                                if(error || !success){
+                                    $scope.Toast.show("Error!","Could not update user info", Toast.LONG, Toast.ERROR);
+                                }else{
+                                    $scope.Toast.show("Success!","User info updated", Toast.LONG, Toast.SUCCESS);
+                                }
+                                 // After Request
+                                $(".update"+action+"ProfileLoader").hide();
+                                $(".update"+action+"Value").show();
+                                $(".update"+action+"Profile").show();
+                            });
                         }
-                    });
-                }
-            }
-
-            $scope.updateUser = function(profilePicture){
-                if(profilePicture == "" || profilePicture == undefined || profilePicture == null){
-                    var firstName = $('#profileFirstName').val();
-                    var lastName = $('#profileLastName').val();
-                    var email = $('#profileEmail').val();
-                    console.log(firstName+ ',' +lastName+',' +email);
-                    if(firstName == "" || lastName == "" || email == ""){
-                        Log.e("app.js","updateUser","some inputs are invalid values");
-                    }else{
-                        $scope.currentUser.updateUser(firstName, lastName, email, $scope.currentUser.profilePicture, function(success, error){
-                            if(error || !success){
-                                Log.e("app.js","updateUser","Could not update profile", error);
+                    }else if(action == "Password"){
+                        if($(".update"+action+"ProfileInput1").is(":visible")){
+                            $(".update"+action+"Value").hide();
+                            $(".update"+action+"ProfileInput1").hide();
+                            if($(".update"+action+"ProfileInput1").val() != ""){
+                                $(".update"+action+"ProfileLoader").show();
+                                $(".update"+action+"ProfileInput2").show().focus().select();
+                                $timeout(function(){
+                                    $(".update"+action+"ProfileLoader").hide();
+                                },100);
                             }else{
-                                console.warn("profile updated, what to do ? ", success);
-                                var stor = new Storage();
-
-                                stor.setWorkspaceData(null, null, Globals.CurrentUser, function(){});
+                                $scope.Toast.show("Note!","Update password canceled", Toast.LONG, Toast.NORMAL);
+                                $(".update"+action+"Profile").show();
+                                $(".update"+action+"Value").show();
+                                $(".update"+action+"ProfileInput1").val("");
+                                $(".update"+action+"ProfileInput2").val("");
+                                $(".update"+action+"ProfileInput3").val("");
+                            }
+                        }else if($(".update"+action+"ProfileInput2").is(":visible")){
+                            $(".update"+action+"ProfileInput2").hide();
+                            if($(".update"+action+"ProfileInput2").val() != ""){
+                                $(".update"+action+"ProfileLoader").show();
+                                $(".update"+action+"ProfileInput3").show().focus().select();
+                                $timeout(function(){
+                                    $(".update"+action+"ProfileLoader").hide();
+                                },100);
+                            }else{
+                                $scope.Toast.show("Note!","Update password canceled", Toast.LONG, Toast.NORMAL);
+                                $(".update"+action+"Profile").show();
+                                $(".update"+action+"Value").show();
+                                $(".update"+action+"ProfileInput1").val("");
+                                $(".update"+action+"ProfileInput2").val("");
+                                $(".update"+action+"ProfileInput3").val("");
+                            }
+                        }else if($(".update"+action+"ProfileInput3").is(":visible")){
+                            $(".update"+action+"ProfileInput3").hide();
+                            if($(".update"+action+"ProfileInput3").val() == ""){
+                                $scope.Toast.show("Note!","Update password canceled", Toast.LONG, Toast.NORMAL);
+                                $(".update"+action+"Profile").show();
+                                $(".update"+action+"Value").show();
+                                $(".update"+action+"ProfileInput1").val("");
+                                $(".update"+action+"ProfileInput2").val("");
+                                $(".update"+action+"ProfileInput3").val("");
+                            }else if($(".update"+action+"ProfileInput3").val() != $(".update"+action+"ProfileInput2").val()){
+                                $scope.Toast.show("Error!","New Password does not match!", Toast.LONG, Toast.ERROR);
+                                $(".update"+action+"Profile").show();
+                                $(".update"+action+"Value").show();
+                                $(".update"+action+"ProfileInput1").val("");
+                                $(".update"+action+"ProfileInput2").val("");
+                                $(".update"+action+"ProfileInput3").val("");
+                            }else{
+                                $(".update"+action+"ProfileLoader").show();
+                                $scope.currentUser.changePassword($(".update"+action+"ProfileInput1").val(), $(".update"+action+"ProfileInput2").val(), function(success, error){
+                                    if(error || !success){
+                                        $scope.Toast.show("Error!","Could not update user password", Toast.LONG, Toast.ERROR);
+                                        $(".update"+action+"ProfileInput1").val("");
+                                        $(".update"+action+"ProfileInput2").val("");
+                                        $(".update"+action+"ProfileInput3").val("");
+                                    }else{
+                                        $scope.Toast.show("Success!","User password updated", Toast.LONG, Toast.SUCCESS);
+                                    }
+                                    $(".update"+action+"ProfileLoader").hide();
+                                    $(".update"+action+"Value").show();
+                                    $(".update"+action+"Profile").show();
+                                });
+                            }
+                        }
+                    }else if(action == "Picture"){
+                        $(".update"+action+"ProfileLoader").show();
+                        $(".update"+action+"ProfileInput").hide();
+                        $scope.updateImageInSRV(function(success, error){
+                            if(error || !success){
+                                if(error == 1){
+                                    $scope.Toast.show("Note!","Upload picture canceled", Toast.LONG, Toast.NORMAL);
+                                }else if(error == 3){
+                                    $scope.Toast.show("Error!","File type must be JPEG or PNG!", Toast.LONG, Toast.ERROR);
+                                }else{
+                                    $scope.Toast.show("Error!","Could not upload image", Toast.LONG, Toast.ERROR);
+                                }
+                                $(".update"+action+"ProfileLoader").hide();
+                                $(".update"+action+"Profile").show();
+                            }else{
+                                $scope.currentUser.updateProfilePicture(success.base64NewImage, success.ext, function(success1, error1){
+                                    if(error || !success){
+                                        $scope.Toast.show("Error!","Could not upload image", Toast.LONG, Toast.ERROR);
+                                    }else{
+                                        $scope.Toast.show("Success!","Profile Picture changed", Toast.LONG, Toast.SUCCESS);
+                                    }
+                                    $(".update"+action+"ProfileLoader").hide();
+                                    $(".update"+action+"Profile").show();
+                                });
                             }
                         });
                     }
-                }else{
-                    var firstName = $('#profileFirstName').val();
-                    var lastName = $('#profileLastName').val();
-                    var email = $('#profileEmail').val();
-                    if(firstName == "" || lastName == "" || email == ""){
-                        Log.e("app.js","updateUser","some inputs are invalid values");
-                    }else{
-                        $scope.currentUser.updateUser(firstName, lastName, email, profilePicture, function(success, error){
-                            if(error || !success){
-                                Log.e("app.js","updateUser","Could not update profile", error);
-                            }else{
-                                console.warn("profile updated, what to do ? ", success);
-                                var stor = new Storage();
+                }
+            }
 
-                                stor.setWorkspaceData(null, null, Globals.CurrentUser, function(){});
-                            }
-                        });
-                    }
+            $scope.getProfilePicture = function(){
+                if($scope.currentUser && $scope.currentUser.profilePicture){
+                    if($scope.currentUser.profilePicture.indexOf('.') == -1){
+                        return "img/defaulProfilePicture.jpeg";
+                    }else if(window.location.protocol == "file:")
+                        return "http://"+$httpR.ip+":8888//mopdqwompoaskdqomdiasjdiowqe/server/" + $scope.currentUser.profilePicture;
+                    else
+                        return $scope.currentUser.profilePicture;
+                }else{
+                    return "img/defaulProfilePicture.jpeg";
                 }
             }
 
 
-            $scope.checkPasswords = function(){
-                var password1 = $('#profileNewPassword').val();
-                var confirmPassword = $('#profileConfirmPassword').val();
-                if(password1 == "" || confirmPassword == ""){
-                    Log.e("app.js","checkPasswords","some inputs are invalid values", error);
-                }else{
-                    if(password1 != confirmPassword){
-                        return false;
-                    }else{
-                        return true;
-                    }
-                }
+            $scope.closeProfileDialog = function(){
+                $('#profileDialogClose').hide();
+                $('#profileDialog').hide();
             }
 
-
-
+            $scope.openProfileDialog = function(){
+                $('#profileDialogClose').show();
+                $('#profileDialog').show();   
+            }
 
 
 
@@ -509,7 +592,7 @@ var ngScope;
                     });
                 }catch(e){
                     $scope.Toast.show("Error!","Could'nt redo step", Toast.LONG, Toast.ERROR);
-                    Log.e("app.js","RedoWorkflow", e);
+                    Log.e("app","RedoWorkflow", e);
                 }
             }
 
@@ -525,7 +608,7 @@ var ngScope;
                     $scope.workSpaces.checkUserColorsInWorkspace();
                 }catch(e){
                     $scope.Toast.show("Error!","Could'nt insert last step", Toast.LONG, Toast.ERROR);
-                    Log.e("app.js","InsertStepToLast10Steps", e);
+                    Log.e("app","InsertStepToLast10Steps", e);
                 
                 }
             }
@@ -574,7 +657,7 @@ var ngScope;
                     }
                 }catch(e){
                     $scope.Toast.show("Error!","Could'nt update tab name", Toast.LONG, Toast.ERROR);
-                    Log.e("app.js","updateTabName", e);
+                    Log.e("app","updateTabName", e);
                 }
             }
             $scope.blurThis = function(inputId) {
@@ -740,7 +823,7 @@ var ngScope;
 
                 }catch(e){
                     $scope.Toast.show("Error!","Could'nt close tab", Toast.LONG, Toast.ERROR);
-                    Log.e("app.js","closeTab", e);
+                    Log.e("app","closeTab", e);
                 }
             }
             
@@ -784,7 +867,7 @@ var ngScope;
                     }
                 }catch(e){
                     $scope.Toast.show("Error!","There was an error on going back to parent tab", Toast.LONG, Toast.ERROR);
-                    Log.e("app.js","back", e);
+                    Log.e("app","back", e);
                 }
             }
 
@@ -840,7 +923,7 @@ var ngScope;
                         // $scope.workSpaces.updateNewWorkflowButtons();
                 }catch(e){
                     $scope.Toast.show("Error!","Could'nt update matrix layout", Toast.LONG, Toast.ERROR);
-                    Log.e("app.js","updateMatrixLayout", e);
+                    Log.e("app","updateMatrixLayout", e);
                 }
             }
             
@@ -912,7 +995,7 @@ var ngScope;
                     // $scope.workSpaces.updateNewWorkflowButtons();
                 }catch(e){
                     $scope.Toast.show("Error!","Could'nt resize block", Toast.LONG, Toast.ERROR);
-                    Log.e("app.js","resizeBlock", e);
+                    Log.e("app","resizeBlock", e);
                 }
             }
 
@@ -980,7 +1063,7 @@ var ngScope;
                     },200);
                 }catch(e){
                     $scope.Toast.show("Error!","Could'nt add new workflow or tab", Toast.LONG, Toast.ERROR);
-                    Log.e("app.js","addNewTabToWorkflow", e);
+                    Log.e("app","addNewTabToWorkflow", e);
                 }
             }
 
@@ -1087,7 +1170,7 @@ var ngScope;
                     },100);
                 }catch(e){
                     $scope.Toast.show("Error!","Could'nt convert to workflow", Toast.LONG, Toast.ERROR);
-                    Log.e("app.js","convertToWorkflow", e);
+                    Log.e("app","convertToWorkflow", e);
                 }
             }
 
@@ -1156,7 +1239,7 @@ var ngScope;
                     });
                 }catch(e){
                     $scope.Toast.show("Error!","Could'nt open new work flow", Toast.LONG, Toast.ERROR);
-                    Log.e("app.js","openNewWorkflow", e);
+                    Log.e("app","openNewWorkflow", e);
                 }
             }
 
@@ -1437,7 +1520,7 @@ var ngScope;
                     }
                 }catch(e){
                     $scope.Toast.show("Error!","Could'nt complete search", Toast.LONG, Toast.ERROR);
-                    Log.e("app.js","prepareForSearch", e);
+                    Log.e("app","prepareForSearch", e);
                 }
             }
 
@@ -1465,7 +1548,7 @@ var ngScope;
                     }
                     return newResults;
                 }catch(e){
-                    Log.e("app.js","FilterResults", e);
+                    Log.e("app","FilterResults", e);
                     return [];
                 }
             }
@@ -1629,7 +1712,7 @@ var ngScope;
                 var svr = new Server();
                 svr.saveElement(obj, function(success, error){
                     if(error || !success){
-                        Log.e("app.js","error creating new element", error);
+                        Log.e("app","error creating new element", error);
                     }else{
                         var obj = new Content(success);
                         obj.locked = true;
@@ -1660,9 +1743,9 @@ var ngScope;
 
 
             $scope.editContent = function(wFlow){
-                debugger;
+                
                 if($scope.isDummy){
-                    Log.i("app.js","editContent","Dummy lock object");
+                    Log.i("app","editContent","Dummy lock object");
                     if(wFlow.selectedTab.content.locked){
                         if(wFlow.selectedTab.content.lockedBy.id == Globals.CurrentUser.id){
                             wFlow.selectedTab.content.progressWizard = {
@@ -1722,20 +1805,22 @@ var ngScope;
                         };
                         wFlow.selectedTab.content.inProgress = true;
                         wFlow.selectedTab.content.lock(function(success, error){
-                            $timeout(function(){
-                                if(error || !success){
+                            if(error || !success){
+                                wFlow.selectedTab.content.newData = {};
+                                wFlow.selectedTab.content.progressWizard.spinner = false;
+                                wFlow.selectedTab.content.inProgress = false;
+                                if(error == 1)
+                                    $scope.Toast.show("Cannot Lock Content", "Unknow Error occured. Try again!", Toast.LONG, Toast.ERROR);
+                                else
                                     $scope.Toast.show("Cannot Lock Content", "Content locked by another user.", Toast.LONG, Toast.ERROR);
-                                    wFlow.selectedTab.content.progressWizard = {};
-                                    wFlow.selectedTab.content.inProgress = false;
-                                }else{
-                                    wFlow.selectedTab.content.progressWizard.spinner = false;
-                                    wFlow.selectedTab.content.createTempData();
-                                    $scope.workSpaces.deleteChildTabIds(wFlow.selectedTab.dataHolding.parentTab, false);
-                                    $timeout(function(){
-                                        $scope.InsertStepToLast10Steps();
-                                    },500);
-                                }
-                            },200);
+                            }else{
+                                wFlow.selectedTab.content.progressWizard.spinner = false;
+                                wFlow.selectedTab.content.createTempData();
+                                $scope.workSpaces.deleteChildTabIds(wFlow.selectedTab.dataHolding.parentTab, false);
+                                $timeout(function(){
+                                    $scope.InsertStepToLast10Steps();
+                                },500);
+                            }
 
                         });
                     }
@@ -1897,7 +1982,7 @@ var ngScope;
                 
                 content.progressWizard.spinner = true;
                 if($scope.isDummy){
-                    Log.i("app.js","finishEditing","Dummy save object");
+                    Log.i("app","finishEditing","Dummy save object");
                     $timeout(function(){
                         content.modifyContent();
                         content.progressWizard = {};
@@ -1911,12 +1996,15 @@ var ngScope;
                         $scope.Toast.show("Success!",content.type+" has been saved.", Toast.LONG, Toast.SUCCESS);
                     },1000);
                 }else{
-
+                    debugger;
                     content.save("", function(success, error){
+                        debugger;
                         if(error || !success){
+                            Log.e("app","finishEditing","Object does not saved in server", {LogObject:error});
                             content.progressWizard.spinner = false;
                             $scope.Toast.show("Error!","Unknown error occured while saving "+content.type, Toast.LONG, Toast.ERROR);
                         }else{
+                            Log.d("app","finishEditing","Object saved in server", {LogObject:success});
                             content.progressWizard = {};
                             content.lastModified = +(new Date());
                             content.inProgress = false;
@@ -1936,7 +2024,7 @@ var ngScope;
 
                 content.progressWizard.spinner = true;
                 if($scope.isDummy){
-                    Log.i("app.js","publishButton","Dummy publish object");
+                    Log.i("app","publishButton","Dummy publish object");
                     $timeout(function(){
                         content.lastModified = +(new Date());
                         content.locked = false;
@@ -1948,7 +2036,6 @@ var ngScope;
                         $scope.Toast.show("Success!",content.type+" has been published.", Toast.LONG, Toast.SUCCESS);
                     },1000);
                 }else{
-
                     content.release("", function(success, error){
                         if(error || !success){
                             content.progressWizard = {};
@@ -1958,6 +2045,39 @@ var ngScope;
                             content.locked = false;
                             content.lockedBy = {};
                             content.progressWizard = {};
+                            content.progressWizard.spinner = false;
+                            $scope.Toast.show("Success!",content.type+" has been published.", Toast.LONG, Toast.SUCCESS);
+                        }
+                        $timeout(function(){
+                            $scope.InsertStepToLast10Steps();
+                        },500);
+                    });
+                }
+            }
+
+            $scope.revokeContent = function(content){
+                if($scope.isDummy){
+                    Log.i("app","revokeContent","Dummy revoke object");
+                    $timeout(function(){
+                        content.lastModified = +(new Date());
+                        content.locked = false;
+                        content.lockedBy = {};
+                        content.progressWizard = {};
+                        $timeout(function(){
+                            $scope.InsertStepToLast10Steps();
+                        },500);
+                        $scope.Toast.show("Success!",content.type+" has been revoked.", Toast.LONG, Toast.SUCCESS);
+                    },1000);
+                }else{
+                    content.revoke("", function(success, error){
+                        if(error || !success){
+                            content.progressWizard.spinner = false;
+                            content.progressWizard = {};
+                            $scope.Toast.show("Error!","Unknown error occured while releasing "+content.type, Toast.LONG, Toast.ERROR);
+                        }else{
+                            content.progressWizard.spinner = false;
+                            content.progressWizard = {};
+                            content.newData = {};
                             $scope.Toast.show("Success!",content.type+" has been published.", Toast.LONG, Toast.SUCCESS);
                         }
                         $timeout(function(){
@@ -2148,7 +2268,7 @@ var ngScope;
                     });
                 }catch(e){
                     $scope.Toast.show("Error!","Could'nt clear local storage", Toast.LONG, Toast.ERROR);
-                    Log.e("app.js","clearLocalStorage", e);
+                    Log.e("app","clearLocalStorage", e);
                 }
             }
 

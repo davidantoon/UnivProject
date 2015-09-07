@@ -36,7 +36,7 @@
 									if(x.steps && x.steps.last20Steps.length == 0)
 										ServerResquestComplete(null, passThis1);
 									else
-										ServerResquestComplete(x.steps, passThis1);
+										ServerResquestComplete(x.Steps, passThis1);
 								}catch(e){
 									ServerResquestComplete(null, passThis1);		
 								}
@@ -53,7 +53,6 @@
 							dataFromLocalStorage = ((dataFromLocalStorage)?dataFromLocalStorage.Steps:null);
 							if(dataFromLocalStorage != null && dataFromLocalStorage.length == 0)
 								dataFromLocalStorage = null;
-
 							// init workspace
 							if(serverSteps){
 								if(dataFromLocalStorage != null){
@@ -520,7 +519,7 @@
 		        						loopObjects(0, success);
 		        						function loopObjects(index, newObjects){
 		        							if(index < newObjects.length){
-		        								stor.getElementById(newObjects[index], false, true, function(object){
+		        								stor.getElementById(ngScope.objectServerToClient(newObjects[index]), false, true, function(object){
 		        									loopObjects(Number(index)+1, newObjects);
 		        								});
 		        							}else{
@@ -534,7 +533,7 @@
 		        	}
 
 		        	function refreshObjectsInheritence(){
-
+		        		debugger;
 		        		// loopKbits
 		        		var Kbits = Globals.getRecentObjects("Kbit");
 		        		for(var i=0; i<Kbits.length; i++){

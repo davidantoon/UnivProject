@@ -14,8 +14,10 @@
             for (var i = 0; i < CashedObjectsKeys.length; i++) {
                 delete this.CashedObjects[CashedObjectsKeys[i]]; 
             }
-            if(clearUser)
+            if(clearUser){
                 this.CurrentUser = {};
+                delete this.CurrentUser;
+            }
         },
         allObjectsaved: function() {
             console.warn("allObjectsaved not implemented!");
@@ -79,7 +81,6 @@
         updateUsedObjects: function(workspace){
             // loop on cashed objects and check if its in workflow
 
-            debugger;
             // Check Terms
             var ChashedTerms = this.getRecentObjects("Term");
             for(var i=0; i<ChashedTerms.length; i++){
@@ -156,7 +157,7 @@
                                     if(workspace.workflows[i2].tabs[i3].content.kBitsNeeded)
                                         for(var i4=0; i4<workspace.workflows[i2].tabs[i3].content.kBitsNeeded.length; i4++){
                                             if(workspace.workflows[i2].tabs[i3].content.kBitsNeeded[i4].terms)
-                                                for(var i5=0; i5<workspace.workflows[i2].tabs[i3].content.kBitsNeeded[i4].terms.length; i6++){
+                                                for(var i5=0; i5<workspace.workflows[i2].tabs[i3].content.kBitsNeeded[i4].terms.length; i5++){
                                                     if(workspace.workflows[i2].tabs[i3].content.kBitsNeeded[i4].terms[i5].id == ChashedTerms[i].id){
                                                         workspace.workflows[i2].tabs[i3].content.kBitsNeeded[i4].terms[i5] = ChashedTerms[i].id;
                                                         termInUse = true;
@@ -166,7 +167,7 @@
                                     if(workspace.workflows[i2].tabs[i3].content.kBitsProvided)
                                         for(var i4=0; i4<workspace.workflows[i2].tabs[i3].content.kBitsProvided.length; i4++){
                                             if(workspace.workflows[i2].tabs[i3].content.kBitsProvided[i4].terms)
-                                                for(var i5=0; i5<workspace.workflows[i2].tabs[i3].content.kBitsProvided[i4].terms.length; i6++){
+                                                for(var i5=0; i5<workspace.workflows[i2].tabs[i3].content.kBitsProvided[i4].terms.length; i5++){
                                                     if(workspace.workflows[i2].tabs[i3].content.kBitsProvided[i4].terms[i5].id == ChashedTerms[i].id){
                                                         workspace.workflows[i2].tabs[i3].content.kBitsProvided[i4].terms[i5] = ChashedTerms[i].id;
                                                         termInUse = true;
@@ -178,7 +179,6 @@
                         }
                     }
                 }
-                debugger;
                 if(termInUse == false)
                     this.pop(ChashedTerms[i].id, ChashedTerms[i].type);
             }
@@ -209,6 +209,7 @@
                                             }
                                         }
                                     }
+                                    debugger;
                                     if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsProvided){
                                         for(var i5=0; i5<workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsProvided.length; i5++){
                                             if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsNeeded[i5].id == ChashedKbits[i].id){
@@ -1031,16 +1032,16 @@
     }).value('defultFilters', function(){
         ngScope.Log.d("Log", "defultFilters", "Init defaultFilters.");
         ngScope.Log.hideFilter("LZMA");
-        ngScope.Log.hideFilter("$httpR");
-        // ngScope.Log.hideFilter("Storage");
-        ngScope.Log.hideFilter("User");
+        // ngScope.Log.hideFilter("$httpR");
+        ngScope.Log.hideFilter("Storage");
+        // ngScope.Log.hideFilter("User");
         ngScope.Log.hideFilter("Workflows");
         ngScope.Log.hideFilter("Workspace");
         ngScope.Log.hideFilter("Tab");
         ngScope.Log.hideFilter("Toast");
         // ngScope.Log.hideFilter("Content");
         // ngScope.Log.hideFilter("Steps");
-        // ngScope.Log.hideFilter("Server");
+        ngScope.Log.hideFilter("Server");
     });
 })(window.angular);
 

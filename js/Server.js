@@ -196,7 +196,6 @@
 			// delivery , settings, kbits,steps, 
 			saveElement: function(obj, callback){
 				try{
-					console.warn("saveElement: only for new element not update !!!");
 					if(this.baseUrl == "dummy"){
 						switch (obj.type){
 							case "Deliveries":
@@ -241,8 +240,7 @@
 					}else{
 						switch (obj.type){
 							case "Delivery":
-
-								$httpR.connectToServer(obj.toJsonDeliveryServer(), $httpR.DELIVERYaddNew, Globals, function(success, error){
+								$httpR.connectToServer({"json":obj.toJsonDeliveryServer()}, $httpR.DELIVERYupdateFullDelivery, Globals, function(success, error){
 									if(error || !success){
 										callback(null, error);
 									}else{
@@ -514,7 +512,6 @@
 									else{
 										success = success.DELIVERIES.concat(success.KBITS);
 										if(success && success.length){
-											debugger;
 											var tempData = [];
 											for(var i=0; i<success.length; i++){
 												var found = false;

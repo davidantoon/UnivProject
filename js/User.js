@@ -1,7 +1,7 @@
 (function(angular) {
     // 'use strict';
-    angular.module('IntelLearner').factory('User', ['$rootScope', '$http', 'Server', '$httpR', 'Globals', 'Log',
-        function($rootScope, $http, Server, $httpR, Globals, Log) {
+    angular.module('IntelLearner').factory('User', ['$rootScope', '$http', 'Server', '$httpR', 'Globals', 'Log', 'Storage',
+        function($rootScope, $http, Server, $httpR, Globals, Log, Storage) {
 
             function User(tempJson, id, firstName, lastName, username, email, profilePicture, role, token) {
                 if (tempJson) {
@@ -51,7 +51,7 @@
                 try {
                     if (username == "dummy" && password == "dummy") {
                         // dummy login
-                        console.warn("Logged as dummy user");
+                        Log.i("User", "login", "Logged as dummy user");
                         var dummyUSer = new User(null, "David", "Antoon", username, "david.antoon@hotmail.com", "https://graph.facebook.com/100003370268591/picture", "Learner");
                         callback(dummyUSer);
                     } else {
@@ -61,17 +61,17 @@
                         };
                         $httpR.connectToServer(data, $httpR.logIn, Globals, function(result, error) {
                             if (result) {
-                                // console.log("connectToServer response: ", result);
+                                Log.d("User","login","User login success", {LogObject:result});
                                 var newUser = new User(result);
                                 callback(newUser);
                             } else {
-                                Log.e("User","login", error);
+                                Log.e("User","login","User cannot login", {LogObject:error});
                                 callback(null, error);
                             }
                         });
                     }
                 } catch (e) {
-                    Log.e("User","login", e);
+                    Log.e("User","login","User cannot login", {LogObject:e});
                     callback(null, e);
                 }
             }
@@ -87,7 +87,7 @@
              * @param  {String}   role           what is the role of the user
              * @param  {Function} callback       callback function
              */
-            User.singup = function(firstName, lastName, username, password, email, profilePicture, role, callback) {
+            User.signUp = function(firstName, lastName, username, password, email, profilePicture, role, callback) {
                 try {
                     var data = {
                         firstName: firstName,
@@ -100,15 +100,16 @@
                     };
                     $httpR.connectToServer(data, $httpR.signUp, Globals, function(result, error) {
                         if ((result) && error != null) {
+                            Log.d("User","signUp","User signUp success", {LogObject:result});
                             var newUser = new User(result);
                             callback(newUser);
                         } else {
-                            Log.e("User","signup: ", error);
+                            Log.e("User","signUp","User cannot signUp", {LogObject:error});
                             callback(null, error);
                         }
                     });
                 } catch (e) {
-                    Log.e("User","singup", e);
+                    Log.e("User","signUp","User cannot signUp", {LogObject:e});
                     callback(null, e);
                 }
             }
@@ -129,13 +130,15 @@
                         };
                         $httpR.connectToServer(data, $httpR.USERlogout, Globals, function(result, error){
                             if(error || !success){
+                                Log.e("User","logout","User cannot logout", {LogObject:error});
                                 callback(null, error);
                             }else{
+                                Log.d("User","logout","User logout success", {LogObject:success});
                                 callback(success);
                             }
                         });
                     }catch(e){
-                        Log.e("User","logout", e);
+                        Log.e("User","logout","User cannot logout", {LogObject:e});
                         callback(null, e);
                     }
                 },
@@ -151,18 +154,23 @@
                             password: oldpassword,
                             new_password: newPassword
                         }
+                        var passThis = this;
                         $httpR.connectToServer(data, $httpR.changePassword, Globals, function(success, error) {
-                            debugger;
                             if (error || !success) {
-                                Log.e("User","changePassword", error);
-                                callback(null, error);
+                                Log.e("User","changePassword","Could not update user password", {LogObject:error});
+                                callback(false);
                             } else {
-                                callback(success, null);
+                                Log.d("User","changePassword","User password updated", {LogObject:success});
+                                passThis.token = success.token;
+                                var stor = new Storage();
+                                stor.setWorkspaceData(null, null, Globals.CurrentUser, function(){
+                                    callback(true);
+                                });
                             }
                         });
                     }catch(e){
-                        Log.e("User","changePassword", e);
-                        callback(null, e);
+                        Log.e("User","changePassword","Could not update user password", {LogObject:error});
+                        callback(false);
                     }
                 },
 
@@ -181,23 +189,28 @@
                             firstName: firstName,
                             lastName: lastName,
                             email: email,
+                            profilePicture: this.profilePicture,
                             role: this.role
                         };
                         var passThis = this;
                         $httpR.connectToServer(data, $httpR.updateUser, Globals, function(success, error) {
                             if (error || !success){
-                                Log.e("User","updateUser", error);
-                                callback(null, error);
+                                Log.e("User","updateUser","Could not update profile", {LogObject:error});
+                                callback(false);
                             }else{
+                                Log.d("User","updateUser","User profile updated", {LogObject:success});
                                 passThis.firstName = success["FIRST_NAME"];
                                 passThis.lastName = success["LAST_NAME"];
                                 passThis.email = success["EMAIL"];
                                 passThis.profilePicture = success["PROFILE_PICTURE"];
-                                callback(passThis);
+                                var stor = new Storage();
+                                stor.setWorkspaceData(null, null, Globals.CurrentUser, function(){
+                                    callback(true);
+                                });
                             }
                         });
                     } catch (e) {
-                        Log.e("User","updateUser", e);
+                        Log.e("User","updateUser","Could not update profile", {LogObject:e});
                         callback(null, e);
                     }
                 },
@@ -211,27 +224,36 @@
                         var passThis = this;
                         $httpR.connectToServer(Data, $httpR.USERsaveProfilePicture, Globals, function(success, error){
                             if(error || !success){
-                                Log.e("User","updateProfilePicture", error);
+                                Log.e("User","updateProfilePicture","Could not update picture", {LogObject:error});
                                 callback(null, error);
                             }else{
+                                Log.d("User","updateProfilePicture","User picture updated", {LogObject:success});
                                 passThis.profilePicture = success["PROFILE_PICTURE"];
-                                callback(passThis);
+                                callback(true);
                             }
                         });
                     }catch(e){
-                        Log.e("User","updateProfilePicture", e);
+                        Log.e("User","updateProfilePicture","Could not update picture", {LogObject:error});
                         callback(null, e);
                     }
                 },
 
                 checkValidToken: function(callback){
-
                     var data = {};
-
+                    var passThis = this;
                     $httpR.connectToServer(data, $httpR.USERvalidateToken, Globals, function(success, error){
                         if(error || !success){
+                            Log.e("User","checkValidToken","Not valid token", {LogObject:error});
                             callback(false);
                         }else{
+                            Log.d("User","checkValidToken","Valid token", {LogObject:success});
+                            passThis.id = success.UID;
+                            passThis.username = success.USERNAME;
+                            passThis.firstName = success.FIRST_NAME;
+                            passThis.lastName = success.LAST_NAME
+                            passThis.email = success.EMAIL;
+                            passThis.profilePicture = success.PROFILE_PICTURE;
+                            passThis.role = success.ROLE;
                             callback(true);
                         }
                     });
@@ -251,8 +273,7 @@
                             "token": this.token
                         }
                     } catch (e) {
-                        $rootScope.currentScope.Toast.show("Error!", "There was an error in converting to JSON", Toast.LONG, Toast.ERROR);
-                        Log.e("User","toJson", e);
+                        Log.d("User","toJson", {LogObject:e});
                         return null;
                     }
                 }
