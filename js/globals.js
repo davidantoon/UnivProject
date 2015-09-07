@@ -335,8 +335,7 @@
     .value('Log', {
 
         logs: [],
-        classFilter: undefined,
-        funcFilter: undefined,
+        classFilter: {},
         Push: function(){
             //loop over function arguments
             var logArr = {};
@@ -365,9 +364,25 @@
             this.logs.push(logArr);
         },
 
-        filter: function(Class, func){
-            this.classFilter = Class;
-            this.funcFilter = func;
+        showFilter: function(Class, func){
+            if(!this.classFilter[Class])
+                this.classFilter[Class] = {};
+            this.classFilter[Class][func] = true;
+            this.classFilter[Class].hideAllFiltersInClassFilter = false;
+        },
+        hideFilter: function(Class, func){
+            if(func){
+                if(this.classFilter[Class])
+                    this.classFilter[Class][func] = false;
+            }
+            else{
+                if(!this.classFilter[Class])
+                    this.classFilter[Class] = {};
+                this.classFilter[Class].hideAllFiltersInClassFilter = true;
+            }
+        },
+        clearFilter: function(){
+            classFilter = {};
         },
         // warning log
         i: function(){
@@ -375,22 +390,14 @@
             var arr = [];
             var arguments = [].slice.call(arguments);
 
-            
-            arr[0] = "(" + arguments[0].toUpperCase() + ") " + arguments[1] + ":";
+            arr[0] = "%c("+(new Date()).format("HH:mm:ss.l")+")%c" + arguments[0].toUpperCase() + "%c" + arguments[1] + ":%c";
+            arr[1] = "font-weight:100; color:rgba(0,0,0,.5);";
+            arr[2] = "font-size:16px;font-weight:800;color: rgb(207,0,0);";
+            arr[3] = "font-weight:400;color: rgb(8, 96, 168);";
+            arr[4] = "color:black";
             arr = arr.concat(arguments.splice(2));
-            if(this.classFilter == undefined && this.classFilter == undefined){
+            if(!this.classFilter[arguments[0]] || (!this.classFilter[arguments[0]].hideAllFiltersInClassFilter && (!this.classFilter[arguments[0]] || this.classFilter[arguments[0]][arguments[1]] != false))){
                 console.warn.apply(console, arr);
-            }
-            if(this.classFilter){
-                if(this.funcFilter){
-                    if(arguments[0] == this.classFilter && arguments[1] == this.funcFilter){
-                        console.warn.apply(console,arr);
-                    }
-                }else{
-                    if(arguments[0] == this.classFilter){
-                        console.warn.apply(console, arr);
-                    }
-                }
             }
         },
 
@@ -400,22 +407,14 @@
             var arr = [];
             var arguments = [].slice.call(arguments);
 
-            
-            arr[0] = "(" + arguments[0].toUpperCase() + ") " + arguments[1] + ":";
+            arr[0] = "%c("+(new Date()).format("HH:mm:ss.l")+")%c" + arguments[0].toUpperCase() + "%c" + arguments[1] + ":%c";
+            arr[1] = "font-weight:100; color:rgba(0,0,0,.5);";
+            arr[2] = "font-size:16px;font-weight:800;color: rgb(207,0,0);";
+            arr[3] = "font-weight:400;color: rgb(8, 96, 168);";
+            arr[4] = "color:black";
             arr = arr.concat(arguments.splice(2));
-            if(this.classFilter == undefined && this.classFilter == undefined){
+            if(!this.classFilter[arguments[0]] || (!this.classFilter[arguments[0]].hideAllFiltersInClassFilter && (!this.classFilter[arguments[0]] || this.classFilter[arguments[0]][arguments[1]] != false))){
                 console.log.apply(console, arr);
-            }
-            if(this.classFilter){
-                if(this.funcFilter){
-                    if(arguments[0] == this.classFilter && arguments[1] == this.funcFilter){
-                        console.log.apply(console, arr);
-                    }
-                }else{
-                    if(arguments[0] == this.classFilter){
-                        console.log.apply(console, arr);
-                    }
-                }
             }
         },
 
@@ -425,22 +424,14 @@
             var arr = [];
             var arguments = [].slice.call(arguments);
 
-            
-            arr[0] = "(" + arguments[0].toUpperCase() + ") " + arguments[1] + ":";
+            arr[0] = "%c("+(new Date()).format("HH:mm:ss.l")+")%c" + arguments[0].toUpperCase() + "%c" + arguments[1] + ":%c";
+            arr[1] = "font-weight:100; color:rgba(0,0,0,.5);";
+            arr[2] = "font-size:16px;font-weight:800;color: rgb(207,0,0);";
+            arr[3] = "font-weight:400;color: rgb(8, 96, 168);";
+            arr[4] = "color:black";
             arr = arr.concat(arguments.splice(2));
-            if(this.classFilter == undefined && this.classFilter == undefined){
+            if(!this.classFilter[arguments[0]] || (!this.classFilter[arguments[0]].hideAllFiltersInClassFilter && (!this.classFilter[arguments[0]] || this.classFilter[arguments[0]][arguments[1]] != false))){
                 console.error.apply(console, arr);
-            }
-            if(this.classFilter){
-                if(this.funcFilter){
-                    if(arguments[0] == this.classFilter && arguments[1] == this.funcFilter){
-                        console.error.apply(console, arr);
-                    }
-                }else{
-                    if(arguments[0] == this.classFilter){
-                        console.error.apply(console, arr);
-                    }
-                }
             }
         },
 
@@ -506,52 +497,42 @@
             if(Globals.CurrentUser && Globals.CurrentUser.id){
                 data.Token = Globals.CurrentUser.token;
             }
-            // if(method == this.logIn && method == this.signUp && !data.Token){
-                // ngScope.logout();
-            // }else{
-                
-                console.log(data);
-                // http://109.160.241.160:8888/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/
-                $.ajax({
-                    // url: "http://testserver-radjybaba.rhcloud.com/webservice.php/",
-                    url: this.protocol+"://"+this.ip+":"+this.port+this.baseUrl,
-                    data: data,
-                    method: "POST",
-                    header:{
-                        "Access-Control-Allow-Origin": "http://"+this.ip+":8888"
-                    },
-                    xhrFields: {
-                        withCredentials: true
-                    },
-                    crossDomain : true,
-                    timeout: 10000,
-                    success: function(success) {
-                        console.log(success);
-                        if (success.status == 200)
-                            callback(success.data, null);
-                        else{
-                        
-                            if(success.status == 401){
-                                ngScope.logout();
-                                callback(null, error); 
-                            }else{
-                                Log.e(success);
-                                callback(null, success);
-                            }
-                        }
-                    },
-                    error: function(error) {
-                        debugger;
-                        if(error.status == 401){
-                            ngScope.logout();
-                            callback(null, error); 
-                        }else{
-                            Log.e(error);
-                            callback(null, error); 
-                        }
+            ngScope.Log.d("$httpR", "connectToServer","Request data:", {LogObject:data});
+            // http://109.160.241.160:8888/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/
+            $.ajax({
+                // url: "http://testserver-radjybaba.rhcloud.com/webservice.php/",
+                url: this.protocol+"://"+this.ip+":"+this.port+this.baseUrl,
+                data: data,
+                method: "POST",
+                header:{
+                    "Access-Control-Allow-Origin": "http://"+this.ip+":8888"
+                },
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain : true,
+                timeout: 10000,
+                success: function(success) {
+                    if (success.status == 200){
+                        ngScope.Log.d("$httpR", "connectToServer","Success response data:", {LogObject:success});
+                        callback(success.data, null);
                     }
-                });
-            // }
+                    else{
+                        ngScope.Log.e("$httpR", "connectToServer","Error response", {LogObject:success});
+                        if(success.status == 401){
+                            ngScope.logout();
+                        }
+                        callback(null, success);
+                    }
+                },
+                error: function(error) {
+                    ngScope.Log.e("$httpR", "connectToServer","Error response", {LogObject:error});
+                    if(error.status == 401){
+                        ngScope.logout();
+                    }
+                    callback(null, error);
+                }
+            });
         }
     }).value('checkChangesInStepsAffectsOnlyNewData', function(content, after, before){
 
@@ -1047,6 +1028,19 @@
         var second = time.substring(17,19);
         var date = new Date(year, (Number(month)-1), day, hour, minute, second);
         return date.getTime();
+    }).value('defultFilters', function(){
+        ngScope.Log.d("Log", "defultFilters", "Init defaultFilters.");
+        ngScope.Log.hideFilter("LZMA");
+        ngScope.Log.hideFilter("$httpR");
+        // ngScope.Log.hideFilter("Storage");
+        ngScope.Log.hideFilter("User");
+        ngScope.Log.hideFilter("Workflows");
+        ngScope.Log.hideFilter("Workspace");
+        ngScope.Log.hideFilter("Tab");
+        ngScope.Log.hideFilter("Toast");
+        // ngScope.Log.hideFilter("Content");
+        // ngScope.Log.hideFilter("Steps");
+        // ngScope.Log.hideFilter("Server");
     });
 })(window.angular);
 

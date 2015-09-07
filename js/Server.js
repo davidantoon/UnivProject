@@ -135,7 +135,7 @@
 								for(var i=0; i<mergeResult.length; i++){
 									var found = false;
 									for(var j=0; j<tempData.length; j++){
-										if(tempData[j].id == mergeResult[i].id){
+										if(tempData[j].id == mergeResult[i].id && tempData[j].type == mergeResult[i].type){
 											found = true;
 										}
 									}

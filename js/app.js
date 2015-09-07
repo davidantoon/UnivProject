@@ -6,8 +6,8 @@ var ngScope;
 (function(angular) {
     // 'use strict';
     angular.module('IntelLearner', ['onsen', 'firebase', 'dndLists']);
-    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope",  "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast","User", "$httpR", "Content", "fromServerTime", "termServerToClient", "deliveryServerToClient", "kbitServerToClient", "objectServerToClient", "toServerTime", "Log",
-        function($rootScope, $scope,  $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast, User, $httpR, Content, fromServerTime, termServerToClient, deliveryServerToClient, kbitServerToClient, objectServerToClient, toServerTime, Log) {
+    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope",  "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast","User", "$httpR", "Content", "fromServerTime", "termServerToClient", "deliveryServerToClient", "kbitServerToClient", "objectServerToClient", "toServerTime", "Log", "defultFilters",
+        function($rootScope, $scope,  $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast, User, $httpR, Content, fromServerTime, termServerToClient, deliveryServerToClient, kbitServerToClient, objectServerToClient, toServerTime, Log, defultFilters) {
 
 
             // PRIM COLOR = rgb(8,96,168)
@@ -30,30 +30,14 @@ var ngScope;
              // FOR Debugging
             var appElement = document.querySelector('[ng-controller=MainCtrl]');
             ngScope = angular.element(appElement).scope();
-            ngScope.httpR = $httpR;
             $scope.isDummy = false;
 
-
-            console.groupCollapsed("NOTES");
-
-            
-            console.warn("fix Globals noLockedItems");
-            // console.warn("01) Fix after \"SAVE\" editing object REMOVE all steps that affects only (newData) property in contents and check the modified data");
-            // console.warn("02) Create property of GLOBALS to get recent cashed objects with specific type");
-            console.warn("!!!!!) update steps to compress last20steps before adding to lacalStorage");
-            console.warn("  02.1) Update Globals.recentCashedObjects to get object version");
-            console.warn("  02.2) ???? ???? Update Content Class to store object version");
+             console.groupCollapsed("NOTES");
             console.warn("  02.3) Update Globals.recentCashedObjects DONT INCLUDE TERMS");
-            console.warn("03) Add LOGOUT event when server respond with TOKEN-EXPIRED");
-            console.warn("04) Check if (AMEER) restoreSteps function correct!");
             console.warn("05) Add layout and functions to CREATE | EDIT");
             console.warn("06) Check how to implement Terms creating and updating with SCOPE");
             console.warn("07) Implement auto refresh cashed object that not locked by current user");
-            console.warn("08) Check implementaion restoreSteps if supports dataHolding");
-            console.warn("  08.1) Check if type == 4  >> replace dataHolding.results with \"new Content( results )\"");
-            console.warn("  08.2) Check if type == 5  >> replace content with \"new Content(content)\"");
             console.warn("09) Create profile dialog to support all user operations");
-            console.warn("10) Modify login page and connect buttons to login functions");
             console.warn("11) Create Settings layout");
             console.warn("  11.1) Implement function to detect if there is locked items before clear localStorage");
             console.warn("12) Create layout drag and drop recent cashed objects from right edge of the screen");
@@ -61,10 +45,9 @@ var ngScope;
             console.warn("14) Create tab settings dialog (change color | rename | set shortcut for focus)");
             console.warn("15) Add send logs to profile dialog");
             console.warn("16) Remove all debugger and convert all logs to the log class");
-            console.warn("17) Loop on all workflows and CashedContents extract none used obejcts");
-            console.warn("18) Check error .left of interval (ZoomRange)");
             console.warn("21) Check all server functions");
             console.groupEnd();
+            
             
             $scope.AppStatus = 0;
             $scope.currentUser = {};
@@ -97,14 +80,20 @@ var ngScope;
             $scope.kbitServerToClient = kbitServerToClient;
             $scope.objectServerToClient = objectServerToClient;
             $scope.toServerTime = toServerTime;
-            
+            $scope.Log = Log;
+            $scope.Globals = Globals;
+            $scope.httpR = $httpR;
+
+            defultFilters();
+
+
 
             // $scope.$on('$destroy', function() {
             //     delete $window.onbeforeunload;
             // });
             $window.onbeforeunload = function (event) {
                 if(!$scope.Steps.savedInServer || !Globals.allObjectsaved()){
-                    return "Are you sure you want to leave this page?";
+                    return "Last step not saved!. Are you sure you want to leave this page?";
                 }
             };
             
@@ -2182,10 +2171,6 @@ var ngScope;
 
             $scope.getGlobals = function(){
                 return Globals;
-            }
-
-            $scope.getLog = function(){
-                return Log;
             }
 
 
