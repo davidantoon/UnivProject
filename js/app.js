@@ -33,20 +33,13 @@ var ngScope;
             $scope.isDummy = false;
 
              console.groupCollapsed("NOTES");
-            console.warn("  02.3) Update Globals.recentCashedObjects DONT INCLUDE TERMS");
             console.warn("05) Add layout and functions to CREATE | EDIT");
-            console.warn("06) Check how to implement Terms creating and updating with SCOPE");
             console.warn("07) Implement auto refresh cashed object that not locked by current user");
-            console.warn("09) Create profile dialog to support all user operations");
             console.warn("11) Create Settings layout");
             console.warn("  11.1) Implement function to detect if there is locked items before clear localStorage");
             console.warn("12) Create layout drag and drop recent cashed objects from right edge of the screen");
-            console.warn("13) Create class logs that stores logs in array with timestamp and give the ability to export to csv or textplain");
-            console.warn("14) Create tab settings dialog (change color | rename | set shortcut for focus)");
-            console.warn("15) Add send logs to profile dialog");
+            // console.warn("15) Add send logs to profile dialog");
             console.warn("16) Remove all debugger and convert all logs to the log class");
-            console.warn("17) Update ClearData() in app.js ");
-            console.warn("21) Check all server functions");
             console.groupEnd();
             
             
@@ -199,9 +192,6 @@ var ngScope;
             }
 
             $scope.login = function(){
-                // var username = "geryes"; var password = "my_password"; // Jeries Mousa
-                // var username1 = "antoon91"; var password1 = "123"; // Antoon Antoon
-                
                 var username = $('#username').val();
                 var password = $('#password').val();
                 if(username == "" || password == ""){
@@ -1170,6 +1160,22 @@ var ngScope;
                                 $scope.workSpaces.workflows.push(newWorkflow);
 
                             break;
+                            case "CreateNewTerm":
+                                Log.d("app","convertToWorkflow","Create New Term");
+                                $scope.workSpaces.updateLastId();
+                                newWorkflow.ID = $scope.workSpaces.lastWorkflowId;
+                                $scope.workSpaces.updateLastId();
+                                newWorkflow.selectedTab = newWorkflow.addTab();
+                                newWorkflow.selectedTab.Type = 6;
+                                newWorkflow.selectedTab.title = "";
+                                newWorkflow.selectedTab.color = $scope.holdingNewWorkflowData.selectedTab.color;
+                                newWorkflow.selectedTab.changeType(newWorkflow.selectedTab.Type);
+                                $scope.holdingNewWorkflowCreateData = {
+                                    "workflowId": newWorkflow.ID,
+                                    "tabId": newWorkflow.selectedTab.ID
+                                }
+                                $scope.workSpaces.workflows.push(newWorkflow);
+                            break;
                             default:break;
                         }
                         $scope.holdingNewWorkflowData = null;
@@ -1715,7 +1721,10 @@ var ngScope;
                     $timeout(function(){
                         $scope.displayNewWorkflowTabButtons = false;
                         $scope.displayNewWorkflowButtons = true;
-                        $scope.holdingNewWorkflowData = {"selectedTab":wFlow.selectedTab, "Action":"CreateNewElement"};
+                        if(newContentType == "Delivery" ||  newContentType == "Kbit")
+                            $scope.holdingNewWorkflowData = {"selectedTab":wFlow.selectedTab, "Action":"CreateNewElement"};
+                        else
+                            $scope.holdingNewWorkflowData = {"selectedTab":wFlow.selectedTab, "Action":"CreateNewTerm"};
                         $scope.selectColorFilter(0);
                         var waitForUserResponse = $interval(function(){
                             if($scope.displayNewWorkflowButtons == false){
@@ -1765,7 +1774,45 @@ var ngScope;
                                                 }
                                             });
                                         }else{
+
+                                            Log.d("app","CeateButtonPressed","Create New Term");
                                             // TERMS
+                                            debugger;
+                                            // $httpR.connectToServer({}, "TERMGetAllScopesWithTerms", Globals, function(success, error){
+                                                var newWorkflowCreated = $scope.workSpaces.getWFlow($scope.holdingNewWorkflowCreateData.workflowId);
+                                            //     try{
+                                            //         if(error || !success){
+                                            //             Log.e("app", "CeateButtonPressed", "Error when creating element", error);
+                                            //             $scope.Toast.show("Error!", "Error when creating element", Toast.LONG, Toast.ERROR);
+                                            //             $timeout(function(){
+                                            //                 $scope.closeTab(newWorkflowCreated);
+                                            //                 $scope.Steps.lastFocusedWorkflow = wFlow.ID;
+                                            //                 $scope.refocusLastWorkflow();
+                                            //             },500);
+                                            //         }else{
+                                                        //Log.d("app", "CeateButtonPressed", "Element created", success);
+                                                        // Init Data
+                                                        debugger;
+                                                        $timeout(function(){
+                                                            newWorkflowCreated.selectedTab.dataHolding.spinner = false;
+                                                            newWorkflowCreated.selectedTab.dataHolding.index = 1;
+                                                        },1000);
+
+                                                        $timeout(function(){
+                                                            $scope.InsertStepToLast10Steps();
+                                                        },600);
+                                            //         }
+                                            //     }catch(e){
+                                            //         Log.e("app", "CeateButtonPressed", "Error when creating element", e);
+                                            //         $scope.Toast.show("Error!", "Error when creating element", Toast.LONG, Toast.ERROR);
+                                            //         $timeout(function(){
+                                            //             $scope.closeTab(newWorkflowCreated);
+                                            //             $scope.Steps.lastFocusedWorkflow = wFlow.ID;
+                                            //             $scope.refocusLastWorkflow();
+                                            //         },500);
+                                            //     }
+                                            // });
+                                            
                                         }
                                     },300);
                                 }

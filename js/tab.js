@@ -9,6 +9,7 @@
 		Tab.EDIT_TAB = 3;
 		Tab.RESULTS_TAB = 4;
 		Tab.CONTENT_VIEW = 5;
+		Tab.CREATE_TERM = 6;
 
 		function Tab(id, workflow, tempJson, color, isResultTab){
 
@@ -198,6 +199,27 @@
 							"childTab":{"workflowId":null,"tabId":null}
 						});
 						this.addContent(content, true);
+					break;
+					case Tab.CREATE_TERM:
+						this.addData({
+							"parentTab":{"workflowId":null,"tabId":null},
+							"newTerm":{
+								"searchCreateScope":0, 		// 0 => search || 1 => create
+								"selectedTermScope":null,
+								"termScope":{
+									"name":"",
+									"description":""
+								},
+								"searchCreateTerm":0, 		// 0 => search || 1 => create	
+								"selectedTerm":null,
+								"name":{}, 					// {"en":"name in English"}
+								"description":{} 			// {"en":"description in English"}
+							},
+							"spinner":true,
+							"index":0,
+							"suggestingScopes":[],
+							"suggestingTerms":[]
+						});
 					break;
 					default:
 					break;
