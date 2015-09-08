@@ -69,7 +69,7 @@ class debugLog {
 	public static function api_log($message) {
 		$color = 'orange';
 		debugLog::file_log("<font color='". $color ."'><hr style='border-color:". $color ."'>");
-		debugLog::file_log('API REQUEST: <br>' . $message);
+		debugLog::file_log(date("d-m-y h:i:s") . ':API REQUEST: <br>' . $message);
 		debugLog::file_log("<hr style='border-color:". $color ."'></font>");
 	}
 

@@ -232,9 +232,17 @@ class Kbit {
 		$tableName = 'KBIT_FRONT';
 		// aquire a new revision number
 		$rev_num = Kbit::get_new_Revision_and_disbale_old_ones($UID, $tableName, 'user');
+
+		// get new revision
+		$where_sttmnt = " UID = " . $UID . " ";
+		$new_rev = $dbObj->get_latest_Rivision_ID($dbObj->db_get_usersDB(), $tableName, $where_sttmnt);
+		if($new_rev == null)
+			$new_rev = 0;
+		$new_rev++;		
+
 		// database insert query
 		$query = "INSERT INTO ". $tableName ." (UID, REVISION, PATH, ENABLED, USER_ID, CREATION_DATE) VALUES (".
-			$UID . ", 1, '" . $front["PATH"] ."', 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
+			$UID . ", ". $new_rev .", '" . $front["PATH"] ."', 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
 		$dbObj->run_query($database_source, $query);
 
 		return Kbit::get_front_Kbit($UID, $tableName, 'user');
@@ -321,6 +329,7 @@ class Kbit {
 		}
 		$temp = $results[0];
 		$temp["FRONT_TYPE"] = $tableName;
+		unset($temp["id"]);
 		return $temp;
 	}
 
@@ -561,11 +570,12 @@ class Kbit {
 		// release lock off the Kbit
 		if(Lock::release_lock($UID, 'KBIT_BASE', $user) == false) {
 			debugLog::log("<i>[Kbits.php:cancel_edited_kbit]</i> Could not release lock off kbit (". $UID .")");
-			return false;
+			return null;
 		}
 		// disable all records in user database
 		Kbit::disable_all_kbit_info($UID, 'user');
-		return true;
+		// return data after revoking
+		return Kbit::get_Kbit_details($UID, $user);
 	}
 
 
@@ -704,10 +714,10 @@ class Kbit {
 		$dbObj = new dbAPI();
 
 		for($i=0; $i<count($search_fields); $i++) {
-			if(strtoupper($search_fields[$i]) == strtoupper('ID'))
+			if(strtoupper($search_fields[$i]) == strtoupper('UID'))
 				$search_fields[$i] = " " . $search_fields[$i] . " = " . $search_word . " "; 
 			else	
-			$search_fields[$i] = "UPPER(" . $search_fields[$i] . ") LIKE UPPER('%" . $search_word . "%') "; 
+				$search_fields[$i] = "UPPER(" . $search_fields[$i] . ") LIKE UPPER('%" . $search_word . "%') "; 
 		}
 		$search_sttmnt = implode(" OR ", $search_fields);
 

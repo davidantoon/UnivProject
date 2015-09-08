@@ -296,7 +296,7 @@ class term {
 		// validate user in database
 		$query = "SELECT DISTINCT UID FROM TERM_STRING where LANG = '" . $lang . "' AND ENABLED = '1'";
 		if($lang == '')
-			$query = "SELECT * FROM TERM_STRING where ENABLED = '1'";
+			$query = "SELECT DISTINCT UID FROM TERM_STRING where ENABLED = '1'";
 		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
 		if(count($results) == 0)
 			return array();
@@ -319,6 +319,8 @@ class term {
 		// validate user in database
 		$query = "SELECT * FROM TERM_STRING where UID = '" . $UID . "' AND ENABLED = '1'";
 		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
+		for($i=0; $i < count($results); $i++)
+			unset($results[$i]["id"]);
 		return $results;
 	}
 
@@ -441,33 +443,48 @@ class term {
 
 		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
-		$connectRelation = term::get_connection_by_UID($UID);
-		$termString = term::get_term_by_UID($connectRelation["ID_TERM_STRING"], $lang = '');
-		$termMeaning = term::get_term_meaning_by_UID($connectRelation["ID_TERM_MEAN"], $lang = '');
-		$scope = scope::get_scope_by_UID($connectRelation["ID_SCOPE"]);
+		$query = "SELECT ft.UID, ts.TEXT as 'TERM_STRING', tm.TEXT as 'TERM_MEANING', s.UID as 'SCOPE_UID', s.TITLE as 'SCOPE_TITLE', s.DESCRIPTION as 'SCOPE_DESCRIPTION', tm.LANG, ft.ID_TERM_STRING, ft.ID_TERM_MEAN, ft.ID_SCOPE from TERMS as ft inner join TERM_STRING as ts ON (ft.ID_TERM_STRING = ts.UID) inner JOIN TERM_MEAN as tm ON (ft.ID_TERM_MEAN = tm.UID AND ts.LANG = tm.LANG) inner JOIN SCOPE as s ON (ft.ID_SCOPE = s.UID) where ts.UID IS NOT NULL AND tm.UID IS NOT NULL AND ft.ENABLED = 1 AND ft.UID = ". $UID;
+		$dbObj = new dbAPI();
+		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
+		if(count($results) == 0)
+			return null;
 
-		$termString["OBJECT_TYPE"] = 'TERM_STRING';
-		$termMeaning["OBJECT_TYPE"] = 'TERM_MEAN';
-		$scope["OBJECT_TYPE"] = 'SCOPE';
+		$res = array();
+		$res["UID"] = $results[0]["UID"];
+		$res["SCOPE_UID"] = $results[0]["SCOPE_UID"];
+		$res["SCOPE_TITLE"] = $results[0]["SCOPE_TITLE"];
+		$res["SCOPE_DESCRIPTION"] = $results[0]["SCOPE_DESCRIPTION"];
+		$res["ID_TERM_STRING"] = $results[0]["ID_TERM_STRING"];
+		$res["ID_TERM_MEAN"] = $results[0]["ID_TERM_MEAN"];
+		$res["ID_SCOPE"] = $results[0]["ID_SCOPE"];
+		$res["UID"] = $results[0]["UID"];
+		$res["TERM_STRING"] = array($results[0]["LANG"] => $results[0]["TERM_STRING"]);
+		$res["TERM_MEANING"] = array($results[0]["LANG"] => $results[0]["TERM_MEANING"]);
 
-		$connectRelation["TERM_STRING"] = $termString;
-		$connectRelation["TERM_MEAN"] = $termMeaning;
-		$connectRelation["SCOPE"] = $scope;
+		for($i=1; $i < count($results); $i++) {
 
-		return $connectRelation;
+			 $res["TERM_STRING"][$results[$i]["LANG"]] = $results[$i]["TERM_STRING"];
+			 $res["TERM_MEANING"][$results[$i]["LANG"]] = $results[$i]["TERM_MEANING"];
+		}
+
+		return $res;
 	}
 
 	public static function get_all_terms_full($search_word) {
 
 		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
-		$query = "SELECT ft.UID, ts.TEXT as 'TERM_STRING', tm.TEXT as 'TERM_MEANING', s.UID as 'SCOPE_UID', s.TITLE as 'SCOPE_TITLE', s.DESCRIPTION as 'SCOPE_DESCRIPTION', tm.LANG from [DB_NAME].TERMS as ft inner join [DB_NAME].TERM_STRING as ts ON (ft.ID_TERM_STRING = ts.UID) inner JOIN [DB_NAME].TERM_MEAN as tm ON (ft.ID_TERM_MEAN = tm.UID AND ts.LANG = tm.LANG) inner JOIN [DB_NAME].SCOPE as s ON (ft.ID_SCOPE = s.UID) where (UPPER(ts.TEXT) LIKE UPPER('%[SEARCH_WORD]%') OR UPPER(tm.TEXT) LIKE UPPER('%[SEARCH_WORD]%')) AND ts.UID IS NOT NULL AND tm.UID IS NOT NULL AND ft.ENABLED = 1";
+		$query = "SELECT DISTINCT ft.UID from [DB_NAME].TERMS as ft inner join [DB_NAME].TERM_STRING as ts ON (ft.ID_TERM_STRING = ts.UID) inner JOIN [DB_NAME].TERM_MEAN as tm ON (ft.ID_TERM_MEAN = tm.UID AND ts.LANG = tm.LANG) inner JOIN [DB_NAME].SCOPE as s ON (ft.ID_SCOPE = s.UID) where (UPPER(ts.TEXT) LIKE UPPER('%[SEARCH_WORD]%') OR UPPER(tm.TEXT) LIKE UPPER('%[SEARCH_WORD]%')) AND ts.UID IS NOT NULL AND tm.UID IS NOT NULL AND ft.ENABLED = 1";
 		$dbObj = new dbAPI();
 		$query = str_replace('[DB_NAME]', $dbObj->db_get_contentDB(), $query);
 		$query = str_replace('[SEARCH_WORD]', $search_word, $query);
 		
 		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
-		return $results;
+		$res = array();
+		for($i=0; $i < count($results); $i++) {
+			array_push($res, term::get_full_term_by_UID($results[$i]["UID"]));
+		}
+		return $res;
 	}
 
 
