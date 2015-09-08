@@ -34,7 +34,7 @@
 
 
 
-	$data = array('hash' => 'DAVIDGALIT', 'query' => $data_to_transfer, 'method'  => $method, 'token' => $token );
+	$data = array('hash' => 'DAVIDGALIT', 'query' => $data_to_transfer, 'method'  => $method, 'withContent'=>false, 'token' => $token );
 	// $data = array('method'  => 'getLanguages' );
 
 	// use key 'http' even if you send the request to https://...

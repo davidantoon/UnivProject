@@ -141,7 +141,7 @@
 		  $u.'.R_LD2K', $c.'.R_LD2K',
 		  $c.'.TERMS', $c.'.TERM_STRING', $c.'.TERM_MEAN', $c.'.SCOPE',
 		  $c.'.R_LS2S', $c.'.R_LT2T',
-		  $c.'.CONTENT_LOCK');
+		  $c.'.CONTENT_LOCK', $u.'.USERS');
 	dbAPI::delete_all($tempArr);
 
 
@@ -166,11 +166,20 @@
 	$scopeArr = array();
 	$langArr = term::get_languages();
 
+	// create users
+	users::add_new_user('geryes', 'moussa', 'geryes', 'my_password', 'geryes@gmail.com', 'ss', '1');
+	users::add_new_user('anton', 'anton', 'antoon91', '1234', 'geryes@gmail.com', '', '1');
+
+	if(users::validate_username_password('Learner', 'davidGalitLearner') == null)
+	    users::add_new_user('Learner', 'User', 'Learner', 'davidGalitLearner', 'david@galit.com', 'ss', '1');
+
+
 	// creating terms and scopes
 	for($i=0; $i< 8; $i++) {
 		debugLog::log("<i>[hello.php:function]</i> adding Scope: " . dbAPI::print_json_s($scopeG = scope::add_new_scope("scope title ". $i, "scope description ". $i, 0), 0));
 		array_push($scopeArr, $scopeG);
 		debugLog::log("<i>[hello.php:function]</i> adding term: " . dbAPI::print_json_s($termG = term::add_new_term_with_scope_and_meaning("term ". $i, "en", 0, $scopeArr[$i]["UID"], "term meaning ". $i), 0));
+		array_push($termArr, $termG);
 	}
 	
 	for($i=0; $i< 8; $i++) {
@@ -183,10 +192,19 @@
 
 			// creating relation of type K2T
 			$t = (7 - $i);
-			debugLog::log("<i>[hello.php:testing relation K2T (".$i."=>". $t .")]</i> result: ". dbAPI::print_json_s(Kbit::add_K2T_relation($kbitArr[$i]["UID"], $t, 'link type', 0), 0)); // succeeds
+			debugLog::log("<i>[hello.php:testing relation K2T (".$i."=>". $t .")]</i> result: ". dbAPI::print_json_s(Kbit::add_K2T_relation($kbitArr[$i]["UID"], $termArr[$t]["UID"], 'link type', 0), 0)); // succeeds
 		}
 	}
 
+	debugLog::important_log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i> ::::::::::::::: KBITS STRT :::::::::::::::: ");
+	$str = '';
+	for($i=0; $i< 8; $i++) {
+		$str .= dbAPI::print_json_s($kbitArr, 0);
+	}
+	debugLog::important_log($str);
+	
+	debugLog::important_log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i> ::::::::::::::: KBITS END :::::::::::::::: ");
+	
 
 	// creating relations of type K2K
 	debugLog::log("<i>[hello.php:testing relation K2K KBIT (1=>0)]</i> result: ". dbAPI::print_json_s(Kbit::add_K2K_relation($kbitArr[1]["UID"], $kbitArr[0]["UID"], true, 0), 0));
@@ -209,7 +227,7 @@
 			array_push($delArr, $deliveryG);
 			// creating relation of type K2T
 			$t = (7 - $i);
-			debugLog::log("<i>[hello.php:testing relation D2T (".$i."=>". $t .")]</i> result: ". dbAPI::print_json_s(Delivery::add_D2T_relation($delArr[$i]["UID"], $t, 'link type', 0), 0)); // succeeds
+			debugLog::log("<i>[hello.php:testing relation D2T (".$i."=>". $t .")]</i> result: ". dbAPI::print_json_s(Delivery::add_D2T_relation($delArr[$i]["UID"], $termArr[$t]["UID"], 'link type', 0), 0)); // succeeds
 	}
 
 
@@ -246,6 +264,9 @@
 	debugLog::log("<i>[hello.php:testing relation between delivery (4) and kbit(6)]</i> result: ". dbAPI::print_json_s(Delivery::add_Kbit_to_delivery($kbitArr[6]["UID"], $delArr[4]["UID"], 'PROVIDED', 0, 0), 0));
 
 
+	// publishing deliveries
+	for($i=0; $i< 7; $i++) 
+		debugLog::log("<i>[hello.php:Publishing deliveries]</i> result: ". dbAPI::print_json_s(Delivery::publish_changes($delArr[$i]["UID"], 0), 0));
 
 
 	// $deliveryfront1 = array('FRONT_TYPE'=>'DELIVERY_FRONT', 'PATH'=>'http://youtube1.com');

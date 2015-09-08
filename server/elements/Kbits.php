@@ -13,6 +13,54 @@ class Kbit {
 		return array(/*'R_LD2K',*/ 'R_LK2T', 'R_LK2K');
 	}
 
+
+
+	// get full kbit json from user, remove all data in user database, add new records (process purpose is to update kbit)
+	public static function bulk_update_kbit($json, $user) {
+
+		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
+		
+		$R_D2K = array();
+		$terms = array();
+		$title = $json["TITLE"];
+		$description = $json["DESCRIPTION"];
+		$front = $json["FRONT_KBIT"];
+		$Kbit_UID = $json["UID"];
+		
+
+		if($Kbit_UID == null) {
+			debugLog::log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i> kbit id does not exist in json");			
+			return false;
+		}
+		// validate lock
+		if(Lock::is_locked_by_user($Kbit_UID, 'KBIT_BASE', $user) == false) {
+			debugLog::log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i>The kbit (". $Kbit_UID .") is not locked by user (". $user .")");
+			return false;
+		}
+
+		// get related terms
+		for($i = 0; count($json["TERMS"]); $i++)
+			array_push($terms, $json["TERMS"][$i]);
+
+		if(Kbit::add_new_edit_for_kbit($UID, $title, $description, $user, $front) == null) {
+			debugLog::log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i> error adding new edit to kbit (". $UID . ")");
+			return false;
+		}
+
+		// add terms to database
+		for($i=0; $i < count($terms); $i++)
+			if(Kbit::add_K2T_relation($Kbit_UID, $terms[$i], '', $user) == null) {
+				debugLog::log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i> cannot add term (". $terms[$i] . ") to kbit (". $Kbit_UID . ")");
+				// roll back option here
+				return false;
+			}
+		return true;
+	}
+
+
+
+
+
 	/**
 	 * Add new Kbit in edit mode (users database)
 	 * @param {string} $title The title of the Kbit
@@ -184,9 +232,17 @@ class Kbit {
 		$tableName = 'KBIT_FRONT';
 		// aquire a new revision number
 		$rev_num = Kbit::get_new_Revision_and_disbale_old_ones($UID, $tableName, 'user');
+
+		// get new revision
+		$where_sttmnt = " UID = " . $UID . " ";
+		$new_rev = $dbObj->get_latest_Rivision_ID($dbObj->db_get_usersDB(), $tableName, $where_sttmnt);
+		if($new_rev == null)
+			$new_rev = 0;
+		$new_rev++;		
+
 		// database insert query
 		$query = "INSERT INTO ". $tableName ." (UID, REVISION, PATH, ENABLED, USER_ID, CREATION_DATE) VALUES (".
-			$UID . ", 1, '" . $front["PATH"] ."', 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
+			$UID . ", ". $new_rev .", '" . $front["PATH"] ."', 1, ". $user .",'". date("Y-m-d H:i:s") ."')";
 		$dbObj->run_query($database_source, $query);
 
 		return Kbit::get_front_Kbit($UID, $tableName, 'user');
@@ -273,6 +329,7 @@ class Kbit {
 		}
 		$temp = $results[0];
 		$temp["FRONT_TYPE"] = $tableName;
+		unset($temp["id"]);
 		return $temp;
 	}
 
@@ -513,11 +570,12 @@ class Kbit {
 		// release lock off the Kbit
 		if(Lock::release_lock($UID, 'KBIT_BASE', $user) == false) {
 			debugLog::log("<i>[Kbits.php:cancel_edited_kbit]</i> Could not release lock off kbit (". $UID .")");
-			return false;
+			return null;
 		}
 		// disable all records in user database
 		Kbit::disable_all_kbit_info($UID, 'user');
-		return true;
+		// return data after revoking
+		return Kbit::get_Kbit_details($UID, $user);
 	}
 
 
@@ -625,7 +683,7 @@ class Kbit {
 			$kbit = Kbit::get_kbit_by_UID($UID);
 
 		if($kbit == null) {
-			debugLog::important_log("<i>[Kbits.php:". __FUNCTION___ ."]</i> Kbit (". $UID .") was not found");
+			debugLog::important_log("<i>[Kbits.php:get_Kbit_details]</i> Kbit (". $UID .") was not found, (NOTE: it might be that the kbit is not yet published but the delivery that is related to it is already published)");
 			return null;
 		}
 
@@ -656,10 +714,10 @@ class Kbit {
 		$dbObj = new dbAPI();
 
 		for($i=0; $i<count($search_fields); $i++) {
-			if(strtoupper($search_fields[$i]) == strtoupper('ID'))
+			if(strtoupper($search_fields[$i]) == strtoupper('UID'))
 				$search_fields[$i] = " " . $search_fields[$i] . " = " . $search_word . " "; 
 			else	
-			$search_fields[$i] = "UPPER(" . $search_fields[$i] . ") LIKE UPPER('%" . $search_word . "%') "; 
+				$search_fields[$i] = "UPPER(" . $search_fields[$i] . ") LIKE UPPER('%" . $search_word . "%') "; 
 		}
 		$search_sttmnt = implode(" OR ", $search_fields);
 
