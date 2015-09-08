@@ -277,7 +277,6 @@
 			 * @param  {Function} callback          callback function
 			 */
 			getElementById: function(jsonObject, forceLastmodefied, forceServerPull, callback){
-				debugger;
 				var elemId = jsonObject.id;
 				var elemType = jsonObject.type;
 				if( elemId != undefined && elemId != null && elemId != ""){

@@ -249,8 +249,13 @@
 								});
 							break;
 							case "Kbit":
-								console.warn("save kbit not implemented");
-								callback(true, null);
+								$httpR.connectToServer({"json":obj.toJsonKbitServer()}, $httpR.KBITupdateFullKbit, Globals, function(success, error){
+									if(error || !success){
+										callback(null, error);
+									}else{
+										callback(success);
+									}
+								});
 
 								// call new method to save kbit and terms relations
 							break;

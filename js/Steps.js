@@ -412,7 +412,7 @@
 		            	return;
 
 		            this.currentStep = angular.copy(TNS_newSteps);
-		            Globals.updateUsedObjects(workspace);
+		            ngScope.Globals.updateUsedObjects(ngScope.workSpaces);
 		            this.currentGlobals = Globals.getAllObjectToJson();
 		            this.currentUndoOrder = 0;
 		            var InsData = {
@@ -533,7 +533,6 @@
 		        	}
 
 		        	function refreshObjectsInheritence(){
-		        		debugger;
 		        		// loopKbits
 		        		var Kbits = Globals.getRecentObjects("Kbit");
 		        		for(var i=0; i<Kbits.length; i++){

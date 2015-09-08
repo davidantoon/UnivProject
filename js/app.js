@@ -253,6 +253,7 @@ var ngScope;
                                 	if($('#Workflow'+$scope.Steps.lastFocusedWorkflow).position()){
                                 		$timeout(function(){
                                             $scope.workSpaces.scrollToLastWorkflow($scope.Steps);
+                                            Globals.updateUsedObjects($scope.workSpaces);
                                             $timeout(function(){
                                                 $scope.focusingLastWorkflow = true;
                                             },500);
@@ -952,14 +953,13 @@ var ngScope;
 
             $scope.MainButtonsPressed = function(workflow, action){
                 workflow.selectedTab.changeType(action);
-                if(action == 1){
+                // if(action == 1){
 
-                }else if(action == 2){
-                    // workflow.ty = workflow.fy+2;
-                    $scope.resizeBlock(1,workflow);
-                }else if(action == 3){
+                // }else if(action == 2){
 
-                }
+                // }else if(action == 3){
+
+                // }
                 $scope.InsertStepToLast10Steps();
             }
         
@@ -1092,10 +1092,10 @@ var ngScope;
                                 newWorkflow.ID = $scope.workSpaces.lastWorkflowId;
                                 $scope.workSpaces.updateLastId();
                                 newWorkflow.selectedTab = newWorkflow.addTab();
-                                newWorkflow.selectedTab.type = 4;
+                                newWorkflow.selectedTab.Type = 4;
                                 newWorkflow.selectedTab.title = $scope.holdingNewWorkflowData.selectedTab.title+" | Search";
                                 newWorkflow.selectedTab.color = $scope.holdingNewWorkflowData.selectedTab.color;
-                                newWorkflow.selectedTab.changeType(newWorkflow.selectedTab.type);
+                                newWorkflow.selectedTab.changeType(newWorkflow.selectedTab.Type);
                                 newWorkflow.selectedTab.dataHolding.parentTab.workflowId = $scope.holdingNewWorkflowData.selectedTab.parentWF.ID;
                                 newWorkflow.selectedTab.dataHolding.parentTab.tabId = $scope.holdingNewWorkflowData.selectedTab.ID;
 
@@ -1110,10 +1110,10 @@ var ngScope;
                                 newWorkflow.ID = $scope.workSpaces.lastWorkflowId;
                                 $scope.workSpaces.updateLastId();
                                 newWorkflow.selectedTab = newWorkflow.addTab();
-                                newWorkflow.selectedTab.type = 5;
-                                newWorkflow.selectedTab.title = $scope.holdingNewWorkflowData.data.name;
+                                newWorkflow.selectedTab.Type = 5;
+                                newWorkflow.selectedTab.title = $scope.holdingNewWorkflowData.data.type.toUpperCase()+ " "+$scope.holdingNewWorkflowData.data.id;
                                 newWorkflow.selectedTab.color = $scope.holdingNewWorkflowData.selectedTab.color;
-                                newWorkflow.selectedTab.changeType(newWorkflow.selectedTab.type, $scope.holdingNewWorkflowData.data);
+                                newWorkflow.selectedTab.changeType(newWorkflow.selectedTab.Type, $scope.holdingNewWorkflowData.data);
                                 newWorkflow.selectedTab.dataHolding.parentTab.workflowId = $scope.holdingNewWorkflowData.selectedTab.parentWF.ID;
                                 newWorkflow.selectedTab.dataHolding.parentTab.tabId = $scope.holdingNewWorkflowData.selectedTab.ID;
 
@@ -1137,10 +1137,10 @@ var ngScope;
                                 newWorkflow.ID = $scope.workSpaces.lastWorkflowId;
                                 $scope.workSpaces.updateLastId();
                                 newWorkflow.selectedTab = newWorkflow.addTab();
-                                newWorkflow.selectedTab.type = 5;
-                                newWorkflow.selectedTab.title = $scope.holdingNewWorkflowData.data.name;
+                                newWorkflow.selectedTab.Type = 5;
+                                newWorkflow.selectedTab.title = $scope.holdingNewWorkflowData.data.type.toUpperCase()+ " "+$scope.holdingNewWorkflowData.data.id;
                                 newWorkflow.selectedTab.color = $scope.holdingNewWorkflowData.selectedTab.color;
-                                newWorkflow.selectedTab.changeType(newWorkflow.selectedTab.type, $scope.holdingNewWorkflowData.data);
+                                newWorkflow.selectedTab.changeType(newWorkflow.selectedTab.Type, $scope.holdingNewWorkflowData.data);
                                 newWorkflow.selectedTab.dataHolding.parentTab.workflowId = $scope.holdingNewWorkflowData.selectedTab.parentWF.ID;
                                 newWorkflow.selectedTab.dataHolding.parentTab.tabId = $scope.holdingNewWorkflowData.selectedTab.ID;
 
@@ -1152,6 +1152,24 @@ var ngScope;
 
                                 $scope.workSpaces.workflows.push(newWorkflow);
                             break;
+                            case "CreateNewElement":
+                                $scope.workSpaces.updateLastId();
+                                newWorkflow.ID = $scope.workSpaces.lastWorkflowId;
+                                $scope.workSpaces.updateLastId();
+                                newWorkflow.selectedTab = newWorkflow.addTab();
+                                newWorkflow.selectedTab.Type = 5;
+                                newWorkflow.selectedTab.title = "";
+                                newWorkflow.selectedTab.color = $scope.holdingNewWorkflowData.selectedTab.color;
+                                newWorkflow.selectedTab.content = new Content();
+                                newWorkflow.selectedTab.content.inProgress = true;
+                                newWorkflow.selectedTab.content.progressWizard.spinner = true;
+                                $scope.holdingNewWorkflowCreateData = {
+                                    "workflowId": newWorkflow.ID,
+                                    "tabId": newWorkflow.selectedTab.ID
+                                }
+                                $scope.workSpaces.workflows.push(newWorkflow);
+
+                            break;
                             default:break;
                         }
                         $scope.holdingNewWorkflowData = null;
@@ -1162,11 +1180,6 @@ var ngScope;
                         $scope.updateAllTabName();
                         $scope.updateMatrixLayout();
                         $scope.workSpaces.updateNewWorkflowButtons();
-
-                        $timeout(function(){
-                            $scope.Steps.lastFocusedWorkflow = newWorkflow.ID;
-                            $scope.refocusLastWorkflow();
-                        },300);
                     },100);
                 }catch(e){
                     $scope.Toast.show("Error!","Could'nt convert to workflow", Toast.LONG, Toast.ERROR);
@@ -1582,42 +1595,36 @@ var ngScope;
             }
 
             $scope.displayContentNewTab = function(wFlow,result){
-                // if(result.type == "Delivery"){
-                    var holdingDisplayObjectData = result;
-                    var holdingRequestTab = wFlow.selectedTab;
-                    $scope.workSpaces.updateNewWorkflowButtons(2);
-                    $timeout(function(){
-                        $scope.displayNewWorkflowTabButtons = false;
-                        $scope.displayNewWorkflowButtons = true;
-                        $scope.holdingNewWorkflowData = {"selectedTab":holdingRequestTab, "Action":"DisplayObject", "data" :result};
-                        $scope.selectColorFilter(0);
-                        var holdNumberOfChilds = holdingRequestTab.dataHolding.childTab.length;
-                        var waitForUserResponse = $interval(function(){
-                            if($scope.displayNewWorkflowButtons == false){
-                                $interval.cancel(waitForUserResponse);
-                                if(holdNumberOfChilds == holdingRequestTab.dataHolding.childTab.length){
-                                    // new workflow canceled
-                                    $scope.holdingNewWorkflowData = null;
-                                    $scope.displayNewWorkflowButtons = false;
-                                }else{
+                var holdingDisplayObjectData = result;
+                var holdingRequestTab = wFlow.selectedTab;
+                $scope.workSpaces.updateNewWorkflowButtons(2);
+                $timeout(function(){
+                    $scope.displayNewWorkflowTabButtons = false;
+                    $scope.displayNewWorkflowButtons = true;
+                    $scope.holdingNewWorkflowData = {"selectedTab":holdingRequestTab, "Action":"DisplayObject", "data" :result};
+                    $scope.selectColorFilter(0);
+                    var holdNumberOfChilds = holdingRequestTab.dataHolding.childTab.length;
+                    var waitForUserResponse = $interval(function(){
+                        if($scope.displayNewWorkflowButtons == false){
+                            $interval.cancel(waitForUserResponse);
+                            if(holdNumberOfChilds == holdingRequestTab.dataHolding.childTab.length){
+                                // new workflow canceled
+                                $scope.holdingNewWorkflowData = null;
+                                $scope.displayNewWorkflowButtons = false;
+                            }else{
+                                $timeout(function(){
+                                    $scope.Steps.lastFocusedWorkflow = holdingRequestTab.dataHolding.childTab[holdingRequestTab.dataHolding.childTab.length-1].workflowId;
+                                    $scope.refocusLastWorkflow();
                                     $timeout(function(){
-                                        $scope.Steps.lastFocusedWorkflow = holdingRequestTab.dataHolding.childTab[holdingRequestTab.dataHolding.childTab.length-1].workflowId;
-                                        $scope.refocusLastWorkflow();
-                                        $timeout(function(){
-                                            $scope.Steps.lastFocusedWorkflow = holdingRequestTab.parentWF.ID;
-                                            $scope.focusingLastWorkflow = false;
-                                        },600);
-                                    },300);
-                                    $timeout(function(){
+                                        $scope.Steps.lastFocusedWorkflow = holdingRequestTab.parentWF.ID;
+                                        $scope.focusingLastWorkflow = false;
                                         $scope.InsertStepToLast10Steps();
-                                    },500);
-                                }
+                                    },600);
+                                },300);
                             }
-                        },500);
-                    },200);
-                // }else{
-                //     $scope.displaySmallContentNewTab(wFlow, result, true);
-                // }
+                        }
+                    },500);
+                },200);
             }
             $scope.displaySmallContent = function(wFlow,result){
                 
@@ -1665,9 +1672,9 @@ var ngScope;
                                     $timeout(function(){
                                         $scope.Steps.lastFocusedWorkflow = holdingRequestTab.parentWF.ID;
                                         $scope.focusingLastWorkflow = false;
+                                        $scope.InsertStepToLast10Steps();
                                     },600);
                                 },300);
-                                $scope.InsertStepToLast10Steps();
                             }
                         }
                     },500);
@@ -1698,6 +1705,74 @@ var ngScope;
             *                                                                                *
             *********************************************************************************/
 
+
+            $scope.CeateButtonPressed = function(wFlow, newContentType){
+                if($scope.isDummy){
+                    $scope.Toast.show("Note!", "Dummy creating element not supported", Toast.LONG, Toast.NORMAL);
+                }else{
+                    $scope.holdingNewWorkflowCreateData = newContentType;
+                    $scope.workSpaces.updateNewWorkflowButtons(2);
+                    $timeout(function(){
+                        $scope.displayNewWorkflowTabButtons = false;
+                        $scope.displayNewWorkflowButtons = true;
+                        $scope.holdingNewWorkflowData = {"selectedTab":wFlow.selectedTab, "Action":"CreateNewElement"};
+                        $scope.selectColorFilter(0);
+                        var waitForUserResponse = $interval(function(){
+                            if($scope.displayNewWorkflowButtons == false){
+                                $interval.cancel(waitForUserResponse);
+                                if(!$scope.holdingNewWorkflowCreateData.workflowId || !$scope.holdingNewWorkflowCreateData.tabId){
+                                    // new workflow canceled
+                                    $scope.holdingNewWorkflowData = null;
+                                    $scope.displayNewWorkflowButtons = false;
+                                }else{
+                                    $timeout(function(){
+                                        $scope.Steps.lastFocusedWorkflow = $scope.holdingNewWorkflowCreateData.workflowId;
+                                        $scope.refocusLastWorkflow();
+                                        if(newContentType == "Delivery" ||  newContentType == "Kbit"){
+                                            $httpR.connectToServer({title:" ",desc:" ",front:{"FRONT_TYPE":newContentType.toUpperCase()+"_FRONT","PATH":" "}}, newContentType.toUpperCase()+"addNew", Globals, function(success, error){
+                                                var newWorkflowCreated = $scope.workSpaces.getWFlow($scope.holdingNewWorkflowCreateData.workflowId);
+                                                try{
+                                                    if(error || !success){
+                                                        Log.e("app", "CeateButtonPressed", "Error when creating element", error);
+                                                        $scope.Toast.show("Error!", "Error when creating element", Toast.LONG, Toast.ERROR);
+                                                        $timeout(function(){
+                                                            $scope.closeTab(newWorkflowCreated);
+                                                            $scope.Steps.lastFocusedWorkflow = wFlow.ID;
+                                                            $scope.refocusLastWorkflow();
+                                                        },500);
+                                                    }else{
+                                                        Log.d("app", "CeateButtonPressed", "Element created", success);
+                                                        debugger;
+                                                        newWorkflowCreated.selectedTab.addContent(objectServerToClient(success), true);
+                                                        newWorkflowCreated.selectedTab.title = newWorkflowCreated.selectedTab.content.type.toUpperCase()+ " "+newWorkflowCreated.selectedTab.content.id;
+                                                        newWorkflowCreated.selectedTab.content.locked = true;
+                                                        newWorkflowCreated.selectedTab.content.newContentCreated = true;
+                                                        newWorkflowCreated.selectedTab.content.lockedBy = $scope.currentUser;
+                                                        $scope.editContent(newWorkflowCreated);
+                                                        $timeout(function(){
+                                                            $scope.InsertStepToLast10Steps();
+                                                        },600);
+                                                    }
+                                                }catch(e){
+                                                    Log.e("app", "CeateButtonPressed", "Error when creating element", e);
+                                                    $scope.Toast.show("Error!", "Error when creating element", Toast.LONG, Toast.ERROR);
+                                                    $timeout(function(){
+                                                        $scope.closeTab(newWorkflowCreated);
+                                                        $scope.Steps.lastFocusedWorkflow = wFlow.ID;
+                                                        $scope.refocusLastWorkflow();
+                                                    },500);
+                                                }
+                                            });
+                                        }else{
+                                            // TERMS
+                                        }
+                                    },300);
+                                }
+                            }
+                        },500);
+                    },200);
+                }
+            }
 
 
             $scope.createNewContent = function(wFlow, name, desc, url, type){
@@ -1793,11 +1868,12 @@ var ngScope;
                             $scope.workSpaces.deleteChildTabIds(wFlow.selectedTab.dataHolding.parentTab, false);
                             $timeout(function(){
                                 $scope.InsertStepToLast10Steps();
-                            },500);
+                            },1000);
                         }else{
                             $scope.Toast.show("Cannot Lock Content", "Content locked by "+wFlow.selectedTab.content.lockedBy.firstName+" "+wFlow.selectedTab.content.lockedBy.lastName+".", Toast.LONG, Toast.ERROR);
                         }
                     }else{
+                        Log.d("app", "editContent", "Locking item");
                         wFlow.selectedTab.content.progressWizard = {
                             header:wFlow.selectedTab.content.type +' Details',
                             index:1,
@@ -1817,9 +1893,10 @@ var ngScope;
                                 wFlow.selectedTab.content.progressWizard.spinner = false;
                                 wFlow.selectedTab.content.createTempData();
                                 $scope.workSpaces.deleteChildTabIds(wFlow.selectedTab.dataHolding.parentTab, false);
+                                ngScope.Globals.updateUsedObjects(ngScope.workSpaces);
                                 $timeout(function(){
                                     $scope.InsertStepToLast10Steps();
-                                },500);
+                                },1000);
                             }
 
                         });
@@ -1978,8 +2055,6 @@ var ngScope;
 
 
             $scope.finishEditing = function(content, note){
-
-                
                 content.progressWizard.spinner = true;
                 if($scope.isDummy){
                     Log.i("app","finishEditing","Dummy save object");
@@ -1996,94 +2071,109 @@ var ngScope;
                         $scope.Toast.show("Success!",content.type+" has been saved.", Toast.LONG, Toast.SUCCESS);
                     },1000);
                 }else{
-                    debugger;
                     content.save("", function(success, error){
-                        debugger;
                         if(error || !success){
                             Log.e("app","finishEditing","Object does not saved in server", {LogObject:error});
                             content.progressWizard.spinner = false;
                             $scope.Toast.show("Error!","Unknown error occured while saving "+content.type, Toast.LONG, Toast.ERROR);
                         }else{
                             Log.d("app","finishEditing","Object saved in server", {LogObject:success});
+                            content = Globals.get(content.id, content.type);
                             content.progressWizard = {};
                             content.lastModified = +(new Date());
                             content.inProgress = false;
                             content.newData = {};
+                            content.newContentCreated = false;
+                            delete content.newContentCreated;
                             $scope.Toast.show("Success!",content.type+" has been saved.", Toast.LONG, Toast.SUCCESS);
+                            ngScope.Globals.updateUsedObjects(ngScope.workSpaces);
+                            $timeout(function(){
+                                $scope.InsertStepToLast10Steps();
+                                $scope.Steps.removeRelatedSteps(content);
+                            },500);
                         }
-                        $timeout(function(){
-                            $scope.InsertStepToLast10Steps();
-                            $scope.Steps.removeRelatedSteps(content);
-                        },500);
                     });
                 }
             }
 
 
             $scope.publishButton = function(content){
-
-                content.progressWizard.spinner = true;
-                if($scope.isDummy){
-                    Log.i("app","publishButton","Dummy publish object");
-                    $timeout(function(){
-                        content.lastModified = +(new Date());
-                        content.locked = false;
-                        content.lockedBy = {};
-                        content.progressWizard = {};
+                if(content.locked){
+                    content.progressWizard.spinner = true;
+                    if($scope.isDummy){
+                        Log.i("app","publishButton","Dummy publish object");
                         $timeout(function(){
-                            $scope.InsertStepToLast10Steps();
-                        },500);
-                        $scope.Toast.show("Success!",content.type+" has been published.", Toast.LONG, Toast.SUCCESS);
-                    },1000);
-                }else{
-                    content.release("", function(success, error){
-                        if(error || !success){
-                            content.progressWizard = {};
-                            $scope.Toast.show("Error!","Unknown error occured while releasing "+content.type, Toast.LONG, Toast.ERROR);
-                        }else{
                             content.lastModified = +(new Date());
                             content.locked = false;
                             content.lockedBy = {};
                             content.progressWizard = {};
-                            content.progressWizard.spinner = false;
+                            $timeout(function(){
+                                $scope.InsertStepToLast10Steps();
+                            },500);
                             $scope.Toast.show("Success!",content.type+" has been published.", Toast.LONG, Toast.SUCCESS);
-                        }
-                        $timeout(function(){
-                            $scope.InsertStepToLast10Steps();
-                        },500);
-                    });
+                        },1000);
+                    }else{
+                        content.release("", function(success, error){
+                            if(error || !success){
+                                content.progressWizard.spinner = false;
+                                content.progressWizard = {};
+                                $scope.Toast.show("Error!","Unknown error occured while publishing "+content.type, Toast.LONG, Toast.ERROR);
+                            }else{
+                                content = Globals.get(content.id, content.type);
+                                content.lastModified = +(new Date());
+                                content.locked = false;
+                                content.lockedBy = {};
+                                content.progressWizard = {};
+                                content.progressWizard.spinner = false;
+                                content.newContentCreated = false;
+                                delete content.newContentCreated;
+                                $scope.Toast.show("Success!",content.type+" has been published.", Toast.LONG, Toast.SUCCESS);
+                                ngScope.Globals.updateUsedObjects(ngScope.workSpaces);
+                                $timeout(function(){
+                                    $scope.InsertStepToLast10Steps();
+                                },500);
+                            }
+                        });
+                    }
                 }
             }
 
             $scope.revokeContent = function(content){
-                if($scope.isDummy){
-                    Log.i("app","revokeContent","Dummy revoke object");
-                    $timeout(function(){
-                        content.lastModified = +(new Date());
-                        content.locked = false;
-                        content.lockedBy = {};
-                        content.progressWizard = {};
+                if(content.locked){
+                    if($scope.isDummy){
+                        Log.i("app","revokeContent","Dummy revoke object");
                         $timeout(function(){
-                            $scope.InsertStepToLast10Steps();
-                        },500);
-                        $scope.Toast.show("Success!",content.type+" has been revoked.", Toast.LONG, Toast.SUCCESS);
-                    },1000);
-                }else{
-                    content.revoke("", function(success, error){
-                        if(error || !success){
-                            content.progressWizard.spinner = false;
+                            content.lastModified = +(new Date());
+                            content.locked = false;
+                            content.lockedBy = {};
                             content.progressWizard = {};
-                            $scope.Toast.show("Error!","Unknown error occured while releasing "+content.type, Toast.LONG, Toast.ERROR);
-                        }else{
-                            content.progressWizard.spinner = false;
-                            content.progressWizard = {};
-                            content.newData = {};
-                            $scope.Toast.show("Success!",content.type+" has been published.", Toast.LONG, Toast.SUCCESS);
-                        }
-                        $timeout(function(){
-                            $scope.InsertStepToLast10Steps();
-                        },500);
-                    });
+                            $timeout(function(){
+                                $scope.InsertStepToLast10Steps();
+                            },500);
+                            $scope.Toast.show("Success!",content.type+" has been revoked.", Toast.LONG, Toast.SUCCESS);
+                        },1000);
+                    }else{
+                        content.progressWizard.spinner = true;
+                        content.revoke("", function(success, error){
+                            if(error || !success){
+                                content.progressWizard.spinner = false;
+                                content.progressWizard = {};
+                                $scope.Toast.show("Error!","Unknown error occured while revoking "+content.type, Toast.LONG, Toast.ERROR);
+                            }else{
+                                success.progressWizard = {};
+                                success.progressWizard.spinner = false;
+                                success.newData = {};
+                                var stor = new Storage();
+                                stor.getElementById(success, false, true, function(){
+                                    ngScope.Globals.updateUsedObjects(ngScope.workSpaces);
+                                    $scope.Toast.show("Success!",content.type+" has been revoked.", Toast.LONG, Toast.SUCCESS);
+                                    $timeout(function(){
+                                        $scope.InsertStepToLast10Steps();
+                                    },1000);
+                                });
+                            }
+                        });
+                    }
                 }
             }
 
@@ -2100,14 +2190,18 @@ var ngScope;
                 },500);
             }
 
-            $scope.cancelButton = function(content){
-                content.progressWizard = {};
-                content.lastModified = +(new Date());
-                content.inProgress = false;
-                $timeout(function(){
-                    $scope.InsertStepToLast10Steps();
-                    $scope.Steps.removeRelatedSteps(content);
-                },500);
+            $scope.cancelButton = function(content, wFlow){
+                if(content.newContentCreated == true){
+                    $scope.closeTab(wFlow);
+                }else{
+                    content.progressWizard = {};
+                    content.lastModified = +(new Date());
+                    content.inProgress = false;
+                    $timeout(function(){
+                        $scope.InsertStepToLast10Steps();
+                        $scope.Steps.removeRelatedSteps(content);
+                    },500);
+                }
             }
 
 

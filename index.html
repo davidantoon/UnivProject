@@ -209,8 +209,20 @@
                     </div>
                     <!-- CREATE TAB HTML -->
                     <div class="{{((getSelectedTabType(wFlow) == 2)?'':'hidden')}}">
-                      create
-                      
+                      <div class="{{'searchResultSpinner '+((wFlow.selectedTab.dataHolding.spinner == true)?'':'hidden')}}" >
+                        <div class="centerMeInDiv " style="width:50px; height:50px">
+                          <img src="img/loader.gif" style="height:50px; width:50px" />
+                        </div>
+                      </div>
+                      <div ng-click="CeateButtonPressed(wFlow,'Delivery');" class="SearchButton MainButtonsTab">
+                        Create New Delivery
+                      </div>
+                      <div ng-click="CeateButtonPressed(wFlow,'Kbit');" class="CreateButton MainButtonsTab">
+                        Create New Kbit
+                      </div>
+                      <div ng-click="CeateButtonPressed(wFlow,'Term');" class="EditButton MainButtonsTab">
+                        Create New Term
+                      </div>
                     </div>
                     <!-- EDIT TAB HTML -->
                     <div class="{{((getSelectedTabType(wFlow) == 3)?'':'hidden')}}">
@@ -330,7 +342,7 @@
                             <ons-col>
                               <ons-row class="header" ng-click="refocusMe(wFlow);">
 
-                                <ons-col width="110px" ng-click="cancelButton(wFlow.selectedTab.content);" class="backButton buttons clickable">
+                                <ons-col width="110px" ng-click="cancelButton(wFlow.selectedTab.content, wFlow);" class="backButton buttons clickable">
                                   <ons-icon icon="ion-android-cancel" size="25px"></ons-icon>
                                   <p>Cancel</p>
                                 </ons-col>
