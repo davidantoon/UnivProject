@@ -619,10 +619,8 @@ class D2KRelation {
 		$results = $dbObj->db_select_query('', $query);
 		
 		// create instance for current delivery
-		$delivery_temp = Delivery::get_Delivery_by_UID($delivery);
 		$resDelivery = array();
-		$resDelivery["name"] =  $delivery_temp["TITLE"];
-		$resDelivery["UID"] = $delivery;
+		$resDelivery["name"] = "d". $delivery;
 		$resDelivery["children"] = array();
 		$resDelivery["parent"] = array();
 		$resDelivery["type"] = 'd';
@@ -675,10 +673,8 @@ class D2KRelation {
 		$results = $dbObj->db_select_query('', $query);
 		
 		// create instance for current kbit
-		$kbit_temp = Kbit::get_kbit_by_UID($kbit);
 		$resKbit = array();
-		$resKbit["name"] = $kbit_temp["TITLE"];
-		$resKbit["UID"] =  $kbit;
+		$resKbit["name"] = "k". $kbit;
 		$resKbit["children"] = array();
 		$resKbit["parent"] = array();
 		$resKbit["type"] = 'k';
