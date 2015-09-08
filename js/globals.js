@@ -179,8 +179,16 @@
                         }
                     }
                 }
-                if(termInUse == false)
+                // loop in Steps
+                for(var i2=0; i2<ngScope.Steps.last20Steps.length; i2++){
+                    if(ngScope.Steps.last20Steps[i2].allWorkFlowContents.indexOf('"id":"'+ChashedTerms[i].id+'","type":"Term"')){
+                        termInUse = true;
+                        break;
+                    }
+                }
+                if(termInUse == false){
                     this.pop(ChashedTerms[i].id, ChashedTerms[i].type);
+                }
             }
 
             // Check Kbits
@@ -209,7 +217,6 @@
                                             }
                                         }
                                     }
-                                    debugger;
                                     if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsProvided){
                                         for(var i5=0; i5<workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsProvided.length; i5++){
                                             if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsProvided[i5].id == ChashedKbits[i].id){
@@ -252,8 +259,16 @@
                         }
                     }
                 }
-                if(kbitInUse == false)
+                for(var i2=0; i2<ngScope.Steps.last20Steps.length; i2++){
+                    if(ngScope.Steps.last20Steps[i2].allWorkFlowContents.indexOf('"id":"'+ChashedKbits[i].id+'","type":"Kbit"')){
+                        kbitInUse = true;
+                        break;
+                    }
+                }
+                if(kbitInUse == false){
+                    // loop in Steps
                     this.pop(ChashedKbits[i].id, ChashedKbits[i].type);
+                }
             }
 
             // Check Delivery
@@ -286,8 +301,15 @@
                         }
                     }
                 }
-                if(deliveryInUse == false)
+                for(var i2=0; i2<ngScope.Steps.last20Steps.length; i2++){
+                    if(ngScope.Steps.last20Steps[i2].allWorkFlowContents.indexOf('"id":"'+ChashedDeliveries[i].id+'","type":"Delivery"')){
+                        deliveryInUse = true;
+                        break;
+                    }
+                }
+                if(deliveryInUse == false){
                     this.pop(ChashedDeliveries[i].id, ChashedDeliveries[i].type);
+                }
             }
         },
 
@@ -444,7 +466,7 @@
     .value('$httpR', {
 
         protocol: "http",
-        ip: "109.160.241.160",
+        ip: "31.154.146.144",
         port: "8888",
         baseUrl: "/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/",
 
@@ -525,16 +547,20 @@
                         ngScope.Log.e("$httpR", "connectToServer","Error response", {LogObject:success});
                         if(success.status == 401){
                             ngScope.logout();
+                            ngScope.Log.e("User","checkValidToken","Not valid token", {LogObject:error});
+                        }else{
+                            callback(null, success);
                         }
-                        callback(null, success);
                     }
                 },
                 error: function(error) {
                     ngScope.Log.e("$httpR", "connectToServer","Error response", {LogObject:error});
                     if(error.status == 401){
                         ngScope.logout();
+                        ngScope.Log.e("User","checkValidToken","Not valid token", {LogObject:error});
+                    }else{
+                        callback(null, error);
                     }
-                    callback(null, error);
                 }
             });
         }

@@ -1,7 +1,7 @@
 (function(angular) {
     // 'use strict';
     // 
-	angular.module('IntelLearner').factory('Steps', ["$rootScope", "Workflow", "Workspace", "Server", "Toast", "Storage", "checkChangesInStepsAffectsOnlyNewData", "Globals", "getDiffSteps","Log", function($rootScope, Workflow, Workspace, Server, Toast, Storage, checkChangesInStepsAffectsOnlyNewData, Globals, getDiffSteps, Log){
+	angular.module('IntelLearner').factory('Steps', ["$rootScope", "Workflow", "Workspace", "Server", "Toast", "Storage", "checkChangesInStepsAffectsOnlyNewData", "Globals", "getDiffSteps","Log", "$timeout", function($rootScope, Workflow, Workspace, Server, Toast, Storage, checkChangesInStepsAffectsOnlyNewData, Globals, getDiffSteps, Log, $timeout){
 
 		function Steps(){
 
@@ -175,12 +175,8 @@
 		        }
 			},
 
-
 			/**
 			 * Restore previous OLD step of workspace properties
-			 * @param  {Workspace} workspace current workspace
-			 */
-			/**
 			 * Restore previous NEW step of workspace properties
 			 * @param  {Workspace} workspace current workspace
 			 */
@@ -221,9 +217,10 @@
 							return;
 						}
 
-
+						var beforeUndoRedo = JSON.stringify(this.currentStep);
 						// get json object of previous step
-						var restoringPoint =  JSON.parse(this.last20Steps[IOPS].allWorkFlowContents);
+						var restoringPoint = JSON.parse(this.last20Steps[IOPS].allWorkFlowContents);
+
 
 						// Update ADDED or RMEOVED Workflows
 						if(restoringPoint.workflows){
@@ -240,6 +237,7 @@
 							// Loop on deleted workflows
 							for(var i=0; i<(restoringPoint.workflows[actionOpIN_DE[1]] && i < restoringPoint.workflows[actionOpIN_DE[1]].length); i++){
 								workspace.workflows.push(new Workflow(restoringPoint.workflows[actionOpIN_DE[1]][i]));
+
 							}
 						}
 
@@ -346,15 +344,14 @@
 								}
 							}
 						}
-
-						if(action == "undo")
+						if(action == "undo"){
 							this.currentUndoOrder++;
-						else
+						}
+						else{
 							this.currentUndoOrder--;
-						
+						}
 						this.savedInServer = false;
 						callback(true);
-
 
 					}else{
 						Log.e("Steps","restorePoint", "Wrong action " + action);

@@ -238,7 +238,7 @@ var ngScope;
                             AllDataLoaded(++loadedAmmount);
                         });
                     }else{
-                        $scope.logout();     
+                        $scope.alert("No connection");
                     }
                 });
                 AllDataLoaded(++loadedAmmount);
@@ -1725,6 +1725,7 @@ var ngScope;
                                     $scope.holdingNewWorkflowData = null;
                                     $scope.displayNewWorkflowButtons = false;
                                 }else{
+                                    $scope.InsertStepToLast10Steps();
                                     $timeout(function(){
                                         $scope.Steps.lastFocusedWorkflow = $scope.holdingNewWorkflowCreateData.workflowId;
                                         $scope.refocusLastWorkflow();
@@ -1774,31 +1775,6 @@ var ngScope;
                 }
             }
 
-
-            $scope.createNewContent = function(wFlow, name, desc, url, type){
-                // call server create ( save ) if succ, new content and add to workspace after comeback, lock it then add to cachesObj
-                // call wizardBeginEdit for wFlow
-                obj = {
-                    name: name,
-                    description: desc,
-                    url: url,
-                    type: type
-                };
-                var svr = new Server();
-                svr.saveElement(obj, function(success, error){
-                    if(error || !success){
-                        Log.e("app","error creating new element", error);
-                    }else{
-                        var obj = new Content(success);
-                        obj.locked = true;
-                        obj.lockedBy = $scope.CurrentUser;
-                        var newTab = wFlow.addTab();
-                        newTab.addContent(obj);
-                        // update in server locked and locked by
-                        Globals.set(obj);
-                    }
-                });
-            }
 
 
 
@@ -1895,6 +1871,7 @@ var ngScope;
                                 $scope.workSpaces.deleteChildTabIds(wFlow.selectedTab.dataHolding.parentTab, false);
                                 ngScope.Globals.updateUsedObjects(ngScope.workSpaces);
                                 $timeout(function(){
+
                                     $scope.InsertStepToLast10Steps();
                                 },1000);
                             }
@@ -2065,8 +2042,8 @@ var ngScope;
                         content.inProgress = false;
                         content.newData = {};
                         $timeout(function(){
-                            $scope.InsertStepToLast10Steps();
                             $scope.Steps.removeRelatedSteps(content);
+                            $scope.InsertStepToLast10Steps();
                         },500);
                         $scope.Toast.show("Success!",content.type+" has been saved.", Toast.LONG, Toast.SUCCESS);
                     },1000);
@@ -2088,8 +2065,9 @@ var ngScope;
                             $scope.Toast.show("Success!",content.type+" has been saved.", Toast.LONG, Toast.SUCCESS);
                             ngScope.Globals.updateUsedObjects(ngScope.workSpaces);
                             $timeout(function(){
-                                $scope.InsertStepToLast10Steps();
+
                                 $scope.Steps.removeRelatedSteps(content);
+                                $scope.InsertStepToLast10Steps();
                             },500);
                         }
                     });
@@ -2129,6 +2107,7 @@ var ngScope;
                                 content.newContentCreated = false;
                                 ngScope.Globals.updateUsedObjects(ngScope.workSpaces);
                                 $timeout(function(){
+                                    $scope.Steps.removeRelatedSteps(content);
                                     $scope.InsertStepToLast10Steps();
                                 },500);
                             }
@@ -2138,6 +2117,7 @@ var ngScope;
             }
 
             $scope.revokeContent = function(content){
+                debugger;
                 if(content.locked){
                     if($scope.isDummy){
                         Log.i("app","revokeContent","Dummy revoke object");
@@ -2197,8 +2177,8 @@ var ngScope;
                     content.lastModified = +(new Date());
                     content.inProgress = false;
                     $timeout(function(){
-                        $scope.InsertStepToLast10Steps();
                         $scope.Steps.removeRelatedSteps(content);
+                        $scope.InsertStepToLast10Steps();
                     },500);
                 }
             }

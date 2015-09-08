@@ -1,6 +1,6 @@
 (function(angular) {
     // 'use strict';
-	angular.module('IntelLearner').factory('Tab', ["$rootScope", 'Content','Globals','Storage',"Log", function($rootScope, Content, Globals, Storage, Log){
+	angular.module('IntelLearner').factory('Tab', ["$rootScope", 'Content','Globals','Storage',"Log", "$httpR", "objectServerToClient", function($rootScope, Content, Globals, Storage, Log, $httpR, objectServerToClient){
 	
 		// constant static members 
 		Tab.NORMAL_TAB = 0;// Search | Create | Edit'
@@ -64,22 +64,76 @@
 					passThis.color = ((tempJson.color != undefined)?tempJson.color:"#0860A8");
 					if(tempJson.requestFrom == "restoreStep"){
 							if(tempJson.content != null && tempJson.content != undefined){
-								
-								var stor = new Storage();
-								stor.getElementById(tempJson.content, /* force last modefied */ true, /* force server pull */ false, function(dataFromStorage){
-									passThis.content = dataFromStorage;
-									tempJson.callback(passThis, tempJson.passindex, tempJson.passThis, tempJson.passTempJson);
-								});
+								if(tempJson.content.inProgress == true){
+									passThis.content = tempJson.content;
+									$httpR.connectToServer({"UID":passThis.content.id}, tempJson.content.type.toUpperCase()+"get"+tempJson.content.type+"ById", Globals, function(success, error){
+										if(error || !success){
+											passThis.Type = 0;
+											workflow.tx = workflow.fx-1;
+											passThis.content = null;
+										}else{
+											var dataFromServer = objectServerToClient(success);
+											if(dataFromServer.locked == true && dataFromServer.lockedBy && dataFromServer.lockedBy.id == Globals.CurrentUser.id){
+												dataFromServer.progressWizard = tempJson.content.progressWizard;
+												dataFromServer.progressWizard.spinner = false;
+												dataFromServer.newData = tempJson.content.newData;
+												dataFromServer.inProgress = true;
+												passThis.content = new Content(dataFromServer);
+												Globals.set(passThis.content);
+												tempJson.callback(passThis, tempJson.passindex, tempJson.passThis, tempJson.passTempJson);
+											}else{
+												var stor = new Storage();
+												stor.getElementById(objectServerToClient(success), /* force last modefied */ false, /* force server pull */ true, function(dataFromStorage){
+													passThis.content = dataFromStorage;
+													tempJson.callback(passThis, tempJson.passindex, tempJson.passThis, tempJson.passTempJson);
+												});	
+											}	
+										}
+									});
+								}else{
+									var stor = new Storage();
+									stor.getElementById(tempJson.content, /* force last modefied */ true, /* force server pull */ false, function(dataFromStorage){
+										passThis.content = dataFromStorage;
+										tempJson.callback(passThis, tempJson.passindex, tempJson.passThis, tempJson.passTempJson);
+									});
+								}
 							}else{
 								tempJson.callback(passThis, tempJson.passindex, tempJson.passThis, tempJson.passTempJson);
 							}
 					}else{
 						if(tempJson.content != null && tempJson.content != undefined){
-							debugger;
-							var stor = new Storage();
-							stor.getElementById(tempJson.content, /* force last modefied */ true, /* force server pull */ false, function(dataFromStorage){
-								passThis.content = dataFromStorage;
-							});
+							if(tempJson.content.id && tempJson.content.type){
+								if(!Globals.get(tempJson.content.id, tempJson.content.type)){
+									passThis.content = {};
+									passThis.content.id = tempJson.content.id;
+									passThis.content.type = tempJson.content.type;
+									passThis.content.inProgress = false;
+									passThis.content.progressWizard = {};
+									passThis.content.progressWizard.spinner = true;
+									$httpR.connectToServer({"UID":passThis.content.id}, tempJson.content.type.toUpperCase()+"get"+tempJson.content.type+"ById", Globals, function(success, error){
+										if(error || !success){
+											passThis.Type = 0;
+											workflow.tx = workflow.fx-1;
+											passThis.content = null;
+										}else{
+											var stor = new Storage();
+											stor.getElementById(objectServerToClient(success), /* force last modefied */ false, /* force server pull */ true, function(dataFromStorage){
+												passThis.content = dataFromStorage;
+											});		
+										}
+									});
+									return passThis;
+								}else{
+									var stor = new Storage();
+									stor.getElementById(tempJson.content, /* force last modefied */ true, /* force server pull */ false, function(dataFromStorage){
+										passThis.content = dataFromStorage;
+									});
+								}
+							}else{
+								passThis.Type = 0;
+								workflow.tx = workflow.fx-1;
+								passThis.content = null;
+							}
 						}else{
 							passThis.content = null;
 						}
@@ -236,7 +290,7 @@
 	                "ID": this.ID,
 	                "title": this.title,
 	                "Type": this.Type,
-	                "content": ((this.content == null)?null:this.content.toJsonSteps()),
+	                "content": ((!this.content || (this.content && !this.content.toJsonSteps))?null:this.content.toJsonSteps()),
 	                "orderTab": this.orderTab,
 	                "color": this.color
 	            };
@@ -266,7 +320,7 @@
 			equals: function(tab){
 				return (this.ID == tab.ID);
 			}
-					
+
 		}
 
 
