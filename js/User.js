@@ -243,7 +243,6 @@
                     var passThis = this;
                     $httpR.connectToServer(data, $httpR.USERvalidateToken, Globals, function(success, error){
                         if(error || !success){
-                            Log.e("User","checkValidToken","Not valid token", {LogObject:error});
                             callback(false);
                         }else{
                             Log.d("User","checkValidToken","Valid token", {LogObject:success});

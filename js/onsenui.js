@@ -21098,9 +21098,9 @@ window.ons.notification = (function() {
      */
     alert: function(options) {
       var defaults = {
-        buttonLabel: 'אישור',
+        buttonLabel: 'Ok',
         animation: 'default',
-        title: 'התראה',
+        title: 'Alert',
         callback: function() {}
       };
     

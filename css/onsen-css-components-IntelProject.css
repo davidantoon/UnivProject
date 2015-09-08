@@ -3506,7 +3506,7 @@ input[type="search"].search-input::-webkit-search-cancel-button {
   height: 44px;
   line-height: 44px;
   outline: none;
-  color: rgba(266,166,1,0.91);
+  color: rgb(8,96,168);
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   .alert-dialog-button {
@@ -6921,6 +6921,7 @@ div.vertical {
   height: 32px;
   white-space: nowrap;
   text-overflow: ellipsis;
+  line-height: 25px;
 }
 
 
@@ -7023,6 +7024,11 @@ div.vertical {
   text-overflow: ellipsis;
   overflow: auto;
   margin: -1px 0;
+}
+
+.contentTermBody{
+  padding: 7px;
+  color: rgb(80,80,80);
 }
 
 .contentDetails{
@@ -7325,9 +7331,16 @@ selectable{
 }
 
 
+.disabledButton{
+  opacity: 0.3;
+  text-decoration: line-through;
+}
 
 
-
+.scopeDescription{
+  font-size: 15px;
+  color: gray;
+}
 
 
 

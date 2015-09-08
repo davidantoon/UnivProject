@@ -1,6 +1,6 @@
 (function(angular) {
     // 'use strict';
-	angular.module('IntelLearner').factory('Storage', ["$rootScope", "Globals", "TypeOf", "Content","Log", function($rootScope, Globals, TypeOf, Content, Log){
+	angular.module('IntelLearner').factory('Storage', ["$rootScope", "Globals", "TypeOf", "Content","Log", "$httpR", function($rootScope, Globals, TypeOf, Content, Log, $httpR){
 
 
 		/**
@@ -305,87 +305,100 @@
 					}
 
 					function createObjects(objectToAdd, passCallback, passThis){
-						if(objectToAdd == null || objectToAdd == undefined)
-							passCallback(null);
-						else{
-							switch(objectToAdd.type){
-								case "Delivery":
-									// loop over terms and add them to object to add terms
-									loopTerms(0, objectToAdd.terms,[]);
-									function loopTerms(index, termsArray, termResults){
-										if(index < termsArray.length){
-											passThis.getElementById(termsArray[index],objectToAdd.forceLastmodefied,objectToAdd.forceServerPull,function(resultTerm){
-												if(resultTerm != undefined && resultTerm != null){
-													termResults.push(resultTerm);
-												}
-												loopTerms(Number(index)+1,termsArray,termResults);
-											});
-										}else{
-											// loop over kbits needed and add them to object
-											objectToAdd.terms = termResults;
-											loopKbitsNeeded(0, objectToAdd.kBitsNeeded,[]);
-											function loopKbitsNeeded(index, kbitsNeededArray, kbitsNeededResults){
-												if(index < kbitsNeededArray.length){
-													passThis.getElementById(kbitsNeededArray[index], objectToAdd.forceLastmodefied, objectToAdd.forceServerPull,function(kbitsResults){
-														if(kbitsResults != undefined && kbitsResults != null){
-															kbitsNeededResults.push(kbitsResults);
-														}
-														loopKbitsNeeded(Number(index)+1, kbitsNeededArray,kbitsNeededResults);
-													});
-												}else{
-													// loop over kbits provided and add them to object
-													objectToAdd.kBitsNeeded = kbitsNeededResults;
-													loopKbitsProvided(0, objectToAdd.kBitsProvided, []);
-													function loopKbitsProvided(index, kbitsProvidedArray, KbitsProvidedResutls){
-														if(index < kbitsProvidedArray.length){
-															passThis.getElementById(kbitsProvidedArray[index], objectToAdd.forceLastmodefied, objectToAdd.forceServerPull, function(kbitsResult){
-																if(kbitsResult != undefined && kbitsResult != null){
-																	KbitsProvidedResutls.push(kbitsResult);
-																}
-																loopKbitsProvided(Number(index)+1, kbitsProvidedArray, KbitsProvidedResutls);
-															});
-														}else{
-															objectToAdd.kBitsProvided = KbitsProvidedResutls;
-															var newObject = new Content(objectToAdd);
-															Globals.set(newObject);
-															passCallback(newObject);
+						if((objectToAdd.type == "Delivery" || objectToAdd.type == "Kbit") && !objectToAdd.terms){
+							$httpR.connectToServer({"UID":objectToAdd.id}, objectToAdd.type.toUpperCase()+"get"+objectToAdd.type+"ById", Globals, function(success, error){
+								if(error || !success){
+									passCallback(null);
+								}else{
+									var dataFromServer = objectServerToClient(success);
+									passThis.getElementById(dataFromServer,objectToAdd.forceLastmodefied,objectToAdd.forceServerPull,function(resultTerm){
+										passCallback(resultTerm);
+									});
+								}
+							});
+						}else{
+							if(objectToAdd == null || objectToAdd == undefined)
+								passCallback(null);
+							else{
+								switch(objectToAdd.type){
+									case "Delivery":
+										// loop over terms and add them to object to add terms
+										loopTerms(0, objectToAdd.terms,[]);
+										function loopTerms(index, termsArray, termResults){
+											if(index < termsArray.length){
+												passThis.getElementById(termsArray[index],objectToAdd.forceLastmodefied,objectToAdd.forceServerPull,function(resultTerm){
+													if(resultTerm != undefined && resultTerm != null){
+														termResults.push(resultTerm);
+													}
+													loopTerms(Number(index)+1,termsArray,termResults);
+												});
+											}else{
+												// loop over kbits needed and add them to object
+												objectToAdd.terms = termResults;
+												loopKbitsNeeded(0, objectToAdd.kBitsNeeded,[]);
+												function loopKbitsNeeded(index, kbitsNeededArray, kbitsNeededResults){
+													if(index < kbitsNeededArray.length){
+														passThis.getElementById(kbitsNeededArray[index], objectToAdd.forceLastmodefied, objectToAdd.forceServerPull,function(kbitsResults){
+															if(kbitsResults != undefined && kbitsResults != null){
+																kbitsNeededResults.push(kbitsResults);
+															}
+															loopKbitsNeeded(Number(index)+1, kbitsNeededArray,kbitsNeededResults);
+														});
+													}else{
+														// loop over kbits provided and add them to object
+														objectToAdd.kBitsNeeded = kbitsNeededResults;
+														loopKbitsProvided(0, objectToAdd.kBitsProvided, []);
+														function loopKbitsProvided(index, kbitsProvidedArray, KbitsProvidedResutls){
+															if(index < kbitsProvidedArray.length){
+																passThis.getElementById(kbitsProvidedArray[index], objectToAdd.forceLastmodefied, objectToAdd.forceServerPull, function(kbitsResult){
+																	if(kbitsResult != undefined && kbitsResult != null){
+																		KbitsProvidedResutls.push(kbitsResult);
+																	}
+																	loopKbitsProvided(Number(index)+1, kbitsProvidedArray, KbitsProvidedResutls);
+																});
+															}else{
+																objectToAdd.kBitsProvided = KbitsProvidedResutls;
+																var newObject = new Content(objectToAdd);
+																Globals.set(newObject);
+																passCallback(newObject);
+															}
 														}
 													}
 												}
 											}
 										}
-									}
-								break;
-								case "Kbit":
-									if(objectToAdd.terms)
-										loopTerms2(0, objectToAdd.terms, []);
-									else{
-										objectToAdd.terms =	[];
-										var newObject = new Content(objectToAdd);
-										Globals.set(newObject);
-										passCallback(newObject);
-									}
-									function loopTerms2(index, termsArray, termResults){
-										if(index < termsArray.length){
-											passThis.getElementById(termsArray[index], objectToAdd.forceLastmodefied, objectToAdd.forceServerPull, function(resultTerm){
-												if(resultTerm != undefined && resultTerm != null){
-													termResults.push(resultTerm);
-												}
-												loopTerms2(Number(index)+1, termsArray, termResults);
-											});
-										}else{
-											objectToAdd.terms =	termResults;
+									break;
+									case "Kbit":
+										if(objectToAdd.terms)
+											loopTerms2(0, objectToAdd.terms, []);
+										else{
+											objectToAdd.terms =	[];
 											var newObject = new Content(objectToAdd);
 											Globals.set(newObject);
 											passCallback(newObject);
 										}
-									}
-								break;
-								case "Term":
-									var newObject = new Content(objectToAdd);
-									Globals.set(newObject);
-									passCallback(newObject);
-								break;
+										function loopTerms2(index, termsArray, termResults){
+											if(index < termsArray.length){
+												passThis.getElementById(termsArray[index], objectToAdd.forceLastmodefied, objectToAdd.forceServerPull, function(resultTerm){
+													if(resultTerm != undefined && resultTerm != null){
+														termResults.push(resultTerm);
+													}
+													loopTerms2(Number(index)+1, termsArray, termResults);
+												});
+											}else{
+												objectToAdd.terms =	termResults;
+												var newObject = new Content(objectToAdd);
+												Globals.set(newObject);
+												passCallback(newObject);
+											}
+										}
+									break;
+									case "Term":
+										var newObject = new Content(objectToAdd);
+										Globals.set(newObject);
+										passCallback(newObject);
+									break;
+								}
 							}
 						}
 					}
