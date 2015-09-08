@@ -25,7 +25,7 @@
 				};
 				this.selectedColors = [];
 			}catch(e){
-				$rootScope.currentScope.Toast.show("Error!","There was an error in creating workspace", Toast.LONG, Toast.ERROR);
+				ngScope.Toast.show("Error!","There was an error in creating workspace", ngScope.Toast.LONG, ngScope.Toast.ERROR);
 	           	Log.e("Workspace","Workspace", e);
 			}
 		}
@@ -42,7 +42,7 @@
 					this.workflows.push(tempWorkflow);
 					return tempWorkflow;
 				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","There was an error in adding new workflow", Toast.LONG, Toast.ERROR);
+					ngScope.Toast.show("Error!","There was an error in adding new workflow", ngScope.Toast.LONG, ngScope.Toast.ERROR);
 	           		Log.e("Workspace","addNewWorkflow", e);
 	           		return null;
 				}
@@ -56,7 +56,7 @@
 					size = typeof size !== 'undefined' ? size : 1;
 					this.newWorkflowButtons = this.getNewWorkflowButtons(1, size);
 				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","There was an error in updating new Workflow buttons", Toast.LONG, Toast.ERROR);
+					ngScope.Toast.show("Error!","There was an error in updating new Workflow buttons", ngScope.Toast.LONG, ngScope.Toast.ERROR);
 	           		Log.e("Workspace","updateNewWorkflowButtons", e);
 				}
 			},
@@ -96,7 +96,7 @@
 					}
 					return tempNewWorkflowButtons;
 				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","There was an error in getting new Workflow buttons", Toast.LONG, Toast.ERROR);
+					ngScope.Toast.show("Error!","There was an error in getting new Workflow buttons", ngScope.Toast.LONG, ngScope.Toast.ERROR);
 	           		Log.e("Workspace","getNewWorkflowButtons", e);
 	           		return null;
 				}
@@ -134,7 +134,7 @@
 					}
 					return flag;
 				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","There was an error in checking new Workflow buttons", Toast.LONG, Toast.ERROR);
+					ngScope.Toast.show("Error!","There was an error in checking new Workflow buttons", ngScope.Toast.LONG, ngScope.Toast.ERROR);
 	           		Log.e("Workspace","checkNewWorkflowButtons", e);
 				}
 			},
@@ -155,7 +155,7 @@
 					maxId++;
 					this.lastWorkflowId = maxId;
 				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","There was an error in updating last Id", Toast.LONG, Toast.ERROR);
+					ngScope.Toast.show("Error!","There was an error in updating last Id", ngScope.Toast.LONG, ngScope.Toast.ERROR);
 	           		Log.e("Workspace","updateLastId", e);
 				}
 			},
@@ -213,7 +213,7 @@
 						}
 					}
 				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","There was an error in updating fata in tab", Toast.LONG, Toast.ERROR);
+					ngScope.Toast.show("Error!","There was an error in updating fata in tab", ngScope.Toast.LONG, ngScope.Toast.ERROR);
 	           		Log.e("Workspace","updateDataInTab", e);
 				}
 			},
@@ -251,7 +251,7 @@
 						}
 					}
 				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","There was an error in selecting tab after search", Toast.LONG, Toast.ERROR);
+					ngScope.Toast.show("Error!","There was an error in selecting tab after search", ngScope.Toast.LONG, ngScope.Toast.ERROR);
 	           		Log.e("Workspace","selectTabAfterSearch", e);
 				}
 			},
@@ -291,7 +291,7 @@
 						}
 					}
 				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","There was an error in deleting relative (child) tab", Toast.LONG, Toast.ERROR);
+					ngScope.Toast.show("Error!","There was an error in deleting relative (child) tab", ngScope.Toast.LONG, ngScope.Toast.ERROR);
 	           		Log.e("Workspace","deleteChildTabIds", e);
 				}
 			},
@@ -315,7 +315,7 @@
 						}
 					}
 				}catch(e){
-					$rootScope.currentScope.Toast.show("Error!","There was an error in checking colors in workspace", Toast.LONG, Toast.ERROR);
+					ngScope.Toast.show("Error!","There was an error in checking colors in workspace", ngScope.Toast.LONG, ngScope.Toast.ERROR);
 	           		Log.e("Workspace","checkUserColorsInWorkspace", e);
 				}
 			},
@@ -337,6 +337,14 @@
 								return;
 							}
 						}
+					}
+				}
+			},
+
+			getWFlow: function(wFlowId){
+				for(var i=0; i<this.workflows.length; i++){
+					if(this.workflows[i].ID == wFlowId){
+						return this.workflows[i];
 					}
 				}
 			}

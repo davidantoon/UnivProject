@@ -125,14 +125,7 @@
 						});
 					break;
 					case Tab.CREATE_TAB:
-						this.addData({
-							"searchText": "",
-							"resultsCount": 0,
-							"results": [],
-							"selectedResult": -1,
-							"elementsToSearch": [1,0,0],
-							"searchBy": [1,0,0]
-						});
+						this.changeTitle("Choose Element Type");
 					break;
 					case Tab.EDIT_TAB:
 						
@@ -273,9 +266,7 @@
 			equals: function(tab){
 				return (this.ID == tab.ID);
 			}
-
-
-		
+					
 		}
 
 

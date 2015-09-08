@@ -212,8 +212,8 @@
                                     debugger;
                                     if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsProvided){
                                         for(var i5=0; i5<workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsProvided.length; i5++){
-                                            if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsNeeded[i5].id == ChashedKbits[i].id){
-                                                workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsNeeded[i5] = ChashedKbits[i];
+                                            if(workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsProvided[i5].id == ChashedKbits[i].id){
+                                                workspace.workflows[i2].tabs[i3].dataHolding.results[i4].kBitsProvided[i5] = ChashedKbits[i];
                                                 kbitInUse = true;
                                             }
                                         }
@@ -468,6 +468,8 @@
         KBITcancelEdit: "KBITcancelEdit",
         KBITaddRelatedKbit: "KBITaddRelatedKbit",
         KBITremoveRelatedKbit: "KBITremoveRelatedKbit",
+        KBITupdateFullKbit: "KBITupdateFullKbit",
+        DELIVERYaddNew: "DELIVERYaddNew",
         DELIVERYbeginEdit: "DELIVERYbeginEdit",
         DELIVERYcancelEdit: "DELIVERYcancelEdit",
         DELIVERYpublish: "DELIVERYpublish",
@@ -480,11 +482,11 @@
         DELIVERYremoveRelatedKbit: "DELIVERYremoveRelatedKbit",
         USERlogout: "USERlogout",
         USERvalidateToken: "USERvalidateToken",
-        DELIVERYaddNew: "DELIVERYaddNew",
         USERsaveProfilePicture: "USERsaveProfilePicture",
         DELIVERYupdateFullDelivery: "DELIVERYupdateFullDelivery",
         getLanguages: "getLanguages",
         REFRESHERgetData: "REFRESHERgetData",
+
 
         
 
@@ -514,6 +516,7 @@
                 crossDomain : true,
                 timeout: 10000,
                 success: function(success) {
+                    debugger;
                     if (success.status == 200){
                         ngScope.Log.d("$httpR", "connectToServer","Success response data:", {LogObject:success});
                         callback(success.data, null);

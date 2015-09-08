@@ -183,13 +183,12 @@
 					var passThis = this;
 					data[this.type.toLowerCase()+"UID"] = this.id;
 					$httpR.connectToServer(data,  this.type.toUpperCase()+ "cancelEdit", Globals, function(success, error){
-						Log.i("Content", "revoke", "Update Data from original object that stored in http success!");
 						if(error || !success){
 							Log.e("Content", "revoke", "Error revoking object to original", error, passThis);
 							callback(false);
 						}else{
 							Log.d("Content","revoke", "Object revoked to original", success, passThis);
-							callback(true);
+							callback(ngScope.objectServerToClient(success));
 						}
 					});
 
