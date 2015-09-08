@@ -27,7 +27,7 @@
     <div id="MainDiv" class="{{((blurAllWindow == true)?'blured':'')}}" ng-switch="AppStatus" style="display:none">
       <div class="AppPage" ng-switch-when="2" style="">  
         <ons-page>
-          <ons-tabbar position="top" class="" style="height: 50px;">
+          <ons-tabbar position="top" class="" style="height: 50px;    z-index: 10001;">
             <ons-row style="max-height: 49px;overflow: visible;">
               <ons-col  class="LogoutDivTabbar hoverOp clickable" ng-click="logout();" width="49px">
                 <ons-icon  size="25px" icon="ion-android-exit"></ons-icon>
@@ -249,6 +249,11 @@
                                   <ons-icon icon="ion-android-arrow-dropright-circle" size="25px"></ons-icon>
                                 </ons-col>
                               </ons-row>
+
+                              <ons-row class="scopeSelectOptions">
+                                <ons-col ng-click="wFlow.selectedTab.dataHolding.newTerm.searchCreateScope = 0; InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.newTerm.searchCreateScope == 0)?'checked':'')}}">Search Scopes</ons-col>
+                                <ons-col ng-click="wFlow.selectedTab.dataHolding.newTerm.searchCreateScope = 1; InsertStepToLast10Steps();" class="{{'searchOptionButton col ons-col-inner '+((wFlow.selectedTab.dataHolding.newTerm.searchCreateScope == 1)?'checked':'')}}">Create Scope</ons-col>
+                              </ons-row>
                               <ons-row>
                                 <ons-col ng-switch="wFlow.selectedTab.dataHolding.newTerm.searchCreateScope">
                                   <ons-row ng-switch-when="0">
@@ -259,13 +264,29 @@
                                         </ons-col>
                                         <ons-col class="InputTextbox">
                                           <input ng-blur="InsertStepToLast10Steps();" ng-model="wFlow.selectedTab.dataHolding.newTerm.termScope.name" type="text" />
-                                          <div class="scopeSuggestingDiv">scopeSuggestingList</div>
+                                          <div class="scopeSuggestingDiv" style="height: 110px;">
+                                            <
+                                          </div>
                                         </ons-col>
                                       </ons-row>
                                       <ons-row class="editObjectDetailsRow">
                                         <ons-col>
-                                          scope1
-                                          scope2
+                                          <ons-row>
+                                            <ons-col>
+                                              Scope Name: 
+                                            </ons-col>
+                                            <ons-col>
+                                              {{wFlow.selectedTab.dataHolding.newTerm.selectedTermScope.name}} 
+                                            </ons-col>
+                                          </ons-row>
+                                          <ons-row>
+                                            <ons-col>
+                                              Scope Description: 
+                                            </ons-col>
+                                            <ons-col>
+                                              {{wFlow.selectedTab.dataHolding.newTerm.selectedTermScope.description}} 
+                                            </ons-col>
+                                          </ons-row>
                                         </ons-col>
                                       </ons-row>
                                     </ons-col>
@@ -278,7 +299,6 @@
                                         </ons-col>
                                         <ons-col class="InputTextbox">
                                           <input ng-blur="InsertStepToLast10Steps();" ng-model="wFlow.selectedTab.dataHolding.newTerm.termScope.name" type="text" />
-                                          <div class="scopeSuggestingDiv">scopeSuggestingList</div>
                                         </ons-col>
                                       </ons-row>
                                       <ons-row class="editObjectDetailsRow">

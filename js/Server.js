@@ -160,6 +160,8 @@
 							"searchWord": dataToSearch["text"],
 							"searchFields": searchFields
 						};
+						
+
 						//Kbit
 						if(dataToSearch.dataType[0] == 1){
 							$httpR.connectToServer(data, $httpR.KBITsearchKbits, Globals, ConvertData);

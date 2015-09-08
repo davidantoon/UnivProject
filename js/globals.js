@@ -508,7 +508,7 @@
         DELIVERYupdateFullDelivery: "DELIVERYupdateFullDelivery",
         getLanguages: "getLanguages",
         REFRESHERgetData: "REFRESHERgetData",
-
+        SCOPEsearchScopes: "SCOPEsearchScopes",
 
         
 
@@ -1071,6 +1071,20 @@
         // ngScope.Log.hideFilter("Content");
         // ngScope.Log.hideFilter("Steps");
         ngScope.Log.hideFilter("Server");
+    }).value('ServerScopesToClient', function(serverObj){
+        var scopes = [];
+        for(var i=0; i<serverObj.length; i++){
+            scopes.push({
+                "id": serverObj[i].UID,
+                "name": serverObj[i].TITLE,
+                "description": serverObj[i].DESCRIPTION,
+                "terms": []
+            });
+            for(var i2=0; i2<serverObj[i].TERMS.length; i2++){
+                scopes[i].terms.push(ngScope.objectServerToClient(serverObj[i].TERMS[i2]));
+            }
+        }
+        return scopes;
     });
 })(window.angular);
 

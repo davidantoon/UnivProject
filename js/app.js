@@ -6,8 +6,8 @@ var ngScope;
 (function(angular) {
     // 'use strict';
     angular.module('IntelLearner', ['onsen', 'firebase', 'dndLists']);
-    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope",  "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast","User", "$httpR", "Content", "fromServerTime", "termServerToClient", "deliveryServerToClient", "kbitServerToClient", "objectServerToClient", "toServerTime", "Log", "defultFilters",
-        function($rootScope, $scope,  $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast, User, $httpR, Content, fromServerTime, termServerToClient, deliveryServerToClient, kbitServerToClient, objectServerToClient, toServerTime, Log, defultFilters) {
+    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope",  "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast","User", "$httpR", "Content", "fromServerTime", "termServerToClient", "deliveryServerToClient", "kbitServerToClient", "objectServerToClient", "toServerTime", "Log", "defultFilters", "ServerScopesToClient",
+        function($rootScope, $scope,  $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast, User, $httpR, Content, fromServerTime, termServerToClient, deliveryServerToClient, kbitServerToClient, objectServerToClient, toServerTime, Log, defultFilters, ServerScopesToClient) {
 
 
             // PRIM COLOR = rgb(8,96,168)
@@ -1778,40 +1778,39 @@ var ngScope;
                                             Log.d("app","CeateButtonPressed","Create New Term");
                                             // TERMS
                                             debugger;
-                                            // $httpR.connectToServer({}, "TERMGetAllScopesWithTerms", Globals, function(success, error){
+                                            $httpR.connectToServer({"searchFields":["TITLE"],"searchWord":" "}, $httpR.SCOPEsearchScopes, Globals, function(success, error){
                                                 var newWorkflowCreated = $scope.workSpaces.getWFlow($scope.holdingNewWorkflowCreateData.workflowId);
-                                            //     try{
-                                            //         if(error || !success){
-                                            //             Log.e("app", "CeateButtonPressed", "Error when creating element", error);
-                                            //             $scope.Toast.show("Error!", "Error when creating element", Toast.LONG, Toast.ERROR);
-                                            //             $timeout(function(){
-                                            //                 $scope.closeTab(newWorkflowCreated);
-                                            //                 $scope.Steps.lastFocusedWorkflow = wFlow.ID;
-                                            //                 $scope.refocusLastWorkflow();
-                                            //             },500);
-                                            //         }else{
-                                                        //Log.d("app", "CeateButtonPressed", "Element created", success);
-                                                        // Init Data
-                                                        debugger;
+                                                try{
+                                                    if(error || !success){
+                                                        Log.e("app", "CreateButtonPressed", "Error when creating element", error);
+                                                        $scope.Toast.show("Error!", "Error when creating element", Toast.LONG, Toast.ERROR);
                                                         $timeout(function(){
-                                                            newWorkflowCreated.selectedTab.dataHolding.spinner = false;
-                                                            newWorkflowCreated.selectedTab.dataHolding.index = 1;
-                                                        },1000);
+                                                            $scope.closeTab(newWorkflowCreated);
+                                                            $scope.Steps.lastFocusedWorkflow = wFlow.ID;
+                                                            $scope.refocusLastWorkflow();
+                                                        },500);
+                                                    }else{
+                                                        Log.d("app", "CreateButtonPressed", "All scopes with related terms", success);
 
+                                                        newWorkflowCreated.selectedTab.dataHolding.suggestingScopes = ServerScopesToClient(success);
+                                                        console.log(newWorkflowCreated.selectedTab.dataHolding.suggestingScopes);
+                                                        newWorkflowCreated.selectedTab.dataHolding.spinner = false;
+                                                        newWorkflowCreated.selectedTab.dataHolding.index = 1;
+                                                        
                                                         $timeout(function(){
                                                             $scope.InsertStepToLast10Steps();
                                                         },600);
-                                            //         }
-                                            //     }catch(e){
-                                            //         Log.e("app", "CeateButtonPressed", "Error when creating element", e);
-                                            //         $scope.Toast.show("Error!", "Error when creating element", Toast.LONG, Toast.ERROR);
-                                            //         $timeout(function(){
-                                            //             $scope.closeTab(newWorkflowCreated);
-                                            //             $scope.Steps.lastFocusedWorkflow = wFlow.ID;
-                                            //             $scope.refocusLastWorkflow();
-                                            //         },500);
-                                            //     }
-                                            // });
+                                                    }
+                                                }catch(e){
+                                                    Log.e("app", "CeateButtonPressed", "Error when creating element", e);
+                                                    $scope.Toast.show("Error!", "Error when creating element", Toast.LONG, Toast.ERROR);
+                                                    $timeout(function(){
+                                                        $scope.closeTab(newWorkflowCreated);
+                                                        $scope.Steps.lastFocusedWorkflow = wFlow.ID;
+                                                        $scope.refocusLastWorkflow();
+                                                    },500);
+                                                }
+                                            });
                                             
                                         }
                                     },300);
@@ -1822,6 +1821,13 @@ var ngScope;
                 }
             }
 
+
+            $scope.cancelTermButton = function(newTerm, wFlow){
+                $scope.closeTab(wFlow);
+            }
+            $scope.nextTermButton = function(newTerm, wFlow){
+
+            }
 
 
 
