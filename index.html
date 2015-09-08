@@ -517,7 +517,7 @@
                         <ons-icon icon="ion-chevron-left" size="18px"></ons-icon> Back
                       </div>
                       <div class="{{'tabOptionsDiv '+ ((wFlow.selectedTab.tabOption == true && wFlow.selectedTab.content.type != 'Term')?'':'invisible')}}" ng-mouseleave="closeOptionTab(wFlow)">
-                        <ons-row ng-click="editContent(wFlow);" class="hoverOp clickable">
+                        <ons-row ng-click="editContent(wFlow);"  class="hoverOp clickable">
                           <ons-col class="optionIcon" width="34px">
                             <ons-icon icon="ion-edit" size="18px"></ons-icon>
                           </ons-col>
@@ -525,7 +525,7 @@
                             Edit
                           </ons-col>
                         </ons-row>
-                        <ons-row ng-click="revokeContent(wFlow.selectedTab.content)" class="hoverOp clickable">
+                        <ons-row ng-click="revokeContent(wFlow.selectedTab.content.locked)" class="{{'row ons-row-inner '+((wFlow.selectedTab.content.locked == true)?'hoverOp clickable':'disabledButton')}}">
                           <ons-col class="optionIcon" width="34px">
                             <ons-icon icon="ion-backspace" size="18px"></ons-icon>
                           </ons-col>
@@ -533,7 +533,7 @@
                             Revoke
                           </ons-col>
                         </ons-row>
-                        <ons-row class="hoverOp clickable" ng-click="publishButton(wFlow.selectedTab.content)">
+                        <ons-row class="{{'row ons-row-inner '+((wFlow.selectedTab.content.locked == true)?'hoverOp clickable':'disabledButton')}}" ng-click="publishButton(wFlow.selectedTab.content)">
                           <ons-col class="optionIcon" width="34px">
                             <ons-icon icon="ion-social-dropbox" size="18px"></ons-icon>
                           </ons-col>

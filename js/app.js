@@ -2119,6 +2119,7 @@ var ngScope;
                                 content.progressWizard = {};
                                 $scope.Toast.show("Error!","Unknown error occured while publishing "+content.type, Toast.LONG, Toast.ERROR);
                             }else{
+                                $scope.Toast.show("Success!",content.type+" has been published.", Toast.LONG, Toast.SUCCESS);
                                 content = Globals.get(content.id, content.type);
                                 content.lastModified = +(new Date());
                                 content.locked = false;
@@ -2126,8 +2127,6 @@ var ngScope;
                                 content.progressWizard = {};
                                 content.progressWizard.spinner = false;
                                 content.newContentCreated = false;
-                                delete content.newContentCreated;
-                                $scope.Toast.show("Success!",content.type+" has been published.", Toast.LONG, Toast.SUCCESS);
                                 ngScope.Globals.updateUsedObjects(ngScope.workSpaces);
                                 $timeout(function(){
                                     $scope.InsertStepToLast10Steps();
