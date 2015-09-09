@@ -126,12 +126,12 @@ class scope {
 		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
 		// create relation between two terms
-		if(refRelation::add_relation_to_object($parent_scope_UID, $child_scope_UID, $is_hier, $user, 'R_Ls2s') == null) {
+		if(refRelation::add_relation_to_object($parent_scope_UID, $child_scope_UID, $is_hier, $user, 'R_LS2S') == null) {
 			debugLog::log("parent SCOPE (". $parent_scope_UID .") and child (". $child_scope_UID .") scope cannot be the same");
 			return null;
 		}
 		// return recently created relation
-		return refRelation::get_objects_relation($parent_scope_UID, $child_scope_UID, 'R_Ls2s');
+		return refRelation::get_objects_relation($parent_scope_UID, $child_scope_UID, 'R_LS2S');
 	}
 
 	// remove relation
@@ -139,7 +139,7 @@ class scope {
 
 		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
-		refRelation::remove_relation($$parent_scope_UID, $child_scope_UID, 'R_Ls2s');
+		refRelation::remove_relation($$parent_scope_UID, $child_scope_UID, 'R_LS2S');
 	}
 
 
@@ -147,7 +147,7 @@ class scope {
 
 		debugLog::trace(__FILE__, __FUNCTION__, func_get_args());
 
-		return refRelation::get_relations_of_object($scope_UID, 'R_Ls2s', 'scope::get_scope_by_UID');
+		return refRelation::get_relations_of_object($scope_UID, 'R_LS2S', 'scope::get_scope_by_UID');
 	}
 
 
