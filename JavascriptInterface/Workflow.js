@@ -1,51 +1,59 @@
 /**
  * Workflow class managing inner Tabs
  * @class Workflow
+ * @constructor
+ * @param {JSON} tempJson
+ * @param {Number} id      
+ * @param {Number} fx      
+ * @param {Number} fy      
+ * @param {Number} tx      
+ * @param {Number} ty      
+ * @param {Boolean} colored 
  */
 function Workflow(tempJson, id, fx, fy, tx, ty, colored){
     /**
      * Holding workflow id
-     * @memberOf Workflow
+     * @protected Workflow
      */
     this.ID;
     /**
      * Holding workflow starting index x
-     * @memberOf Workflow
+     * @protected Workflow
      */
     this.fx;
     /**
      * Holding workflow starting index y
-     * @memberOf Workflow
+     * @protected Workflow
      */
     this.fy;
     /**
      * Holding workflow ending index x
-     * @memberOf Workflow
+     * @protected Workflow
      */
     this.tx;
     /**
      * Holding workflow ending index y
-     * @memberOf Workflow
+     * @protected Workflow
      */
     this.ty;
     /**
      * Holding workflow name
-     * @memberOf Workflow
+     * @protected Workflow
      */
     this.name;
     /**
      * Holding workflow tabs ID
-     * @memberOf Workflow
+     * @protected Workflow
      */
     this.tabsIds;
     /**
      * Holding workflow tabs
-     * @memberOf Workflow
+     * @protected Workflow
      */
     this.tabs;
     /**
      * Holding workflow selected tab
-     * @memberOf Workflow
+     * @protected Workflow
      */
     this.selectedTab;
 }
@@ -53,6 +61,7 @@ function Workflow(tempJson, id, fx, fy, tx, ty, colored){
  * Get Array Diffrenece helper function
  * @param  {Array} before 
  * @param  {Array} after
+ * @public
  */
 Workflow.getDiffArrays = function(before,after) {}
 

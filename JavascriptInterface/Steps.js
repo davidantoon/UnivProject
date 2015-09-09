@@ -1,6 +1,7 @@
 /**
  * Steps class managing user steps
  * @class Steps
+ * @constructor
  */
 function Steps(){
 	 /**
