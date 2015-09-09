@@ -1,18 +1,52 @@
+/**
+ * Log class managing logs
+ * @class Log
+ */
 function Log(){
-    this.logs = [];
-    this.classFilter = {};
+    /**
+     * Holding logs
+     * @memberOf Server
+     */
+    this.logs;
+    /**
+     * Holding class filter
+     * @memberOf Server
+     */
+    this.classFilter;
 }
 Log.prototype = {
+    /**
+     * Pushes log into logs array
+     */
     Push: function(){},
+    /**
+     * Show logs filter by class
+     * @param  {Sting} Class
+     * @param  {Function} func
+     */
     showFilter: function(Class, func){},
+    /**
+     * hide logs filte by class
+     * @param  {Sting} Class
+     * @param  {Function} func
+     */
     hideFilter: function(Class, func){},
+    /**
+     * Cleares filter
+     */
     clearFilter: function(){},
-    // warning log
+    /**
+     * Creating a warning log
+     */
     i: function(){},
 
-    // note log
+    /**
+     * Creating a note log
+     */
     d: function(){},
 
-    //error log
+    /**
+     * Creating error log
+     */
     e: function(){}
 }
