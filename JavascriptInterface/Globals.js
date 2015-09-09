@@ -1,16 +1,17 @@
 /**
  * Globals class managing cashed content
  * @class Globals
+ * @constructor
  */
 function Globals(){
     /**
      * Holding cashed objects
-     * @memberOf Globals
+     * @protected
      */
     this.CashedObjects;
     /**
      * Holding current user
-     * @memberOf Globals
+     * @protected
      */
     this.CurrentUser;
 }

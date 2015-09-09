@@ -52,17 +52,14 @@ function Tab(id, workflow, tempJson, color, isResultTab){
 }
 /**
  * Normal tab index
- * @public
  */
 Tab.NORMAL_TAB = 0;// Search | Create | Edit'
 /**
  * search tab index
- * @public
  */
 Tab.SEARCH_TAB = 1;
 /**
  * create tab index
- * @public
  */
 Tab.CREATE_TAB = 2;
 /**
@@ -72,7 +69,6 @@ Tab.CREATE_TAB = 2;
 Tab.EDIT_TAB = 3;
 /**
  * result tab index
- * @public
  */
 Tab.RESULTS_TAB = 4;
 /**
@@ -82,7 +78,6 @@ Tab.RESULTS_TAB = 4;
 Tab.CONTENT_VIEW = 5;
 /**
  * create term index
- * @public
  */
 Tab.CREATE_TERM = 6;
 

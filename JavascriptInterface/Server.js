@@ -1,26 +1,31 @@
 /**
  * Server class managing server requests
  * @class Server
+ * @constructor
+ * @param {[type]} protocol [description]
+ * @param {[type]} ip       [description]
+ * @param {[type]} port     [description]
+ * @param {[type]} baseUrl  [description]
  */
 function Server(protocol, ip, port, baseUrl){
     /**
      * Holding Server protocol 
-     * @memberOf Server
+     * @protected
      */
     this.protocol;
     /**
      * Holding Server ip 
-     * @memberOf Server
+     * @protected
      */
     this.ip;
     /**
      * Holding Server port 
-     * @memberOf Server
+     * @protected
      */
     this.port;
     /**
      * Holding Server base url 
-     * @memberOf Server
+     * @protected
      */
     this.baseUrl;
 }

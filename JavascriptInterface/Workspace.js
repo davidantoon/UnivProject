@@ -2,52 +2,52 @@
  * Workspace class managing workflows
  * @class Workspace
  * @constructor
- * @param {OObject} Scope 
+ * @param {[type]} scope [description]
  */
 function Workspace(scope) {
 	/**
      * Holding workflows
-     * @protected Workspace
+     * @protected
      */
 	this.workflows;
 	/**
      * Holding colored workflows
-     * @protected Workspace
+     * @protected
      */
 	this.coloredWorkflows;
 	/**
      * Holding the last workflow id
-     * @protected Workspace
+     * @protected
      */
 	this.lastWorkflowId;
 	/**
      * Holding the new workflow buttons object
-     * @protected Workspace
+     * @protected
      */
 	this.newWorkflowButtons;
 	/**
      * Holding selected workflow object
-     * @protected Workspace
+     * @protected
      */
 	this.selectedWorkflow;
 	/**
      * Holding object type
-     * @protected Workspace
+     * @protected
      */
 	this.objectType;
 	/**
      * Holding user progress line
-     * @protected Workspace
+     * @protected
      */
 	this.progressLines;
 	/**
      * Holding Colors
-     * @protected Workspace
+     * @protected
      */
 	this.colors;
 	/**
      * Holding selected colors
-     * @protected Workspace
+     * @protected
      */
 	this.selectedColors;
 }

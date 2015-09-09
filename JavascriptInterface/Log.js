@@ -1,16 +1,17 @@
 /**
  * Log class managing logs
  * @class Log
+ * @constructor
  */
 function Log(){
     /**
      * Holding logs
-     * @memberOf Log
+     * @protected
      */
     this.logs;
     /**
      * Holding class filter
-     * @memberOf Log
+     * @protected
      */
     this.classFilter;
 }

@@ -6,32 +6,32 @@
 function Steps(){
 	 /**
      * Holding last 20 steps
-     * @memberOf Steps
+     * @protected
      */
 	this.last20Steps;	
 	/**
      * Holding current step
-     * @memberOf Steps
+     * @protected
      */
 	this.currentStep;
 	/**
      * Holding current undo 
-     * @memberOf Steps
+     * @protected
      */
 	this.currentUndoOrde;
 	/**
      * Holding flag if its saved in server
-     * @memberOf Steps
+     * @protected
      */
 	this.savedInServer;
 	/**
      * Holding focused workflow
-     * @memberOf Steps
+     * @protected
      */
 	this.lastFocusedWorkflo;
 	/**
      * Holding current globals
-     * @memberOf Steps
+     * @protected
      */
 	this.currentGlobals;
 }

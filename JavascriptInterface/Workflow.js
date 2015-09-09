@@ -2,58 +2,58 @@
  * Workflow class managing inner Tabs
  * @class Workflow
  * @constructor
- * @param {JSON} tempJson
- * @param {Number} id      
- * @param {Number} fx      
- * @param {Number} fy      
- * @param {Number} tx      
- * @param {Number} ty      
- * @param {Boolean} colored 
+ * @param {[type]} tempJson [description]
+ * @param {[type]} id       [description]
+ * @param {[type]} fx       [description]
+ * @param {[type]} fy       [description]
+ * @param {[type]} tx       [description]
+ * @param {[type]} ty       [description]
+ * @param {[type]} colored  [description]
  */
 function Workflow(tempJson, id, fx, fy, tx, ty, colored){
     /**
      * Holding workflow id
-     * @protected Workflow
+     * @protected
      */
     this.ID;
     /**
      * Holding workflow starting index x
-     * @protected Workflow
+     * @protected
      */
     this.fx;
     /**
      * Holding workflow starting index y
-     * @protected Workflow
+     * @protected
      */
     this.fy;
     /**
      * Holding workflow ending index x
-     * @protected Workflow
+     * @protected
      */
     this.tx;
     /**
      * Holding workflow ending index y
-     * @protected Workflow
+     * @protected
      */
     this.ty;
     /**
      * Holding workflow name
-     * @protected Workflow
+     * @protected
      */
     this.name;
     /**
      * Holding workflow tabs ID
-     * @protected Workflow
+     * @protected
      */
     this.tabsIds;
     /**
      * Holding workflow tabs
-     * @protected Workflow
+     * @protected
      */
     this.tabs;
     /**
      * Holding workflow selected tab
-     * @protected Workflow
+     * @protected
      */
     this.selectedTab;
 }
@@ -61,7 +61,6 @@ function Workflow(tempJson, id, fx, fy, tx, ty, colored){
  * Get Array Diffrenece helper function
  * @param  {Array} before 
  * @param  {Array} after
- * @public
  */
 Workflow.getDiffArrays = function(before,after) {}
 

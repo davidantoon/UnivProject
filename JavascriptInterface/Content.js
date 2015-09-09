@@ -1,91 +1,95 @@
 /**
  * Content class support Delivery | Kbit | Term functionalities
  * @class Content
+ * @constructor
+ * @param {[type]} conData           [description]
+ * @param {[type]} forceLastmodefied [description]
+ * @param {[type]} forceServerPull   [description]
  */
 function Content(conData, forceLastmodefied, forceServerPull){
 	/**
      * Holding content id
-     * @memberOf Content
+     * @protected
      */
 	this.id;
 	/**
      * Holding content name
-     * @memberOf Content
+     * @protected
      */
 	this.name;
 	/**
      * Holding content kbits needed
-     * @memberOf Content
+     * @protected
      */
 	this.kBitsNeeded;
 	/**
      * Holding content kbits provided
-     * @memberOf Content
+     * @protected
      */
 	this.kBitsProvided;
 	/**
      * Holding content terms
-     * @memberOf Content
+     * @protected
      */
 	this.terms;
 	/**
      * Holding content description
-     * @memberOf Content
+     * @protected
      */
 	this.description;
 	/**
      * Holding content url
-     * @memberOf Content
+     * @protected
      */
 	this.url;
 	/**
      * Holding content locked flag
-     * @memberOf Content
+     * @protected
      */
 	this.locked;
 	/**
      * Holding content locked by user
-     * @memberOf Content
+     * @protected
      */
 	this.lockedBy;
 	/**
      * Holding content last modifide date
-     * @memberOf Content
+     * @protected
      */
 	this.lastModified;
 	/**
      * Holding content in progress flag
-     * @memberOf Content
+     * @protected
      */
 	this.inProgress;
 	/**
      * Holding content type
-     * @memberOf Content
+     * @protected
      */
 	this.type;
 	/**
      * Holding content term scope
-     * @memberOf Content
+     * @protected
      */
 	this.termScope;
 	/**
      * Holding content connection to database
-     * @memberOf Content
+     * @protected
      */
 	this.connectToDataBase;
 	/**
      * Holding content progress wizard
-     * @memberOf Content
+     * @protected
      */
 	this.progressWizard;
 	/**
      * Holding content new data
-     * @memberOf Content
+     * @protected
      */
 	this.newData;
 	/**
      * Holding content version
-     * @memberOf Content
+     * @protected
      */
 	this.revision;
 }
