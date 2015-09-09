@@ -1,88 +1,89 @@
 /**
  * App class holding Project UX
  * @class App
+ * @constructor
  */
 function App(){
     /**
      * Holding App status (1 = "Not Logged In" ||  2 = "Loggin In") 
-     * @memberOf App
+     * @protected
      */
     this.AppStatus;
 
     /**
      * Holding current user information (include token)
-     * @memberOf App
+     * @protected
      */
     this.currentUser;
 
     /**
      * Holding current focused workflow 
-     * @memberof App
+     * @protected
      */
     this.selectedWorkflow;
 
     /** Hide/ Show new tab buttons 
-     * @memberOf App
+     * @protected
      */
     this.displayNewWorkflowTabButtons;
 
     /** Hide/ Show new workflow buttons 
-     * @memberOf App
+     * @protected
      */
     this.displayNewWorkflowButtons;
 
     /** Holding standby counter to save last step 
-     * @memberOf App
+     * @protected
      */
     this.counterBeforeSave;
 
     /** Holding blur worfklows (true = "Blur" || false = "Unblur") 
-     * @memberOf App
+     * @protected
      */
     this.blurAllWindow;
 
     /** Holding current filter color for workflows 
-     * @memberOf App
+     * @protected
      */
     this.handlePickColor;
 
     /** Holding window scroll (true = "Enable" || false = "Disable") 
-     * @memberOf App
+     * @protected
      */
     this.bodyScrolling;
 
     /** Holding service that contains helper functions 
-     * @memberOf App
+     * @protected
      */
     this.UTILS;
 
     /** WorkSpace Class instance 
-     * @memberOf App
+     * @protected
      */
     this.workSpaces;
 
     /** Steps Class instance 
-     * @memberOf App
+     * @protected
      */
     this.Steps;
 
     /** Settings Class instance 
-     * @memberOf App
+     * @protected
      */
     this.Settings;
 
     /** Log Class instance 
-     * @memberOf App
+     * @protected
      */
     this.Log;
 
     /** Globals Class instance 
-     * @memberOf App
+     * @protected
      */
     this.Globals;
 
     /** Server Class instance 
-     * @memberOf App
+     * @protected
      */
     this.Server;
 }
