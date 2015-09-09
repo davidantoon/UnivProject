@@ -2,6 +2,11 @@
  * Tab class managing tab properties
  * @class Tab
  * @constructor
+ * @param id          
+ * @param workflow    
+ * @param tempJson    
+ * @param color       
+ * @param isResultTab 
  */
 function Tab(id, workflow, tempJson, color, isResultTab){
 	/**

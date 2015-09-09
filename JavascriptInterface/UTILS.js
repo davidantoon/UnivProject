@@ -5,12 +5,35 @@
  */
 function UTILS(){}
 UTILS.prototype = {
+	/**
+	 * Convert Dynamic Object from <b>Server-Side</b> struct to <b>Client-Side</b>
+	 * @param  {} serverObj
+	 */
 	objectServerToClient: function(serverObj){},
+	/**
+	 * Convert Delivery Object from <b>Server-Side</b> struct to <b>Client-Side</b>
+	 * @param  {} serverObj
+	 */
 	deliveryServerToClient: function(serverObj){},
+	/**
+	 * Convert Kbit Object from <b>Server-Side</b> struct to <b>Client-Side</b>
+	 * @param  {} serverObj
+	 */
 	kbitServerToClient: function(serverObj){},
+	/**
+	 * Convert Term Object from <b>Server-Side</b> struct to <b>Client-Side</b>
+	 * @param  {} serverObj
+	 */
 	termServerToClient: function(serverObj){},
+	/**
+	 * Convert <b>Server-Side</b> date format to support <b>Client-Side</b>
+	 * @param  {[type]} time 
+	 */
 	fromServerTime: function(time){},
-	defultFilters: function(){},
+	/**
+	 * Convert Scope Object from <b>Server-Side</b> struct to <b>Client-Side</b>
+	 * @param  {} serverObj
+	 */
 	ServerScopesToClient: function(serverObj){},
 	/**
 	 * Shows the toast massage.
