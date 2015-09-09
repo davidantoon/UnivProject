@@ -1,10 +1,9 @@
 /**
  * UTILS class contain helper funtion
  * @class UTILS
+ * @constructor
  */
-function UTILS(){
-
-}
+function UTILS(){}
 UTILS.prototype = {
 	objectServerToClient: function(serverObj){},
 	deliveryServerToClient: function(serverObj){},
