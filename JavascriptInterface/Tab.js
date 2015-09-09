@@ -1,46 +1,47 @@
 /**
  * Tab class managing tab properties
  * @class Tab
+ * @constructor
  */
 function Tab(id, workflow, tempJson, color, isResultTab){
 	/**
      * Holding tab color
-     * @memberOf Tab
+     * @protected
      */
 	this.color;
 	/**
      * Holding tab parent workflow
-     * @memberOf Tab
+     * @protected
      */
 	this.parentWF;
 	/**
      * Holding tab id
-     * @memberOf Tab
+     * @protected
      */
 	this.ID;
 	/**
      * Holding tab title
-     * @memberOf Tab
+     * @protected
      */
 	this.title;
 	/**
      * Holding tab type
-     * @memberOf Tab
+     * @protected
      */
 	this.Type;
 	/**
      * Holding tab content
-     * @memberOf Tab
+     * @protected
      */
 	this.content;
 	/**
      * Holding tab order
-     * @memberOf Tab
+     * @protected
      */
 	this.orderTab;
 	/**
      * Holding tab data holding
-     * @memberOf Tab
+     * @protected
      */
 	this.dataHolding;
 }
@@ -58,6 +59,7 @@ Tab.SEARCH_TAB = 1;
 Tab.CREATE_TAB = 2;
 /**
  * edit tab index
+ * @public
  */
 Tab.EDIT_TAB = 3;
 /**
@@ -66,12 +68,14 @@ Tab.EDIT_TAB = 3;
 Tab.RESULTS_TAB = 4;
 /**
  * content view index
+ * @public
  */
 Tab.CONTENT_VIEW = 5;
 /**
  * create term index
  */
 Tab.CREATE_TERM = 6;
+
 Tab.prototype = {
 
 	/**

@@ -7,7 +7,7 @@ function Globals(){
      * Holding cashed objects
      * @memberOf Globals
      */
-	this.CashedObjects;
+    this.CashedObjects;
     /**
      * Holding current user
      * @memberOf Globals

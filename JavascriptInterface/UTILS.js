@@ -2,17 +2,17 @@
  * UTILS class contain helper funtion
  * @class UTILS
  */
-function UTILS{
+function UTILS(){
 
 }
-UTILS.prototype ={
+UTILS.prototype = {
 	objectServerToClient: function(serverObj){},
 	deliveryServerToClient: function(serverObj){},
 	kbitServerToClient: function(serverObj){},
 	termServerToClient: function(serverObj){},
 	fromServerTime: function(time){},
 	defultFilters: function(){},
-	ServerScopesToClient: function(serverObj){}
+	ServerScopesToClient: function(serverObj){},
 	/**
 	 * Shows the toast massage.
 	 * @param  {Strgin} title         the title of the massage

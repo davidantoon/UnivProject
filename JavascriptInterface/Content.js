@@ -3,22 +3,22 @@
  * @class Content
  */
 function Content(conData, forceLastmodefied, forceServerPull){
-/**
+	/**
      * Holding content id
      * @memberOf Content
      */
 	this.id;
-/**
+	/**
      * Holding content name
      * @memberOf Content
      */
 	this.name;
-/**
+	/**
      * Holding content kbits needed
      * @memberOf Content
      */
 	this.kBitsNeeded;
-/**
+	/**
      * Holding content kbits provided
      * @memberOf Content
      */
@@ -53,7 +53,7 @@ function Content(conData, forceLastmodefied, forceServerPull){
      * @memberOf Content
      */
 	this.lastModified;
-/**
+	/**
      * Holding content in progress flag
      * @memberOf Content
      */

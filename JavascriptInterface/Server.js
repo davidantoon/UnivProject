@@ -180,7 +180,7 @@ Server.SCOPEsearchScopes = "SCOPEsearchScopes";
 
 Server.prototype = {
 
-    connectToServer: function(data, method, Globals, callback) {}
+    connectToServer: function(data, method, Globals, callback) {},
     /**
      * Search element in server
      * @param  {object}   dataToSearch 

@@ -5,12 +5,12 @@
 function Log(){
     /**
      * Holding logs
-     * @memberOf Server
+     * @memberOf Log
      */
     this.logs;
     /**
      * Holding class filter
-     * @memberOf Server
+     * @memberOf Log
      */
     this.classFilter;
 }
