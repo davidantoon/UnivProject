@@ -59,6 +59,7 @@ Workflow.prototype = {
      */
     toJson:function(){},
 
+    selectTab: function(workflow, tab) {},
     toJsonSteps: function(){},
     getSelectedTabIndex: function(workflow){},
     closeTab: function(workflow){}

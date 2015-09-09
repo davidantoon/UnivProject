@@ -21,43 +21,69 @@ function App(){
      */
     this.selectedWorkflow;
 
-    /* Hide/ Show new tab buttons */
+    /** Hide/ Show new tab buttons 
+     * @memberOf App
+     */
     this.displayNewWorkflowTabButtons;
 
-    /* Hide/ Show new workflow buttons */
+    /** Hide/ Show new workflow buttons 
+     * @memberOf App
+     */
     this.displayNewWorkflowButtons;
 
-    /* Holding standby counter to save last step */
+    /** Holding standby counter to save last step 
+     * @memberOf App
+     */
     this.counterBeforeSave;
 
-    /* Holding blur worfklows (true = "Blur" || false = "Unblur") */
+    /** Holding blur worfklows (true = "Blur" || false = "Unblur") 
+     * @memberOf App
+     */
     this.blurAllWindow;
 
-    /* Holding current filter color for workflows */
+    /** Holding current filter color for workflows 
+     * @memberOf App
+     */
     this.handlePickColor;
 
-    /* Holding window scroll (true = "Enable" || false = "Disable") */
+    /** Holding window scroll (true = "Enable" || false = "Disable") 
+     * @memberOf App
+     */
     this.bodyScrolling;
 
-    /* Holding service that contains helper functions */
+    /** Holding service that contains helper functions 
+     * @memberOf App
+     */
     this.UTILS;
 
-    /* WorkSpace Class instance */
+    /** WorkSpace Class instance 
+     * @memberOf App
+     */
     this.workSpaces;
 
-    /* Steps Class instance */
+    /** Steps Class instance 
+     * @memberOf App
+     */
     this.Steps;
 
-    /* Settings Class instance */
+    /** Settings Class instance 
+     * @memberOf App
+     */
     this.Settings;
 
-    /* Log Class instance */
+    /** Log Class instance 
+     * @memberOf App
+     */
     this.Log;
 
-    /* Globals Class instance */
+    /** Globals Class instance 
+     * @memberOf App
+     */
     this.Globals;
 
-    /* Server Class instance */
+    /** Server Class instance 
+     * @memberOf App
+     */
     this.Server;
 }
 /** @lends App.prototype */
@@ -78,33 +104,68 @@ App.prototype = {
      * @param  {String} password 
      */
     login: function(username, password){},
+    
     /**
-     * Load user 
-     * @return {[type]} [description]
+     * Load user data, last steps and workspace settings from server.
      */
     loadUserData: function() {},
 
-
+    /**
+     * Undo to previous step, and rerender current step's workspace
+     */
     UndoWorkflow: function() {},
 
+    /**
+     * Redo to next step, and rerender current step's workspace
+     */
     RedoWorkflow: function() {},
 
-    selectTab: function(workflow, tab) {},
-
+    /**
+     * Loop in workspace to get all tabs names and update name in UX.
+     */
     updateAllTabName: function() {},
 
+    /**
+     * Focusing Parent workflow tab, dataHolding holding parent workflow position.
+     * @param  {Object} dataHolding 
+     */
     back: function(dataHolding){},
 
+    /**
+     * Focusing passed workflow
+     * @param  {Workflow} workflow 
+     */
     refocusMe: function(workflow){},
 
+    /**
+     * Update UI, and render the workflows
+     */
     updateMatrixLayout: function() {},
 
+    /**
+     * Prepare workspace for search content, creating <b>Results Workflow</b>
+     * @param  {Workflow} wFlow
+     */
     prepareForSearch: function(wFlow){},
 
+    /**
+     * Filter Results that come from server side by type : <b><i>Delivery | Kbit | Term</i></b>
+     * @param {Array} results
+     * @param {Type} type
+     */
     FilterResults: function(results, type){},
 
+    /**
+     * Holding dragging item, animate dragging html in UI.
+     * @param  {Content} item 
+     */
     draggingItems: function(item){},
 
+    /**
+     * Disable / Enable workflow scroll to make UI smoothly scrolling
+     * @param {Number} a 
+     * @param {Workflow} wflwId 
+     */
     EnableScroll: function(a, wflwId){},
 
     
