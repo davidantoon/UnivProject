@@ -3,28 +3,80 @@
  * @class Tab
  */
 function Tab(id, workflow, tempJson, color, isResultTab){
+	/**
+     * Holding tab color
+     * @memberOf Tab
+     */
 	this.color;
+	/**
+     * Holding tab parent workflow
+     * @memberOf Tab
+     */
 	this.parentWF;
+	/**
+     * Holding tab id
+     * @memberOf Tab
+     */
 	this.ID;
+	/**
+     * Holding tab title
+     * @memberOf Tab
+     */
 	this.title;
+	/**
+     * Holding tab type
+     * @memberOf Tab
+     */
 	this.Type;
+	/**
+     * Holding tab content
+     * @memberOf Tab
+     */
 	this.content;
+	/**
+     * Holding tab order
+     * @memberOf Tab
+     */
 	this.orderTab;
+	/**
+     * Holding tab data holding
+     * @memberOf Tab
+     */
 	this.dataHolding;
 }
-
+/**
+ * Normal tab index
+ */
 Tab.NORMAL_TAB = 0;// Search | Create | Edit'
+/**
+ * search tab index
+ */
 Tab.SEARCH_TAB = 1;
+/**
+ * create tab index
+ */
 Tab.CREATE_TAB = 2;
+/**
+ * edit tab index
+ */
 Tab.EDIT_TAB = 3;
+/**
+ * result tab index
+ */
 Tab.RESULTS_TAB = 4;
+/**
+ * content view index
+ */
 Tab.CONTENT_VIEW = 5;
+/**
+ * create term index
+ */
 Tab.CREATE_TERM = 6;
 Tab.prototype = {
 
 	/**
 	 * ChangTitle will change tab title that displayed at top of workflow.
-	 * @param  {String} newTitle String Object
+	 * @param  {String}
 	 */
 	changeTitle: function(newTitle){
 		this.title = newTitle;
@@ -65,13 +117,21 @@ Tab.prototype = {
 	 */
 	toString: function(){},
 
+	/**
+     * Creates Json <br> <b>Return</b> Json object
+     */
 	toJson: function(){},
 
+	/**
+     * Creates Json Steps <br> <b>Return</b> Json object
+     */
 	toJsonSteps: function(){},
 
-	equals: function(tab){
-		return (this.ID == tab.ID);
-	}
+	/**
+     * Override "==" operator to compare between object <br><b>Return</b> True if two objects are equals
+     * @param  {object} obj
+     */
+	equals: function(tab){}
 
 }
 

@@ -8,13 +8,45 @@ function Workspace(scope) {
      * @memberOf Workspace
      */
 	this.workflows;
+	/**
+     * Holding colored workflows
+     * @memberOf Workspace
+     */
 	this.coloredWorkflows;
+	/**
+     * Holding the last workflow id
+     * @memberOf Workspace
+     */
 	this.lastWorkflowId;
+	/**
+     * Holding the new workflow buttons object
+     * @memberOf Workspace
+     */
 	this.newWorkflowButtons;
+	/**
+     * Holding selected workflow object
+     * @memberOf Workspace
+     */
 	this.selectedWorkflow;
+	/**
+     * Holding object type
+     * @memberOf Workspace
+     */
 	this.objectType;
+	/**
+     * Holding user progress line
+     * @memberOf Workspace
+     */
 	this.progressLines;
+	/**
+     * Holding Colors
+     * @memberOf Workspace
+     */
 	this.colors;
+	/**
+     * Holding selected colors
+     * @memberOf Workspace
+     */
 	this.selectedColors;
 }
 
@@ -33,16 +65,17 @@ Workspace.prototype = {
 	updateNewWorkflowButtons: function(size){},
 
 	/**
-	 * Gets the places where to show workflow buttons (add new workflow buttons)
-	 * @param  {[int workflow index]}
+	 * Gets the places where to show workflow buttons (add new workflow buttons) <br><b>Return</b> the position of the new workflow burrons
+	 * @param  {Number} workFlowIndex
+	 * @param  {Number} size
 	 */
 	getNewWorkflowButtons: function(workFlowIndex, size){},
 
 	/**
 	 * Checks the surronding area of the workflow to add buttons
-	 * @param  {int} x Index x
-	 * @param  {int} y Index y
-	 * @param  {Array} tempNewWorkflowButtons  New Workflow buttons
+	 * @param  {Number} x Index x
+	 * @param  {Number} y Index y
+	 * @param  {Array} tempNewWorkflowButtons
 	 */
 	checkNewWorkflowButtons: function(x, y, tempNewWorkflowButtons, size){},
 
@@ -53,27 +86,27 @@ Workspace.prototype = {
 
 	/**
 	 * Scrolls to specific workflow 
-	 * @param  {object} Steps Steps object to check workflow
+	 * @param  {object} Steps
 	 */
 	scrollToLastWorkflow: function(Steps){},
 
 	/**
 	 * Updates data in specific tab	
-	 * @param  {object} tabHoldingData the workflow and tab id we are going to update
-	 * @param  {object} results        the new contet
+	 * @param  {object} tabHoldingData 
+	 * @param  {object} results 
 	 */
 	updateDataInTab: function(tabHoldingData, results){},
 
 	/**
 	 * Focus on specific tab after doing a search
-	 * @param  {object} tabHoldingData the workflow id and the ab id we want to select
+	 * @param  {object} tabHoldingData
 	 */
 	selectTabAfterSearch: function(tabHoldingData){},
  
 	/**
 	 * Deletes child tab
-	 * @param  {Object} tabHoldingData Data holding that contain the Ids
-	 * @param  {Boolean} deleteParent  True if we want to update child after deleting it's parent
+	 * @param  {Object} tabHoldingData
+	 * @param  {Boolean} deleteParent
 	 */
 	deleteChildTabIds: function(tabHoldingData, deleteParent){},
 
@@ -84,16 +117,47 @@ Workspace.prototype = {
 
 	/**
 	 * Replaces the contet data in specific child
-	 * @param  {object} childHoldingData child data holding
-	 * @param  {ibject} content          contect we want to change
+	 * @param  {object} childHoldingData 
+	 * @param  {ibject} content 
 	 */
 	replaceSearchChildContent: function(childHoldingData, content){},
 
+	/**
+	 * Retuns workflow by ID
+	 * @param  {Number} wFlowId 
+	 */
 	getWFlow: function(wFlowId){},
+
+	/**
+	 * Creates new workflow with the action needed to display 
+	 * @param  {object} newWorkflow
+	 */
 	convertToWorkflow: function(newWorkflow){},
+
+	/**
+	 * Focus on last workflow
+	 */
     refocusLastWorkflow: function(){},
+    /**
+     * Focus specific workflow
+     * @param  {Object} workflow
+     */
     focusThisWorkflow: function(workflow){},
+
+    /**
+	 * Creates new workflow
+	 */
     openNewWorkflow: function(){},
+
+    /**
+     * Selects a color to filter the workspace
+     * @param  {String} color
+     */
     selectColorFilter: function(color){},
+
+    /**
+     * Removes color from the color filter
+     * @param  {String} color 
+     */
     removeColorFromColorFilter: function(color){},
 }

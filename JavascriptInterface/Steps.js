@@ -3,30 +3,56 @@
  * @class Steps
  */
 function Steps(){
-
-	this.last20Steps = [];	
-	this.currentStep = {};
-	this.currentUndoOrder = 0;
-	this.savedInServer = false;
-	this.lastFocusedWorkflow = null;
-	this.currentGlobals = [];
+	 /**
+     * Holding last 20 steps
+     * @memberOf Steps
+     */
+	this.last20Steps;	
+	/**
+     * Holding current step
+     * @memberOf Steps
+     */
+	this.currentStep;
+	/**
+     * Holding current undo 
+     * @memberOf Steps
+     */
+	this.currentUndoOrde;
+	/**
+     * Holding flag if its saved in server
+     * @memberOf Steps
+     */
+	this.savedInServer;
+	/**
+     * Holding focused workflow
+     * @memberOf Steps
+     */
+	this.lastFocusedWorkflo;
+	/**
+     * Holding current globals
+     * @memberOf Steps
+     */
+	this.currentGlobals;
 }
 
 
 Steps.prototype = {
 
+	/**
+	 * Loads steps
+	 * @param  {Object}   workspace
+	 * @param  {Function} callback
+	 */
 	loadSteps: function(workspace, callback){},
 
-
 	/**
-	 * check if there is older step to undo it
-	 * @return {Boolean} True if older step exist, else False
+	 * check if there is older step to undo it <br><b>Return</b> {Boolean} True if older step exist, else False
 	 */
 	canUndo: function(){},
 
 	/**
 	 * check if there is newer step to undo it
-	 * @return {Boolean} True if newer step exist, else False
+	 * <br> <b>Return</b> {Boolean} True if newer step exist, else False
 	 */
 	canRedo: function(){},
 
@@ -63,9 +89,13 @@ Steps.prototype = {
 	getDiffSteps: function(before, after){},
 	/**
      * Creates Json 
-     * @return {Object} Json object
+     * <br><b>Return</b> {Object} Json object
      */
 	toJson: function(){},
 
+	/**
+	 * Remove related steps of content
+	 * @param  {Object} content
+	 */
 	removeRelatedSteps: function(content){}
 }
