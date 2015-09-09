@@ -81,7 +81,7 @@ class Lock {
 		$dbObj = new dbAPI();
 		$query = "SELECT * FROM CONTENT_LOCK where LOCKED_UID = '" . $UID . "' AND ENTITY_TYPE = '" . $entity_type . "' AND LOCK_STATUS = 'LOCKED' AND ENABLED = 1 AND USER_ID = ". $user ." ";
 		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
-		return count($results) != 0;	
+		return count($results) != 0;
 	}
 
 	public static function get_locking_user($UID, $entity_type) {

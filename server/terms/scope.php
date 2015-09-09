@@ -49,7 +49,7 @@ class scope {
 
 		$Scope["TERMS"] = scope::get_terms_of_scope($Scope["UID"], $lang);
 		return $Scope;
-	}
+	}	
 
 
 	public static function get_scope_by_UID_with_relations($UID, $lang = '') {
@@ -75,7 +75,7 @@ class scope {
 
 		$dbObj = new dbAPI();
 
-		for($i=0; i<count($search_fields); $i++) {
+		for($i=0; $i<count($search_fields); $i++) {
 			$search_fields[$i] = "UPPER(" . $search_fields[$i] . ") LIKE UPPER('%" . $search_word . "%') "; 
 		}
 		$search_sttmnt = implode(" OR ", $search_fields);
@@ -115,7 +115,7 @@ class scope {
 		
 		$results = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
 		return $results;
-		
+
 	}	
 
 
@@ -163,11 +163,11 @@ class scope {
 		$terms_related = $dbObj->db_select_query($dbObj->db_get_contentDB(), $query);
 
 		if($terms_related == null)
-			return null;
+			return array();
 
 		// get terms details
 		for($i=0; $i<count($terms_related); $i++) {
-			$curr_term = term::get_term_by_UID_with_relations($terms_related[$i]["ID_TERM_STRING"], $lang);
+			$curr_term = term::get_full_term_by_UID($terms_related[$i]["UID"], $lang);
 			if($curr_term != null)
 				array_push($terms, $curr_term);
 		}

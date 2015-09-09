@@ -37,12 +37,11 @@ class Kbit {
 			debugLog::log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i>The kbit (". $Kbit_UID .") is not locked by user (". $user .")");
 			return false;
 		}
-
 		// get related terms
-		for($i = 0; count($json["TERMS"]); $i++)
+		for($i = 0; $i < count($json["TERMS"]); $i++)
 			array_push($terms, $json["TERMS"][$i]);
 
-		if(Kbit::add_new_edit_for_kbit($UID, $title, $description, $user, $front) == null) {
+		if(Kbit::add_new_edit_for_kbit($Kbit_UID, $title, $description, $user, $front) == null) {
 			debugLog::log("<i>[". __FILE__ .":". __FUNCTION__ ."]</i> error adding new edit to kbit (". $UID . ")");
 			return false;
 		}

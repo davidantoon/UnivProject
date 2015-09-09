@@ -275,8 +275,10 @@ class termsAPI {
 // ====================================================================
 class scopesAPI {
 
-    static function searchScopes($serverHash, $Token, $searchWord, $searchFields, $lang = '') {
-
+    static function searchScopes($serverHash, $Token, $searchWord, $searchFields) {
+        if($searchWord == ' ')
+            $searchWord = '';
+        $lang = '';
         if(serverAPI::validateServerIdentity($serverHash) == false)
             return array('ErrorCode' => 4, 'Message' => "Invalid serverHash : ".$serverHash);
         $user = usersAPI::validateToken($Token);
@@ -1150,11 +1152,6 @@ class interfaceAPI {
             $lang = '';
         return termsAPI::getRelatedTerms($serverHash, $Token, $termUID, $lang);
     }
-    // public static function TERMgetAllTermsStrings($serverHash, $Token, $lang = '') {
-    //     if($lang == ' ')
-    //         $lang = '';
-    //     return termsAPI::getAllTermsStrings($serverHash, $Token, $lang);
-    // }
     public static function TERMgetTermById($serverHash, $Token, $UID, $lang = ''){
         if($lang == ' ')
             $lang = '';
@@ -1171,8 +1168,8 @@ class interfaceAPI {
 // ====================================================================
 // ====================================================================
 
-    public static function SCOPEsearchScopes($serverHash, $Token, $searchWord, $searchFields, $lang = '') {
-        return scopesAPI::searchScopes($serverHash, $Token, $searchWord, $searchFields, $lang = '');
+    public static function SCOPEsearchScopes($serverHash, $Token, $searchWord, $searchFields) {
+        return scopesAPI::searchScopes($serverHash, $Token, $searchWord, $searchFields);
     }
     public static function SCOPEaddScopeToScopeRelation($serverHash, $Token, $firstUID, $secondUID, $isHier) {
         return scopesAPI::addScopeToScopeRelation($serverHash, $Token, $firstUID, $secondUID, $isHier);
@@ -1438,7 +1435,7 @@ function deliver_response($format, $api_response)
     );
     header('HTTP/1.1 ' . $api_response['status'] . ' ' . $http_response_code[$api_response['status']]);
     if (strcasecmp($format, 'json') == 0) {
-        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Origin: http://univproject.parseapp.com');
         // header('Accept: */*');
         header('Content-Type: application/json; charset=utf-8');
         $json_response = json_encode($api_response);
