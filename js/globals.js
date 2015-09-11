@@ -311,6 +311,8 @@
                     this.pop(ChashedDeliveries[i].id, ChashedDeliveries[i].type);
                 }
             }
+
+
         },
 
         getAllObjectToJson: function(){

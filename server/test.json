@@ -1,0 +1,41 @@
+{
+  "searchtext" : "Text",
+  "elements": {
+    "Delivery": 1,
+    "D2K": 0,
+    "term": 1,
+    "scope": 0
+  },
+  "field": {
+    "title": "1",
+    "info": "0"
+  }
+}
+
+{
+  "searchtext" : "Text1",
+  "elements": {
+    "Delivery": 1,
+    "D2K": 0,
+    "term": 1,
+    "scope": 0
+  },
+  "field": {
+    "title": "1",
+    "info": "0"
+  }
+}
+
+{
+  "searchtext" : "Text2",
+  "elements": {
+    "Delivery": 1,
+    "D2K": 0,
+    "term": 1,
+    "scope": 0
+  },
+  "field": {
+    "title": "1",
+    "info": "0"
+  }
+}

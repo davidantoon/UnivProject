@@ -482,10 +482,14 @@
 									if(error && !success){
 										loopGetFromServer(Number(index)+1, holdingSteps, 1);
 									}else{
-										strDecompress(success.OBJECT_VALUE, function(stepsDecomp){
-											holdingSteps+=stepsDecomp;
-											loopGetFromServer(Number(index)+1, holdingSteps, 0);
-										});
+										if(success.OBJECT_VALUE != "nil"){
+											strDecompress(success.OBJECT_VALUE, function(stepsDecomp){
+												holdingSteps+=stepsDecomp;
+												loopGetFromServer(Number(index)+1, holdingSteps, 0);
+											});
+										}else{
+											loopGetFromServer(Number(index)+1, holdingSteps, 1);	
+										}
 									}
 								});
 							}else{
@@ -532,7 +536,15 @@
 								Log.e("Server","getSteps", error);
 				                callback(null,error);
 							}else{
-								callback(true);
+								$httpR.connectToServer({Key:"Steps"+index, value:"nil"}, $httpR.KVPsetKeyValuePair, Globals, function(success, error){
+									if(error || !success){
+										Log.e("Server","getSteps", error);
+						                callback(null,error);
+									}else{
+										callback(true);
+									}
+								});
+								
 							}
 						}
 					}

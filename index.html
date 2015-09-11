@@ -102,10 +102,26 @@
               </ons-col>
             </ons-row>
           </ons-tabbar>
+          <div id="OpenAllCashedContentsContainer" ng-click="toggleopenCashedContects();" class="{{((openCashedContects == true)?'rightmeMore':'')}}" >
+            <div class="{{'animateMe ' +((openCashedContects == true)?'flipme':'')}}">
+              <ons-icon icon="ion-chevron-left" size="20px"></ons-icon>
+            </div>
+          </div>
           <div id="allCashedContentsContainer" class="{{((openCashedContects == true)?'rightme':'')}}">
-            <div class="{{'noResultsMessage '+((holdingCashedObjects.kbits.length == 0 && holdingCashedObjects.terms.length == 0)?'':'hidden')}}">No Content</div> 
+            <div class="{{'noResultsMessage '+((holdingCashedObjects.deliveries.length == 0 && holdingCashedObjects.kbits.length == 0 && holdingCashedObjects.terms.length == 0)?'':'hidden')}}">No Content</div> 
+            <div class="{{'ChashedContentsSeparator '+((holdingCashedObjects.deliveries.length != 0)?'':'hidden')}}">Deliveries</div>
+            <ons-row class="itemRow" dnd-draggable="delivery" dnd-effect-allowed="copy"  dnd-copied="draggingItems(delivery);" ng-repeat="delivery in holdingCashedObjects.deliveries">
+              <ons-col>
+                <ons-row>
+                  <ons-col class="title">{{delivery.name}}</ons-col>
+                </ons-row>
+                <ons-row>
+                  <ons-col class="desc">{{delivery.description}}</ons-col>
+                </ons-row>
+              </ons-col>
+            </ons-row>
             <div class="{{'ChashedContentsSeparator '+((holdingCashedObjects.kbits.length != 0)?'':'hidden')}}">Kbits</div>
-            <ons-row class="itemRow" dnd-draggable="kbit" dnd-effect-allowed="copy"  dnd-copied="draggingItems(term);" ng-repeat="kbit in holdingCashedObjects.kbits">
+            <ons-row class="itemRow" dnd-draggable="kbit" dnd-effect-allowed="copy"  dnd-copied="draggingItems(kbit);" ng-repeat="kbit in holdingCashedObjects.kbits">
               <ons-col>
                 <ons-row>
                   <ons-col class="title">{{kbit.name}}</ons-col>
@@ -803,7 +819,7 @@
                             {{wFlow.selectedTab.content.termScope.description}}
                           </div>
                         </ons-col>
-                        <ons-col class="contentType" width="60px">{{wFlow.selectedTab.content.type}}</ons-col>
+                        <ons-col class="contentType" dnd-draggable="wFlow.selectedTab.content" dnd-effect-allowed="copy"  dnd-copied="draggingItems(wFlow.selectedTab.content);"  width="60px">{{wFlow.selectedTab.content.type}}</ons-col>
                         <ons-col class="{{'contentLastModified col ons-col-inner '+((wFlow.selectedTab.content.url == undefined || wFlow.selectedTab.content.url == '')?'hidden':'')}}" width="130px">Last Modified <br>
                           <selectable>
                             {{wFlow.selectedTab.content.lastModified| date:"MMM d, y h:mm:ss"}}

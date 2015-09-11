@@ -1,0 +1,61 @@
+
+
+
+
+
+
+1) terms connected to objects (kbits, deliveries)
+2) terms can have multiple meanings
+3) terms can have multiple meanings in multiple languanges
+4) terms can have multiple scopes
+
+
+kbit
+	- terms:
+		- C#
+			- scope:
+				- general
+					- general meaning
+
+				- computer science
+					- meaning:
+						- C sharp	
+
+				- programming languages
+					- meaning:
+						- high programming languages
+		- C 
+		- C++
+
+
+
+
+-- 1) add a new term with scope and meaning, if no scope selected create term with 'general scope' and 'general meaning'
+-- 2) add new meaning under new scope
+-- 3) add new scope under specific meaining
+-- 4) edit meaning under specific scope
+-- 5) add synonims to scope and term (hence, adding new meaning under specific scope)
+-- 6) add new language to term
+
+	public static function add_new_term_with_scope_and_meaning($term_text, $lang, $user, $scope_UID = '', $meaning_text = '') 
+	public static function add_new_meaning_under_new_scope($termUID, $lang, $user, $scope_text = '', $scope_desc, $meaning_text = '')
+	public static function add_new_scope_under_specific_meaning($termUID, $meaningUID, $user, $scope_text = '', $scope_desc)
+	public static function edit_meaning($relationUID, $new_meaning, $lang)
+	public static function add_sysnonym($scope_UID, $term_UID, $new_meaning, $lang, $user)
+	public static function add_translation_to_term($term_UID, $text, $lang, $user)
+	public static function add_translation_to_term_meaning($meaning_UID, $text, $lang, $user)
+
+
+debugLog::debug_log("scope \"". $selected_scope["UID"] ."\", term \"". $new_term["UID"] ."\", meaning \"". $new_meaning["UID"] ."\"");
+		debugLog::debug_log("scope:");
+		dbAPI::print_json_s($selected_scope);
+		debugLog::debug_log("term:");
+		dbAPI::print_json_s($new_term);
+		debugLog::debug_log("meaning:");
+		dbAPI::print_json_s($new_meaning);
+		// return;
+
+term 	meaning 	scope
+C#		different   oop
+C#		prog. lang. programing languanges
+C# 		meaning 1	oop

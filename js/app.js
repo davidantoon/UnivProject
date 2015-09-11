@@ -2113,16 +2113,45 @@ var ngScope;
 
             $scope.modifyOpenCashedContects = function(typeOfContent){
                 if(typeOfContent == "Kbit"){
+                    $scope.holdingCashedObjects.deliveries = [];
+                    $scope.holdingCashedObjects.terms = [];
                     $scope.holdingCashedObjects.kbits = Globals.getRecentObjects(typeOfContent);
                 }else if(typeOfContent == "Term"){
+                    $scope.holdingCashedObjects.deliveries = [];
+                    $scope.holdingCashedObjects.kbits = [];
                     $scope.holdingCashedObjects.terms = Globals.getRecentObjects(typeOfContent);
                 }else{
-                    $scope.holdingCashedObjects.kbits = [];
-                    $scope.holdingCashedObjects.terms = [];
+                    $scope.holdingCashedObjects.terms = Globals.getRecentObjects("Term");
+                    $scope.holdingCashedObjects.kbits = Globals.getRecentObjects("Kbit");
+                    $scope.holdingCashedObjects.deliveries = Globals.getRecentObjects("Delivery");
+                }
+                var i=0;
+                while(i<$scope.holdingCashedObjects.kbits.length){
+                    if($scope.holdingCashedObjects.kbits[i].name == " " && $scope.holdingCashedObjects.kbits[i].description == " "){
+                        $scope.holdingCashedObjects.kbits.splice(i,1);
+                    }else{
+                        i++;
+                    }
+                }
+                i=0;
+                while(i<$scope.holdingCashedObjects.deliveries.length){
+                    if($scope.holdingCashedObjects.deliveries[i].name == " " && $scope.holdingCashedObjects.deliveries[i].description == " "){
+                        $scope.holdingCashedObjects.deliveries.splice(i,1);
+                    }else{
+                        i++;
+                    }
                 }
                 $scope.openCashedContects = true;
             }
 
+            $scope.toggleopenCashedContects = function(){
+                if($scope.openCashedContects == false){
+                    $scope.modifyOpenCashedContects("All");
+                    $scope.openCashedContects = true;
+                }
+                else
+                    $scope.openCashedContects = false;
+            }
 
             $scope.draggingItems = function(item){
 

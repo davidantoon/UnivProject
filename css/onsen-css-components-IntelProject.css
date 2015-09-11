@@ -7479,8 +7479,60 @@ selectable{
   color: white;
 }
 
+#OpenAllCashedContentsContainer{
+  position: absolute;
+  right: 0;
+  top: 60px;
+  width: 20px;
+  height: 21px;
+  border: 1px solid #0860A8;
+  z-index: 9999;
+  border-radius: 10px 0 0 10px;
+  padding: 5px;
+  line-height: 16px;
+  text-align: center;
+  color: white;
+  background-color: #0860A8;
+  padding-right: 0;
+  -webkit-transition-property: all;
+  -moz-transition-property: all;
+  -o-transition-property: all;
+  transition-property: all;
+  -webkit-transition-duration: .25s;
+  -moz-transition-duration: .25s;
+  -o-transition-duration: .25s;
+  transition-duration: .25s;
+  -webkit-transition-timing-function: ease-out;
+  -moz-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+  cursor: pointer;
+}
 
-
+.animateMe{
+  -webkit-transition-property: all;
+  -moz-transition-property: all;
+  -o-transition-property: all;
+  transition-property: all;
+  -webkit-transition-duration: .25s;
+  -moz-transition-duration: .25s;
+  -o-transition-duration: .25s;
+  transition-duration: .25s;
+  -webkit-transition-timing-function: ease-out;
+  -moz-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+#OpenAllCashedContentsContainer.rightmeMore{
+  right: 280px;
+}
+#OpenAllCashedContentsContainer .flipme{
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
 
 
 
