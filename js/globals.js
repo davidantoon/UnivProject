@@ -992,11 +992,25 @@
         }
         if(serverObj.KBITS && serverObj.KBITS.NEEDED)
             for(var i=0; i<serverObj.KBITS.NEEDED.length; i++){
-                tempJson.kBitsNeeded.push(ngScope.objectServerToClient(serverObj.KBITS.NEEDED[i]));
+                var tempKbit = ngScope.objectServerToClient(serverObj.KBITS.NEEDED[i]);
+                var found = false;
+                for(var i2=0; i2<tempJson.kBitsNeeded.length; i2++){
+                    if(tempJson.kBitsNeeded[i2].id == tempKbit.id)
+                        found = true;
+                }
+                if(found == false)
+                    tempJson.kBitsNeeded.push(tempKbit);
             }
         if(serverObj.KBITS && serverObj.KBITS.PROVIDED)
             for(var i=0; i<serverObj.KBITS.PROVIDED.length; i++){
-                tempJson.kBitsProvided.push(ngScope.objectServerToClient(serverObj.KBITS.PROVIDED[i]));
+                var tempKbit = ngScope.objectServerToClient(serverObj.KBITS.PROVIDED[i]);
+                var found = false;
+                for(var i2=0; i2<tempJson.kBitsProvided.length; i2++){
+                    if(tempJson.kBitsProvided[i2].id == tempKbit.id)
+                        found = true;
+                }
+                if(found == false)
+                    tempJson.kBitsProvided.push(tempKbit);
             }
         if(serverObj.TERMS)
             for(var i=0; i<serverObj.TERMS.length; i++){
@@ -1037,7 +1051,14 @@
         }
         if(serverObj.TERMS)
             for(var i=0; i<serverObj.TERMS.length; i++){
-                tempJson.terms.push(ngScope.objectServerToClient(serverObj.TERMS[i]));
+                var tempTerm = ngScope.objectServerToClient(serverObj.TERMS[i]);
+                var found = false;
+                for(var i2=0; i2<tempJson.terms.length; i2++){
+                    if(tempJson.terms[i2].id == tempTerm.id)
+                        found = true;
+                }
+                if(found == false)
+                    tempJson.terms.push(tempTerm);
             }
         return tempJson;
     }).value('termServerToClient', function(serverObj){
