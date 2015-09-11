@@ -475,7 +475,26 @@
 							return;
 						}
 					}else{
-						$httpR.connectToServer({Key:"Steps"}, $httpR.KVPgetKeyValuePair, Globals, callback);
+						loopGetFromServer(0, "", 0, 0);
+						function loopGetFromServer(index, holdingSteps, endOfFile){
+							if(!endOfFile){
+								$httpR.connectToServer({Key:"Steps"+index}, $httpR.KVPgetKeyValuePair, Globals, function(success,error){
+									if(error && !success){
+										loopGetFromServer(Number(index)+1, holdingSteps, 1);
+									}else{
+										strDecompress(success.OBJECT_VALUE, function(stepsDecomp){
+											holdingSteps+=stepsDecomp;
+											loopGetFromServer(Number(index)+1, holdingSteps, 0);
+										});
+									}
+								});
+							}else{
+								if(holdingSteps == "")
+									callback(null);
+								else
+									callback(holdingSteps);
+							}
+						}
 					}
 				}catch(e){
 	                Log.e("Server","getSteps", e);
@@ -487,12 +506,35 @@
 			 * Save the steps in server
 			 * @param {Function} callback callback function
 			 */
-			setSteps: function(steps, callback){
+			setSteps: function(callback){
 				try{
 					if(this.baseUrl == "dummy"){
 						callback();
 					}else{
-						$httpR.connectToServer({Key:"Steps", value:steps}, $httpR.KVPsetKeyValuePair, Globals, callback);
+						var dataToSave = [];
+						for(var i=0; i<15; i++){
+							if(!localStorage["com.intel.userdata"+(i+1)] || localStorage["com.intel.userdata"+(i+1)] == "null" || localStorage["com.intel.userdata"+(i+1)] == null){
+								break;
+							}
+							dataToSave.push(localStorage["com.intel.userdata"+(i+1)]);
+						}
+						loopSaving(0, dataToSave, 0);
+						function loopSaving(index, passDataToSave, error){
+							if(index < passDataToSave.length){
+								$httpR.connectToServer({Key:"Steps"+index, value:passDataToSave[index]}, $httpR.KVPsetKeyValuePair, Globals, function(success, error){
+									if(error || !success){
+										loopSaving(Number(index)+1, passDataToSave, 1);
+									}else{
+										loopSaving(Number(index)+1, passDataToSave, 0);
+									}
+								});
+							}else if(error){
+								Log.e("Server","getSteps", error);
+				                callback(null,error);
+							}else{
+								callback(true);
+							}
+						}
 					}
 				}catch(e){
 	                Log.e("Server","getSteps", e);

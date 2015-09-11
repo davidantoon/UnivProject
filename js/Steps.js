@@ -27,22 +27,16 @@
 						ServerResquestComplete(null, passThis1);
 					}else{
 						try{
-							strDecompress(result.OBJECT_VALUE, function(stepsDecomp){
-								try{
-									var x = JSON.parse(stepsDecomp);
-									var stor = new Storage();
-									if(x.Settings)
-										stor.setWorkspaceData(null, x.Settings, null,function(dataFromLocalStorage, error){});
-									if(x.steps && x.steps.last20Steps.length == 0)
-										ServerResquestComplete(null, passThis1);
-									else
-										ServerResquestComplete(x.Steps, passThis1);
-								}catch(e){
-									ServerResquestComplete(null, passThis1);		
-								}
-							});
+							var x = JSON.parse(result);
+							var stor = new Storage();
+							if(x.Settings)
+								stor.setWorkspaceData(null, x.Settings, null,function(dataFromLocalStorage, error){});
+							if(x.steps && x.steps.last20Steps.length == 0)
+								ServerResquestComplete(null, passThis1);
+							else
+								ServerResquestComplete(x.Steps, passThis1);
 						}catch(e){
-							ServerResquestComplete(null, passThis1);
+							ServerResquestComplete(null, passThis1);		
 						}
 					}
 				});
@@ -623,11 +617,14 @@
 			            		$rootScope.currentScope.Toast.show("Error!","there was an error in upadting last steps", Toast.LONG, Toast.ERROR);		
 			            	}else{
 			            		var svr = new Server("steps", $rootScope.currentScope.isDummy);
-								if(typeof callback == "funtion")
-									svr.setSteps(localStorage["com.intel.userdata"], callback);
+								if(typeof callback == "funtion"){
+									svr.setSteps(callback);
+									ngScope.savingStepsToServer = "Save";
+								}
 								else
-									svr.setSteps(localStorage["com.intel.userdata"], function(){});
-								ngScope.savingStepsToServer = "Save";
+									svr.setSteps(function(){
+										ngScope.savingStepsToServer = "Save";
+									});
 			            	}
 			            });
 					}else{

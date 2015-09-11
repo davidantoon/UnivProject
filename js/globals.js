@@ -466,7 +466,7 @@
     .value('$httpR', {
 
         protocol: "http",
-        ip: "31.154.146.144",
+        ip: "109.160.237.189",
         port: "8888",
         baseUrl: "/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/",
 
@@ -525,20 +525,19 @@
             ngScope.Log.d("$httpR", "connectToServer","Request data:", {LogObject:data});
             // http://109.160.241.160:8888/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/
             $.ajax({
-                // url: "http://testserver-radjybaba.rhcloud.com/webservice.php/",
-                url: this.protocol+"://"+this.ip+":"+this.port+this.baseUrl,
+                url: "http://testserver-radjybaba.rhcloud.com/webservice.php/",
+                // url: this.protocol+"://"+this.ip+":"+this.port+this.baseUrl,
                 data: data,
                 method: "POST",
                 header:{
-                    "Access-Control-Allow-Origin": "http://"+this.ip+":8888"
+                    // "Access-Control-Allow-Origin": "http://"+this.ip+":8888"
                 },
                 xhrFields: {
-                    withCredentials: true
+                    withCredentials: false
                 },
                 crossDomain : true,
                 timeout: 10000,
                 success: function(success) {
-                    debugger;
                     if (success.status == 200){
                         ngScope.Log.d("$httpR", "connectToServer","Success response data:", {LogObject:success});
                         callback(success.data, null);
@@ -999,7 +998,14 @@
             }
         if(serverObj.TERMS)
             for(var i=0; i<serverObj.TERMS.length; i++){
-                tempJson.terms.push(ngScope.objectServerToClient(serverObj.TERMS[i]));
+                var tempTerm = ngScope.objectServerToClient(serverObj.TERMS[i]);
+                var found = false;
+                for(var i2=0; i2<tempJson.terms.length; i2++){
+                    if(tempJson.terms[i2].id == tempTerm.id)
+                        found = true;
+                }
+                if(found == false)
+                    tempJson.terms.push(tempTerm);
             }
         return tempJson;
     }).value('kbitServerToClient', function(serverObj){
@@ -1009,6 +1015,7 @@
             "description": serverObj.DESCRIPTION,
             "url": serverObj.FRONT_KBIT.PATH,
             "type": "Kbit",
+            "linkType": serverObj.LINK_TYPE,
             "revision": serverObj.REVISION,
             "lastModified": ngScope.fromServerTime(serverObj.CREATION_DATE),
             "terms":[]
@@ -1040,6 +1047,7 @@
             "name": tempName,
             "description": tempDescription,
             "type": "Term",
+            "linkType": serverObj.LINK_TYPE,
             "termScope": {
                 "id": serverObj.SCOPE_UID,
                 "name": serverObj.SCOPE_TITLE,
