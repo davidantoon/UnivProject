@@ -17,6 +17,7 @@
 				this.inProgress = ((conData != undefined && conData.inProgress)?conData.inProgress:false);
 				this.type = ((conData != undefined)?conData.type:null);
 				this.termScope = ((conData !=undefined)?conData.termScope: null);
+				this.linkType = ((conData !=undefined)?conData.linkType: null);
 				this.connectToDataBase = ((this.type && new Server(this.type, $rootScope.currentScope.isDummy)) || null);
 				this.progressWizard = ((conData != undefined)?conData.progressWizard:{});
 				this.newData = ((conData != undefined)?conData.newData:null);
@@ -301,6 +302,7 @@
 						"objectType": this.objectType,
 						"progressWizard": this.progressWizard,
 						"newData": this.newData,
+						"linkType": this.linkType,
 						"revision": this.revision
 					}
 				}catch(e){

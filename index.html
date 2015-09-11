@@ -19,21 +19,16 @@
 </head>
 <body ng-controller="MainCtrl">
 
-    <!-- <div class="DebugMessage">
-      {{bodyScrolling}}
-    </div> -->
-
-
     <div id="MainDiv" class="{{((blurAllWindow == true)?'blured':'')}}" ng-switch="AppStatus" style="display:none">
       <div class="AppPage" ng-switch-when="2" style="">  
         <ons-page>
-          <ons-tabbar position="top" class="" style="height: 50px;">
+          <ons-tabbar position="top" class="" style="height: 50px;    z-index: 10001;">
             <ons-row style="max-height: 49px;overflow: visible;">
               <ons-col  class="LogoutDivTabbar hoverOp clickable" ng-click="logout();" width="49px">
                 <ons-icon  size="25px" icon="ion-android-exit"></ons-icon>
               </ons-col>
               <ons-col width="220px" ng-click="openProfileDialog();" class="Logo rtl">
-                <div class="ProfilePicDivTabbar" style="{{'background:url(\''+getProfilePicture()+'\') 50% 50% no-repeat;'}}"></div>
+                <div class="ProfilePicDivTabbar" style="{{'background:url(\''+getProfilePicture()+'\') 50% 50% no-repeat;    background-size: 150px;'}}"></div>
                 <p>{{currentUser.firstName+" "+currentUser.lastName}}</p>
               </ons-col>
               <ons-col id="NotificationsButton1" ng-click="testFunctions1();" width="100px" style="width:100px; position:relative;" class="">
@@ -107,7 +102,33 @@
               </ons-col>
             </ons-row>
           </ons-tabbar>
-          <ons-row id="BodyRow" style="margin-top: 50px;  overflow: scroll;">
+          <div id="allCashedContentsContainer" class="{{((openCashedContects == true)?'rightme':'')}}">
+            <div class="{{'noResultsMessage '+((holdingCashedObjects.kbits.length == 0 && holdingCashedObjects.terms.length == 0)?'':'hidden')}}">No Content</div> 
+            <div class="{{'ChashedContentsSeparator '+((holdingCashedObjects.kbits.length != 0)?'':'hidden')}}">Kbits</div>
+            <ons-row class="itemRow" dnd-draggable="kbit" dnd-effect-allowed="copy"  dnd-copied="draggingItems(term);" ng-repeat="kbit in holdingCashedObjects.kbits">
+              <ons-col>
+                <ons-row>
+                  <ons-col class="title">{{kbit.name}}</ons-col>
+                </ons-row>
+                <ons-row>
+                  <ons-col class="desc">{{kbit.description}}</ons-col>
+                </ons-row>
+              </ons-col>
+            </ons-row>
+            <div class="{{'ChashedContentsSeparator '+((holdingCashedObjects.terms.length != 0)?'':'hidden')}}">Terms</div>
+            <ons-row class="itemRow" dnd-draggable="term" dnd-effect-allowed="copy"  dnd-copied="draggingItems(term);" ng-repeat="term in holdingCashedObjects.terms">
+              <ons-col>
+                <ons-row>
+                  <ons-col class="tscope">{{term.termScope.name}}</ons-col>
+                </ons-row>
+                <ons-row>
+                  <ons-col class="ttitle" width="100px">{{getPreferLanguageFromTerm(term.name)}}</ons-col>
+                  <ons-col class="tdesc">{{getPreferLanguageFromTerm(term.description)}}</ons-col>
+                </ons-row>
+              </ons-col>
+            </ons-row>
+          </div>
+          <ons-row id="BodyRow" style="    height: calc(100% - 50px);margin-top: 50px;  overflow: scroll;">
 
             <div id="WorkFlowMatrix">
               <div id="pointToZoom"></div>
@@ -153,14 +174,11 @@
                 </ons-row>
                 <div class="{{'SelectedTabContent '+((clickToMaximize == true || displayNewWorkflowButtons == true)?'blured':'')}}">
                     <div class="{{((getSelectedTabType(wFlow) == 0)?'':'hidden')}}">
-                      <div ng-click="MainButtonsPressed(wFlow,1);" class="SearchButton MainButtonsTab">
+                      <div ng-click="MainButtonsPressed(wFlow,1);" class="SearchButton MainButtonsTab" style="line-height: 178px;">
                         Search
                       </div>
-                      <div ng-click="MainButtonsPressed(wFlow,2);" class="CreateButton MainButtonsTab">
+                      <div ng-click="MainButtonsPressed(wFlow,2);" class="CreateButton MainButtonsTab" style="line-height: 178px;">
                         Create New Element
-                      </div>
-                      <div ng-click="MainButtonsPressed(wFlow,3);" class="EditButton MainButtonsTab">
-                        Edit Element
                       </div>
                     </div>
                     <!-- SEARCH TAB HTML -->
@@ -244,10 +262,15 @@
                                 <div class="title">
                                   Select Term Scope
                                 </div>
-                                <ons-col width="110px" ng-click="nextTermButton(wFlow.selectedTab.dataHolding);" class="{{'backButton buttons clickable '+((canTermNext(wFlow.selectedTab.dataHolding) == true)?'invisible':'')}}">
+                                <ons-col width="110px" ng-click="nextTermButton(wFlow);" class="{{'backButton buttons clickable '+((canTermNext(wFlow.selectedTab.dataHolding) == true)?'invisible':'')}}">
                                   <p>Next</p>
                                   <ons-icon icon="ion-android-arrow-dropright-circle" size="25px"></ons-icon>
                                 </ons-col>
+                              </ons-row>
+
+                              <ons-row class="scopeSelectOptions">
+                                <ons-col ng-click="wFlow.selectedTab.dataHolding.newTerm.searchCreateScope = 0; InsertStepToLast10Steps();" class="{{'searchOptionButton1 col ons-col-inner '+((wFlow.selectedTab.dataHolding.newTerm.searchCreateScope == 0)?'checked':'')}}">Search Scopes</ons-col>
+                                <ons-col ng-click="wFlow.selectedTab.dataHolding.newTerm.searchCreateScope = 1; InsertStepToLast10Steps();" class="{{'searchOptionButton1 col ons-col-inner '+((wFlow.selectedTab.dataHolding.newTerm.searchCreateScope == 1)?'checked':'')}}">Create Scope</ons-col>
                               </ons-row>
                               <ons-row>
                                 <ons-col ng-switch="wFlow.selectedTab.dataHolding.newTerm.searchCreateScope">
@@ -258,14 +281,37 @@
                                           Search Scope:
                                         </ons-col>
                                         <ons-col class="InputTextbox">
-                                          <input ng-blur="InsertStepToLast10Steps();" ng-model="wFlow.selectedTab.dataHolding.newTerm.termScope.name" type="text" />
-                                          <div class="scopeSuggestingDiv">scopeSuggestingList</div>
+                                          <input ng-blur="wFlow.selectedTab.dataHolding.newTerm.selectedTermScope=null;InsertStepToLast10Steps();" ng-model="wFlow.selectedTab.dataHolding.newTerm.termScope.name" type="text" />
+                                          <div class="scopeSuggestingDiv" style="height: 110px;">
+                                            <ons-row class="clickable hoverOp" ng-click="wFlow.selectedTab.dataHolding.newTerm.selectedTermScope = scope;wFlow.selectedTab.dataHolding.newTerm.selectedTerm=null" ng-repeat="scope in getSearchTermScop(wFlow.selectedTab.dataHolding);" style="height: 43px;line-height: 43px;border-bottom: 1px solid rgba(0,0,0,.1);">
+                                              <ons-col width="150px" class="scopeTitleSuggested">
+                                                {{scope.name}}
+                                              </ons-col>
+                                              <ons-col class="scopeDescriptionSuggested">
+                                                {{scope.description}}
+                                              </ons-col>
+                                            </ons-row>
+                                          </div>
                                         </ons-col>
                                       </ons-row>
                                       <ons-row class="editObjectDetailsRow">
                                         <ons-col>
-                                          scope1
-                                          scope2
+                                          <ons-row>
+                                            <ons-col width="250px">
+                                              Selected Scope Name: 
+                                            </ons-col>
+                                            <ons-col>
+                                              {{wFlow.selectedTab.dataHolding.newTerm.selectedTermScope.name}} 
+                                            </ons-col>
+                                          </ons-row>
+                                          <ons-row>
+                                            <ons-col width="250px">
+                                              Selected Scope Description: 
+                                            </ons-col>
+                                            <ons-col>
+                                              {{wFlow.selectedTab.dataHolding.newTerm.selectedTermScope.description}} 
+                                            </ons-col>
+                                          </ons-row>
                                         </ons-col>
                                       </ons-row>
                                     </ons-col>
@@ -273,17 +319,16 @@
                                   <ons-row ng-switch-when="1">
                                     <ons-col>
                                       <ons-row class="editObjectDetailsRow">
-                                        <ons-col class="InputLabel" width="200px">
-                                          Term Scope Name:
+                                        <ons-col class="InputLabel" width="250px">
+                                          New Scope Name:
                                         </ons-col>
                                         <ons-col class="InputTextbox">
                                           <input ng-blur="InsertStepToLast10Steps();" ng-model="wFlow.selectedTab.dataHolding.newTerm.termScope.name" type="text" />
-                                          <div class="scopeSuggestingDiv">scopeSuggestingList</div>
                                         </ons-col>
                                       </ons-row>
                                       <ons-row class="editObjectDetailsRow">
-                                        <ons-col class="InputLabel" width="200px">
-                                          Term Scope Description:
+                                        <ons-col class="InputLabel" width="250px">
+                                          New Scope Description:
                                         </ons-col>
                                         <ons-col class="InputTextbox">
                                           <textarea ng-blur="InsertStepToLast10Steps();" ng-model="wFlow.selectedTab.dataHolding.newTerm.termScope.description" ></textarea>
@@ -294,8 +339,126 @@
                                 </ons-col>
                               </ons-row>
 
-
-
+                            </ons-col>
+                          </ons-row>
+                          <ons-row ng-switch-when="2">
+                            <ons-col>
+                              <ons-row class="header" ng-click="refocusMe(wFlow);">
+                                <ons-col width="110px" ng-click="backTermButton(wFlow);" class="backButton buttons clickable">
+                                  <ons-icon icon="ion-android-cancel" size="25px"></ons-icon>
+                                  <p>Back</p>
+                                </ons-col>
+                                <ons-col></ons-col>  <!-- SPACE FOR TITLE -->
+                                <div class="title">
+                                  Select Term
+                                </div>
+                                <ons-col width="110px" ng-click="nextTermButton(wFlow);" class="{{'backButton buttons clickable '+((canTermNext(wFlow.selectedTab.dataHolding) == true)?'invisible':'')}}">
+                                  <p>{{((wFlow.selectedTab.dataHolding.newTerm.searchCreateTerm == 0)?"Next":"Create")}}</p>
+                                  <ons-icon icon="ion-android-arrow-dropright-circle" size="25px"></ons-icon>
+                                </ons-col>
+                              </ons-row>
+                              <ons-row class="scopeSelectOptions">
+                                <ons-col  ng-click="wFlow.selectedTab.dataHolding.newTerm.searchCreateTerm = 0; InsertStepToLast10Steps();" class="{{'searchOptionButton1 col ons-col-inner '+((wFlow.selectedTab.dataHolding.newTerm.selectedTermScope == null)?'hidden':((wFlow.selectedTab.dataHolding.newTerm.searchCreateTerm == 0)?'checked':''))}}">Search Term</ons-col>
+                                <ons-col  ng-click="wFlow.selectedTab.dataHolding.newTerm.searchCreateTerm = 1; InsertStepToLast10Steps();" class="{{'searchOptionButton1 col ons-col-inner '+((wFlow.selectedTab.dataHolding.newTerm.searchCreateTerm == 1)?'checked':'')}}">Create Term</ons-col>
+                              </ons-row>
+                              <ons-row>
+                                <ons-col ng-switch="wFlow.selectedTab.dataHolding.newTerm.searchCreateTerm">
+                                  <ons-row ng-switch-when="0">
+                                    <ons-col>
+                                      <ons-row class="editObjectDetailsRow">
+                                        <ons-col class="InputLabel" width="200px">
+                                          Search Term:
+                                        </ons-col>
+                                        <ons-col class="InputTextbox">
+                                          <input ng-blur="wFlow.selectedTab.dataHolding.newTerm.selectedTerm=null;InsertStepToLast10Steps();" ng-model="wFlow.selectedTab.dataHolding.newTerm.name[Settings.preferLanguage['LANG_CODE']]" type="text" />
+                                          <div class="scopeSuggestingDiv" style="height: 110px;">
+                                            <ons-row class="clickable hoverOp" ng-click="wFlow.selectedTab.dataHolding.newTerm.selectedTerm = term" ng-repeat="term in getSearchTermFromSelectedScope(wFlow.selectedTab.dataHolding);" style="height: 43px;line-height: 43px;border-bottom: 1px solid rgba(0,0,0,.1);">
+                                              <ons-col class="scopeTitleSuggested">
+                                                {{getPreferLanguageFromTerm(term.name)}}
+                                              </ons-col>
+                                            </ons-row>
+                                          </div>
+                                        </ons-col>
+                                      </ons-row>
+                                      <ons-row class="editObjectDetailsRow">
+                                        <ons-col>
+                                          <ons-row>
+                                            <ons-col width="200px">
+                                              Selected Term Name: 
+                                            </ons-col>
+                                            <ons-col>
+                                              {{wFlow.selectedTab.dataHolding.newTerm.selectedTerm.name[Settings.preferLanguage["LANG_CODE"]]}} 
+                                            </ons-col>
+                                          </ons-row>
+                                        </ons-col>
+                                      </ons-row>
+                                    </ons-col>
+                                  </ons-row>
+                                  <ons-row ng-switch-when="1">
+                                    <ons-col>
+                                      <ons-row class="editObjectDetailsRow">
+                                        <ons-col class="InputLabel" width="250px">
+                                          New Term Name:
+                                        </ons-col>
+                                        <ons-col class="InputTextbox">
+                                          <input ng-blur="InsertStepToLast10Steps();" ng-model="wFlow.selectedTab.dataHolding.newTerm.name[Settings.preferLanguage['LANG_CODE']]" type="text" />
+                                        </ons-col>
+                                      </ons-row>
+                                      <ons-row class="editObjectDetailsRow">
+                                        <ons-col class="InputLabel" width="250px">
+                                          New Term Description:
+                                        </ons-col>
+                                        <ons-col class="InputTextbox">
+                                          <textarea ng-blur="InsertStepToLast10Steps();" ng-model="wFlow.selectedTab.dataHolding.newTerm.description[Settings.preferLanguage['LANG_CODE']]" ></textarea>
+                                        </ons-col>
+                                      </ons-row>
+                                    </ons-col>
+                                  </ons-row>
+                                </ons-col>
+                              </ons-row>
+                            </ons-col>
+                          </ons-row>
+                          <ons-row ng-switch-when="3">
+                            <ons-col>
+                              <ons-row class="header" ng-click="refocusMe(wFlow);">
+                                <ons-col width="110px" ng-click="backTermButton(wFlow);" class="backButton buttons clickable">
+                                  <ons-icon icon="ion-android-cancel" size="25px"></ons-icon>
+                                  <p>Back</p>
+                                </ons-col>
+                                <ons-col></ons-col>  <!-- SPACE FOR TITLE -->
+                                <div class="title">
+                                  Add Term Description
+                                </div>
+                                <ons-col width="110px" ng-click="nextTermButton(wFlow);" class="{{'backButton buttons clickable '+((canTermNext(wFlow.selectedTab.dataHolding) == true)?'invisible':'')}}">
+                                  <p>Create</p>
+                                  <ons-icon icon="ion-android-arrow-dropright-circle" size="25px"></ons-icon>
+                                </ons-col>
+                              </ons-row>
+                              <ons-row>
+                                <ons-col>
+                                  <ons-row class="editObjectDetailsRow">
+                                    <ons-col>
+                                      <ons-row>
+                                        <ons-col width="200px">
+                                          Selected Term Name: 
+                                        </ons-col>
+                                        <ons-col>
+                                          {{wFlow.selectedTab.dataHolding.newTerm.selectedTerm.name[Settings.preferLanguage["LANG_CODE"]]}} 
+                                        </ons-col>
+                                      </ons-row>
+                                    </ons-col>
+                                  </ons-row>
+                                  <ons-row class="editObjectDetailsRow">
+                                    <ons-col class="InputLabel" width="250px">
+                                      New Term Description:
+                                    </ons-col>
+                                    <ons-col class="InputTextbox">
+                                      <textarea ng-blur="InsertStepToLast10Steps();" ng-model="wFlow.selectedTab.dataHolding.newTerm.description[Settings.preferLanguage['LANG_CODE']]" ></textarea>
+                                    </ons-col>
+                                    
+                                  </ons-row>
+                                </ons-col>
+                              </ons-row>
                             </ons-col>
                           </ons-row>
                         </div>
@@ -488,7 +651,7 @@
                                   </ons-row>
                                   <ons-row class="editObjectDetailsRow">
                                     <ons-col class="InputLabel">
-                                      Drag and drop <strong>Kbits</strong> from search wolkflow, or <span class="linkSpan">open recent objects list.</span>
+                                      Drag and drop <strong>Kbits</strong> from search wolkflow, or <span ng-click="modifyOpenCashedContects('Kbit');" class="linkSpan">open recent objects list.</span>
                                     </ons-col>
                                   </ons-row>
                                   <ons-row style="width: 100%;height: 260px;">
@@ -535,7 +698,7 @@
                                   <!-- (KBIT) ADD | REMOVE TERMS -->
                                   <ons-row class="editObjectDetailsRow">
                                     <ons-col class="InputLabel">
-                                      Drag and drop <strong>Terms</strong> from search wolkflow, or <span class="linkSpan">open recent objects list.</span>
+                                      Drag and drop <strong>Terms</strong> from search wolkflow, or <span ng-click="modifyOpenCashedContects('Term');" class="linkSpan">open recent objects list.</span>
                                     </ons-col>
                                   </ons-row>
                                   <ons-row style="width: 100%;height: 260px;">
@@ -576,7 +739,7 @@
                                   <!-- (DELIVERY) ADD | REMOVE TERMS -->
                                   <ons-row class="editObjectDetailsRow">
                                     <ons-col class="InputLabel">
-                                      Drag and drop <strong>Terms</strong> from search wolkflow, or <span class="linkSpan">open recent objects list.</span>
+                                      Drag and drop <strong>Terms</strong> from search wolkflow, or <span ng-click="modifyOpenCashedContects('Term');" class="linkSpan">open recent objects list.</span>
                                     </ons-col>
                                   </ons-row>
                                   <ons-row style="width: 100%;height: 260px;">
@@ -846,7 +1009,7 @@
         <ons-row class="row ons-row-inner ProfileViewHeader">
           <ons-col class="col ons-col-inner">
             <img class="blurBackground" ng-src="{{getProfilePicture()}}" >
-            <div class="ProfilePicDiv" style="{{'background:url(\''+getProfilePicture()+'\') 50% 50% no-repeat;background-size:100px;'}}"></div>
+            <div class="ProfilePicDiv" style="{{'background:url(\''+getProfilePicture()+'\') 50% 50% no-repeat;background-size:150px;'}}"></div>
           </ons-col>
         </ons-row>
         <ons-row class="row ons-row-inner">
@@ -927,7 +1090,6 @@
   <script type="text/javascript" src="js/onsenui.js"></script> 
   <script type="text/javascript" src="js/jquery.js"></script>
   <script type="text/javascript" src="js/jquery.maskedinput.js"></script>
-  <script type="text/javascript" src="js/jquery.soap.js"></script>
   <script type="text/javascript" src="js/xmlToJson.js"></script>
   <script type="text/javascript" src="js/bootstrap-datepicker.js"></script>
   <script type="text/javascript" src="js/bootstrap-datepicker.he.js"></script>

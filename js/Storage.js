@@ -199,27 +199,35 @@
 			 */
 			getWorkspaceData: function(stringType, callback){
 				try{
-					var dataToRetrieve = localStorage["com.intel.userdata"];
-					if(stringType == true){
-						strDecompress(dataToRetrieve, function(stepsComp){
-							callback(stepsComp, null);
-						});
+					var dataToRetrieve = [];
+					for(var i=0; i<15; i++){
+						dataToRetrieve.push(localStorage["com.intel.userdata"+(i+1)]);
 					}
-					else{
-						if(dataToRetrieve){
-							strDecompress(dataToRetrieve, function(stepsComp){
-								dataToRetrieve = JSON.parse(stepsComp);
-								callback(dataToRetrieve, null);
-							});
-
-						}else{
-							var data = {
-								"Steps": null,
-								"Settings": null,
-								"CurrentUser": null
-							};
-							callback(data, null);
+					if(dataToRetrieve[0]){
+						loopDecompress(0, dataToRetrieve, "");
+						function loopDecompress(index, passDataToRetrieve, holdingDecompressed){
+							if(index < passDataToRetrieve.length && passDataToRetrieve[index] != null && passDataToRetrieve[index] != "null"){
+								strDecompress(passDataToRetrieve[index], function(e){
+									loopDecompress(Number(index)+1, passDataToRetrieve, holdingDecompressed+e);
+								});
+							}else{
+								loopDone(holdingDecompressed);
+							}
 						}
+						function loopDone(holdingDecompressed){
+							if(stringType == true){
+								callback(holdingDecompressed);
+							}else{
+								callback(JSON.parse(holdingDecompressed));
+							}
+						}
+					}else{
+						var data = {
+							"Steps": null,
+							"Settings": null,
+							"CurrentUser": null
+						};
+						callback(data, null);
 					}
 					return;
 				}catch(e){
@@ -254,14 +262,27 @@
 								"CurrentUser": currentUser
 							};
 						}
-						strCompress(JSON.stringify(data), function(stepsComp){
-							localStorage.setItem("com.intel.userdata", stepsComp);
-							callback(true, null);
-						});
+						var dataToSave = JSON.stringify(data);
+						loopToCompress(0, dataToSave);
+						function loopToCompress(index, passdataToSave){
+							if(passdataToSave.length > 0){
+								strCompress(passdataToSave.substring(0, 30000), function(e){
+									localStorage["com.intel.userdata"+(index+1)] = e;
+									loopToCompress(index+1, passdataToSave.substring(30000));
+								});
+							}else{
+								var i=index;
+								while(localStorage["com.intel.userdata"+(i+1)] && localStorage["com.intel.userdata"+(i+1)] != "null" && localStorage["com.intel.userdata"+(i+1)] != null){
+									localStorage.removeItem("com.intel.userdata"+(i+1));
+								}
+								callback(true);
+							}
+						}
 					});
 
 				}catch(e){
 					Log.e("Storage","setWorkspaceData", e);
+					callback(false);
 				}
 			},
 

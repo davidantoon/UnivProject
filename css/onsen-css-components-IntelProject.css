@@ -6534,11 +6534,19 @@ div.vertical {
   font-weight: 300;
   cursor: pointer;
 }
-
-.searchOptionButton.checked{
+.searchOptionButton1{
+  text-align: center;
+  padding: 4px;
+  margin: 0px;
+  background-color: rgba(150,150,150,.1);
+  font-weight: 300;
+  cursor: pointer;
+}
+.searchOptionButton.checked, .searchOptionButton1.checked{
   background:rgb(8,96,168);
   color: white;
 }
+
 
 .LabelOfOptionsButtons{
     padding: 0px 12px;
@@ -6564,7 +6572,7 @@ div.vertical {
   width: 100%;
   height: 100%;
   background-color: rgba(0,0,0,0.4);
-  z-index: 100;
+  z-index: 10000;
 }
 
 .MaximizeButton div{
@@ -7319,7 +7327,7 @@ selectable{
 }
 
 .ProfilePicDivTabbar{
-  background-size: 45px !important;
+  background-size: 70px !important;
   position: absolute;
   height: 40px;
   width: 40px;
@@ -7341,6 +7349,136 @@ selectable{
   font-size: 15px;
   color: gray;
 }
+
+.scopeSelectOptions{
+  border-bottom: 1px solid rgba(0,0,0,.2);
+  margin-bottom: 8px;
+}
+
+.scopeSuggestingDiv{
+  overflow: hidden;
+  width: 524px;
+  padding-bottom: 17px;
+  background-color: rgba(8, 96, 168, .05);
+  margin-bottom: -15px;
+  margin-top: -2px;
+  border-radius: 0px 0px 10px 10px;
+  border: 1px solid rgba(0,0,0,.1);
+}
+.scopeSuggestingDiv > ons-row:hover{
+  background: rgba(0,0,0,.1);
+}
+.scopeTitleSuggested{
+  color: rgb(30,30,30);
+  font-size: 15px;
+  font-weight: 500;
+  padding: 0 10px;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.scopeDescriptionSuggested{
+    font-weight: 200;
+    font-size: 14px;
+    white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+
+#allCashedContentsContainer{
+  position: absolute;
+  right: -300px;
+  width: 280px;
+  height: calc(100% - 70px);
+  background-color: #0860A8;
+  top: 50px;
+  padding: 10px 0;
+  z-index: 9999;
+  color: white;
+  box-shadow: 0px 0px 12px 0px black;
+  overflow: auto;
+  -webkit-transition-property: all;
+  -moz-transition-property: all;
+  -o-transition-property: all;
+  transition-property: all;
+  -webkit-transition-duration: .25s;
+  -moz-transition-duration: .25s;
+  -o-transition-duration: .25s;
+  transition-duration: .25s;
+  -webkit-transition-timing-function: ease-out;
+  -moz-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+
+#allCashedContentsContainer.rightme{
+  right: 0;
+}
+
+.ChashedContentsSeparator{
+  background-color: whitesmoke;
+  color: gray;
+  padding: 3px 8px;
+  font-size: 14px;
+  border: 1px solid #0860A8;
+}
+
+#allCashedContentsContainer .itemRow{
+  padding: 6px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  height: 50px;
+  overflow: hidden;
+  cursor: -webkit-grab;
+}
+
+#allCashedContentsContainer .itemRow .title{
+  margin: 0;
+  font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#allCashedContentsContainer .itemRow .desc{
+  margin: 0;
+  color: rgba(255,255,255,.7);
+  font-size: 12px;
+  overflow: hidden;
+  height: 27px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  line-height: 27px;
+}
+
+#allCashedContentsContainer .itemRow .tscope{
+  margin: 0;
+  font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#allCashedContentsContainer .itemRow .ttitle{
+  margin: 0;
+  color: rgba(255,255,255,.7);
+  font-size: 12px;
+  overflow: hidden;
+  height: 27px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  line-height: 27px;
+  font-weight: 600px;
+}
+#allCashedContentsContainer .itemRow .tdesc{
+  margin: 0;
+  font-size: 12px;
+  overflow: hidden;
+  height: 27px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  line-height: 27px;
+  font-weight: 600;
+  color: white;
+}
+
 
 
 

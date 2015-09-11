@@ -48,9 +48,9 @@
 					else{
 						var svr = new Server("steps", ngScope.isDummy);
 						if(typeof callback == "funtion")
-							svr.setSteps(localStorage["com.intel.userdata"], callback);
+							svr.setSteps(callback);
 						else
-							svr.setSteps(localStorage["com.intel.userdata"], function(){});
+							svr.setSteps(function(){});
 					}
 				});
 			},
