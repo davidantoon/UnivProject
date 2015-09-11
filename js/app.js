@@ -6,8 +6,8 @@ var ngScope;
 (function(angular) {
     // 'use strict';
     angular.module('IntelLearner', ['onsen', 'firebase', 'dndLists']);
-    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope",  "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast","User", "$httpR", "Content", "fromServerTime", "termServerToClient", "deliveryServerToClient", "kbitServerToClient", "objectServerToClient", "toServerTime", "Log", "defultFilters",
-        function($rootScope, $scope,  $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast, User, $httpR, Content, fromServerTime, termServerToClient, deliveryServerToClient, kbitServerToClient, objectServerToClient, toServerTime, Log, defultFilters) {
+    angular.module('IntelLearner').controller('MainCtrl', ["$rootScope", "$scope",  "$http", "$timeout", "$interval", "$filter", "$window","Workspace", "TypeOf", "Steps","ServerReq","Server","Storage","Globals","Workflow", "Settings", "Toast","User", "$httpR", "Content", "fromServerTime", "termServerToClient", "deliveryServerToClient", "kbitServerToClient", "objectServerToClient", "toServerTime", "Log", "defultFilters", "ServerScopesToClient",
+        function($rootScope, $scope,  $http, $timeout, $interval, $filter, $window, Workspace, TypeOf, Steps, ServerReq, Server, Storage, Globals, Workflow, Settings, Toast, User, $httpR, Content, fromServerTime, termServerToClient, deliveryServerToClient, kbitServerToClient, objectServerToClient, toServerTime, Log, defultFilters, ServerScopesToClient) {
 
 
             // PRIM COLOR = rgb(8,96,168)
@@ -79,6 +79,11 @@ var ngScope;
             $scope.httpR = $httpR;
             $rootScope.currentScope = $scope;
             $scope.Toast = new Toast();
+            $scope.openCashedContects = false;
+            $scope.holdingCashedObjects = {
+                terms : [],
+                kbits : []
+            }
             defultFilters();
 
 
@@ -507,12 +512,10 @@ var ngScope;
 
             $scope.getProfilePicture = function(){
                 if($scope.currentUser && $scope.currentUser.profilePicture){
-                    if($scope.currentUser.profilePicture.indexOf('.') == -1){
+                    if($scope.currentUser.profilePicture.indexOf('.') == -1)
                         return "img/defaulProfilePicture.jpeg";
-                    }else if(window.location.protocol == "file:")
-                        return "http://"+$httpR.ip+":8888//mopdqwompoaskdqomdiasjdiowqe/server/" + $scope.currentUser.profilePicture;
                     else
-                        return $scope.currentUser.profilePicture;
+                        return "http://testserver-radjybaba.rhcloud.com/"+$scope.currentUser.profilePicture;
                 }else{
                     return "img/defaulProfilePicture.jpeg";
                 }
@@ -1186,6 +1189,8 @@ var ngScope;
                         $scope.updateAllTabName();
                         $scope.updateMatrixLayout();
                         $scope.workSpaces.updateNewWorkflowButtons();
+                        $scope.Steps.lastFocusedWorkflow = newWorkflow.ID;
+                        $scope.refocusLastWorkflow();
                     },100);
                 }catch(e){
                     $scope.Toast.show("Error!","Could'nt convert to workflow", Toast.LONG, Toast.ERROR);
@@ -1752,7 +1757,6 @@ var ngScope;
                                                         },500);
                                                     }else{
                                                         Log.d("app", "CeateButtonPressed", "Element created", success);
-                                                        debugger;
                                                         newWorkflowCreated.selectedTab.addContent(objectServerToClient(success), true);
                                                         newWorkflowCreated.selectedTab.title = newWorkflowCreated.selectedTab.content.type.toUpperCase()+ " "+newWorkflowCreated.selectedTab.content.id;
                                                         newWorkflowCreated.selectedTab.content.locked = true;
@@ -1777,41 +1781,39 @@ var ngScope;
 
                                             Log.d("app","CeateButtonPressed","Create New Term");
                                             // TERMS
-                                            debugger;
-                                            // $httpR.connectToServer({}, "TERMGetAllScopesWithTerms", Globals, function(success, error){
+                                            $httpR.connectToServer({"searchFields":["TITLE"],"searchWord":" "}, $httpR.SCOPEsearchScopes, Globals, function(success, error){
                                                 var newWorkflowCreated = $scope.workSpaces.getWFlow($scope.holdingNewWorkflowCreateData.workflowId);
-                                            //     try{
-                                            //         if(error || !success){
-                                            //             Log.e("app", "CeateButtonPressed", "Error when creating element", error);
-                                            //             $scope.Toast.show("Error!", "Error when creating element", Toast.LONG, Toast.ERROR);
-                                            //             $timeout(function(){
-                                            //                 $scope.closeTab(newWorkflowCreated);
-                                            //                 $scope.Steps.lastFocusedWorkflow = wFlow.ID;
-                                            //                 $scope.refocusLastWorkflow();
-                                            //             },500);
-                                            //         }else{
-                                                        //Log.d("app", "CeateButtonPressed", "Element created", success);
-                                                        // Init Data
-                                                        debugger;
+                                                try{
+                                                    if(error || !success){
+                                                        Log.e("app", "CreateButtonPressed", "Error when creating element", error);
+                                                        $scope.Toast.show("Error!", "Error when creating element", Toast.LONG, Toast.ERROR);
                                                         $timeout(function(){
-                                                            newWorkflowCreated.selectedTab.dataHolding.spinner = false;
-                                                            newWorkflowCreated.selectedTab.dataHolding.index = 1;
-                                                        },1000);
+                                                            $scope.closeTab(newWorkflowCreated);
+                                                            $scope.Steps.lastFocusedWorkflow = wFlow.ID;
+                                                            $scope.refocusLastWorkflow();
+                                                        },500);
+                                                    }else{
+                                                        Log.d("app", "CreateButtonPressed", "All scopes with related terms", success);
 
+                                                        newWorkflowCreated.selectedTab.dataHolding.suggestingScopes = ServerScopesToClient(success);
+                                                        console.log(newWorkflowCreated.selectedTab.dataHolding.suggestingScopes);
+                                                        newWorkflowCreated.selectedTab.dataHolding.spinner = false;
+                                                        newWorkflowCreated.selectedTab.dataHolding.index = 1;
+                                                        
                                                         $timeout(function(){
                                                             $scope.InsertStepToLast10Steps();
                                                         },600);
-                                            //         }
-                                            //     }catch(e){
-                                            //         Log.e("app", "CeateButtonPressed", "Error when creating element", e);
-                                            //         $scope.Toast.show("Error!", "Error when creating element", Toast.LONG, Toast.ERROR);
-                                            //         $timeout(function(){
-                                            //             $scope.closeTab(newWorkflowCreated);
-                                            //             $scope.Steps.lastFocusedWorkflow = wFlow.ID;
-                                            //             $scope.refocusLastWorkflow();
-                                            //         },500);
-                                            //     }
-                                            // });
+                                                    }
+                                                }catch(e){
+                                                    Log.e("app", "CeateButtonPressed", "Error when creating element", e);
+                                                    $scope.Toast.show("Error!", "Error when creating element", Toast.LONG, Toast.ERROR);
+                                                    $timeout(function(){
+                                                        $scope.closeTab(newWorkflowCreated);
+                                                        $scope.Steps.lastFocusedWorkflow = wFlow.ID;
+                                                        $scope.refocusLastWorkflow();
+                                                    },500);
+                                                }
+                                            });
                                             
                                         }
                                     },300);
@@ -1823,8 +1825,189 @@ var ngScope;
             }
 
 
+            $scope.cancelTermButton = function(newTerm, wFlow){
+                $scope.closeTab(wFlow);
+            }
+            $scope.backTermButton = function(wFlow){
+                wFlow.selectedTab.dataHolding.index -=1;                
+            }
+            $scope.nextTermButton = function(wFlow){
+
+                switch (wFlow.selectedTab.dataHolding.index){
+                    case 1:
+                        if(wFlow.selectedTab.dataHolding.newTerm.searchCreateScope == 0){
+                            if(wFlow.selectedTab.dataHolding.newTerm.selectedTermScope == null){
+                                $scope.Toast.show("Error!","Select Scope from search list.", Toast.LONG, Toast.ERROR);
+                            }else{
+                                wFlow.selectedTab.dataHolding.index += 1;
+                                if( wFlow.selectedTab.dataHolding.newTerm.selectedTermScope.terms.length != 0)
+                                    wFlow.selectedTab.dataHolding.newTerm.searchCreateTerm = 0;
+                                else
+                                    wFlow.selectedTab.dataHolding.newTerm.searchCreateTerm = 1;
+                            }
+                        }else if(wFlow.selectedTab.dataHolding.newTerm.searchCreateScope == 1){
+                            if(wFlow.selectedTab.dataHolding.newTerm.termScope.name.replace(/ /g,'') == "" || wFlow.selectedTab.dataHolding.newTerm.termScope.description.replace(/ /g,'') == ""){
+                                $scope.Toast.show("Error!","Missing new scope name or description", Toast.LONG, Toast.ERROR);
+                            }
+                            else{
+                                wFlow.selectedTab.dataHolding.index += 1;
+                                wFlow.selectedTab.dataHolding.newTerm.selectedTermScope = null;
+                                wFlow.selectedTab.dataHolding.newTerm.searchCreateTerm = 1;
+                            }
+                        }
+                        wFlow.selectedTab.dataHolding.selectedTerm = null;
+                    break;
+                    case 2:
+                        if(wFlow.selectedTab.dataHolding.newTerm.searchCreateTerm == 0){
+                            if(wFlow.selectedTab.dataHolding.newTerm.selectedTerm == null){
+                                $scope.Toast.show("Error!","Select Term from search list.", Toast.LONG, Toast.ERROR);
+                            }else{
+                                wFlow.selectedTab.dataHolding.index += 1;
+                            }
+                        }else{
+                            if($scope.getPreferLanguageFromTerm(wFlow.selectedTab.dataHolding.newTerm.name).replace(/ /g,'') == "" || $scope.getPreferLanguageFromTerm(wFlow.selectedTab.dataHolding.newTerm.description).replace(/ /g,'') == ""){
+                                $scope.Toast.show("Error!","Missing new Term name or description", Toast.LONG, Toast.ERROR);
+                            }
+                            else{
+                                $scope.createTermWithScope(wFlow);
+                            }
+
+                        }
+                    break;
+                    case 3:
+                        if(wFlow.selectedTab.dataHolding.newTerm.description[$scope.Settings.preferLanguage['LANG_CODE']].replace(/ /g,'') == ""){
+                            $scope.Toast.show("Error!","Missing new Term description", Toast.LONG, Toast.ERROR);
+                        }
+                        else{
+                            $scope.createTermWithScope(wFlow);
+                        }
+                    break;
+                }
+                $scope.InsertStepToLast10Steps();
+            }
+
+            $scope.getSearchTermScop = function(dataHolding){
+                var returnData = [];
+                var scopes = dataHolding.suggestingScopes;
+                if(dataHolding.newTerm.termScope.name == ""){
+                    return scopes;
+                }else{
+                    var searchText = dataHolding.newTerm.termScope.name.split(' ');
+                    for(var i=0; i<scopes.length; i++){
+                        var found = 1;
+                        for(var i2=0; i2<searchText.length; i2++){
+                           if(searchText[i2] != ""){
+                                if(scopes[i].name.indexOf(searchText[i2]) != -1 || scopes[i].description.indexOf(searchText[i2]) != -1 || (scopes[i].name+" " +scopes[i].description).indexOf(searchText[i2]) != -1){
+                                    found *=1;
+                                }else{
+                                    found *=0;
+                                }
+                            }
+                        }
+                        if(found)
+                            returnData.push(scopes[i]);
+                    }
+                }
+                return returnData;
+            }
+
+            $scope.getSearchTermFromSelectedScope = function(dataHolding){
+                var returnData = [];
+                if(dataHolding.newTerm.selectedTermScope && dataHolding.newTerm.searchCreateScope == 0){
+                    var terms = dataHolding.newTerm.selectedTermScope.terms;
+                    if($scope.getPreferLanguageFromTerm(dataHolding.newTerm.name) == ""){
+                        return terms;
+                    }else{
+                        var searchText = $scope.getPreferLanguageFromTerm(dataHolding.newTerm.name).split(' ');
+                        for(var i=0; i<terms.length; i++){
+                            var found = 1;
+                            for(var i2=0; i2<searchText.length; i2++){
+                               if(searchText[i2] != ""){
+                                    if($scope.getPreferLanguageFromTerm(terms[i].name).indexOf(searchText[i2]) != -1){
+                                        found *=1;
+                                    }else{
+                                        found *=0;
+                                    }
+                                }
+                            }
+                            if(found)
+                                returnData.push(terms[i]);
+                        }
+                    }
+                }
+                return returnData;
+            }
 
 
+            $scope.getPreferLanguageFromTerm = function(item){
+                if(item[$scope.Settings.preferLanguage["LANG_CODE"]])
+                    return item[$scope.Settings.preferLanguage["LANG_CODE"]];
+                else if(item["en"])
+                    return item["en"];
+                else
+                    return "";
+            }
+
+
+            $scope.createTermWithScope = function(wFlow){
+
+                if(wFlow.selectedTab.dataHolding.newTerm.searchCreateScope == 1){
+                    if(wFlow.selectedTab.dataHolding.newTerm.searchCreateTerm == 1){
+                        var dataToSave = {
+                            "scopeUID":wFlow.selectedTab.dataHolding.newTerm.selectedTermScope.id,
+                            "termUID": wFlow.selectedTab.dataHolding.newTerm.selectedTerm.id,
+                            "termMeaningText": $scope.getPreferLanguageFromTerm(wFlow.selectedTab.dataHolding.newTerm.description), 
+                            "lang": $scope.Settings.preferLanguage["LANG_CODE"]
+                        }
+                        $httpR.connectToServer(dataToSave, "KBITaddTermByTermUIDScopeUID", Globals, function(success, error){
+                            if(error && !success){
+                                $scope.Toast.show("Error!","Error when creating Term", Toast.LONG, Toast.ERROR);
+                            }else{
+                                $scope.Toast.show("Success!","Term has been created", Toast.SHORT, Toast.SUCCESS);
+                                wFlow.selectedTab.dataHolding = {};
+                                wFlow.selectedTab.content = objectServerToClient(success);
+                                wFlow.tx = wFlow.fx+1;
+                            }
+                        });
+                        //  serverHash, Token, kbitUID, scopeUID, termUID, termMeaningText, lang
+                    }else{
+                        var dataToSave = {
+                            "scopeUID":wFlow.selectedTab.dataHolding.newTerm.selectedTermScope.id,
+                            "termStringText": $scope.getPreferLanguageFromTerm(wFlow.selectedTab.dataHolding.newTerm.name),
+                            "termMeaningText": $scope.getPreferLanguageFromTerm(wFlow.selectedTab.dataHolding.newTerm.description), 
+                            "lang": $scope.Settings.preferLanguage["LANG_CODE"]
+                        }
+                        $httpR.connectToServer(dataToSave, "KBITaddTermByScopeUID", Globals, function(success, error){
+                            if(error && !success){
+                                $scope.Toast.show("Error!","Error when creating Term", Toast.LONG, Toast.ERROR);
+                            }else{
+                                $scope.Toast.show("Success!","Term has been created", Toast.SHORT, Toast.SUCCESS);
+                                wFlow.selectedTab.dataHolding = {};
+                                wFlow.selectedTab.content = objectServerToClient(success);
+                                wFlow.tx = wFlow.fx+1;
+                            }
+                        });
+                    }
+                }else{
+                    var dataToSave = {
+                        "scopeTitle":wFlow.selectedTab.dataHolding.newTerm.termScope.name,
+                        "scopeDesc":wFlow.selectedTab.dataHolding.newTerm.termScope.description, 
+                        "termStringText": $scope.getPreferLanguageFromTerm(wFlow.selectedTab.dataHolding.newTerm.name),
+                        "termMeaningText": $scope.getPreferLanguageFromTerm(wFlow.selectedTab.dataHolding.newTerm.description), 
+                        "lang": $scope.Settings.preferLanguage["LANG_CODE"]
+                    }
+                    $httpR.connectToServer(dataToSave, "KBITaddTerm", Globals, function(success, error){
+                        if(error && !success){
+                            $scope.Toast.show("Error!","Error when creating Term", Toast.LONG, Toast.ERROR);
+                        }else{
+                            $scope.Toast.show("Success!","Term has been created", Toast.SHORT, Toast.SUCCESS);
+                            wFlow.selectedTab.dataHolding = {};
+                            wFlow.selectedTab.content = objectServerToClient(success);
+                            wFlow.tx = wFlow.fx+1;
+                        }
+                    });
+                }
+            }
 
             /*******************************************************
             *                                                      *
@@ -1928,11 +2111,54 @@ var ngScope;
                 }
             }
 
+            $scope.modifyOpenCashedContects = function(typeOfContent){
+                if(typeOfContent == "Kbit"){
+                    $scope.holdingCashedObjects.deliveries = [];
+                    $scope.holdingCashedObjects.terms = [];
+                    $scope.holdingCashedObjects.kbits = Globals.getRecentObjects(typeOfContent);
+                }else if(typeOfContent == "Term"){
+                    $scope.holdingCashedObjects.deliveries = [];
+                    $scope.holdingCashedObjects.kbits = [];
+                    $scope.holdingCashedObjects.terms = Globals.getRecentObjects(typeOfContent);
+                }else{
+                    $scope.holdingCashedObjects.terms = Globals.getRecentObjects("Term");
+                    $scope.holdingCashedObjects.kbits = Globals.getRecentObjects("Kbit");
+                    $scope.holdingCashedObjects.deliveries = Globals.getRecentObjects("Delivery");
+                }
+                var i=0;
+                while(i<$scope.holdingCashedObjects.kbits.length){
+                    if($scope.holdingCashedObjects.kbits[i].name == " " && $scope.holdingCashedObjects.kbits[i].description == " "){
+                        $scope.holdingCashedObjects.kbits.splice(i,1);
+                    }else{
+                        i++;
+                    }
+                }
+                i=0;
+                while(i<$scope.holdingCashedObjects.deliveries.length){
+                    if($scope.holdingCashedObjects.deliveries[i].name == " " && $scope.holdingCashedObjects.deliveries[i].description == " "){
+                        $scope.holdingCashedObjects.deliveries.splice(i,1);
+                    }else{
+                        i++;
+                    }
+                }
+                $scope.openCashedContects = true;
+            }
 
+            $scope.toggleopenCashedContects = function(){
+                if($scope.openCashedContects == false){
+                    $scope.modifyOpenCashedContects("All");
+                    $scope.openCashedContects = true;
+                }
+                else
+                    $scope.openCashedContects = false;
+            }
 
             $scope.draggingItems = function(item){
 
                 var CashedObjectsKeys = Object.keys(Globals.CashedObjects);
+                $scope.openCashedContects = false;
+                $scope.holdingCashedObjects.kbits = [];
+                $scope.holdingCashedObjects.terms = [];
                 for(var i=0; i<CashedObjectsKeys.length; i++){
                     var tempObj = Globals.CashedObjects[CashedObjectsKeys[i]];
                     // loop for inprogress Contents
@@ -2164,7 +2390,6 @@ var ngScope;
             }
 
             $scope.revokeContent = function(content){
-                debugger;
                 if(content.locked){
                     if($scope.isDummy){
                         Log.i("app","revokeContent","Dummy revoke object");
@@ -2307,10 +2532,9 @@ var ngScope;
                     }
                 }
             }, 50);
-            $interval(function() {
-                $('#BodyRow').css('height', ($(window).height() - 50) + "px");
-                $('#FullScreenDiv').css('height', ($(window).height() - 50) + "px");
-            }, 50);
+            // $interval(function() {
+                // $('#BodyRow').css('height', ($(window).height() - 50) + "px");
+            // }, 50);
             $interval(function() {
                 $scope.updateMatrixLayout();
                 $scope.updateAllTabName();

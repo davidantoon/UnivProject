@@ -311,6 +311,8 @@
                     this.pop(ChashedDeliveries[i].id, ChashedDeliveries[i].type);
                 }
             }
+
+
         },
 
         getAllObjectToJson: function(){
@@ -466,7 +468,7 @@
     .value('$httpR', {
 
         protocol: "http",
-        ip: "31.154.146.144",
+        ip: "109.160.237.189",
         port: "8888",
         baseUrl: "/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/",
 
@@ -508,7 +510,7 @@
         DELIVERYupdateFullDelivery: "DELIVERYupdateFullDelivery",
         getLanguages: "getLanguages",
         REFRESHERgetData: "REFRESHERgetData",
-
+        SCOPEsearchScopes: "SCOPEsearchScopes",
 
         
 
@@ -525,20 +527,19 @@
             ngScope.Log.d("$httpR", "connectToServer","Request data:", {LogObject:data});
             // http://109.160.241.160:8888/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/
             $.ajax({
-                // url: "http://testserver-radjybaba.rhcloud.com/webservice.php/",
-                url: this.protocol+"://"+this.ip+":"+this.port+this.baseUrl,
+                url: "http://testserver-radjybaba.rhcloud.com/webservice.php/",
+                // url: this.protocol+"://"+this.ip+":"+this.port+this.baseUrl,
                 data: data,
                 method: "POST",
                 header:{
-                    "Access-Control-Allow-Origin": "http://"+this.ip+":8888"
+                    // "Access-Control-Allow-Origin": "http://"+this.ip+":8888"
                 },
                 xhrFields: {
-                    withCredentials: true
+                    withCredentials: false
                 },
                 crossDomain : true,
                 timeout: 10000,
                 success: function(success) {
-                    debugger;
                     if (success.status == 200){
                         ngScope.Log.d("$httpR", "connectToServer","Success response data:", {LogObject:success});
                         callback(success.data, null);
@@ -991,15 +992,36 @@
         }
         if(serverObj.KBITS && serverObj.KBITS.NEEDED)
             for(var i=0; i<serverObj.KBITS.NEEDED.length; i++){
-                tempJson.kBitsNeeded.push(ngScope.objectServerToClient(serverObj.KBITS.NEEDED[i]));
+                var tempKbit = ngScope.objectServerToClient(serverObj.KBITS.NEEDED[i]);
+                var found = false;
+                for(var i2=0; i2<tempJson.kBitsNeeded.length; i2++){
+                    if(tempJson.kBitsNeeded[i2].id == tempKbit.id)
+                        found = true;
+                }
+                if(found == false)
+                    tempJson.kBitsNeeded.push(tempKbit);
             }
         if(serverObj.KBITS && serverObj.KBITS.PROVIDED)
             for(var i=0; i<serverObj.KBITS.PROVIDED.length; i++){
-                tempJson.kBitsProvided.push(ngScope.objectServerToClient(serverObj.KBITS.PROVIDED[i]));
+                var tempKbit = ngScope.objectServerToClient(serverObj.KBITS.PROVIDED[i]);
+                var found = false;
+                for(var i2=0; i2<tempJson.kBitsProvided.length; i2++){
+                    if(tempJson.kBitsProvided[i2].id == tempKbit.id)
+                        found = true;
+                }
+                if(found == false)
+                    tempJson.kBitsProvided.push(tempKbit);
             }
         if(serverObj.TERMS)
             for(var i=0; i<serverObj.TERMS.length; i++){
-                tempJson.terms.push(ngScope.objectServerToClient(serverObj.TERMS[i]));
+                var tempTerm = ngScope.objectServerToClient(serverObj.TERMS[i]);
+                var found = false;
+                for(var i2=0; i2<tempJson.terms.length; i2++){
+                    if(tempJson.terms[i2].id == tempTerm.id)
+                        found = true;
+                }
+                if(found == false)
+                    tempJson.terms.push(tempTerm);
             }
         return tempJson;
     }).value('kbitServerToClient', function(serverObj){
@@ -1009,6 +1031,7 @@
             "description": serverObj.DESCRIPTION,
             "url": serverObj.FRONT_KBIT.PATH,
             "type": "Kbit",
+            "linkType": serverObj.LINK_TYPE,
             "revision": serverObj.REVISION,
             "lastModified": ngScope.fromServerTime(serverObj.CREATION_DATE),
             "terms":[]
@@ -1028,7 +1051,14 @@
         }
         if(serverObj.TERMS)
             for(var i=0; i<serverObj.TERMS.length; i++){
-                tempJson.terms.push(ngScope.objectServerToClient(serverObj.TERMS[i]));
+                var tempTerm = ngScope.objectServerToClient(serverObj.TERMS[i]);
+                var found = false;
+                for(var i2=0; i2<tempJson.terms.length; i2++){
+                    if(tempJson.terms[i2].id == tempTerm.id)
+                        found = true;
+                }
+                if(found == false)
+                    tempJson.terms.push(tempTerm);
             }
         return tempJson;
     }).value('termServerToClient', function(serverObj){
@@ -1040,6 +1070,7 @@
             "name": tempName,
             "description": tempDescription,
             "type": "Term",
+            "linkType": serverObj.LINK_TYPE,
             "termScope": {
                 "id": serverObj.SCOPE_UID,
                 "name": serverObj.SCOPE_TITLE,
@@ -1071,6 +1102,20 @@
         // ngScope.Log.hideFilter("Content");
         // ngScope.Log.hideFilter("Steps");
         ngScope.Log.hideFilter("Server");
+    }).value('ServerScopesToClient', function(serverObj){
+        var scopes = [];
+        for(var i=0; i<serverObj.length; i++){
+            scopes.push({
+                "id": serverObj[i].UID,
+                "name": serverObj[i].TITLE,
+                "description": serverObj[i].DESCRIPTION,
+                "terms": []
+            });
+            for(var i2=0; i2<serverObj[i].TERMS.length; i2++){
+                scopes[i].terms.push(ngScope.objectServerToClient(serverObj[i].TERMS[i2]));
+            }
+        }
+        return scopes;
     });
 })(window.angular);
 

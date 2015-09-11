@@ -31,7 +31,6 @@
 				this.dataHolding = {};
 				return this;
 			}else if(tempJson){
-				// debugger;
 				this.parentWF = workflow;
 				this.ID = tempJson.ID;
 				this.title = tempJson.title;
@@ -54,7 +53,6 @@
 								loopResults(Number(index)+1, results, dataToReturn);
 							});
 						}else{
-							// debugger;
 							passThis.dataHolding.results = dataToReturn;
 							Continue(passThis);
 							return;
@@ -204,6 +202,7 @@
 						this.addData({
 							"parentTab":{"workflowId":null,"tabId":null},
 							"newTerm":{
+								"KbitUID":(content)?content.id:null,
 								"searchCreateScope":0, 		// 0 => search || 1 => create
 								"selectedTermScope":null,
 								"termScope":{
