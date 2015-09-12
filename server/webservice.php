@@ -298,6 +298,20 @@ class termsAPI {
         }
     }
 
+    static function addDescTermByTermUIDScopeUID($serverHash, $Token, $scopeUID, $termUID, $termMeaningText, $lang) {
+
+        if(serverAPI::validateServerIdentity($serverHash) == false)
+            return array('ErrorCode' => 4, 'Message' => "Invalid serverHash : ".$serverHash);
+        $user = usersAPI::validateToken($Token);
+        if($user == null)
+            return array('ErrorCode' => 3, 'Message' => "Expired Token");
+        try {
+            return term::add_sysnonym($scopeUID, $termUID, $termMeaningText, $lang, $user["UID"]);
+        }
+        catch (Exception $e) {
+            return array('ErrorCode' => 0, 'Message' => "Unknown Error");
+        }
+    }
 }
 
 
@@ -1202,7 +1216,9 @@ class interfaceAPI {
             $lang = '';
         return termsAPI::addNewTermWithScopeUID($serverHash, $Token, $scopeUID, $termStringText, $termMeaningText, $lang);
     }
-    
+    public static function TERMaddTermByTermUIDScopeUID($serverHash, $Token,  $scopeUID, $termUID, $termMeaningText, $lang) {
+        return KbitAPI::addDescTermByTermUIDScopeUID($serverHash, $Token, $scopeUID, $termUID, $termMeaningText, $lang);
+    }
 
     
 
