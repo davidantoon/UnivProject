@@ -184,6 +184,41 @@ class termsAPI {
         }
     }
 
+    //
+    static function addNewTermWithScopeUID($serverHash, $Token, $scopeUID, $termStringText, $termMeaningText, $lang) {
+
+        if(serverAPI::validateServerIdentity($serverHash) == false)
+            return array('ErrorCode' => 4, 'Message' => "Invalid serverHash : ".$serverHash);
+        $user = usersAPI::validateToken($Token);
+        if($user == null)
+            return array('ErrorCode' => 3, 'Message' => "Expired Token");
+        try {
+            $term = term::add_new_term_with_scope_and_meaning($termStringText, $lang, $user["UID"], $scopeUID, $termMeaningText);
+            return $term;
+        }
+        catch (Exception $e) {
+            return array('ErrorCode' => 0, 'Message' => "Unknown Error");
+        }
+    }
+
+    static function addNewTerm($serverHash, $Token, $scopeTitle, $scopeDesc, $termStringText, $termMeaningText, $lang) {
+
+        if(serverAPI::validateServerIdentity($serverHash) == false)
+            return array('ErrorCode' => 4, 'Message' => "Invalid serverHash : ".$serverHash);
+        $user = usersAPI::validateToken($Token);
+        if($user == null)
+            return array('ErrorCode' => 3, 'Message' => "Expired Token");
+        try {
+            $termString = term::add_new_term($termStringText, $lang, $user["UID"]);
+            $term = term::add_new_meaning_under_new_scope($termString["UID"], $lang, $user["UID"], $scopeTitle, $scopeDesc, $termMeaningText);
+            return $term;
+        }
+        catch (Exception $e) {
+            return array('ErrorCode' => 0, 'Message' => "Unknown Error");
+        }
+    }
+    //
+
     static function addTermToTermRelation($serverHash, $Token, $firstUID, $secondUID, $isHier) {
 
         if(serverAPI::validateServerIdentity($serverHash) == false)
@@ -1157,7 +1192,16 @@ class interfaceAPI {
             $lang = '';
         return termsAPI::getTermById($serverHash, $Token, $UID, $lang);
     }
-    
+    public static function TERMaddNewTerm($serverHash, $Token, $scopeTitle, $scopeDesc, $termStringText, $termMeaningText, $lang = '') {
+        if($lang == ' ')
+            $lang = '';
+        return termsAPI::addNewTerm($serverHash, $Token, $scopeTitle, $scopeDesc, $termStringText, $termMeaningText, $lang);
+    }
+    public static function TERMaddNewTermWithScopeUID($serverHash, $Token, $scopeUID, $termStringText, $termMeaningText, $lang = '') {
+     if($lang == ' ')
+            $lang = '';
+        return termsAPI::addNewTermWithScopeUID($serverHash, $Token, $scopeUID, $termStringText, $termMeaningText, $lang);
+    }
     
 
     
