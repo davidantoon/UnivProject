@@ -190,7 +190,7 @@
                             lastName: lastName,
                             email: email,
                             profilePicture: this.profilePicture,
-                            role: this.role
+                            role: " "
                         };
                         var passThis = this;
                         $httpR.connectToServer(data, $httpR.updateUser, Globals, function(success, error) {

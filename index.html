@@ -31,7 +31,7 @@
                 <div class="ProfilePicDivTabbar" style="{{'background:url(\''+getProfilePicture()+'\') 50% 50% no-repeat;    background-size: 150px;'}}"></div>
                 <p>{{currentUser.firstName+" "+currentUser.lastName}}</p>
               </ons-col>
-              <ons-col id="NotificationsButton1" ng-click="testFunctions1();" width="100px" style="width:100px; position:relative;" class="">
+              <ons-col id="NotificationsButton1" ng-click="openProfileDialog1();" width="100px" style="width:100px; position:relative;" class="">
                 <div class="TopTabbarButton clickable hoverOp">Settings</div>
               </ons-col>
               <ons-col id="NotificationsButton2" ng-click="openNewWorkflow();" width="150px" style="width:150px; position:relative;" class="">
@@ -399,11 +399,19 @@
                                       <ons-row class="editObjectDetailsRow">
                                         <ons-col>
                                           <ons-row>
-                                            <ons-col width="200px">
+                                            <ons-col width="230px">
                                               Selected Term Name: 
                                             </ons-col>
                                             <ons-col>
                                               {{wFlow.selectedTab.dataHolding.newTerm.selectedTerm.name[Settings.preferLanguage["LANG_CODE"]]}} 
+                                            </ons-col>
+                                          </ons-row>
+                                          <ons-row>
+                                            <ons-col width="230px">
+                                              Selected Term Description: 
+                                            </ons-col>
+                                            <ons-col>
+                                              {{wFlow.selectedTab.dataHolding.newTerm.selectedTerm.description[Settings.preferLanguage["LANG_CODE"]]}} 
                                             </ons-col>
                                           </ons-row>
                                         </ons-col>
@@ -1018,6 +1026,48 @@
       <div class="ToastTitle"></div>
       <div class="ToastBody"></div>
 
+    </div>
+    <div id="profileDialogClose1" ng-click="closeProfileDialog1();" style="display:none"></div>
+    <div id="profileDialog1" style="display:none">
+
+      <div class="SettingsHeader">Settings</div>
+      <div class="SettingsRows">
+        <ons-row class="SettingsRow">
+          <ons-col>
+            Auto edge scroll
+          </ons-col>
+          <ons-col>
+            <ons-switch modifier="list-item" ng-model="Settings.autoScroll"></ons-switch>
+          </ons-col>
+        </ons-row>
+        <ons-row class="SettingsRow">
+          <ons-col>
+            Auto save
+          </ons-col>
+          <ons-col>
+            <ons-switch modifier="list-item" ng-model="Settings.autoSave"></ons-switch>
+          </ons-col>
+        </ons-row>
+        <ons-row class="SettingsRow">
+          <ons-col>
+            Auto open tabs
+          </ons-col>
+          <ons-col>
+            <ons-switch modifier="list-item" ng-model="Settings.autoOpenTabs"></ons-switch>
+          </ons-col>
+        </ons-row>
+        <ons-row class="SettingsRow">
+          <ons-col>
+            Remove scroll on mouse over
+          </ons-col>
+          <ons-col>
+            <ons-switch modifier="list-item" ng-model="Settings.removeScrollOnMouseOver"></ons-switch>
+          </ons-col>
+        </ons-row>
+
+        
+      </div>
+      <div class="closeModalProfile" ng-click="closeProfileDialog1();">x</div>
     </div>
     <div id="profileDialogClose" ng-click="closeProfileDialog();" style="display:none"></div>
     <div id="profileDialog" style="display:none">

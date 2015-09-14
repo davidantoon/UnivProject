@@ -12,9 +12,6 @@ var ngScope;
 
             // PRIM COLOR = rgb(8,96,168)
             
-
-
-
             /*********************************************************************************
              *                                                                                *
              *  000000000        000      000000000        000      000     000     00000     *
@@ -44,6 +41,7 @@ var ngScope;
             
             
             $scope.AppStatus = 0;
+            $scope.appInitialize = false;
             $scope.currentUser = {};
             $scope.Workflow = [];
             $scope.lastZoomIn = $('#ZoomRange').val();
@@ -246,11 +244,13 @@ var ngScope;
                                 $('#LoadingScreen').hide();
                                 var waitUntilLoad = setInterval(function(){
                                 	if($('#Workflow'+$scope.Steps.lastFocusedWorkflow).position()){
+
                                 		$timeout(function(){
                                             $scope.workSpaces.scrollToLastWorkflow($scope.Steps);
                                             Globals.updateUsedObjects($scope.workSpaces);
                                             $timeout(function(){
                                                 $scope.focusingLastWorkflow = true;
+                                                $scope.appInitialize = true;
                                             },500);
     	                            	},500);
     	                            	clearInterval(waitUntilLoad);
@@ -269,6 +269,9 @@ var ngScope;
              */
             $scope.loadDataFromSRV = function(callbackFunction) {
                 
+                var svrtimeout = $timeout(function(){
+                    $scope.alert("No connection");
+                },15000);
                 // init worksace
                 $scope.workSpaces = new Workspace();
                 $scope.Steps = new Steps();
@@ -281,7 +284,7 @@ var ngScope;
                         $scope.workSpaces.checkUserColorsInWorkspace();
                         
                         $('#WorkFlowMatrix').css('min-width', "5000px").css('min-height', "5000px").css('width', "5000px").css('height', "5000px");
-
+                        $timeout.cancel(svrtimeout);
                         callbackFunction(true);
                     });
                 });
@@ -531,6 +534,17 @@ var ngScope;
                 $('#profileDialogClose').show();
                 $('#profileDialog').show();   
             }
+
+            $scope.closeProfileDialog1 = function(){
+                $('#profileDialogClose1').hide();
+                $('#profileDialog1').hide();
+            }
+
+            $scope.openProfileDialog1 = function(){
+                $('#profileDialogClose1').show();
+                $('#profileDialog1').show();   
+            }
+
 
 
 
@@ -1951,25 +1965,28 @@ var ngScope;
 
             $scope.createTermWithScope = function(wFlow){
 
-                if(wFlow.selectedTab.dataHolding.newTerm.searchCreateScope == 1){
-                    if(wFlow.selectedTab.dataHolding.newTerm.searchCreateTerm == 1){
+                if(wFlow.selectedTab.dataHolding.newTerm.searchCreateScope == 0){
+                    if(wFlow.selectedTab.dataHolding.newTerm.searchCreateTerm == 0){
                         var dataToSave = {
                             "scopeUID":wFlow.selectedTab.dataHolding.newTerm.selectedTermScope.id,
                             "termUID": wFlow.selectedTab.dataHolding.newTerm.selectedTerm.id,
                             "termMeaningText": $scope.getPreferLanguageFromTerm(wFlow.selectedTab.dataHolding.newTerm.description), 
                             "lang": $scope.Settings.preferLanguage["LANG_CODE"]
                         }
-                        $httpR.connectToServer(dataToSave, "KBITaddTermByTermUIDScopeUID", Globals, function(success, error){
+                        $httpR.connectToServer(dataToSave, "TERMaddTermByTermUIDScopeUID", Globals, function(success, error){
                             if(error && !success){
                                 $scope.Toast.show("Error!","Error when creating Term", Toast.LONG, Toast.ERROR);
                             }else{
                                 $scope.Toast.show("Success!","Term has been created", Toast.SHORT, Toast.SUCCESS);
+                                
                                 wFlow.selectedTab.dataHolding = {};
                                 wFlow.selectedTab.content = objectServerToClient(success);
                                 wFlow.tx = wFlow.fx+1;
+                                wFlow.selectedTab.title = "TERM " + success.UID;
+                                wFlow.selectedTab.Type = 5;
+
                             }
                         });
-                        //  serverHash, Token, kbitUID, scopeUID, termUID, termMeaningText, lang
                     }else{
                         var dataToSave = {
                             "scopeUID":wFlow.selectedTab.dataHolding.newTerm.selectedTermScope.id,
@@ -1977,14 +1994,16 @@ var ngScope;
                             "termMeaningText": $scope.getPreferLanguageFromTerm(wFlow.selectedTab.dataHolding.newTerm.description), 
                             "lang": $scope.Settings.preferLanguage["LANG_CODE"]
                         }
-                        $httpR.connectToServer(dataToSave, "KBITaddTermByScopeUID", Globals, function(success, error){
-                            if(error && !success){
+                        $httpR.connectToServer(dataToSave, "TERMaddNewTermWithScopeUID", Globals, function(success, error){
+                            if(error && !success){ 
                                 $scope.Toast.show("Error!","Error when creating Term", Toast.LONG, Toast.ERROR);
                             }else{
                                 $scope.Toast.show("Success!","Term has been created", Toast.SHORT, Toast.SUCCESS);
                                 wFlow.selectedTab.dataHolding = {};
                                 wFlow.selectedTab.content = objectServerToClient(success);
                                 wFlow.tx = wFlow.fx+1;
+                                wFlow.selectedTab.title = "TERM " + success.UID;
+                                wFlow.selectedTab.Type = 5;
                             }
                         });
                     }
@@ -1996,7 +2015,7 @@ var ngScope;
                         "termMeaningText": $scope.getPreferLanguageFromTerm(wFlow.selectedTab.dataHolding.newTerm.description), 
                         "lang": $scope.Settings.preferLanguage["LANG_CODE"]
                     }
-                    $httpR.connectToServer(dataToSave, "KBITaddTerm", Globals, function(success, error){
+                    $httpR.connectToServer(dataToSave, "TERMaddNewTerm", Globals, function(success, error){
                         if(error && !success){
                             $scope.Toast.show("Error!","Error when creating Term", Toast.LONG, Toast.ERROR);
                         }else{
@@ -2004,6 +2023,8 @@ var ngScope;
                             wFlow.selectedTab.dataHolding = {};
                             wFlow.selectedTab.content = objectServerToClient(success);
                             wFlow.tx = wFlow.fx+1;
+                            wFlow.selectedTab.title = "TERM " + success.UID;
+                            wFlow.selectedTab.Type = 5;
                         }
                     });
                 }
@@ -2596,6 +2617,25 @@ var ngScope;
 
             // },5000);
 
+            $scope.$watch("Settings.autoScroll", function(newVal,oldVal){
+                if($scope.Settings && $scope.appInitialize)
+                    $scope.Settings.saveSettings();
+            });
+
+            $scope.$watch("Settings.autoSave", function(newVal,oldVal){
+                if($scope.Settings && $scope.appInitialize)
+                    $scope.Settings.saveSettings();
+            });
+
+            $scope.$watch("Settings.autoOpenTabs", function(newVal,oldVal){
+                if($scope.Settings && $scope.appInitialize)
+                    $scope.Settings.saveSettings();
+            });
+
+            $scope.$watch("Settings.removeScrollOnMouseOver", function(newVal,oldVal){
+                if($scope.Settings && $scope.appInitialize)
+                    $scope.Settings.saveSettings();
+            });
 
 
 
