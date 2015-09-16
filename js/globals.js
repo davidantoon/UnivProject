@@ -468,7 +468,7 @@
     .value('$httpR', {
 
         protocol: "http",
-        ip: "109.160.237.189",
+        ip: "31.154.152.34",
         port: "8888",
         baseUrl: "/mopdqwompoaskdqomdiasjdiowqe/server/webservice.php/",
 
@@ -538,7 +538,7 @@
                     withCredentials: false
                 },
                 crossDomain : true,
-                timeout: 10000,
+                timeout: 15000,
                 success: function(success) {
                     if (success.status == 200){
                         ngScope.Log.d("$httpR", "connectToServer","Success response data:", {LogObject:success});

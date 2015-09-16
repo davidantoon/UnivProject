@@ -42,15 +42,11 @@
 			},
 			saveSettings: function(){
 				var stor = new Storage();
-				stor.setWorkspaceData(null, x.Settings, null,function(dataSaved, error){
+				stor.setWorkspaceData(null, this.toJSON(), null,function(dataSaved, error){
 					if(error || !dataSaved)
 						Log.e("Settings","saveSettings", error);
 					else{
-						var svr = new Server("steps", ngScope.isDummy);
-						if(typeof callback == "funtion")
-							svr.setSteps(callback);
-						else
-							svr.setSteps(function(){});
+						ngScope.Steps.savedInServer = false;
 					}
 				});
 			},
@@ -65,6 +61,18 @@
 							callback(success);
 					});
 				}
+			},
+			toJSON: function(){
+				return {
+					"autoScroll": this.autoScroll,
+					"autoColor": this.autoColor,
+					"autoSave": this.autoSave,
+					"autoOpenTabs": this.autoOpenTabs,
+					"defaultToastPosition": this.defaultToastPosition,
+					"removeScrollOnMouseOver": this.removeScrollOnMouseOver,
+					"preferLanguage": this.preferLanguage,
+					"lastModified": this.lastModified
+				};
 			}
 		}
 

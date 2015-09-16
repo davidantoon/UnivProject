@@ -7291,7 +7291,7 @@ selectable{
 }
 
 
-#profileDialogClose{
+#profileDialogClose, #profileDialogClose1{
   position: absolute;
   z-index: 9;
   width: 100%;
@@ -7300,7 +7300,7 @@ selectable{
 }
 
 
-#profileDialog{
+#profileDialog, #profileDialog1{
   width: 500px;
   position: absolute;
   background-color: white;
@@ -7317,6 +7317,9 @@ selectable{
   height: 360px;
 }
 
+#profileDialog1{
+  padding: 0;
+}
 
 
 #profileDialog .profileDialogRow{
@@ -7387,8 +7390,8 @@ selectable{
 
 #allCashedContentsContainer{
   position: absolute;
-  right: -300px;
-  width: 280px;
+  right: 0px;
+  width: 0px;
   height: calc(100% - 70px);
   background-color: #0860A8;
   top: 50px;
@@ -7412,7 +7415,7 @@ selectable{
 }
 
 #allCashedContentsContainer.rightme{
-  right: 0;
+  width: 280px;
 }
 
 .ChashedContentsSeparator{
@@ -7535,6 +7538,26 @@ selectable{
 }
 
 
-
+.SettingsHeader{
+  height: 36px;
+  font-size: 20px;
+  background-color: whitesmoke;
+  color: gray;
+  line-height: 36px;
+  border-bottom: 1px solid rgba(0,0,0,.1);
+}
+.SettingsRows{
+  width: 100%;
+  height: calc(100% - 37px);
+}
+.SettingsRow{
+  height: 40px;
+  line-height: 40px;
+  text-align: left;
+  width: calc(100% - 60px);
+  margin: 0 30px;
+  color: rgb(60,60,60);
+  border-bottom: 1px solid rgba(0,0,0,.1);
+}
 
 
