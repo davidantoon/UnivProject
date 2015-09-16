@@ -7390,8 +7390,8 @@ selectable{
 
 #allCashedContentsContainer{
   position: absolute;
-  right: -300px;
-  width: 280px;
+  right: 0px;
+  width: 0px;
   height: calc(100% - 70px);
   background-color: #0860A8;
   top: 50px;
@@ -7415,7 +7415,7 @@ selectable{
 }
 
 #allCashedContentsContainer.rightme{
-  right: 0;
+  width: 280px;
 }
 
 .ChashedContentsSeparator{
