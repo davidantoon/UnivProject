@@ -52,7 +52,7 @@ class term {
 		$dbObj->run_query($dbObj->db_get_contentDB(), $query);
 
 		// returns an entity of recently added connection
-		return term::get_connection_by_UID($UID);
+		return term::get_full_term_by_UID($UID);
 	}
 
 
@@ -89,7 +89,7 @@ class term {
 		$dbObj->run_query($dbObj->db_get_contentDB(), $query);
 
 		// returns an entity of recently added connection
-		return term::get_connection_by_UID($UID);
+		return term::get_full_term_by_UID($UID);
 	}
 
 	// 3) add new scope under specific meaining
@@ -169,7 +169,7 @@ class term {
 		$dbObj->run_query($dbObj->db_get_contentDB(), $query);
 
 		// returns an entity of recently added connection
-		return term::get_connection_by_UID($UID);
+		return term::get_full_term_by_UID($UID);
 
 		return null;
 	}
